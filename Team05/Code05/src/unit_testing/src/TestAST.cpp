@@ -1,5 +1,6 @@
 
 #include "TNode.h"
+#include <exception>
 
 #include "catch.hpp"
 using namespace std;
@@ -12,7 +13,7 @@ TEST_CASE("1st Test") {
     TNode T;
 	
 	
-	
+	throw new std::exception();
     require(1 == 1);
 }
 

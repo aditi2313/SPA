@@ -4,10 +4,10 @@ on:
   push:
     branches:
       - master
+      - "gabau/cicd"
   pull_request:
     branches:
-     - master
-
+      - master
   
 
 env:

@@ -1,6 +1,13 @@
 name: CMake
 
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+     - master
+
   
 
 env:
@@ -36,4 +43,3 @@ jobs:
     - name: Integration Testing
       working-directory: ${{github.workspace}}/build/src/integration_testing
       run: ./integration_testing
-      

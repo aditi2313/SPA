@@ -1,5 +1,3 @@
 namespace qps {
-class Parser {
-
-};
-}
+class Parser {};
+}  // namespace qps

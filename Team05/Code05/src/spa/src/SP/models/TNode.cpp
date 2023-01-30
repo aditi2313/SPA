@@ -1,3 +1,3 @@
 #include "SP/models/TNode.h"
 
-namespace AST {}
+namespace ast {}  // namespace ast

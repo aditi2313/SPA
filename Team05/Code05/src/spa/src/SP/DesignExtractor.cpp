@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "PKB/PKB.h"
+#include "DesignExtractor.h"
 
-namespace SP {
+namespace sp {
 int DesignExtractor() { return 0; }
-}
+}  // namespace sp

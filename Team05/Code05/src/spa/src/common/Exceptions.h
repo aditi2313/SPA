@@ -1,3 +1,1 @@
-class Exceptions {
-
-};
+class Exceptions {};

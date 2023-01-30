@@ -1,12 +1,11 @@
 #pragma once
 
 #include <stdio.h>
-
 #include <iostream>
 #include <string>
 #include <vector>
 
-typedef short PROC;
+typedef int PROC;
 
 namespace pkb {
 class TNode;
@@ -19,4 +18,4 @@ class PKB {
   static int setProcToAST(PROC p, TNode *r);
   static TNode *getRootAST(PROC p);
 };
-}
+}  // namespace pkb

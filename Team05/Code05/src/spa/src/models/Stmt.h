@@ -1,5 +1,3 @@
 namespace models {
-class Stmt {
-
-};
-}
+class Stmt {};
+}  // namespace models

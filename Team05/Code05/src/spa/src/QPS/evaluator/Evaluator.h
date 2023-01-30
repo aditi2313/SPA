@@ -1,5 +1,3 @@
 namespace qps {
-class Evaluator {
-
-};
-}
+class Evaluator {};
+}  // namespace qps

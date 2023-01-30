@@ -1,4 +1,3 @@
-#pragma once
 namespace sp {
-int Parse();
+class DesignExtractor {};
 }  // namespace sp

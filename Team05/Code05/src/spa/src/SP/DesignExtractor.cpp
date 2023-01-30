@@ -8,4 +8,6 @@ using namespace std;
 
 #include "PKB/PKB.h"
 
+namespace SP {
 int DesignExtractor() { return 0; }
+}

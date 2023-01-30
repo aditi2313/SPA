@@ -9,6 +9,8 @@ using namespace std;
 #include "PKB.h"
 #include "SP/models/TNode.h"
 
-int PKB::setProcToAST(PROC p, TNode* r) { return 0; }
+namespace pkb {
+int PKB::setProcToAST(PROC p, TNode *r) { return 0; }
 
-TNode* PKB::getRootAST(PROC p) { return nullptr; }
+TNode *PKB::getRootAST(PROC p) { return nullptr; }
+}

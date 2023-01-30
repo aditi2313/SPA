@@ -1,3 +1,5 @@
+namespace qps {
 class Parser {
 
 };
+}

@@ -6,7 +6,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
 typedef short PROC;
 
 namespace pkb {

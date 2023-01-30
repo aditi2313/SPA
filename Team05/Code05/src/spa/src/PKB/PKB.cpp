@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-using namespace std;
-
 #include "PKB.h"
 #include "SP/models/TNode.h"
 

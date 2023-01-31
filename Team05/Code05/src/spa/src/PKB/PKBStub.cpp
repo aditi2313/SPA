@@ -1,3 +1,3 @@
 #include "PKBStub.h"
 
-using namespace pkb {}
+namespace pkb {}

@@ -1,4 +1,4 @@
-using namespace pkb {
+namespace pkb {
 class PKBStub {
 
 };

@@ -12,6 +12,10 @@ class QueryResult {
   std::vector<models::EntityStub> GetQueryResults() {
     return query_results_;
   }
+
+  void AddQueryResult(models::EntityStub entity) {
+    query_results_.push_back(entity);
+  }
 };
 }
 

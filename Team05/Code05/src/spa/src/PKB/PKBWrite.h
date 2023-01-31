@@ -6,6 +6,6 @@ namespace pkb {
 class PKBWrite {
  public:
   PKBWrite() {}
-  void addModifies(Modiifes) = 0;  
+  virtual void addModifies(Modifies) = 0;  
 };
 }

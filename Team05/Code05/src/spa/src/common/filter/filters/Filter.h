@@ -2,16 +2,17 @@
 
 #include <vector>
 
+
 namespace filter {
 
-<typename T> class Filter<T> {
+template <class T> class Filter {
  public:
   /// <summary>
   /// Filters the given container and returns a vector of the results.
   /// TODO: change vector to Table.
   /// </summary>
   /// <returns></returns>
-  virtual std::vector<T> filter(std::container<T>&) = 0;
+  virtual std::vector<T> filter(std::vector<T>&) = 0;
 };
 
 }  // namespace filter

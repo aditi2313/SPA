@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "common/filter/filters/ModifiesFilter.h"
+
 
 namespace pkb {
 
@@ -18,8 +18,7 @@ class Modifies {
   
   // the name of the variables that this line modifies
   std::vector<std::string> variables;
-  
-  friend class ModifiesFilter;
+    
 };
 
 

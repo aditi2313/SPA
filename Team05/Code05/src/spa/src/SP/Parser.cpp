@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 
-#include "PKB/PKB.h"
 #include "SP/models/TNode.h"
 #include "Parser.h"
 

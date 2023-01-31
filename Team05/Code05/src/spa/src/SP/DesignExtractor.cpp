@@ -4,8 +4,9 @@
 #include <string>
 #include <vector>
 
-using namespace std;
+#include "PKB/PKB.h"
+#include "DesignExtractor.h"
 
-#include "PKB.h"
-
+namespace sp {
 int DesignExtractor() { return 0; }
+}  // namespace sp

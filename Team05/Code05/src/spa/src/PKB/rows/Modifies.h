@@ -15,9 +15,11 @@ class Modifies {
  private:
   // the line that modifies
   int line;
-  friend class ModifiesFilter;
+  
   // the name of the variables that this line modifies
   std::vector<std::string> variables;
+  
+  friend class ModifiesFilter;
 };
 
 

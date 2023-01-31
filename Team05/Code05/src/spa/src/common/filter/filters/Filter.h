@@ -11,7 +11,7 @@ namespace filter {
   /// TODO: change vector to Table.
   /// </summary>
   /// <returns></returns>
-  std::vector<T> filter(std::container<T>&) = 0;
+  virtual std::vector<T> filter(std::container<T>&) = 0;
 };
 
 }  // namespace filter

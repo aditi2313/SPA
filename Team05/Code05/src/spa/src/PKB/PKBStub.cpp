@@ -1,3 +1,7 @@
 #include "PKBStub.h"
 
-namespace pkb {}
+namespace pkb {
+qps::QueryResult PKBStub::ModifiesStub() {
+  return qps::QueryResult();
+}
+}

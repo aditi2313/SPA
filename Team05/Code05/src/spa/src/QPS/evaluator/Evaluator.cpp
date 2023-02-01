@@ -3,7 +3,7 @@
 namespace qps {
 QueryResult Evaluator::EvaluateQuery(Query query) {
   QueryResult result;
-  for (Clause *clause : query.get_clauses()) {
+  for (std::unique_ptr<Clause> &clause : query.get_clauses()) {
     QueryResult clause_result = clause->Evaluate(std::move(pkb));
     result.Intersect(clause_result);
   }

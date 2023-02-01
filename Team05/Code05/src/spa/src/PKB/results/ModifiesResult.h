@@ -11,7 +11,7 @@ class ModifiesResult {
 
   /// <summary>
   /// Joins the two Modifies results together
-  /// TODO: sync with #13
+  /// TODO: sync with #13 -- with the models
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>

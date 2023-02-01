@@ -7,8 +7,8 @@
 #include "PKB/PKBStub.h"
 
 namespace qps {
-// Pure abstract base class:
-// cannot be instantiated as its own object.
+// Pure abstract base class for a Clause:
+// It should not be instantiated as its own object
 class Clause {
  public:
   virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;

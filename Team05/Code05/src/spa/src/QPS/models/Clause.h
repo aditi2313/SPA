@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "Argument.h"
 #include "QueryResult.h"
 #include "PKB/PKBStub.h"
@@ -9,7 +11,7 @@ namespace qps {
 // cannot be instantiated as its own object.
 class Clause {
  public:
-  virtual QueryResult Evaluate(const pkb::PKBStub &pkb) = 0;
+  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;
 
  private:
   Argument arg1;
@@ -17,7 +19,7 @@ class Clause {
 };
 
 class ModifiesClause : Clause {
-  QueryResult Evaluate(const pkb::PKBStub &pkb) override;
+  QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
 };
 }  // namespace qps
 

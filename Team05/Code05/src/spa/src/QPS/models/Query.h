@@ -5,12 +5,12 @@
 
 namespace qps {
 class Query {
- private:
-  std::vector<Clause *> clauses_;
  public:
-  std::vector<Clause *> GetClauses() {
+  inline std::vector<Clause *> get_clauses() {
     return clauses_;
   }
+ private:
+  std::vector<Clause *> clauses_;
 };
 }  // namespace qps
 

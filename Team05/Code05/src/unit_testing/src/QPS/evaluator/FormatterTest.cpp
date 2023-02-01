@@ -7,7 +7,7 @@ using namespace qps;
 QueryResult BuildQueryResult(std::vector<models::EntityStub> entities) {
   QueryResult query_result;
   for (models::EntityStub entity : entities) {
-    query_result.AddQueryResult(entity);
+    query_result.add_query_result(entity);
   }
   return query_result;
 }

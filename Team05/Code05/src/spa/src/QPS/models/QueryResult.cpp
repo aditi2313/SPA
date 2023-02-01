@@ -1,6 +1,11 @@
 #include "QueryResult.h"
 
 namespace qps {
+// Given another lists of query results (that are sorted
+// in ascending order), override the list of this QueryResult
+// object with the intersection between the two lists.
+// Intersection is defined as the list of elements that occur
+// in both lists.
 void QueryResult::Intersect(QueryResult other_result) {
   std::set<models::EntityStub> result_list;
 

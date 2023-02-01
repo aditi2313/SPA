@@ -6,21 +6,20 @@
 
 namespace qps {
 class QueryResult {
- private:
-  std::set<models::EntityStub> query_results_;
  public:
-  std::set<models::EntityStub> GetQueryResults() {
+  inline std::set<models::EntityStub> get_query_results() {
     return query_results_;
   }
-  bool IsEmpty() {
+  inline bool is_empty() {
     return query_results_.empty();
   }
-
-  void AddQueryResult(models::EntityStub entity) {
+  inline void add_query_result(models::EntityStub entity) {
     query_results_.insert(entity);
   }
 
   void Intersect(QueryResult other_result);
+ private:
+  std::set<models::EntityStub> query_results_;
 };
 }
 

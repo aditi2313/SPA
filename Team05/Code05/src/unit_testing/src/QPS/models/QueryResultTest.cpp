@@ -11,6 +11,6 @@ TEST_CASE("Test QueryResult") {
     QueryResult result2;
 
     result1.Intersect(result2);
-    REQUIRE(result1.IsEmpty());
+    REQUIRE(result1.is_empty());
   };
 }

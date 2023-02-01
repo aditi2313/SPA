@@ -1,7 +1,7 @@
-#include "catch.hpp"
+#include <catch.hpp>
 #include "QPS/evaluator/Formatter.h"
 
-using namespace qps;
+using namespace qps; // NOLINT
 
 // Helper function for testing
 QueryResult BuildQueryResult(std::vector<models::EntityStub> entities) {
@@ -12,36 +12,32 @@ QueryResult BuildQueryResult(std::vector<models::EntityStub> entities) {
   return query_result;
 }
 
-// TODO: replace with real unit tests after Entity is implemented
+// TODO(JL): replace with real unit tests after Entity is implemented
 TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 
   SECTION("For statements") {
     models::EntityStub stmt;
     std::vector<std::string> actual = query_formatter.FormatQuery(
-        BuildQueryResult({stmt})
-    );
+        BuildQueryResult({stmt}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For variables") {
     models::EntityStub var;
     std::vector<std::string> actual = query_formatter.FormatQuery(
-        BuildQueryResult({var})
-    );
+        BuildQueryResult({var}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For procedures") {
     models::EntityStub procedure;
     std::vector<std::string> actual = query_formatter.FormatQuery(
-        BuildQueryResult({procedure})
-    );
+        BuildQueryResult({procedure}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For constants") {
     models::EntityStub constant;
     std::vector<std::string> actual = query_formatter.FormatQuery(
-        BuildQueryResult({constant})
-    );
+        BuildQueryResult({constant}));
     REQUIRE(actual[0] == "abc");
   };
 }

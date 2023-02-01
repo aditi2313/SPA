@@ -1,9 +1,9 @@
-#include "catch.hpp"
+#include <catch.hpp>
 #include "QPS/evaluator/Evaluator.h"
 
-using namespace qps;
+using namespace qps; // NOLINT
 
-// TODO: replace with real unit tests after PKB and parser is implemented
+// TODO(JL): replace with real unit tests after PKB and parser is implemented
 TEST_CASE("Test QueryEvaluator") {
   Evaluator query_evaluator;
 

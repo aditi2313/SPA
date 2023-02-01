@@ -1,11 +1,10 @@
-#include "catch.hpp"
+#include <catch.hpp>
 #include "QPS/models/QueryResult.h"
 
-using namespace qps;
+using namespace qps; // NOLINT
 
-// TODO: replace with real unit tests after Entity is implemented
+// TODO(JL): replace with real unit tests after Entity is implemented
 TEST_CASE("Test QueryResult") {
-
   SECTION("Intersect") {
     QueryResult result1;
     QueryResult result2;

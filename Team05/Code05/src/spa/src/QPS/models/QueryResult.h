@@ -21,5 +21,5 @@ class QueryResult {
  private:
   std::set<models::EntityStub> query_results_;
 };
-}
+}  // namespace qps
 

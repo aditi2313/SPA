@@ -9,16 +9,15 @@ namespace qps {
 // cannot be instantiated as its own object.
 class Clause {
  public:
-  virtual QueryResult Evaluate(pkb::PKBStub &pkb) = 0;
+  virtual QueryResult Evaluate(const pkb::PKBStub &pkb) = 0;
 
  private:
   Argument arg1;
   Argument arg2;
-
 };
 
 class ModifiesClause : Clause {
-  QueryResult Evaluate(pkb::PKBStub &pkb) override;
+  QueryResult Evaluate(const pkb::PKBStub &pkb) override;
 };
-}
+}  // namespace qps
 

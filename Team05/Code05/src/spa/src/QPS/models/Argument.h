@@ -1,7 +1,5 @@
 #pragma once
 
 namespace qps {
-class Argument {
-
-};
+class Argument {};
 }  // namespace qps

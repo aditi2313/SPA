@@ -25,4 +25,4 @@ void QueryResult::Intersect(QueryResult other_result) {
 
   query_results_ = result_list;
 }
-}
+}  // namespace qps

@@ -5,6 +5,6 @@
 namespace pkb {
 class PKBStub {
  public:
-  qps::QueryResult ModifiesStub();
+  qps::QueryResult const ModifiesStub();
 };
 }

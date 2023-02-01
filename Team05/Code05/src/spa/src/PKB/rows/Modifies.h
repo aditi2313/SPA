@@ -7,15 +7,15 @@ namespace pkb {
 
 class Modifies {
  public:
-  int getLine() { return line; }
-  std::vector<std::string> getVariables() { return variables; }
+  int getLine() { return line_; }
+  std::vector<std::string> getVariables() { return variables_; }
 
  private:
   // the line that modifies
-  int line;
+  int line_;
 
   // the name of the variables that this line modifies
-  std::vector<std::string> variables;
+  std::vector<std::string> variables_;
 };
 
 }  // namespace pkb

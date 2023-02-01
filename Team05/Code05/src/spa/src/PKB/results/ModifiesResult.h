@@ -11,9 +11,9 @@ class ModifiesResult {
 
   /// <summary>
   /// Joins the two Modifies results together
-  ///
+  /// TODO: sync with #13
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  ModifiesResult join(ModifiesResult) = 0;
+  ModifiesResult IntersectWith(ModifiesResult) = 0;
 };

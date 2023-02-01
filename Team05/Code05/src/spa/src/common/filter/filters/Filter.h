@@ -12,7 +12,7 @@ template <class T> class Filter {
   /// TODO: change vector to Table.
   /// </summary>
   /// <returns></returns>
-  virtual std::vector<T> filter(std::vector<T>&) = 0;
+  virtual std::vector<T> Filter(std::vector<T>&) = 0;
 };
 
 }  // namespace filter

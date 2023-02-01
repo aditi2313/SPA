@@ -11,7 +11,7 @@ namespace filter {
 class ModifiesFilter : public Filter<pkb::Modifies> {
  public:
   ModifiesFilter() {}
-  std::vector<pkb::Modifies> filter(
+  std::vector<pkb::Modifies> Filter(
       const std::vector<pkb::Modifies>& modifies) {
     throw new NotImplementedException();
   }

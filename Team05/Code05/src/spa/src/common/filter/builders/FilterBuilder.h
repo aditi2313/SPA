@@ -5,6 +5,6 @@ namespace filter {
 
 <typename T> class FilterBuilder {
  public:
-  virtual Filter<T> build() = 0;
+  virtual Filter<T> Build() = 0;
 };
 }  // namespace filter

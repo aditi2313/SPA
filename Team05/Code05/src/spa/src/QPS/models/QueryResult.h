@@ -1,21 +1,26 @@
 #pragma once
 
-#include <vector>
+#include <set>
 
 #include "models/EntityStub.h"
 
 namespace qps {
 class QueryResult {
  private:
-  std::vector<models::EntityStub> query_results_;
+  std::set<models::EntityStub> query_results_;
  public:
-  std::vector<models::EntityStub> GetQueryResults() {
+  std::set<models::EntityStub> GetQueryResults() {
     return query_results_;
+  }
+  bool IsEmpty() {
+    return query_results_.empty();
   }
 
   void AddQueryResult(models::EntityStub entity) {
-    query_results_.push_back(entity);
+    query_results_.insert(entity);
   }
+
+  void Intersect(QueryResult other_result);
 };
 }
 

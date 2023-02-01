@@ -1,8 +1,7 @@
 
 #include "SP/models/TNode.h"
-#include "catch.hpp"
+#include <catch.hpp>
 
-using namespace std;
 void require(bool b) { REQUIRE(b); }
 
 TEST_CASE("1st Test") {

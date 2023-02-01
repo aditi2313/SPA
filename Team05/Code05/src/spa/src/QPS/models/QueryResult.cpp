@@ -19,6 +19,7 @@ void QueryResult::Intersect(QueryResult other_result) {
     } else if (*it1 < *it2) {
       it1++;
     } else {
+      // *it2 > *it1
       it2++;
     }
   }

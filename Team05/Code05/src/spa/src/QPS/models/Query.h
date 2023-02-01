@@ -6,7 +6,7 @@
 namespace qps {
 class Query {
  public:
-  inline std::vector<Clause *> get_clauses() {
+  inline std::vector<Clause *> &get_clauses() {
     return clauses_;
   }
  private:

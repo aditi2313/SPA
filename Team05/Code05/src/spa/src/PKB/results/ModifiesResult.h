@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "PKB/rows/Modifies.h"
 
 class ModifiesResult {
@@ -10,7 +11,7 @@ class ModifiesResult {
 
   /// <summary>
   /// Joins the two Modifies results together
-  /// 
+  ///
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>

@@ -1,9 +1,6 @@
 #pragma once
 
 namespace stub {
-	class ParentStub {
+class ParentStub {};
 
-};
-
-}
-
+}  // namespace stub

@@ -1,7 +1,5 @@
 #pragma once
 
 namespace stub {
-	class ModifiesStub {
-
-};
-}
+class ModifiesStub {};
+}  // namespace stub

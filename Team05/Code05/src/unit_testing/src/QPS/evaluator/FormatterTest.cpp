@@ -43,6 +43,6 @@ TEST_CASE("Test QueryFormatter") {
         BuildQueryResult({constant})
     );
     REQUIRE(actual[0] == "abc");
-  }
+  };
 }
 

@@ -1,3 +1,12 @@
 #include "Evaluator.h"
 
-namespace qps {}  // namespace qps
+namespace qps {
+QueryResult Evaluator::EvaluateQuery(Query query) {
+  QueryResult result;
+  for (std::unique_ptr<Clause> &clause : query.get_clauses()) {
+    QueryResult clause_result = clause->Evaluate(std::move(pkb));
+    result.IntersectWith(clause_result);
+  }
+  return result;
+}
+}  // namespace qps

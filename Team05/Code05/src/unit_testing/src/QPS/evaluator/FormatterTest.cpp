@@ -1,5 +1,6 @@
-#include <catch.hpp>
 #include <memory>
+#include <catch.hpp>
+
 
 #include "QPS/evaluator/Formatter.h"
 #include "models/results/QueryResult.h"

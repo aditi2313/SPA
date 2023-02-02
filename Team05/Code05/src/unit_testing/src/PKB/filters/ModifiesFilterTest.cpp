@@ -1,16 +1,18 @@
-#include <catch.hpp>
-#include <string>
-#include <vector>
-#include <memory>
-#include <unordered_set>
 
-#include "common/filter/filters/ModifiesFilter.h"
+#include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
+#include <catch.hpp>
+
 #include "PKB/data/ModifiesData.h"
+#include "common/filter/filters/ModifiesFilter.h"
 
 using std::string;
 using std::vector;
 
-filter::ModifiesTablePtr InitialiseModifiesTestTable(vector<vector<string>> variables);
+filter::ModifiesTablePtr InitialiseModifiesTestTable(
+    vector<vector<string>> variables);
 
 TEST_CASE("Test Modifies by variable Filter") {
   vector<vector<string>> variables = {
@@ -23,16 +25,13 @@ TEST_CASE("Test Modifies by variable Filter") {
   auto new_table = variable_filter.FilterTable(std::move(table));
   auto expected = InitialiseModifiesTestTable(result_variables);
   REQUIRE(*expected == *new_table);
-
 }
 
-
-
 filter::ModifiesTablePtr InitialiseModifiesTestTable(
-  vector<vector<string>> variables) {
+    vector<vector<string>> variables) {
   filter::ModifiesTablePtr result = std::make_unique<filter::ModifiesTable>();
   for (int i = 0; i < variables.size(); ++i) {
     result->add_row(i, pkb::ModifiesData(i, variables.at(i)));
-  } 
+  }
   return std::move(result);
 }

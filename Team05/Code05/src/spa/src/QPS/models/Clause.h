@@ -3,15 +3,15 @@
 #include <memory>
 
 #include "Argument.h"
-#include "QueryResult.h"
-#include "PKB/PKBStub.h"
+#include "models/results/QueryResult.h"
+#include "PKB/PKBRead.h"
 
 namespace qps {
 // Pure abstract base class for a Clause:
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;
+  virtual models::QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
  private:
   Argument arg1;
@@ -19,7 +19,7 @@ class Clause {
 };
 
 class ModifiesClause : Clause {
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
+  models::QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 }  // namespace qps
 

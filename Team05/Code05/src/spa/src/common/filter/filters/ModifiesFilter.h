@@ -3,16 +3,16 @@
 #include <vector>
 
 #include "Filter.h"
-#include "PKB/rows/Modifies.h"
 #include "common/Exceptions.h"
+#include "models/pkb/Modifies.h"
 
 namespace filter {
 
-class ModifiesFilter : public Filter<pkb::Modifies> {
+class ModifiesFilter : public Filter<models::Modifies> {
  public:
   ModifiesFilter() {}
-  std::vector<pkb::Modifies> Filter(
-      const std::vector<pkb::Modifies>& modifies) {
+  inline std::vector<models::Modifies> FilterTable(
+      const std::vector<models::Modifies>& modifies) {
     throw new NotImplementedException();
   }
 

@@ -1,3 +1,10 @@
 #include "PKBRead.h"
 
-namespace pkb {}
+#include "common/Exceptions.h"
+
+namespace pkb {
+models::ModifiesResult PKBRead::Modifies(filter::ModifiesFilter) {
+  throw new NotImplementedException();
+}
+
+}  // namespace pkb

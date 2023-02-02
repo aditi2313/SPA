@@ -1,13 +1,17 @@
 #include <catch.hpp>
+#include <memory>
+#include "models/results/QueryResult.h"
 #include "QPS/evaluator/Formatter.h"
 
-using namespace qps; // NOLINT
+using qps::Formatter;
+using models::QueryResult;
 
 // Helper function for testing
 QueryResult BuildQueryResult(std::vector<models::EntityStub> entities) {
   QueryResult query_result;
   for (models::EntityStub entity : entities) {
-    query_result.add_query_result(entity);
+    auto v = std::make_unique<models::EntityStub>(entity);
+    query_result.add_query_result(v);
   }
   return query_result;
 }

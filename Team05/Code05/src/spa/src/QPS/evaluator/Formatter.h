@@ -4,11 +4,11 @@
 #include <string>
 #include <vector>
 
-#include "../models/QueryResult.h"
+#include "models/results/QueryResult.h"
 
 namespace qps {
 class Formatter {
  public:
-  std::vector<std::string> FormatQuery(QueryResult query_result);
+  std::vector<std::string> FormatQuery(models::QueryResult query_result);
 };
 }  // namespace qps

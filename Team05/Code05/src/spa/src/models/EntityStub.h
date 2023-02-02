@@ -9,6 +9,7 @@ class EntityStub {
  public:
   // TODO(JL): be replaced with real value in real Entity class
   operator std::string() const { return "abc"; }
+  virtual ~EntityStub() {}
 
   friend bool operator<(const EntityStub &LHS, const EntityStub &RHS) {
     // TODO(JL): be replaced with real comparison in real Entity class

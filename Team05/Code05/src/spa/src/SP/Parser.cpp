@@ -1,3 +1,5 @@
+#include "Parser.h"
+
 #include <stdio.h>
 
 #include <iostream>
@@ -5,7 +7,6 @@
 #include <vector>
 
 #include "SP/models/TNode.h"
-#include "Parser.h"
 
 namespace sp {
 int Parse() { return 0; }

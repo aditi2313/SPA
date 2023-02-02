@@ -3,8 +3,8 @@
 #include <memory>
 
 #include "Argument.h"
-#include "models/results/QueryResult.h"
 #include "PKB/PKBRead.h"
+#include "models/results/QueryResult.h"
 
 namespace qps {
 // Pure abstract base class for a Clause:
@@ -22,4 +22,3 @@ class ModifiesClause : Clause {
   models::QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 }  // namespace qps
-

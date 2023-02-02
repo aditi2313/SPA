@@ -2,10 +2,10 @@
 
 #include <vector>
 
-
 namespace filter {
 
-template <class T> class Filter {
+template <class T>
+class Filter {
  public:
   /// <summary>
   /// Filters the given container and returns a vector of the results.

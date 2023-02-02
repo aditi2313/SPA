@@ -3,8 +3,8 @@
 #include <memory>
 #include <utility>
 
-#include "models/results/QueryResult.h"
 #include "../models/Query.h"
+#include "models/results/QueryResult.h"
 
 namespace qps {
 class Evaluator {

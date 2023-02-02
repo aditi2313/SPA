@@ -1,11 +1,12 @@
 #pragma once
 
-#include <set>
 #include <memory>
+#include <set>
+
 #include "models/EntityStub.h"
 
-// pointer to an entity
-typedef std::unique_ptr<models::EntityStub> EntPtr;
+// todo figure out why unique isn't working
+typedef std::shared_ptr<models::EntityStub> EntPtr;
 struct cmp {
   bool operator()(const EntPtr& e1, const EntPtr& e2) const {
     return *e1 < *e2;
@@ -17,16 +18,16 @@ namespace models {
 
 class QueryResult {
  public:
-   QueryResult() {
-     
-  }
-  inline EntSet &get_query_results() { return query_results_; }
+  QueryResult() {}
+  inline EntSet& get_query_results() { return query_results_; }
   inline bool is_empty() { return query_results_.empty(); }
-  inline void add_query_result(EntPtr& entity) { query_results_.insert(std::move(entity)); }
+  inline void add_query_result(EntPtr& entity) {
+    query_results_.insert(std::move(entity));
+  }
 
   void IntersectWith(QueryResult other_result);
 
  private:
   EntSet query_results_;
 };
-}  // namespace qps
+}  // namespace models

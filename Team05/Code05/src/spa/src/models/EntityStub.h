@@ -21,4 +21,3 @@ class EntityStub {
   }
 };
 }  // namespace models
-

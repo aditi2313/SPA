@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "models/results/ModifiesResult.h"
+
 #include "common/filter/filters/ModifiesFilter.h"
+#include "models/results/ModifiesResult.h"
 
 namespace pkb {
 class PKBRead {

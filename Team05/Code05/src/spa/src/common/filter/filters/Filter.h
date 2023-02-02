@@ -1,6 +1,9 @@
 #pragma once
 
+#include <memory>
 #include <vector>
+
+#include "PKB/tables/Table.h"
 
 namespace filter {
 
@@ -8,11 +11,11 @@ template <class T>
 class Filter {
  public:
   /// <summary>
-  /// Filters the given container and returns a vector of the results.
-  /// TODO: change vector to Table.
+  /// Filters the given table and returns a vector of the results.
   /// </summary>
   /// <returns></returns>
-  virtual std::vector<T> FilterTable(const std::vector<T>&) = 0;
+  virtual std::unique_ptr<pkb::Table<T>> FilterTable(std::unique_ptr<pkb::Table<T>>) = 0;  
+
 };
 
 }  // namespace filter

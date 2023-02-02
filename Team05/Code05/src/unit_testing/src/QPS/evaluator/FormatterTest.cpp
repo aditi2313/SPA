@@ -8,10 +8,10 @@ using models::QueryResult;
 using qps::Formatter;
 
 // Helper function for testing
-QueryResult BuildQueryResult(std::vector<models::EntityStub> entities) {
+QueryResult BuildQueryResult(std::vector<models::Entity> entities) {
   QueryResult query_result;
-  for (models::EntityStub entity : entities) {
-    auto v = std::make_shared<models::EntityStub>(entity);
+  for (models::Entity entity : entities) {
+    auto v = std::make_shared<models::Entity>(entity);
     query_result.add_query_result(v);
   }
   return query_result;
@@ -22,25 +22,25 @@ TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 
   SECTION("For statements") {
-    models::EntityStub stmt;
+    models::Entity stmt;
     std::vector<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({stmt}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For variables") {
-    models::EntityStub var;
+    models::Entity var;
     std::vector<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({var}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For procedures") {
-    models::EntityStub procedure;
+    models::Entity procedure;
     std::vector<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({procedure}));
     REQUIRE(actual[0] == "abc");
   };
   SECTION("For constants") {
-    models::EntityStub constant;
+    models::Entity constant;
     std::vector<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({constant}));
     REQUIRE(actual[0] == "abc");

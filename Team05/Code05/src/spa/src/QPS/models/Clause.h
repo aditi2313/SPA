@@ -12,13 +12,15 @@ namespace qps {
 class Clause {
  public:
   virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;
+  virtual ~Clause() = 0;
 
  private:
   Argument arg1;
   Argument arg2;
 };
 
-class ModifiesClause : Clause {
+class ModifiesClause : public Clause {
+ public:
   QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
 };
 }  // namespace qps

@@ -3,12 +3,12 @@
 namespace pkb {
 
     template<class T>
-    void Table<T>::addRow(T row) {
+    void Table<T>::add_row(T row) {
         rows.push_back(row);
     }
 
     template<class T>
-    T Table<T>::getRow(int num) {
+    T Table<T>::get_row(int num) {
         return rows[num];
     }
 

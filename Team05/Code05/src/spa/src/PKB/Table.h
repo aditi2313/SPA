@@ -10,8 +10,8 @@ template <class T>
 class Table {
  public:
   std::vector<T> rows;
-  void addRow(T row);
-  T getRow(int num);
+  void add_row(T row);
+  T get_row(int num);
 };
 
 #endif  // SPA_TABLE_H

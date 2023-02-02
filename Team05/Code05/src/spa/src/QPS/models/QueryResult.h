@@ -17,7 +17,7 @@ class QueryResult {
     query_results_.insert(entity);
   }
 
-  void Intersect(QueryResult other_result);
+  void IntersectWith(QueryResult other_result);
  private:
   std::set<models::EntityStub> query_results_;
 };

@@ -9,7 +9,7 @@ TEST_CASE("Test QueryResult") {
     QueryResult result1;
     QueryResult result2;
 
-    result1.Intersect(result2);
+    result1.IntersectWith(result2);
     REQUIRE(result1.is_empty());
   };
 }

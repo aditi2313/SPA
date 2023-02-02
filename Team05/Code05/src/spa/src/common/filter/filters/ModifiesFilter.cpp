@@ -1,6 +1,8 @@
-#include <memory>
-
 #include "ModifiesFilter.h"
+
+#include <memory>
+#include <string>
+#include <utility>
 
 namespace filter {
 ModifiesTablePtr ModifiesFilterByVariable::FilterTable(

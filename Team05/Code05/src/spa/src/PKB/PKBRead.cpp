@@ -8,8 +8,6 @@
 namespace pkb {
 models::QueryResult PKBRead::Modifies(ModifiesFilterPtr& filter) {
   models::QueryResult result;
-  
   return result;
 }
-
 }  // namespace pkb

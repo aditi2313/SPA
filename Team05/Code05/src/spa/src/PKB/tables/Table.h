@@ -1,7 +1,8 @@
 #pragma once
 
-#include <unordered_set>
 #include <unordered_map>
+#include <utility>
+#include <unordered_set>
 
 namespace pkb {
 
@@ -15,8 +16,8 @@ class Table {
     rows_.insert(id);
   }
   inline T get_row(int num) { return table_.at(num); }
-  inline std::unordered_set<int> get_rows() { return rows_; }  
-  
+  inline std::unordered_set<int> get_rows() { return rows_; }
+
   friend bool operator==(const Table<T>& LHS, const Table<T>& RHS) {
     return LHS.rows_ == RHS.rows_ && LHS.table_ == RHS.table_;
   }

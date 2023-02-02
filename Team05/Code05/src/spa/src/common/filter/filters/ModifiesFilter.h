@@ -1,7 +1,9 @@
 #pragma once
 
-#include <vector>
+#include <memory>
+#include <string>
 #include <unordered_set>
+#include <vector>
 
 #include "Filter.h"
 #include "PKB/data/ModifiesData.h"
@@ -15,10 +17,9 @@ typedef Filter<pkb::ModifiesData> ModifiesFilter;
 
 class ModifiesFilterByLine : public Filter<pkb::ModifiesData> {
  public:
-  ModifiesFilterByLine(int line) : line_(line) {}
-  
-  inline ModifiesTablePtr FilterTable(
-      ModifiesTablePtr table) override {
+  explicit ModifiesFilterByLine(int line) : line_(line) {}
+
+  inline ModifiesTablePtr FilterTable(ModifiesTablePtr table) override {
     ModifiesTablePtr result = std::make_unique<ModifiesTable>();
     auto row = table->get_row(line_);
     result->add_row(line_, row);
@@ -31,9 +32,8 @@ class ModifiesFilterByLine : public Filter<pkb::ModifiesData> {
 
 class ModifiesFilterByVariable : public Filter<pkb::ModifiesData> {
  public:
-  ModifiesFilterByVariable(std::unordered_set<std::string>& variables) : variables_(variables) {
-    
-  }  
+  explicit ModifiesFilterByVariable(std::unordered_set<std::string> variables)
+      : variables_(variables) {}
 
   ModifiesTablePtr FilterTable(ModifiesTablePtr) override;
 

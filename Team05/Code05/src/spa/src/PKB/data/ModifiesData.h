@@ -19,11 +19,11 @@ class ModifiesData : public models::Entity {
     return LHS.line_ == RHS.line_ && LHS.variables_ == RHS.variables_;
   }
 
-  inline int get_line() { return line_;}
+  inline int get_line() { return line_; }
   inline const std::vector<std::string>& get_variables() { return variables_; }
 
  private:
   const int line_;
   const std::vector<std::string> variables_;
 };
-}  // namespace models
+}  // namespace pkb

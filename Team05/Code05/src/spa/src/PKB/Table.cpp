@@ -1,7 +1,5 @@
 #include "Table.h"
 
-using namespace std;
-
 namespace pkb {
 
     template<class T>
@@ -15,4 +13,3 @@ namespace pkb {
     }
 
 }  // namespace pkb
-

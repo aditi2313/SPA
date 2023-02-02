@@ -6,13 +6,13 @@
 
 namespace pkb {
 
-    template <class T>
-    class Table {
-        public:
-            std::vector<T> rows;
-            void addRow(T row);
-            T getRow(int num);
-    };
+template <class T>
+class Table {
+public:
+ std::vector<T> rows;
+ void addRow(T row);
+ T getRow(int num);
+};
 
-#endif //SPA_TABLE_H
+#endif  // SPA_TABLE_H
 }

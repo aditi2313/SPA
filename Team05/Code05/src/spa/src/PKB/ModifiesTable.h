@@ -7,7 +7,7 @@
 #define SPA_MODIFIESTABLE_H
 
 namespace pkb {
-    class ModifiesTable: public Table<Modifies>{};
+class ModifiesTable: public Table<Modifies>{};
 
-#endif //SPA_MODIFIESTABLE_H
+#endif  // SPA_MODIFIESTABLE_H
 }

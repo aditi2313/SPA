@@ -4,9 +4,9 @@
 #include <string>
 
 namespace pkb {
-class Modifies {
+class ModifiesData {
  public:
-  int line;
-  std::vector<std::string> variable;
+  int line_;
+  std::vector<std::string> variables_;
 };
 }  // namespace pkb

@@ -2,8 +2,8 @@
 #include <iostream>
 #include <vector>
 #include "Table.h"
-#include "Modifies.h"
+#include "ModifiesData.h"
 
 namespace pkb {
-class ModifiesTable: public Table<Modifies>{};
+class ModifiesTable: public Table<ModifiesData>{};
 }  // namespace pkb

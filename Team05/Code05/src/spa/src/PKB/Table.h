@@ -7,7 +7,7 @@ namespace pkb {
 template <class T>
 class Table {
  public:
-  std::vector<T> rows;
+  std::vector<T> rows_;
   void add_row(T row);
   T get_row(int num);
 };

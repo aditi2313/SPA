@@ -1,5 +1,7 @@
 #include "QueryResult.h"
 
+#include <utility>
+
 namespace models {
 // Given another list of query results (that are sorted
 // in ascending order), override the list of this QueryResult

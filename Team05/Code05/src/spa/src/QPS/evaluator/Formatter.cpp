@@ -1,4 +1,5 @@
 #include "Formatter.h"
+#include <utility>
 
 namespace qps {
 // Takes in a QueryResult and returns an array of string

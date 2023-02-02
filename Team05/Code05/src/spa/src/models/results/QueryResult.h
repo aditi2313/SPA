@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <set>
+#include <utility>
 
 #include "models/EntityStub.h"
 
@@ -21,7 +22,7 @@ class QueryResult {
   QueryResult() {}
   inline EntSet& get_query_results() { return query_results_; }
   inline bool is_empty() { return query_results_.empty(); }
-  inline void add_query_result(EntPtr& entity) {
+  inline void add_query_result(const EntPtr& entity) {
     query_results_.insert(std::move(entity));
   }
 

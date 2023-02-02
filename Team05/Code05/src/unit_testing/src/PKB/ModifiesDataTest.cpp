@@ -1,1 +1,15 @@
 #include <catch.hpp>
+#include <vector>
+#include <string>
+#include "PKB/ModifiesData.h"
+
+using namespace pkb; // NOLINT
+
+TEST_CASE("Test ModifiesData") {
+    ModifiesData modifies_data;
+    std::vector<std::string> variables{"a", "b", "c"};
+    modifies_data.line_ = 10;
+    modifies_data.variables_ = variables;
+
+    REQUIRE(((modifies_data.line_ == 10) && (modifies_data.variables_.at(0) == "a")));
+}

@@ -1,6 +1,7 @@
 #include <catch.hpp>
 #include <string>
 #include <vector>
+
 #include "PKB/ModifiesData.h"
 
 using namespace pkb; // NOLINT

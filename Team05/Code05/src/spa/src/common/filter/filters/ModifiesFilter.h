@@ -22,7 +22,7 @@ class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
   inline ModifiesTablePtr FilterTable(ModifiesTablePtr table) override {
     ModifiesTablePtr result = std::make_unique<pkb::ModifiesTable>();
     auto row = table->get_row(line_);
-    result->add_row(row);
+    result->add_row(row.get_line(), row);
     return result;
   }
 

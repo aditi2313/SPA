@@ -44,7 +44,8 @@ class IndexableTable {
   }
 
   std::unique_ptr<IndexableTable<T>> copy() {
-    std::unique_ptr<IndexableTable<T>> result;
+    std::unique_ptr<IndexableTable<T>> result =
+        std::make_unique<IndexableTable<T>>();
     result->rows_ = rows_;
     result->id_map_ = id_map_;
     return std::move(result);

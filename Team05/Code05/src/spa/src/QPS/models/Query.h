@@ -36,6 +36,14 @@ class Query {
     selected_synonyms_.push_back(synonym);
   }
 
+  bool operator==(const Query &other) const {
+    return (
+        clauses_ == other.clauses_
+            && synonym_declarations_ == other.synonym_declarations_
+            && selected_synonyms_ == other.selected_synonyms_
+    );
+  }
+
  private:
   std::vector<std::unique_ptr<Clause>> clauses_;
   std::unordered_map<std::string, models::EntityStub> synonym_declarations_;

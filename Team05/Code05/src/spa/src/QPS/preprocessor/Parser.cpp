@@ -1,4 +1,5 @@
 #include <sstream>
+#include <iostream>
 
 #include "Parser.h"
 
@@ -9,25 +10,21 @@ bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
   return token == states_.at(current_state_index + 1)->kTransitionKeyword;
 }
 
-// Inserts whitespaces around special characters
-// (e.g. semicolons and brackets) for
-// easier delimitation in ParseQuery
-std::string PreprocessQueryString(std::string query_string) {
-  std::string output = "";
+// Returns a vector of tokens retrieved from query_string
+std::vector<std::string> Parser::PreprocessQueryString(std::string query_string) {
+  // First insert whitespaces around special characters
+  // (e.g. semicolons and brackets) for easier delimitation
+  std::string new_query = "";
   std::string special_characters = ";(),";
   for (char c : query_string) {
     if (special_characters.find(c) != std::string::npos) {
-      output += ' ' + c + ' ';
+      new_query += " " + std::string(1, c) + " ";
     } else {
-      output += c;
+      new_query += c;
     }
   }
-  return output;
-}
 
-Query Parser::ParseQuery(std::string query_string) {
-  Query query;
-  std::stringstream ss(PreprocessQueryString(query_string));
+  std::stringstream ss(new_query);
   std::vector<std::string> tokens;
   std::string token;
   while (ss >> token) {
@@ -35,6 +32,13 @@ Query Parser::ParseQuery(std::string query_string) {
     // Works for multiple whitespaces too.
     tokens.push_back(token);
   }
+
+  return tokens;
+}
+
+Query Parser::ParseQuery(std::string query_string) {
+  Query query;
+  std::vector<std::string> tokens = PreprocessQueryString(query_string);
 
   int current_state_index = 0;
   auto itr = tokens.begin();

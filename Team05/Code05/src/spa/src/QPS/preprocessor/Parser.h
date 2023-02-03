@@ -23,6 +23,7 @@ class Parser {
     states_.emplace_back(std::make_unique<PatternParseState>());
   }
 
+  std::vector<std::string> PreprocessQueryString(std::string query_string);
   Query ParseQuery(std::string query_string);
 
   static bool is_design_entity(std::string identifier) {
@@ -57,7 +58,6 @@ class Parser {
   std::vector<std::unique_ptr<ParseState>> states_{};
   std::vector<int> arr{1};
   bool ShouldGoToNextState(int current_state_index, std::string token);
-  std::string PreprocessQueryString(std::string query_string);
 
   static inline std::unordered_map<std::string, models::EntityStub>
       design_entity_identifiers_{

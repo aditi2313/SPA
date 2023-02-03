@@ -6,6 +6,7 @@ using namespace qps; // NOLINT
 
 TEST_CASE("Test Query methods") {
   Query query;
+  
   // TODO(jl): Replace EntityStub
   SECTION("Test synonyms methods") {
     query.set_synonym("syn", models::EntityStub());

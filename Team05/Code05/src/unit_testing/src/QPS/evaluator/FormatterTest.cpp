@@ -3,17 +3,16 @@
 
 
 #include "QPS/evaluator/Formatter.h"
-#include "models/results/QueryResult.h"
+#include "QPS/models/QueryResult.h"
 
-using models::QueryResult;
 using qps::Formatter;
+using qps::QueryResult;
 
 // Helper function for testing
 QueryResult BuildQueryResult(std::vector<models::Entity> entities) {
   QueryResult query_result;
   for (models::Entity entity : entities) {
-    auto v = std::make_shared<models::Entity>(entity);
-    query_result.add_query_result(v);
+    query_result.add_query_result(entity);
   }
   return query_result;
 }

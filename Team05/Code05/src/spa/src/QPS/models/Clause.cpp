@@ -1,7 +1,7 @@
 #include "Clause.h"
 
 namespace qps {
-QueryResult ModifiesClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
+QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
   // todo: setup arguement to evaluate the filter.
   throw new NotImplementedException();
 }

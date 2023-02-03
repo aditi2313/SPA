@@ -11,7 +11,7 @@ namespace qps {
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  virtual QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
+  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) = 0;
 
  private:
   Argument arg1;
@@ -19,6 +19,6 @@ class Clause {
 };
 
 class ModifiesClause : Clause {
-  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
 };
 }  // namespace qps

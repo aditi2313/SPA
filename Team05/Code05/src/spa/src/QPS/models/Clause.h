@@ -29,5 +29,14 @@ class ModifiesClause : public Clause {
     return arg1 == other.arg1 && arg2 == other.arg2;
   }
 };
+
+class PatternClause : public Clause {
+ public:
+  QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
+  PatternClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {};
+  bool operator==(PatternClause const &other) const {
+    return arg1 == other.arg1 && arg2 == other.arg2;
+  }
+};
 }  // namespace qps
 

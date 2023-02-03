@@ -1,87 +1,158 @@
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace ast {
 class TNode {
  public:
-	 std::vector<TNode> children; //have to change to left right because of assignment
 
-	 virtual void add_child(TNode node) { //change to pointer assignment
-		 children.push_back(node); //shld be in cpp file, not header
-	 }
+	 virtual void accept_visitor() = 0;
 
 };
 
 class ProgramNode : public TNode { //root node
-
-};
-
-class VarNode : public TNode { //cannot have children
-	std::string varName;
-	explicit VarNode(std::string varName);
-
-	void add_child(TNode node); //throw error
-};
-
-class ConstNode : public TNode { //cannot have children
-	int val;
-	explicit ConstNode(int val);
-
-	void add_child(TNode node); //throw error
-};
-
-class AssignNode : public TNode { //needs strictly one left (var only) and one right child (const or var or binop)
-	TNode left;
-	TNode right;
-
-	void add_left_child(TNode node);
-	void add_right_child(TNode node); 
-};
-
-class BinOpNode : public TNode { //needs strictly one left and one right child, but not necessarily numbers or const
-	std::string opName;
-	TNode left;
-	TNode right;
-	explicit BinOpNode(std::string opName);
-
-	void add_left_child(TNode node);
-	void add_right_child(TNode node);
-
+public:
+	explicit ProgramNode(std::unique_ptr<ProcNode> proc) {
+		procs_.push_back(std::move(proc));
+	}
+	void add_proc(std::unique_ptr<ProcNode> proc);
+private:
+	std::vector<std::unique_ptr<ProcNode>> procs_;
 };
 
 class ProcNode : public TNode { //stmtlst children, parent is always root
-	std::string procName;
-	explicit ProcNode(std::string procName);
-};
-
-class CallNode : public TNode { //no children
-	std::string procName;
-	void add_child(TNode node); //throw error
-};
-
-class ReadNode : public TNode { //val child
-	TNode child;
-	void add_child(TNode node);
-};
-
-class PrintNode : public TNode { //val child
-	TNode child;
-	void add_child(TNode node);
-};
-
-class WhileNode : public TNode { //condition and stmtlst children
-	TNode condition; //ensure it is a bin op (either greater, lesser or equal)
-	TNode stmtLst; //ensure it is a stmtlst
-};
-
-class IfNode : public TNode { //condition, then stmtlst, else stmtlst children
-	TNode condition; //ensure it is a bin op
-	TNode thenStmtLst;
-	TNode elseStmtLst;
+public:
+	explicit ProcNode(std::string proc_name, std::unique_ptr<StmtLstNode> stmt_lst) : proc_name_(proc_name) {
+		stmt_lst_ = std::move(stmt_lst);
+	}
+private:
+	std::string proc_name_;
+	std::unique_ptr<StmtLstNode> stmt_lst_;
 };
 
 class StmtLstNode : public TNode {
-	std::string name; //for else and then
+public:
+	explicit StmtLstNode(std::unique_ptr<StatementNode> stmt) {
+		stmts_.push_back(std::move(stmt));
+	}
+	void add_stmt(std::unique_ptr<StatementNode> stmt);
+
+private:
+	std::vector<std::unique_ptr<StatementNode>> stmts_;
 };
 
+class FactorNode : public TNode {
+
+};
+
+class ExprNode : public FactorNode {
+
+};
+
+class TermNode : public ExprNode {
+
+};
+
+class VarNode : public FactorNode { //cannot have children
+ public:
+	explicit VarNode(std::string varName);
+
+private:
+	std::string varName;
+};
+
+class ConstNode : public FactorNode { //cannot have children
+ public:
+	explicit ConstNode(int val);
+ private:
+	 int val_;
+};
+
+class PlusNode : public ExprNode {
+public:
+	explicit PlusNode(std::unique_ptr<ExprNode> expr, std::unique_ptr<TermNode> term) {
+		expr_ = std::move(expr);
+		term_ = std::move(term);
+	}
+private:
+	std::unique_ptr<ExprNode> expr_;
+	std::unique_ptr<TermNode> term_;
+};
+
+class MinusNode : public ExprNode {
+public:
+	explicit MinusNode(std::unique_ptr<ExprNode> expr, std::unique_ptr<TermNode> term) {
+		expr_ = std::move(expr);
+		term_ = std::move(term);
+	}
+private:
+	std::unique_ptr<ExprNode> expr_;
+	std::unique_ptr<TermNode> term_;
+};
+
+class TimesNode : public TermNode {
+public:
+	explicit TimesNode(std::unique_ptr<TermNode> term, std::unique_ptr<FactorNode> factor) {
+		term_ = std::move(term);
+		factor_ = std::move(factor);
+	}
+private:
+	std::unique_ptr<TermNode> term_;
+	std::unique_ptr<FactorNode> factor_;
+};
+
+class DivNode : public TermNode {
+public:
+	explicit DivNode(std::unique_ptr<TermNode> term, std::unique_ptr<FactorNode> factor) {
+		term_ = std::move(term);
+		factor_ = std::move(factor);
+	}
+private:
+	std::unique_ptr<TermNode> term_;
+	std::unique_ptr<FactorNode> factor_;
+};
+
+class ModNode : public TermNode {
+public:
+	explicit ModNode(std::unique_ptr<TermNode> term, std::unique_ptr<FactorNode> factor) {
+		term_ = std::move(term);
+		factor_ = std::move(factor);
+	}
+private:
+	std::unique_ptr<TermNode> term_;
+	std::unique_ptr<FactorNode> factor_;
+};
+
+class StatementNode : public TNode {
+
+};
+
+class AssignNode : public StatementNode { //needs strictly one left (var only) and one right child (const or var or binop)
+public:
+	explicit AssignNode(std::unique_ptr<VarNode> var, std::unique_ptr<ExprNode> exp) {
+		var_ = std::move(var);
+		exp_ = std::move(exp);
+	}
+private:
+	std::unique_ptr<VarNode> var_;
+	std::unique_ptr<ExprNode> exp_;
+};
+
+class ReadNode : public StatementNode {
+public:
+	explicit ReadNode(std::unique_ptr<VarNode> var) {
+		var_ = std::move(var);
+	}
+private:
+	std::unique_ptr<VarNode> var_;
+};
+
+class PrintNode : public StatementNode {
+public:
+	explicit PrintNode(std::unique_ptr<VarNode> var) {
+		var_ = std::move(var);
+	}
+private:
+	std::unique_ptr<VarNode> var_;
+};
 }  // namespace ast

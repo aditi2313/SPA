@@ -1,11 +1,7 @@
-#include "models/AST/TNode.h"
 #include <catch.hpp>
 
-void require(bool b) {
-  REQUIRE(b);
-}
+#include "models/AST/TNode.h"
 
-TEST_CASE("1st Test") {
+void require(bool b) { REQUIRE(b); }
 
-  require(1 == 1);
-}
+TEST_CASE("1st Test") { require(1 == 1); }

@@ -1,4 +1,8 @@
 #pragma once
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "models/AST/TNode.h"
 
 namespace ast {

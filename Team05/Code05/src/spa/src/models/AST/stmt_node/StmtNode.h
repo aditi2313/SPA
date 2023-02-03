@@ -1,4 +1,7 @@
 #pragma once
+#include <memory>
+#include <utility>
+
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 

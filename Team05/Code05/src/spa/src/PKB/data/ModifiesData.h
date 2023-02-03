@@ -8,7 +8,7 @@
 namespace pkb {
 class ModifiesData {
  public:
-  ModifiesData(int line, const std::vector<std::string>& variables);      
+  ModifiesData(int line, const std::vector<std::string>& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
            (LHS.line_ == RHS.line_ && LHS.variables_ < RHS.variables_);

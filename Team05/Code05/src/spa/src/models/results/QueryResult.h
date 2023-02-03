@@ -6,7 +6,7 @@
 
 #include "models/Entity.h"
 
-// todo figure out why unique isn't working
+// TODO(Gabau) Update Query Result wrapper for PKB
 typedef std::shared_ptr<models::Entity> EntPtr;
 struct cmp {
   bool operator()(const EntPtr& e1, const EntPtr& e2) const {

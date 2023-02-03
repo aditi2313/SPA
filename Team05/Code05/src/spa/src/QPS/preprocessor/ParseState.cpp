@@ -35,7 +35,7 @@ ParseState::parse_position SynonymParseState::parse(std::vector<std::string> &to
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
   itr++; // Read tokens after 'select'
-  if (Parser::is_ident(*itr)) throw PqlSyntaxErrorException("Invalid synonym identifier");
+  if (Parser::is_ident(*itr)) ThrowException();
   query.add_selected_synonym(*itr);
   return ++itr;
 }
@@ -57,6 +57,24 @@ ParseState::parse_position SuchThatParseState::parse(std::vector<std::string> &t
 
   query.add_clause(Parser::get_rel_ref(rel_ident, arg1, arg2));
 
+  return ++itr;
+}
+
+// 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+ParseState::parse_position PatternParseState::parse(std::vector<std::string> &tokens,
+                                                    parse_position itr,
+                                                    Query &query) {
+  if (*itr++ != "pattern") ThrowException();
+  // TODO(jl): replace with check that it is syn-assign
+  itr++;
+//  if (Parser::is_ident(*itr++)) ThrowException();
+  if (*itr++ != "(") ThrowException();
+  std::string arg1 = *itr++;
+  if (*itr++ != ",") ThrowException();
+  std::string arg2 = *itr++;
+  if (*itr != ")") ThrowException();
+
+  query.add_clause(Parser::get_rel_ref("pattern", arg1, arg2));
   return ++itr;
 }
 

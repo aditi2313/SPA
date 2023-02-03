@@ -44,6 +44,9 @@ class Parser {
     if (rel_ref_ident == "Modifies") {
       return std::make_unique<ModifiesClause>(arg1, arg2);
     }
+    if (rel_ref_ident == "pattern") {
+      return std::make_unique<PatternClause>(arg1, arg2);
+    }
     throw PqlSyntaxErrorException("Unknown relationship in PQL query");
   }
 

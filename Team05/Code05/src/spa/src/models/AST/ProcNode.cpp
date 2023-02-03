@@ -1,3 +1,3 @@
-#include "TNode.h"
+#include "ProcNode.h"
 
 namespace ast {}  // namespace ast

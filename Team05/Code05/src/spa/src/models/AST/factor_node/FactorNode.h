@@ -14,15 +14,15 @@ class TermNode : public ExprNode {};
 
 class VarNode : public FactorNode {
  public:
-  explicit VarNode(std::string varName);
+  explicit VarNode(std::string var_name) : var_name_(var_name) {}
 
  private:
-  std::string varName;
+  std::string var_name_;
 };
 
 class ConstNode : public FactorNode {
  public:
-  explicit ConstNode(int val);
+  explicit ConstNode(int val) : val_(val) {}
 
  private:
   int val_;

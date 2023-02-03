@@ -6,9 +6,9 @@
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace ast {
-class StatementNode : public TNode {};
+class StmtNode : public TNode {};
 
-class AssignNode : public StatementNode {
+class AssignNode : public StmtNode {
  public:
   explicit AssignNode(std::unique_ptr<VarNode> var,
                       std::unique_ptr<ExprNode> exp) {
@@ -21,7 +21,7 @@ class AssignNode : public StatementNode {
   std::unique_ptr<ExprNode> exp_;
 };
 
-class ReadNode : public StatementNode {
+class ReadNode : public StmtNode {
  public:
   explicit ReadNode(std::unique_ptr<VarNode> var) { var_ = std::move(var); }
 
@@ -29,7 +29,7 @@ class ReadNode : public StatementNode {
   std::unique_ptr<VarNode> var_;
 };
 
-class PrintNode : public StatementNode {
+class PrintNode : public StmtNode {
  public:
   explicit PrintNode(std::unique_ptr<VarNode> var) { var_ = std::move(var); }
 

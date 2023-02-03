@@ -9,7 +9,7 @@
 #include "PKB/PKBWrite.h"
 #include "common/filter/filters/ModifiesFilter.h"
 
-using namespace pkb;  // NO LINT
+using namespace pkb;  // NOLINT
 
 TEST_CASE("PKB read and write test") {
   // test that read works
@@ -24,6 +24,8 @@ TEST_CASE("PKB read and write test") {
     pkb_write.AddModifies(10, variables);
     table = pkb_write.EndWrite();
     PKBRead pkb_read(std::move(table));
-    REQUIRE(expected_table == *(pkb_read.Modifies(std::make_unique<filter::ModifiesFilterByLine>(10))));
+    REQUIRE(expected_table ==
+            *(pkb_read.Modifies(
+                std::make_unique<filter::ModifiesFilterByLine>(10))));
   }
 }

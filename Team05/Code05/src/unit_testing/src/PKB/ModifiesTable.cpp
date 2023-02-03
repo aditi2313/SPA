@@ -1,6 +1,6 @@
 #include <catch.hpp>
-#include <vector>
 #include <string>
+#include <vector>
 #include "PKB/ModifiesTable.h"
 #include "PKB/ModifiesData.h"
 
@@ -16,6 +16,7 @@ TEST_CASE("Test ModifiesTable") {
 
     SECTION("Retrieving ModifiesTable row") {
         ModifiesData retrieved_modifies_data = modifies_table.get_row(0);
-        REQUIRE(((retrieved_modifies_data.line_ == 10) && (retrieved_modifies_data.variables_.at(0) == "a")));
+        REQUIRE(((retrieved_modifies_data.line_ == 10)
+            && (retrieved_modifies_data.variables_.at(0) == "a")));
     };
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "common/Exceptions.h"
 
 #include "../models/Query.h"
 
@@ -18,12 +19,19 @@ class ParseState {
       Query &query
   ) = 0;
   virtual ~ParseState() = 0;
+ protected:
+  const char *kExceptionMessage;
+  void ThrowException() {
+    throw PqlSyntaxErrorException(kExceptionMessage);
+  }
 };
 
 // design-entity synonym (',' synonym)* ';'
 class DeclarationParseState : public ParseState {
  public:
-  DeclarationParseState() : ParseState("") {};
+  DeclarationParseState() : ParseState("") {
+    kExceptionMessage = "Invalid PQL syntax in declaration";
+  };
 
   parse_position parse(std::vector<std::string> &tokens,
                        parse_position itr,
@@ -33,7 +41,9 @@ class DeclarationParseState : public ParseState {
 // syn
 class SynonymParseState : public ParseState {
  public:
-  SynonymParseState() : ParseState("Select") {};
+  SynonymParseState() : ParseState("Select") {
+    kExceptionMessage = "Invalid PQL syntax in select-synonym";
+  };
 
   parse_position parse(std::vector<std::string> &tokens,
                        parse_position itr,
@@ -43,7 +53,9 @@ class SynonymParseState : public ParseState {
 // 'such' 'that' relRef
 class SuchThatParseState : public ParseState {
  public:
-  SuchThatParseState() : ParseState("such") {};
+  SuchThatParseState() : ParseState("such") {
+    kExceptionMessage = "Invalid PQL syntax in such-that clause";
+  };
 
   parse_position parse(std::vector<std::string> &tokens,
                        parse_position itr,
@@ -53,7 +65,9 @@ class SuchThatParseState : public ParseState {
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 class PatternParseState : public ParseState {
  public:
-  PatternParseState() : ParseState("pattern") {};
+  PatternParseState() : ParseState("pattern") {
+    kExceptionMessage = "Invalid PQL syntax in pattern clause";
+  };
 
   parse_position parse(std::vector<std::string> &tokens,
                        parse_position itr,

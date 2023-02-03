@@ -9,13 +9,18 @@ bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
   return token == states_.at(current_state_index + 1)->kTransitionKeyword;
 }
 
-// Inserts whitespaces in front of semicolons for
+// Inserts whitespaces around special characters
+// (e.g. semicolons and brackets) for
 // easier delimitation in ParseQuery
 std::string PreprocessQueryString(std::string query_string) {
   std::string output = "";
+  std::string special_characters = ";(),";
   for (char c : query_string) {
-    if (c == ';') output += ' ';
-    output += c;
+    if (special_characters.find(c) != std::string::npos) {
+      output += ' ' + c + ' ';
+    } else {
+      output += c;
+    }
   }
   return output;
 }

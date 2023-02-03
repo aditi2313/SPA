@@ -8,15 +8,13 @@ namespace qps {
 ParseState::parse_position DeclarationParseState::parse(std::vector<std::string> &tokens,
                                                         parse_position itr,
                                                         Query &query) {
-  if (!Parser::is_design_entity(*itr))
-    throw PqlSyntaxErrorException("Invalid design entity in declaration");
+  if (!Parser::is_design_entity(*itr)) ThrowException();
 
   models::EntityStub design_entity = Parser::get_design_entity(*itr);
   bool has_set_one_synonym = false;
   itr++;
   while (itr != tokens.end() && *itr != ";") {
-    if (!Parser::is_ident(*itr))
-      throw PqlSyntaxErrorException("Invalid identifier in declaration");
+    if (!Parser::is_ident(*itr)) ThrowException();
 
     query.set_synonym(*itr, design_entity);
     has_set_one_synonym = true;
@@ -26,8 +24,8 @@ ParseState::parse_position DeclarationParseState::parse(std::vector<std::string>
     }
   }
 
-  if (!has_set_one_synonym) throw PqlSyntaxErrorException("Invalid declaration syntax");
-  if (itr == tokens.end()) throw PqlSyntaxErrorException("Missing semi-colon in declaration");
+  if (!has_set_one_synonym) ThrowException();
+  if (itr == tokens.end()) ThrowException();
   return ++itr;
 }
 
@@ -36,8 +34,29 @@ ParseState::parse_position SynonymParseState::parse(std::vector<std::string> &to
                                                     Query &query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
+  itr++; // Read tokens after 'select'
   if (Parser::is_ident(*itr)) throw PqlSyntaxErrorException("Invalid synonym identifier");
   query.add_selected_synonym(*itr);
+  return ++itr;
+}
+
+// 'such' 'that' relRef
+// e.g. relRef = Modifies(6, v)
+ParseState::parse_position SuchThatParseState::parse(std::vector<std::string> &tokens,
+                                                     parse_position itr,
+                                                     Query &query) {
+  if (*itr++ != "such") ThrowException();
+  if (*itr++ != "that") ThrowException();
+
+  std::string rel_ident = *itr++;
+  if (*itr++ != "(") ThrowException();
+  std::string arg1 = *itr++;
+  if (*itr++ != ",") ThrowException();
+  std::string arg2 = *itr++;
+  if (*itr != ")") ThrowException();
+
+  query.add_clause(Parser::get_rel_ref(rel_ident, arg1, arg2));
+
   return ++itr;
 }
 

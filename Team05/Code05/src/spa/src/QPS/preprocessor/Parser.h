@@ -5,13 +5,17 @@
 #include <unordered_map>
 
 #include "../models/Query.h"
+#include "../models/Clause.h"
 #include "ParseState.h"
 #include "models/EntityStub.h"
+#include "common/Exceptions.h"
 
 namespace qps {
 class Parser {
  public:
   Parser() {
+    // Have to initialize them here as using the
+    // {} constructor for unique pointers does not work.
     states_.emplace_back(std::make_unique<DeclarationParseState>());
     states_.emplace_back(std::make_unique<SynonymParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
@@ -36,6 +40,13 @@ class Parser {
     return true;
   }
 
+  static inline std::unique_ptr<Clause> get_rel_ref(std::string rel_ref_ident, Argument arg1, Argument arg2) {
+    if (rel_ref_ident == "Modifies") {
+      return std::make_unique<ModifiesClause>(arg1, arg2);
+    }
+    throw PqlSyntaxErrorException("Unknown relationship in PQL query");
+  }
+
  private:
   std::vector<std::unique_ptr<ParseState>> states_{};
   std::vector<int> arr{1};
@@ -54,6 +65,5 @@ class Parser {
       {"constant", models::EntityStub()},
       {"procedure", models::EntityStub()},
   };
-
 };
 }  // namespace qps

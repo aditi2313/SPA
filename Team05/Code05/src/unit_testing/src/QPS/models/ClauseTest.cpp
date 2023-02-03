@@ -6,7 +6,8 @@ using namespace qps; // NOLINT
 // TODO(JL): replace with real unit tests after PKB is implemented
 TEST_CASE("Test Clause") {
   SECTION("Modifies Clause") {
-    ModifiesClause modifies_clause;
+    ModifiesClause modifies_clause(
+        Argument("abc"), Argument("def"));
     REQUIRE(true);
   };
 }

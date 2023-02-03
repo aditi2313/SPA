@@ -1,7 +1,9 @@
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include "TestWrapper.h"
 #include "../../spa/src/SP/Lexer.h"
 #include "../../spa/src/SP/Parser.h"
-#include "../../spa/src/SP/models/Token.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper* WrapperFactory::wrapper = 0;
@@ -23,8 +25,18 @@ void TestWrapper::parse(std::string filename) {
   // call your parser to do the parsing
   // ...rest of your code...
 
-  // TODO(aizatazhar): read source input from file
-    sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer()));
+    // Read source program from file
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cout << "Unable to open file";
+        return;
+    }
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string program = buffer.str();
+    file.close();
+
+    sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
     parser.MainLoop();
 }
 

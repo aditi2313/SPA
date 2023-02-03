@@ -1,19 +1,24 @@
-#include <iostream>
 #include "Lexer.h"
 
 namespace sp {
 
+Lexer::Lexer(std::string program) {
+    this->program_ = program;
+    this->pointer_ = 0;
+    this->current_char_ = ' ';
+}
+
 int Lexer::GetTok() {
     // ignore whitespaces
     while (isspace(current_char_)) {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
     }
 
     //  current token is an IDENT
     if (isalpha(current_char_)) {
         ident_ = current_char_;
 
-        while (isalnum(current_char_ = getchar())) {
+        while (isalnum(current_char_ = program_[pointer_++])) {
             ident_ += current_char_;
         }
 
@@ -29,9 +34,9 @@ int Lexer::GetTok() {
         std::string number_string;
         number_string += current_char_;
 
-        while (isdigit(current_char_ = getchar())) {
+        while (isdigit(current_char_ = program_[pointer_++])) {
             number_string += current_char_;
-            current_char_ = getchar();
+            current_char_ = program_[pointer_++];
         }
 
         if (number_string[0] == '0' && number_string.length() > 1) {
@@ -43,52 +48,52 @@ int Lexer::GetTok() {
     }
 
     if (current_char_ == '{') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokOpenCurly;
     }
 
     if (current_char_ == '}') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokCloseCurly;
     }
 
     if (current_char_ == ';') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokSemicolon;
     }
 
     if (current_char_ == '=') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokEquals;
     }
 
     if (current_char_ == '+') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokPlus;
     }
 
     if (current_char_ == '-') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokMinus;
     }
 
     if (current_char_ == '*') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokTimes;
     }
 
     if (current_char_ == '/') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokDiv;
     }
 
     if (current_char_ == '%') {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokMod;
     }
 
     if (current_char_ == EOF) {
-        current_char_ = getchar();
+        current_char_ = program_[pointer_++];
         return kTokEof;
     }
 

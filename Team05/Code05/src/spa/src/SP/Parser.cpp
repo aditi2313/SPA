@@ -10,15 +10,17 @@
 namespace sp {
 Parser::Parser(std::unique_ptr<Lexer> lexer) : lexer_(std::move(lexer)) { }
 
-int current_tok_;
 int Parser::GetNextTok() {
-    return current_tok_ = lexer_->GetTok();
+    current_tok_ = lexer_->GetTok();
+    return current_tok_;
 }
 
 void Parser::MainLoop() {
     while (true) {
         if (current_tok_ == kTokProcedure) {
             ParseProcedure();
+        } else if (current_tok_ == kTokEof) {
+            return;
         } else {
             GetNextTok();
         }

@@ -13,6 +13,7 @@ class Parser {
 
  private:
         std::unique_ptr<Lexer> lexer_;
+        int current_tok_;
 
         int GetNextTok();
 

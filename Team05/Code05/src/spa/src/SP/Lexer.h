@@ -9,16 +9,19 @@
 namespace sp {
 class Lexer {
  public:
-        Lexer() = default;
+    explicit Lexer(std::string program);
 
-        // returns the type of the next token
-        int GetTok();
+    // returns the type of the next token
+    int GetTok();
 
-        std::string get_ident() const { return ident_; }
-        int get_integer() const { return integer_; }
+    std::string get_ident() const { return ident_; }
+    int get_integer() const { return integer_; }
 
  private:
-    int current_char_ = ' ';
+    std::string program_;
+    int pointer_;
+    int current_char_;
+
     std::string ident_;
     int integer_;
 };

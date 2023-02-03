@@ -1,8 +1,8 @@
-#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+#include <catch.hpp>
 
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"

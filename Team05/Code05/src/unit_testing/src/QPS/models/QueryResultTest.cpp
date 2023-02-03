@@ -1,7 +1,7 @@
 #include <catch.hpp>
-#include "models/results/QueryResult.h"
+#include "QPS/models/QueryResult.h"
 
-using namespace models; // NOLINT
+using namespace qps; // NOLINT
 
 // TODO(JL): replace with real unit tests after Entity is implemented
 TEST_CASE("Test QueryResult") {

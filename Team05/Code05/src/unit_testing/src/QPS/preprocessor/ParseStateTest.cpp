@@ -44,6 +44,18 @@ TEST_CASE("Test DeclarationParseState") {
   }
 }
 
+TEST_CASE("Test SynonymParseState") {
+  SynonymParseState state;
+  Query query;
+  SECTION("Happy path") {
+    std::vector<std::string> tokens{"Select", "v"};
+    auto itr = state.parse(tokens, tokens.begin(), &query);
+
+    REQUIRE(query.get_selected_synonyms().at(0) == "v");
+    REQUIRE(itr == tokens.end());
+  }
+}
+
 TEST_CASE("Test SuchThatParseState") {
   SuchThatParseState state;
   Query query;

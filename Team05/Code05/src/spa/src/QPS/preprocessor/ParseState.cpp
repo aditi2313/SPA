@@ -36,8 +36,9 @@ ParseState::parse_position SynonymParseState::parse(
     Query *query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
-  itr++;  // Read tokens after 'select'
-  if (Parser::is_ident(*itr)) ThrowException();
+  if (*itr != "Select" && *itr != ",") ThrowException();
+  itr++;
+  if (!Parser::is_ident(*itr)) ThrowException();
   query->add_selected_synonym(*itr);
   return ++itr;
 }

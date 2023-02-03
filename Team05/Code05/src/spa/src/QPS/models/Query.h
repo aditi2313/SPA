@@ -36,6 +36,10 @@ class Query {
     selected_synonyms_.push_back(synonym);
   }
 
+  inline std::vector<std::string> get_selected_synonyms() {
+    return selected_synonyms_;
+  }
+
   bool operator==(const Query &other) const {
     return (
         clauses_ == other.clauses_

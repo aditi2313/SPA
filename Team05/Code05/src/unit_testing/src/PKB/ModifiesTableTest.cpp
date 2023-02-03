@@ -1,6 +1,6 @@
-#include <catch.hpp>
 #include <string>
 #include <vector>
+#include <catch.hpp>
 
 #include "PKB/ModifiesTable.h"
 #include "PKB/ModifiesData.h"

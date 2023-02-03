@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 #include <unordered_map>
 
 #include "../models/Query.h"
@@ -25,7 +26,8 @@ class Parser {
   Query ParseQuery(std::string query_string);
 
   static bool is_design_entity(std::string identifier) {
-    return design_entity_identifiers_.find(identifier) != design_entity_identifiers_.end();
+    return design_entity_identifiers_.find(identifier)
+        != design_entity_identifiers_.end();
   }
 
   static models::EntityStub get_design_entity(std::string identifier) {
@@ -40,7 +42,8 @@ class Parser {
     return true;
   }
 
-  static inline std::unique_ptr<Clause> get_rel_ref(std::string rel_ref_ident, Argument arg1, Argument arg2) {
+  static inline std::unique_ptr<Clause> get_rel_ref(
+      std::string rel_ref_ident, Argument arg1, Argument arg2) {
     if (rel_ref_ident == "Modifies") {
       return std::make_unique<ModifiesClause>(arg1, arg2);
     }
@@ -56,7 +59,8 @@ class Parser {
   bool ShouldGoToNextState(int current_state_index, std::string token);
   std::string PreprocessQueryString(std::string query_string);
 
-  static inline std::unordered_map<std::string, models::EntityStub> design_entity_identifiers_{
+  static inline std::unordered_map<std::string, models::EntityStub>
+      design_entity_identifiers_{
       {"stmt", models::EntityStub()},
       {"read", models::EntityStub()},
       {"print", models::EntityStub()},

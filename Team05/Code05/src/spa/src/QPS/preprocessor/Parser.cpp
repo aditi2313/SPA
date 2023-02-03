@@ -5,7 +5,7 @@
 namespace qps {
 
 bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
-  if (current_state_index >= states_.size() - 1) return false; // last stage
+  if (current_state_index >= states_.size() - 1) return false;  // last stage
   return token == states_.at(current_state_index + 1)->kTransitionKeyword;
 }
 
@@ -40,9 +40,9 @@ Query Parser::ParseQuery(std::string query_string) {
   auto itr = tokens.begin();
   while (itr != tokens.end()) {
     if (ShouldGoToNextState(current_state_index, *itr)) {
-      continue; // go to next state
+      continue;  // go to next state
     }
-    itr = states_.at(current_state_index)->parse(tokens, itr, query);
+    itr = states_.at(current_state_index)->parse(tokens, itr, &query);
   }
 
   return query;

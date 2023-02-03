@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <memory>
+#include <utility>
+#include <string>
 #include <unordered_map>
 
 #include "Clause.h"
@@ -14,7 +16,7 @@ class Query {
     return clauses_;
   }
 
-  inline void add_clause(std::unique_ptr<Clause> &&clause) {
+  const inline void add_clause(std::unique_ptr<Clause> &&clause) {
     clauses_.push_back(std::move(clause));
   }
 

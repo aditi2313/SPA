@@ -10,7 +10,7 @@ namespace qps {
 // TODO(JL): replace string with OOP and include wildcards etc.
 class Argument {
  public:
-  Argument(std::string arg) : arg(arg) {};
+  explicit Argument(std::string arg) : arg(arg) {}
   bool operator==(const Argument &other) const {
     return arg == other.arg;
   }

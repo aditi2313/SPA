@@ -13,5 +13,4 @@ TEST_CASE("Test Parser") {
     REQUIRE(Parser::is_ident("1") == false);
     REQUIRE(Parser::is_ident("a&") == false);
   };
-
 }

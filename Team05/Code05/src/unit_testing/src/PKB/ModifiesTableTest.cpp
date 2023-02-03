@@ -9,10 +9,8 @@ using namespace pkb; // NOLINT
 
 TEST_CASE("Test ModifiesTable") {
     ModifiesTable modifies_table;
-    ModifiesData modifies_data;
     std::vector<std::string> variables{"a"};
-    modifies_data.line_ = 10;
-    modifies_data.variables_ = variables;
+    ModifiesData modifies_data(10, variables);
     modifies_table.add_row(modifies_data);
 
     SECTION("Retrieving ModifiesTable row") {

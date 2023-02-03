@@ -1,3 +1,3 @@
-#include "ModifiesTable.h"
+#include "IndexableTable.h"
 
 namespace pkb {}  // namespace pkb

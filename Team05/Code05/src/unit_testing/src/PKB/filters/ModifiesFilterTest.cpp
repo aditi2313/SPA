@@ -29,7 +29,7 @@ TEST_CASE("Test Modifies by variable Filter") {
 
 filter::ModifiesTablePtr InitialiseModifiesTestTable(
     vector<vector<string>> variables) {
-  filter::ModifiesTablePtr result = std::make_unique<filter::ModifiesTable>();
+  filter::ModifiesTablePtr result = std::make_unique<pkb::ModifiesTable>();
   for (int i = 0; i < variables.size(); ++i) {
     result->add_row(i, pkb::ModifiesData(i, variables.at(i)));
   }

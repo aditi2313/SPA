@@ -6,7 +6,7 @@
 #include "models/Entity.h"
 
 namespace pkb {
-class ModifiesData : public models::Entity {
+class ModifiesData {
  public:
   ModifiesData(int line, const std::vector<std::string>& variables)
       : line_(line), variables_(variables) {}
@@ -23,7 +23,7 @@ class ModifiesData : public models::Entity {
   inline const std::vector<std::string>& get_variables() { return variables_; }
 
  private:
-  const int line_;
-  const std::vector<std::string> variables_;
+  int line_;
+  std::vector<std::string> variables_;
 };
 }  // namespace pkb

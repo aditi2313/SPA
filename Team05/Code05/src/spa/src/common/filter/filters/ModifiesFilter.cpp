@@ -4,16 +4,18 @@
 #include <string>
 #include <utility>
 
+#include "PKB/tables/IndexableTable.h"
+
 namespace filter {
 ModifiesTablePtr ModifiesFilterByVariable::FilterTable(
     ModifiesTablePtr modifies) {
-  ModifiesTablePtr result = std::make_unique<ModifiesTable>();
+  ModifiesTablePtr result = std::make_unique<pkb::ModifiesTable>();
 
-  for (int id : modifies->get_rows()) {
-    auto modify_data = modifies->get_row(id);
+  for (int line : modifies->get_indexes()) {
+    auto modify_data = modifies->get_row(line);
     for (std::string name : modify_data.get_variables()) {
       if (variables_.find(name) != variables_.end()) {
-        result->add_row(id, modify_data);
+        result->add_row(modify_data);
         break;
       }
     }

@@ -12,8 +12,4 @@ void PKBWrite::AddModifies(const int line,
   pkb_relation_table->add_modifies(line, variables);
 }
 
-void PKBWrite::AddParent(stub::ParentStub) {
-  throw new NotImplementedException();
-}
-
 }  // namespace pkb

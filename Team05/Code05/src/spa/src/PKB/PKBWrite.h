@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "PKBRelationTable.h"
-#include "common/stub/ParentStub.h"
 #include "data/ModifiesData.h"
 
 namespace pkb {
@@ -23,9 +22,9 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifies(int line, const std::vector<std::string>& variables);
-  void AddParent(stub::ParentStub);
+  void AddModifies(int line, const std::vector<std::string>& variables);  
   // Todo(Gab): add datastructure for assignment as well as tables.
+
   void AddAssign(int id) = delete;
   /// <summary>
   /// Ends the writing.

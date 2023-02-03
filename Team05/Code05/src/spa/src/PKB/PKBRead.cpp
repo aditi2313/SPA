@@ -3,11 +3,10 @@
 #include <memory>
 
 #include "common/Exceptions.h"
-#include "models/results/QueryResult.h"
 
 namespace pkb {
-models::QueryResult PKBRead::Modifies(ModifiesFilterPtr& filter) {
-  models::QueryResult result;
-  return result;
+IndexableTablePtr<ModifiesData> PKBRead::Modifies(
+    IndexableFilterPtr<ModifiesData> filter) {
+  return filter->FilterTable(relation_table_->modifies_table_.copy());
 }
 }  // namespace pkb

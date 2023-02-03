@@ -5,6 +5,7 @@
 
 using namespace qps; // NOLINT
 
+// TODO(jl): Replace EntityStub
 TEST_CASE("Test Declaration Parse State") {
   DeclarationParseState state;
   Query query;
@@ -16,12 +17,12 @@ TEST_CASE("Test Declaration Parse State") {
     REQUIRE(query.get_synonym("v") == models::EntityStub());
     REQUIRE(itr == tokens.end());
 
-    // Error case
+    // Error cases
     std::vector<std::string> invalid_tokens{"var", "v", ";"};
     REQUIRE_THROWS_AS(state.parse(invalid_tokens, invalid_tokens.begin(), query),
                       PqlSyntaxErrorException);
 
-    invalid_tokens = {}; //empty
+    invalid_tokens = {}; // empty
     REQUIRE_THROWS_AS(state.parse(invalid_tokens, invalid_tokens.begin(), query),
                       PqlSyntaxErrorException);
 
@@ -32,6 +33,5 @@ TEST_CASE("Test Declaration Parse State") {
     invalid_tokens = {"variable", "01234", ";"}; // invalid ident
     REQUIRE_THROWS_AS(state.parse(invalid_tokens, invalid_tokens.begin(), query),
                       PqlSyntaxErrorException);
-
   };
 }

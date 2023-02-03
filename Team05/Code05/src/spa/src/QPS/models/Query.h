@@ -30,9 +30,14 @@ class Query {
     return synonym_declarations_.at(synonym);
   }
 
+  inline void add_selected_synonym(std::string synonym) {
+    selected_synonyms_.push_back(synonym);
+  }
+
  private:
   std::vector<std::unique_ptr<Clause>> clauses_;
   std::unordered_map<std::string, models::EntityStub> synonym_declarations_;
+  std::vector<std::string> selected_synonyms_;
 };
 }  // namespace qps
 

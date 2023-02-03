@@ -31,5 +31,15 @@ ParseState::parse_position DeclarationParseState::parse(std::vector<std::string>
   return ++itr;
 }
 
+ParseState::parse_position SynonymParseState::parse(std::vector<std::string> &tokens,
+                                                    parse_position itr,
+                                                    Query &query) {
+  // TODO(JL): Support multiple synonyms selection after
+  // requirement is introduced
+  if (Parser::is_ident(*itr)) throw PqlSyntaxErrorException("Invalid synonym identifier");
+  query.add_selected_synonym(*itr);
+  return ++itr;
+}
+
 ParseState::~ParseState() = default;
 }  // namespace qps

@@ -59,7 +59,6 @@ class Parser {
 
  private:
   std::vector<std::unique_ptr<ParseState>> states_{};
-  std::vector<int> arr{1};
 
   static inline std::unordered_map<std::string, models::EntityStub>
       design_entity_identifiers_{

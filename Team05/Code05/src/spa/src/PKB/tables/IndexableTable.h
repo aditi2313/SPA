@@ -20,10 +20,6 @@ class IndexableTable {
  public:
   IndexableTable() {}
 
-  inline void add_row(T row) {
-    id_map_[rows_.size()] = rows_.size();
-    rows_.push_back(row);
-  }
   inline void add_row(int line, T row) {
     id_map_[line] = rows_.size();
     rows_.push_back(row);

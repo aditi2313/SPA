@@ -28,7 +28,7 @@ class PKBRead {
   /// Returns if the pkb read has ended.
   /// </summary>
   /// <returns></returns>
-  bool hasEnded() { return read_end_; }
+  inline bool hasEnded() { return read_end_; }
 
   /// <summary>
   /// Returns an indexable table for the modifies which satisfies the filter

@@ -15,6 +15,10 @@ namespace filter {
 typedef std::unique_ptr<pkb::ModifiesTable> ModifiesTablePtr;
 typedef IndexableFilter<pkb::ModifiesData> ModifiesFilter;
 
+/// <summary>
+/// A filter for a ModifiesTable by line.
+/// Obtains the row with the line given.
+/// </summary>
 class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
  public:
   explicit ModifiesFilterByLine(int line) : line_(line) {}
@@ -30,6 +34,10 @@ class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
   int line_;
 };
 
+/// <summary>
+/// A filter for an indexable table by variable.
+/// Looks through the indexable table and removes the variable.
+/// </summary>
 class ModifiesFilterByVariable : public IndexableFilter<pkb::ModifiesData> {
  public:
   explicit ModifiesFilterByVariable(std::unordered_set<std::string> variables)

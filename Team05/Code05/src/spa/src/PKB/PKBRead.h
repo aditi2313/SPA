@@ -36,7 +36,8 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  std::unique_ptr<PKBResult<ModifiesTable>> Modifies(IndexableFilterPtr<ModifiesData>);
+  std::unique_ptr<PKBResult<ModifiesTable>> Modifies(
+      IndexableFilterPtr<ModifiesData>);
 
  private:
   bool read_end_;

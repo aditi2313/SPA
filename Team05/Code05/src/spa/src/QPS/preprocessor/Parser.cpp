@@ -16,11 +16,22 @@ std::vector<std::string> Parser::PreprocessQueryString(std::string query_string)
   // (e.g. semicolons and brackets) for easier delimitation
   std::string new_query = "";
   std::string special_characters = ";(),";
-  for (char c : query_string) {
-    if (special_characters.find(c) != std::string::npos) {
-      new_query += " " + std::string(1, c) + " ";
+  for (auto itr = query_string.begin(); itr != query_string.end(); ++itr) {
+    if (special_characters.find(*itr) != std::string::npos) {
+      new_query += " " + std::string(1, *itr) + " ";
+    } else if (*itr == '\"') {
+      // This removes whitespace in the pattern match arg
+      // e.g "x + y" such that it is treated as one token.
+      itr++;
+      while (*itr != '\"') {
+        if (*itr == ' ') {
+          itr++;
+          continue;
+        }
+        new_query += *itr++;
+      }
     } else {
-      new_query += c;
+      new_query += *itr;
     }
   }
 
@@ -44,6 +55,7 @@ Query Parser::ParseQuery(std::string query_string) {
   auto itr = tokens.begin();
   while (itr != tokens.end()) {
     if (ShouldGoToNextState(current_state_index, *itr)) {
+      current_state_index++;
       continue;  // go to next state
     }
     itr = states_.at(current_state_index)->parse(tokens, itr, &query);

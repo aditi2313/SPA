@@ -65,8 +65,8 @@ TEST_CASE("Test SuchThatParseState") {
     auto itr = state.parse(tokens, tokens.begin(), &query);
     auto expected_clause = ModifiesClause(Argument("6"), Argument("v"));
 
-    ModifiesClause *actual_clause = dynamic_cast<ModifiesClause *>(
-        std::move(query.get_clauses().at(0)).get());
+    Clause *actual_clause =
+        query.get_clauses().at(0).get();
 
     REQUIRE(*actual_clause == expected_clause);
     REQUIRE(itr == tokens.end());
@@ -105,9 +105,9 @@ TEST_CASE("Test PatternParseState") {
   Query query;
   SECTION("Happy path") {
     std::vector<std::string> tokens{
-        "pattern", "a", "(", "_", ",", "x + y", ")"};
+        "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     auto itr = state.parse(tokens, tokens.begin(), &query);
-    auto expected_clause = PatternClause(Argument("_"), Argument("x + y"));
+    auto expected_clause = PatternClause(Argument("_"), Argument("\"x + y\""));
 
     PatternClause *actual_clause = dynamic_cast<PatternClause *>(
         std::move(query.get_clauses().at(0)).get());

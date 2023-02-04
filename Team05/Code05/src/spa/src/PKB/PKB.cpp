@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "PKB.h"
-#include "SP/models/TNode.h"
+#include "models/AST/TNode.h"
 
 namespace pkb {
 int PKB::setProcToAST(PROC p, TNode *r) { return 0; }

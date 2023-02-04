@@ -4,6 +4,7 @@
 #include <memory>
 #include "Clause.h"
 #include <unordered_map>
+#include <QPS/models/Clause.h>
 
 namespace qps {
 class Query {

@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <exception>
+#include <catch.hpp>
 
 #include "QPS/preprocessor/Parser.h"
 
@@ -27,7 +27,8 @@ TEST_CASE("Test Parser methods") {
     std::string query_string = "variable p; select p such that "
                                "Modifies(6, v) pattern a(_, \" x + y \")";
     std::vector<std::string> expected_tokens{
-        "variable", "p", ";", "select", "p", "such", "that", "Modifies", "(", "6", ",", "v", ")",
+        "variable", "p", ";", "select", "p", "such", "that",
+        "Modifies", "(", "6", ",", "v", ")",
         "pattern", "a", "(", "_", ",", "x+y", ")"
     };
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
@@ -62,8 +63,7 @@ TEST_CASE("Test ParseQuery") {
     Query actual_query = parser.ParseQuery(query_string);
     Query expected_query = BuildQuery(
         {{"p", models::EntityStub()}},
-        {"p"}
-    );
+        {"p"});
 
     REQUIRE(actual_query == expected_query);
 
@@ -72,25 +72,23 @@ TEST_CASE("Test ParseQuery") {
     actual_query = parser.ParseQuery(query_string);
     expected_query = BuildQuery(
         {{"v", models::EntityStub()}},
-        {"v"}
-    );
+        {"v"});
     expected_query.add_clause(
-        std::make_unique<ModifiesClause>(Argument("6"), Argument("v"))
-    );
+        std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
 
     REQUIRE(actual_query == expected_query);
 
     // Multiple declarations, multiple synonyms and
     // multiple clauses (both such-that and pattern)
     query_string = "variable v; procedure p; "
-                   "Select v, p such that Modifies(6, v) such that Modifies(3, v) "
+                   "Select v, p such that Modifies(6, v) "
+                   "such that Modifies(3, v) "
                    "pattern a(_, \"x + y\") pattern a(_, \"x\")";
     actual_query = parser.ParseQuery(query_string);
 
     expected_query = BuildQuery(
         {{"v", models::EntityStub()}, {"p", models::EntityStub()}},
-        {"v", "p"}
-    );
+        {"v", "p"});
     expected_query.add_clause(
         std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
     expected_query.add_clause(
@@ -101,10 +99,11 @@ TEST_CASE("Test ParseQuery") {
         std::make_unique<PatternClause>(Argument("_"), Argument("x")));
 
     REQUIRE(actual_query == expected_query);
- 
+
     // Random whitespaces
     query_string = "variable    v;    procedure    p; "
-                   "Select v,   p    such    that    Modifies(  6, v) such that Modifies(3, v) "
+                   "Select v,   p    such    that    Modifies(  6, v) "
+                   "  such      that    Modifies(3, v) "
                    "pattern    a(_, \"x + y\")    pattern     a(_,  \"x\")";
     actual_query = parser.ParseQuery(query_string);
     REQUIRE(actual_query == expected_query);
@@ -114,12 +113,11 @@ TEST_CASE("Test ParseQuery") {
     // Wrong order of states
     // Pattern should not be before such-that
     std::string query_string = "variable v; procedure p; "
-                               "Select v, p pattern a(_, \"x + y\") such that Modifies(6, v)";
+                               "Select v, p pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v)";
 
     REQUIRE_THROWS_AS(
         parser.ParseQuery(query_string),
-        PqlSyntaxErrorException
-    );
+        PqlSyntaxErrorException);
   }
-
 }

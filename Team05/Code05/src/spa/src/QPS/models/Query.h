@@ -52,8 +52,7 @@ class Query {
     }
     return (
         synonym_declarations_ == other.synonym_declarations_
-            && selected_synonyms_ == other.selected_synonyms_
-    );
+            && selected_synonyms_ == other.selected_synonyms_);
   }
 
  private:

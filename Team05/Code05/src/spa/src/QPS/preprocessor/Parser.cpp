@@ -11,7 +11,8 @@ bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
 }
 
 // Returns a vector of tokens retrieved from query_string
-std::vector<std::string> Parser::PreprocessQueryString(std::string query_string) {
+std::vector<std::string> Parser::PreprocessQueryString(
+    std::string query_string) {
   // First insert whitespaces around special characters
   // (e.g. semicolons and brackets) for easier delimitation
   std::string new_query = "";

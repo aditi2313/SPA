@@ -23,5 +23,4 @@ TEST_CASE("Test Clause") {
 
     REQUIRE(clause_1 != pattern_clause);
   };
-
 }

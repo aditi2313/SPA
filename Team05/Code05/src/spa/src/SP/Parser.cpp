@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "PKB/PKB.h"
-#include "SP/models/TNode.h"
+#include "models/AST/TNode.h"
 #include "Parser.h"
 
 namespace sp {

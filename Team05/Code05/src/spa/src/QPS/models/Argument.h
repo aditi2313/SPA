@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include <string>
+
 namespace qps {
 // An argument for a clause.
 // e.g. Clause(Argument, Argument)

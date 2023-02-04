@@ -1,3 +1,5 @@
 namespace qps {
-class Validator {};
+class Validator {
+  Query validator(Query query);
+};
 }  // namespace qps

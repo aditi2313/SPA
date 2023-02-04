@@ -13,6 +13,9 @@ class Clause {
  public:
   virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;
 
+  Argument getarg1() { return arg1; }
+  Argument getarg2() { return arg2; }
+
  private:
   Argument arg1;
   Argument arg2;

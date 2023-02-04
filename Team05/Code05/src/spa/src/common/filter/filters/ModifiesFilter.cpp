@@ -12,10 +12,10 @@ ModifiesTablePtr ModifiesFilterByVariable::FilterTable(
   ModifiesTablePtr result = std::make_unique<pkb::ModifiesTable>();
 
   for (int line : modifies->get_indexes()) {
-    auto modify_data = modifies->get_row(line);
-    for (std::string name : modify_data.get_variables()) {
+    auto modifies_data = modifies->get_row(line);
+    for (std::string name : modifies_data.get_variables()) {
       if (variables_.find(name) != variables_.end()) {
-        result->add_row(line, modify_data);
+        result->add_row(line, modifies_data);
         break;
       }
     }

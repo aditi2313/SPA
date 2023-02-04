@@ -24,7 +24,7 @@ class IndexableTable {
     id_map_[line] = rows_.size();
     rows_.push_back(row);
   }
-  inline T get_row(int num) { return rows_.at(id_map_[num]); }
+  inline T get_row(int num) { return rows_.at(id_map_.at(num)); }
 
   inline std::set<int> get_indexes() {
     std::set<int> result;

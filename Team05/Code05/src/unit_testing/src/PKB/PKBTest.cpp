@@ -21,7 +21,7 @@ TEST_CASE("PKB read and write test") {
     IndexableTable<ModifiesData> expected_table;
     expected_table.add_row(10, ModifiesData(10, variables));
 
-    pkb_write.AddModifies(10, variables);
+    pkb_write.AddModifiesData(10, variables);
     table = pkb_write.EndWrite();
 
     PKBRead pkb_read(std::move(table));

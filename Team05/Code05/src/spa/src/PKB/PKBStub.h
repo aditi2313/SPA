@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QPS/models/QueryResult.h"
+#include <QPS/models/QueryResult.h>
 
 namespace pkb {
 class PKBStub {

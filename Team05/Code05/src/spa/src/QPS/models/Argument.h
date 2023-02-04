@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
-
-#include <string>
+#include <sstream>
 
 namespace qps {
 // An argument for a clause.
@@ -17,10 +16,11 @@ class Argument {
 
   std::string to_string() {
     std::stringstream ss;
-    ss << arg_;
-    return ss;
+    ss << arg;
+    return ss.str();
+  }
 
-
- private:
-  std::string arg;
+   private:
+       std::string arg;
+  };
 };

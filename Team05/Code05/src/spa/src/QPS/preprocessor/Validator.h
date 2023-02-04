@@ -1,3 +1,9 @@
+#pragma once
+#include <memory>
+#include <unordered_map>
+#include <models/EntityStub.h>
+#include <QPS/models/Query.h>
+#include <common/Exceptions.h>
 namespace qps {
 class Validator {
 

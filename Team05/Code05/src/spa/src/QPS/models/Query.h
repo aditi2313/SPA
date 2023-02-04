@@ -5,7 +5,6 @@
 #include <utility>
 #include <string>
 #include <unordered_map>
-
 #include "Clause.h"
 #include "models/EntityStub.h"
 
@@ -35,12 +34,25 @@ class Query {
   inline std::vector<std::unique_ptr<Clause>> &get_clauses() {
     return clauses_;
   }
+
+  inline void add_clause(std::unique_ptr<Clause> &&clause) {
+    clauses_.push_back(std::move(clause));
+  }
+
+  inline bool operator==(const Query &other) const {
+    if (clauses_.size() != other.clauses_.size()) return false;
+    int num_clauses = clauses_.size();
+    for (int i = 0; i < num_clauses; ++i) {
+      if (*clauses_.at(i) != *other.clauses_.at(i)) return false;
+    }
+    return (synonym_declarations_ == other.synonym_declarations_ &&
+            selected_synonyms_ == other.selected_synonyms_);
+  }
+
  private:
   std::unordered_map<std::string, models::EntityStub> synonym_declarations_;
   std::vector<std::string> selected_synonyms_;
   std::vector<std::unique_ptr<Clause>> clauses_;
-  std::unordered_map<std::string, models::EntityStub> synonym_declarations_;
-  std::vector<std::string> selected_synonyms_;
 };
 }  // namespace qps
 

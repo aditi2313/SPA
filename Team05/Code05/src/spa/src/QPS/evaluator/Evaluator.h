@@ -5,6 +5,7 @@
 
 #include "../models/QueryResult.h"
 #include "../models/Query.h"
+#include <QPS/models/Query.h>
 
 namespace qps {
 class Evaluator {

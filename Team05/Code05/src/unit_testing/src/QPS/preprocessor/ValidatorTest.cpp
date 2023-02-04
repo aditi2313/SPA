@@ -1,8 +1,9 @@
 #include <catch.hpp>
 
-#include <Validator.h>
-#include <Exceptions.h>
+#include <QPS/preprocessor/Validator.h>
+#include <Common/Exceptions.h>
 using namespace qps;
+
 
 
 Query BuildQuery(
@@ -22,7 +23,12 @@ TEST_CASE("Test isWildcard") {
     Validator validator;
   SECTION("Happy path");
     //No wildcard
-    query_string = "variable v; Select v such that Modifies(6, v)";
+std::string query_string = "variable v; Select v such that Modifies(6, v)";
+
+    std::vector<std::unique_ptr<Clause>> clauses =
+        ModifiesClause(Argument("6"), Argument("v"));
+
+    REQUIRE(Validator::isWildcard(clauses) == true);
     
     
  }

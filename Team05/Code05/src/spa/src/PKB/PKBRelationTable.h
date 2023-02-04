@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <memory>
+#include <utility>
 
 #include "data/AssignData.h"
 #include "data/FollowData.h"

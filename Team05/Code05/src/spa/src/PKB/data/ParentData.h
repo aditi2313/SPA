@@ -1,5 +1,7 @@
 #pragma once
 
+namespace pkb {
+
 class ParentData {
  public:
   ParentData(int line, int parent_line)
@@ -11,3 +13,5 @@ class ParentData {
   int line_;
   int parent_line_;
 };
+
+}  // namespace pkb

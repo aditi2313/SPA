@@ -13,15 +13,16 @@ namespace qps {
     Query Validator::validator(Query query) { 
         std::vector<std::unique_ptr<Clause>> clauses = query.get_clauses();
         std::unordered_map<std::string, models::EntityStub> synonyms =
-          query.get_synonyms();
+          query.get_selected_synonyms();
+
     }
 
 
     bool wildcard(std::vector<std::unique_ptr<Clause>> clauses) {
         //TODO edit it to check for clause type first. As of know checks all clauses as all of them are modifies
       for (const auto &ptr : clauses) {
-        const auto &clause = *ptr;
-        std::string arg1 = &clause.getarg1();
+        auto clause = *ptr;
+        std::string arg1 = clause.getarg1().to_string();
         if (arg1 == "_") {
           return false;
         }
@@ -38,8 +39,8 @@ bool SynonymCheck(
 
   for (const auto &ptr : clauses) {
     auto clause = *ptr;
-    std::string arg1 = clause.getarg1();
-    std::string arg2 = clause.getarg2();
+    std::string arg1 = clause.getarg1().to_string();
+    std::string arg2 = clause.getarg2().to_string();
 
     if (!isdigit(arg1[0]) && !arg1._Starts_with("\"")) {
       std::unordered_map<std::string, models::EntityStub>::const_iterator

@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 
-#include "SP/models/TNode.h"
+#include "models/AST/TNode.h"
+#include "Parser.h"
 
 namespace sp {
 int Parse() { return 0; }

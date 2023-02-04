@@ -1,3 +1,3 @@
-#include "SP/models/TNode.h"
+#include "ProcNode.h"
 
 namespace ast {}  // namespace ast

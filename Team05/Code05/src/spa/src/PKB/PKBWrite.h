@@ -7,6 +7,7 @@
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
+#include "models/AST/factor_node/FactorNode.h"
 
 namespace pkb {
 class PKBWrite {
@@ -25,7 +26,13 @@ class PKBWrite {
   void AddModifiesData(int line, const std::vector<std::string>& variables);
   // Todo(Gab): add datastructure for assignment as well as tables.
 
-  void AddAssign(int id) = delete;
+  /// <summary>
+  /// Adds assign data.
+  /// </summary>
+  /// <param name="line">The line of the assignment</param>
+  /// <param name="expression">The unique pointer to the expression on the rhs</param>
+  void AddAssignData(std::string variable, int line, std::unique_ptr<ast::ExprNode> expression);
+
   /// <summary>
   /// Ends the writing.
   /// Renders this writer useless.

@@ -39,6 +39,9 @@ class PKBRead {
   std::unique_ptr<PKBResult<ModifiesTable>> Modifies(
       IndexableFilterPtr<ModifiesData>);
 
+  std::unique_ptr<PKBResult<AssignTable>> Assigns(
+      IndexableFilterPtr<std::shared_ptr<AssignData>>);
+
  private:
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;

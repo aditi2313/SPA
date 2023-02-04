@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "PKBRelationTable.h"
+#include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
 #include "common/filter/filters/ModifiesFilter.h"
 
@@ -24,16 +25,6 @@ class PKBRead {
   }
 
   /// <summary>
-  /// Ends the reading process, returning the pointer
-  /// to the previous relation table.
-  /// </summary>
-  /// <returns></returns>
-  std::unique_ptr<PKBRelationTable> EndRead() {
-    read_end_ = true;
-    return std::move(relation_table_);
-  }
-
-  /// <summary>
   /// Returns if the pkb read has ended.
   /// </summary>
   /// <returns></returns>
@@ -45,7 +36,7 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  IndexableTablePtr<ModifiesData> Modifies(IndexableFilterPtr<ModifiesData>);
+  std::unique_ptr<PKBResult<ModifiesTable>> Modifies(IndexableFilterPtr<ModifiesData>);
 
  private:
   bool read_end_;

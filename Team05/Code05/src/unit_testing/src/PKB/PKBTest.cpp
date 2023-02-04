@@ -1,8 +1,8 @@
+#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
-#include <catch.hpp>
 
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
@@ -23,9 +23,11 @@ TEST_CASE("PKB read and write test") {
 
     pkb_write.AddModifies(10, variables);
     table = pkb_write.EndWrite();
+
     PKBRead pkb_read(std::move(table));
-    REQUIRE(expected_table ==
-            *(pkb_read.Modifies(
-                std::make_unique<filter::ModifiesFilterByLine>(10))));
+    std::unique_ptr<ModifiesTable> result =
+        pkb_read.Modifies(std::make_unique<filter::ModifiesFilterByLine>(10))
+            ->get_result();
+    REQUIRE(expected_table == *(result));
   }
 }

@@ -7,7 +7,7 @@ namespace qps {
 // Intersection is defined as the list of elements that occur
 // in both lists.
 void QueryResult::IntersectWith(QueryResult other_result) {
-  std::set<models::Entity> result_list;
+  std::set<models::EntityStub> result_list;
 
   auto it1 = query_results_.begin();
   auto it2 = other_result.query_results_.begin();

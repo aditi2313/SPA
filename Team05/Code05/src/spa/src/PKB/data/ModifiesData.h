@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "models/Entity.h"
+#include "models/EntityStub.h"
 
 namespace pkb {
 class ModifiesData {

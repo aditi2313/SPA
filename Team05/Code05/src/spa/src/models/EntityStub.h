@@ -5,17 +5,17 @@
 namespace models {
 // Stub for a design entity
 // Can be: procedure / stmt / variable / constant
-class Entity {
+class EntityStub {
  public:
   // TODO(JL): be replaced with real value in real Entity class
   operator std::string() const { return "abc"; }
-  virtual ~Entity() {}
+  virtual ~EntityStub() {}
 
-  friend bool operator<(const Entity &LHS, const Entity &RHS) {
+  friend bool operator<(const EntityStub &LHS, const EntityStub &RHS) {
     // TODO(JL): be replaced with real comparison in real Entity class
     return true;
   }
-  friend bool operator==(const Entity &LHS, const Entity &RHS) {
+  friend bool operator==(const EntityStub &LHS, const EntityStub &RHS) {
     // TODO(JL): be replaced with real comparison in real Entity class
     return true;
   }

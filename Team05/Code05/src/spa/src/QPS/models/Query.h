@@ -1,9 +1,10 @@
 #pragma once
 
 #include <memory>
-#include <utility>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
 
 #include "Clause.h"
 #include "models/EntityStub.h"
@@ -46,12 +47,10 @@ class Query {
     if (clauses_.size() != other.clauses_.size()) return false;
     int num_clauses = clauses_.size();
     for (int i = 0; i < num_clauses; ++i) {
-      if (*clauses_.at(i) != *other.clauses_.at(i))
-        return false;
+      if (*clauses_.at(i) != *other.clauses_.at(i)) return false;
     }
-    return (
-        synonym_declarations_ == other.synonym_declarations_
-            && selected_synonyms_ == other.selected_synonyms_);
+    return (synonym_declarations_ == other.synonym_declarations_ &&
+            selected_synonyms_ == other.selected_synonyms_);
   }
 
  private:

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "../models/QueryResult.h"
+#include "QPS/models/QueryResult.h"
 
 namespace qps {
 class Formatter {

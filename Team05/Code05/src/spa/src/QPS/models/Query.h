@@ -1,10 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <memory>
-#include <utility>
 #include <string>
 #include <unordered_map>
+#include <utility>
+#include <vector>
+
 #include "Clause.h"
 #include "models/EntityStub.h"
 
@@ -55,4 +56,3 @@ class Query {
   std::vector<std::unique_ptr<Clause>> clauses_;
 };
 }  // namespace qps
-

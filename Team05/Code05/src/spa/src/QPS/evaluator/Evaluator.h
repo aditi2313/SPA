@@ -3,9 +3,8 @@
 #include <memory>
 #include <utility>
 
-#include "../models/QueryResult.h"
 #include "../models/Query.h"
-#include <QPS/models/Query.h>
+#include "QPS/models/QueryResult.h"
 
 namespace qps {
 class Evaluator {
@@ -13,6 +12,6 @@ class Evaluator {
   QueryResult EvaluateQuery(Query query);
 
  private:
-  std::unique_ptr<pkb::PKBStub> pkb;
+  std::unique_ptr<pkb::PKBRead> pkb;
 };
 }  // namespace qps

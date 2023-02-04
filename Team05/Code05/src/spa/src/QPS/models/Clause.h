@@ -1,12 +1,12 @@
 #pragma once
 
+#include <iostream>
 #include <memory>
 #include <typeinfo>
-#include <iostream>
 
 #include "Argument.h"
+#include "PKB/PKBRead.h"
 #include "QueryResult.h"
-#include "PKB/PKBStub.h"
 
 namespace qps {
 // Pure abstract base class for a Clause:
@@ -15,7 +15,7 @@ class Clause {
  public:
   Clause(Argument arg1, Argument arg2) : arg1(arg1), arg2(arg2) {}
 
-  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) = 0;
+  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) = 0;
   virtual ~Clause() = 0;
 
   bool operator==(Clause const &other) const {
@@ -39,14 +39,13 @@ class Clause {
 
 class ModifiesClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
+  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
   ModifiesClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
 };
 
 class PatternClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBStub> pkb) override;
+  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
   PatternClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
 };
 }  // namespace qps
-

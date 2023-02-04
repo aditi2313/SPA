@@ -1,12 +1,14 @@
 #include "Clause.h"
 
 namespace qps {
-QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBStub> pkb) {
-  return pkb->ModifiesStub();
+QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
+  // TODO(Gab): setup arguement to evaluate the filter.
+  throw new NotImplementedException();
 }
-QueryResult PatternClause::Evaluate(std::unique_ptr<pkb::PKBStub> pkb) {
+QueryResult PatternClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
   // TODO(jl): replace with pattern method
-  return pkb->ModifiesStub();
+  // return pkb->ModifiesStub();
+  throw new NotImplementedException();
 }
 
 Clause::~Clause() = default;

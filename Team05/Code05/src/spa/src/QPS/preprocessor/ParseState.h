@@ -39,7 +39,7 @@ class DeclarationParseState : public ParseState {
                        Query *query) override;
 };
 
-// syn
+// synonym (',' synonym)*
 class SynonymParseState : public ParseState {
  public:
   SynonymParseState() : ParseState("Select") {

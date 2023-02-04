@@ -17,6 +17,8 @@ class Parser {
   Parser() {
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
+    // State Order is defined as
+    // Declaration -> Synonym -> Such-That -> Pattern
     states_.emplace_back(std::make_unique<DeclarationParseState>());
     states_.emplace_back(std::make_unique<SynonymParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());

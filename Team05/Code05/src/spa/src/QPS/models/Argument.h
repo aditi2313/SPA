@@ -11,7 +11,7 @@ namespace qps {
 class Argument {
  public:
   explicit Argument(std::string arg) : arg(arg) {}
-  bool operator==(const Argument &other) const {
+  inline bool operator==(const Argument &other) const {
     return arg == other.arg;
   }
  private:

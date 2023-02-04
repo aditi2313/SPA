@@ -36,14 +36,14 @@ class Query {
     return clauses_;
   }
 
-  const inline void add_clause(std::unique_ptr<Clause> &&clause) {
+  inline void add_clause(std::unique_ptr<Clause> &&clause) {
     clauses_.push_back(std::move(clause));
   }
 
   // TODO(jl): Technically a query with the same clauses
   // but different order should compare as equal but I will
   // leave that logic as a TODO in the future
-  bool operator==(const Query &other) const {
+  inline bool operator==(const Query &other) const {
     if (clauses_.size() != other.clauses_.size()) return false;
     int num_clauses = clauses_.size();
     for (int i = 0; i < num_clauses; ++i) {

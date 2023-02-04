@@ -25,7 +25,7 @@ class Clause {
     return ti1 == ti2 && arg1 == other.arg1 && arg2 == other.arg2;
   }
 
-  bool operator!=(Clause const &other) const {
+  inline bool operator!=(Clause const &other) const {
     return !(*this == other);
   }
 

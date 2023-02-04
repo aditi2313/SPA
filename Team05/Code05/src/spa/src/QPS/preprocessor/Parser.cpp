@@ -5,6 +5,8 @@
 
 namespace qps {
 
+// Compares token with the transition keyword of the next stage
+// to determine if the machine should go to next state
 bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
   if (current_state_index >= states_.size() - 1) return false;  // last stage
   return token == states_.at(current_state_index + 1)->kTransitionKeyword;
@@ -48,6 +50,7 @@ std::vector<std::string> Parser::PreprocessQueryString(
   return tokens;
 }
 
+// Parses query based on states
 Query Parser::ParseQuery(std::string query_string) {
   Query query;
   std::vector<std::string> tokens = PreprocessQueryString(query_string);
@@ -57,7 +60,7 @@ Query Parser::ParseQuery(std::string query_string) {
   while (itr != tokens.end()) {
     if (ShouldGoToNextState(current_state_index, *itr)) {
       current_state_index++;
-      continue;  // go to next state
+      continue;  // Go to next state
     }
     itr = states_.at(current_state_index)->parse(tokens, itr, &query);
   }

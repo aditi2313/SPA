@@ -18,25 +18,25 @@ TEST_CASE("Test DeclarationParseState") {
   };
 
   SECTION("Error cases") {
-    // invalid design entity identifier
+    // Invalid design entity identifier
     std::vector<std::string> invalid_tokens{"var", "v", ";"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // empty
+    // Empty
     invalid_tokens = {};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // missing semi-colon
+    // Missing semi-colon
     invalid_tokens = {"variable", "v"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // invalid ident
+    // Invalid ident
     invalid_tokens = {"variable", "01234", ";"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
@@ -73,26 +73,26 @@ TEST_CASE("Test SuchThatParseState") {
   };
 
   SECTION("Error cases") {
-    // wrong casing
+    // Wrong casing
     std::vector<std::string> invalid_tokens{
         "such", "that", "MODIFIES", "(", "6", ",", "v", ")"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // empty
+    // Empty
     invalid_tokens = {};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // missing bracket
+    // Missing bracket
     invalid_tokens = {"Modifies", "(", "6", ",", "v", ")"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // missing bracket
+    // Missing bracket
     invalid_tokens = {"Modifies", "(", "6", ",", "v"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
@@ -109,34 +109,33 @@ TEST_CASE("Test PatternParseState") {
     auto itr = state.parse(tokens, tokens.begin(), &query);
     auto expected_clause = PatternClause(Argument("_"), Argument("\"x + y\""));
 
-    PatternClause *actual_clause = dynamic_cast<PatternClause *>(
-        std::move(query.get_clauses().at(0)).get());
+    Clause *actual_clause = query.get_clauses().at(0).get();
 
     REQUIRE(*actual_clause == expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
   SECTION("Error cases") {
-    // wrong casing
+    // Wrong casing
     std::vector<std::string> invalid_tokens{
         "PATTERN", "a", "(", "_", ",", "x + y", ")"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // empty
+    // Empty
     invalid_tokens = {};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // missing syn-assign
+    // Missing syn-assign
     invalid_tokens = {"pattern", "(", "_", ",", "x + y", ")"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),
         PqlSyntaxErrorException);
 
-    // missing bracket
+    // Missing bracket
     invalid_tokens = {"pattern", "(", "_", ",", "x + y"};
     REQUIRE_THROWS_AS(
         state.parse(invalid_tokens, invalid_tokens.begin(), &query),

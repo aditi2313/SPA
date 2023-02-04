@@ -30,6 +30,7 @@ ParseState::parse_position DeclarationParseState::parse(
   return ++itr;
 }
 
+// synonym (',' synonym)*
 ParseState::parse_position SynonymParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position itr,

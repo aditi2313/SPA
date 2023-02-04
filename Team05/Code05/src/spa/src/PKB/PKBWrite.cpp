@@ -7,7 +7,7 @@
 
 namespace pkb {
 
-void PKBWrite::AddModifiesDataData(const int line,
+void PKBWrite::AddModifiesData(const int line,
                            const std::vector<std::string>& variables) {
   pkb_relation_table->add_modifies_data(line, variables);
 }

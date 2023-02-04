@@ -29,7 +29,7 @@ TEST_CASE("Test isWildcard") {
 
     std::vector<std::unique_ptr<Clause>>& clauses = expected_query.get_clauses();
     
-    require(Validator::isWildcard(clauses));
+    require(Validator::isWildcard(std::move(clauses)));
 
     SECTION("wildcare is in the wrong area");
     std::string query_string2= "variable v; Select v such that Modifies(_, v)";
@@ -42,7 +42,7 @@ TEST_CASE("Test isWildcard") {
     std::vector<std::unique_ptr<Clause>>& clauses2 =
         expected_query2.get_clauses();
 
-    require(!Validator::isWildcard(clauses2));
+    require(!Validator::isWildcard(std::move(clauses2)));
 
  }
 
@@ -58,7 +58,7 @@ TEST_CASE("Test SynonymCheck") {
     std::vector<std::unique_ptr<Clause>>& clauses = expected_query.get_clauses();
     std::vector<std::string> synonym = expected_query.get_selected_synonyms();
 
-    require(Validator::SynonymCheck(clauses, synonym));
+    require(Validator::SynonymCheck(std::move(clauses), synonym));
 
     SECTION("Undeclared synoym used");
     //One undeclared synonym used
@@ -72,6 +72,6 @@ TEST_CASE("Test SynonymCheck") {
         expected_query2.get_clauses();
     std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
 
-    require(!Validator::SynonymCheck(clauses2, synonym));
+    require(!Validator::SynonymCheck(std::move(clauses2), synonym));
 
 }

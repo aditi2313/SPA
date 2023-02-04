@@ -1,19 +1,16 @@
 #pragma once
 #include "Validator.h"
 
-
-
-
 namespace qps {
 
 
 Query Validator::validator(Query query) { 
-    std::vector<std::unique_ptr<Clause>> clauses = query.get_clauses();
+    std::vector<std::unique_ptr<Clause>> clauses = std::move(query.get_clauses());
     std::vector<std::string> synonyms =
         query.Query::get_selected_synonyms();
 
 
-    if (isWildcard(clauses) || SynonymCheck(clauses, synonyms)) {
+    if (isWildcard(std::move(clauses)) || SynonymCheck(std::move(clauses), (synonyms))) {
       return query;
     } else {
       throw PqlSemanticErrorException("Semantic error");
@@ -22,21 +19,20 @@ Query Validator::validator(Query query) {
 }
 
 //TODO(Sarthak) check for the type of synonym used to ensure that the design entity is correct
-bool Validator::DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
-    std::vector<std::string> synonyms) {
-
-}
+//bool Validator::DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
+ //   std::vector<std::string> synonyms) {
+//  return true;
+//}
 
 // Returns false if the clauses have a wildcard declared as arg1 in the Modifies/Uses relationship
 
-bool Validator::isWildcard(std::vector<std::unique_ptr<Clause>>& clauses) {
+bool Validator::isWildcard(std::vector<std::unique_ptr<Clause>> clauses) {
     //TODO edit it to check for clause type first. As of know checks all clauses as all of them are modifies
-    for (auto& clause : clauses) {
-    std::string arg1 = clause->getarg1().to_string();
+    for (auto& clause : std::move(clauses)) {
+    std::string arg1 = std::move(clause)->getarg1().to_string();
     if (arg1 == "_") {
         return false;
     }
-
     return true;
     }
 }
@@ -46,9 +42,9 @@ bool Validator::SynonymCheck(
         std::vector<std::string> synonyms) {
   
 
-  for (auto& clause : clauses) {
-    std::string arg1 = clause->getarg1().to_string();
-    std::string arg2 = clause->getarg1().to_string();
+  for (auto& clause : std::move(clauses)) {
+    std::string arg1 = std::move(clause)->getarg1().to_string();
+    std::string arg2 = std::move(clause)->getarg1().to_string();
 
     if (!isdigit(arg1[0]) && !arg1._Starts_with("\"")) {
       if (std::find(synonyms.begin(), synonyms.end(), arg1) == synonyms.end()) {

@@ -13,7 +13,9 @@ class StmtLstNode : public TNode {
   explicit StmtLstNode(std::unique_ptr<StmtNode> stmt) {
     stmts_.push_back(std::move(stmt));
   }
-  void add_stmt(std::unique_ptr<StmtNode> stmt);
+  inline void add_stmt(std::unique_ptr<StmtNode> stmt) {
+    stmts_.push_back(std::move(stmt));
+  }
 
  private:
   std::vector<std::unique_ptr<StmtNode>> stmts_;

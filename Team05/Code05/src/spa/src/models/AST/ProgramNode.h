@@ -12,7 +12,9 @@ class ProgramNode : public TNode {  // root node
   explicit ProgramNode(std::unique_ptr<ProcNode> proc) {
     procs_.push_back(std::move(proc));
   }
-  void add_proc(std::unique_ptr<ProcNode> proc);
+  inline void add_proc(std::unique_ptr<ProcNode> proc) {
+    procs_.push_back(std::move(proc));
+  }
 
  private:
   std::vector<std::unique_ptr<ProcNode>> procs_;

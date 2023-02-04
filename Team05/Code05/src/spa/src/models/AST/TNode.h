@@ -3,6 +3,7 @@
 namespace ast {
 class TNode {
  public:
-  virtual void accept_visitor(){}
+  // TODO: implement accept_visitor for design extractor
+  virtual void accept_visitor() {}
 };
 }  // namespace ast

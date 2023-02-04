@@ -32,7 +32,7 @@ class PKBWrite {
   ///
   /// </summary>
   /// <returns>The unique pointer for PKB Relation Table</returns>
-  std::unique_ptr<PKBRelationTable> EndWrite() {
+  inline std::unique_ptr<PKBRelationTable> EndWrite() {
     return std::move(pkb_relation_table);
   }
 

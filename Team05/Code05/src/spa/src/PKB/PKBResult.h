@@ -15,9 +15,9 @@ class PKBResult {
     result_ = std::move(result);
   }
 
-  std::unique_ptr<PKBRelationTable> get_table() { return std::move(table_);
+  inline std::unique_ptr<PKBRelationTable> get_table() { return std::move(table_);
   }
-  std::unique_ptr<T> get_result() { return std::move(result_);
+  inline std::unique_ptr<T> get_result() { return std::move(result_);
   }
 
  private:

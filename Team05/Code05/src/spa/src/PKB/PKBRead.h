@@ -2,9 +2,9 @@
 
 #include <memory>
 #include <set>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string>
 
 #include "PKBRelationTable.h"
 #include "PKBResult.h"
@@ -46,6 +46,15 @@ class PKBRead {
   std::set<std::string> get_variables() { return relation_table_->variables_; }
 
   std::set<int> get_constants() { return relation_table_->constants_; }
+
+  const std::set<int>& get_whiles() { return relation_table_->whiles_; }
+  const std::set<int>& get_stmts() { return relation_table_->stmts_; }
+  const std::set<int>& get_calls() { return relation_table_->calls_; }
+  const std::set<int>& get_assign() { return relation_table_->assign_; }
+
+  const std::set<std::string>& get_procedures() {
+    return relation_table_->procedures_;
+  }
 
  private:
   bool read_end_;

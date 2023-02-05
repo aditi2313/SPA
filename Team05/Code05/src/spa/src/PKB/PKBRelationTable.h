@@ -29,8 +29,16 @@ class PKBRelationTable {
   IndexableTable<FollowData> follow_table_;
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
-  std::set<int> constants_;
+  std::set<int> constants_;  
+  std::set<int> whiles_;
+  std::set<int> stmts_;
+  std::set<int> calls_;
+  std::set<int> assign_;
   std::set<std::string> variables_;
+  std::set<std::string> procedures_;
+  
+
+  
 
   // ptr needed as Assign data contains a unique ptr
   // Without the use of a pointer

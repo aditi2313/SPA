@@ -1,9 +1,10 @@
 #include "Lexer.h"
 
+#include <utility>
+
 namespace sp {
 
-Lexer::Lexer(std::string program) {
-    this->program_ = program;
+Lexer::Lexer(std::string program) : program_(std::move(program)) {
     this->pointer_ = 0;
     this->current_char_ = ' ';
 }
@@ -49,9 +50,7 @@ int Lexer::GetTok() {
             current_char_ = program_[pointer_++];
         }
 
-        if (number_string[0] == '0' && number_string.length() > 1) {
-            throw std::runtime_error("integer cannot have leading zeroes");
-        }
+        ValidateInteger(number_string);
 
         integer_ = std::stoi(number_string);
         return kTokInteger;
@@ -109,5 +108,12 @@ int Lexer::GetTok() {
 
     return current_char_;
 }
+
+    void Lexer::ValidateInteger(std::string number_string) {
+        if (number_string[0] == '0' && number_string.length() > 1) {
+            // TODO(aizatazhar): use custom exception
+            throw std::runtime_error("integer cannot have leading zeroes");
+        }
+    }
 }  // namespace sp
 

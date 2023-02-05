@@ -14,8 +14,8 @@ class Lexer {
     // returns the type of the next token
     int GetTok();
 
-    std::string get_ident() const { return ident_; }
-    int get_integer() const { return integer_; }
+    inline std::string get_ident() const { return ident_; }
+    inline int get_integer() const { return integer_; }
 
  private:
     std::string program_;
@@ -24,5 +24,7 @@ class Lexer {
 
     std::string ident_;
     int integer_;
+
+    void ValidateInteger(std::string basicString);
 };
 }  // namespace sp

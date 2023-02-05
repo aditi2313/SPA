@@ -17,10 +17,10 @@ int Parser::GetNextTok() {
 
 void Parser::MainLoop() {
     while (true) {
-        if (current_tok_ == kTokProcedure) {
-            ParseProcedure();
-        } else if (current_tok_ == kTokEof) {
+        if (current_tok_ == kTokEof) {
             return;
+        } else if (current_tok_ == kTokProcedure) {
+            ParseProcedure();
         } else {
             GetNextTok();
         }
@@ -29,18 +29,21 @@ void Parser::MainLoop() {
 
 void Parser::ParseProcedure() {
     if (GetNextTok() != kTokIdent) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("procedure should be followed by a name");
     }
 
     std::cout << "procedure\n";
 
     if (GetNextTok() != kTokOpenCurly) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected '{' after procedure name");
     }
 
     ParseStmtLst();
 
     if (current_tok_ != kTokCloseCurly) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected '}' after procedure stmtLst");
     }
 }
@@ -59,6 +62,7 @@ void Parser::ParseStmtLst() {
     }
 
     if (stmt_count <= 0) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected at least 1 stmt in stmtLst");
     }
 }
@@ -77,6 +81,7 @@ void Parser::ParseStmt() {
     } else if (current_tok_ == kTokIdent) {
         ParseExpr();
     } else {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected a stmt (read | print | call "
                                  "| while | if | assign)");
     }
@@ -84,36 +89,42 @@ void Parser::ParseStmt() {
 
 void Parser::ParseRead() {
     if (GetNextTok() != kTokIdent) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("read should be followed by a name");
     }
 
     std::cout << "read " + lexer_->get_ident() + "\n";
 
     if (GetNextTok() != kTokSemicolon) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected end of a statement");
     }
 }
 
 void Parser::ParsePrint() {
     if (GetNextTok() != kTokIdent) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("print should be followed by a name");
     }
 
     std::cout << "print " + lexer_->get_ident() + "\n";
 
     if (GetNextTok() != kTokSemicolon) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected end of a statement");
     }
 }
 
 void Parser::ParseCall() {
     if (GetNextTok() != kTokIdent) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("call should be followed by a name");
     }
 
     std::cout << "call " + lexer_->get_ident() + "\n";
 
     if (GetNextTok() != kTokSemicolon) {
+        // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected end of a statement");
     }
 }
@@ -140,6 +151,7 @@ void Parser::ParseExpr() {
             && current_tok_ != kTokMinus && current_tok_ != kTokTimes
             && current_tok_ != kTokDiv && current_tok_ != kTokMod
             && current_tok_ != kTokIdent && current_tok_ != kTokInteger) {
+            // TODO(aizatazhar): use custom exception
             throw std::runtime_error("expected an expression");
         }
 

@@ -70,8 +70,7 @@ TEST_CASE("Test SynonymCheck") {
 
   REQUIRE(Validator::SynonymCheck(std::move(clauses), synonym));
 }
-
- TEST_CASE("Invalid synonym used") {
+TEST_CASE("Invalid synonym used") {
   SECTION("Undeclared synoym used");
   // One undeclared synonym used
   std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
@@ -103,6 +102,6 @@ TEST_CASE("Semantically incorrect") {
   std::string query_string =
       "variable v; select v such that modifies(v, 6)";
   Query query = parser.ParseQuery(query_string);
-  REQUIRE_THROWS_AS(Validator::validator(query), PqlSemanticErrorException);
+  REQUIRE_THROWS_AS(Validator::validator(std::move(query)), PqlSemanticErrorException);
 }
 

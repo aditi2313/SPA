@@ -1,10 +1,13 @@
 #pragma once
 
+#include "SP/TNodeVisitor.h"
+
 namespace ast {
 class TNode {
  public:
   // TODO(nhjryan): implement accept_visitor for design extractor
-  virtual void accept_visitor() {}
+  virtual std::unique_ptr<sp::TNodeVisitor> AcceptVisitor(
+      std::unique_ptr<sp::TNodeVisitor>) = 0;
 
  private:
 };

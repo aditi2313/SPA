@@ -17,6 +17,10 @@ class StmtLstNode : public TNode {
     stmts_.push_back(std::move(stmt));
   }
 
+  inline std::vector<std::unique_ptr<StmtNode>>& get_children() {
+    return stmts_;
+  }
+
  private:
   std::vector<std::unique_ptr<StmtNode>> stmts_;
 };

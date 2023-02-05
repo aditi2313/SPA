@@ -19,15 +19,19 @@ class StmtNode : public TNode {
 class AssignNode : public StmtNode {
  public:
   explicit AssignNode(std::unique_ptr<VarNode> var,
-                      std::unique_ptr<ExprNode> exp, int line)
+                      std::unique_ptr<ExprNode> expr, int line)
       : StmtNode(line) {
     var_ = std::move(var);
-    exp_ = std::move(exp);
+    expr_ = std::move(expr);
   }
+
+  inline std::unique_ptr<VarNode>& get_var() { return var_; }
+
+  inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
 
  private:
   std::unique_ptr<VarNode> var_;
-  std::unique_ptr<ExprNode> exp_;
+  std::unique_ptr<ExprNode> expr_;
 };
 
 class ReadNode : public StmtNode {
@@ -35,6 +39,8 @@ class ReadNode : public StmtNode {
   explicit ReadNode(std::unique_ptr<VarNode> var, int line) : StmtNode(line) {
     var_ = std::move(var);
   }
+
+  inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
  private:
   std::unique_ptr<VarNode> var_;
@@ -45,6 +51,8 @@ class PrintNode : public StmtNode {
   explicit PrintNode(std::unique_ptr<VarNode> var, int line) : StmtNode(line) {
     var_ = std::move(var);
   }
+
+  inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
   // TODO(nhjryan): implement nodes for if-else and while loops
 

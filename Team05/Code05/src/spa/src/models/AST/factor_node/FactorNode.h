@@ -36,6 +36,10 @@ class PlusNode : public ExprNode {
     term_ = std::move(term);
   }
 
+  inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
+
+  inline std::unique_ptr<TermNode>& get_term() { return term_; }
+
  private:
   std::unique_ptr<ExprNode> expr_;
   std::unique_ptr<TermNode> term_;
@@ -48,6 +52,10 @@ class MinusNode : public ExprNode {
     expr_ = std::move(expr);
     term_ = std::move(term);
   }
+
+  inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
+
+  inline std::unique_ptr<TermNode>& get_term() { return term_; }
 
  private:
   std::unique_ptr<ExprNode> expr_;
@@ -62,6 +70,10 @@ class TimesNode : public TermNode {
     factor_ = std::move(factor);
   }
 
+  inline std::unique_ptr<TermNode>& get_term() { return term_; }
+
+  inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
+
  private:
   std::unique_ptr<TermNode> term_;
   std::unique_ptr<FactorNode> factor_;
@@ -75,6 +87,10 @@ class DivNode : public TermNode {
     factor_ = std::move(factor);
   }
 
+  inline std::unique_ptr<TermNode>& get_term() { return term_; }
+
+  inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
+
  private:
   std::unique_ptr<TermNode> term_;
   std::unique_ptr<FactorNode> factor_;
@@ -87,6 +103,10 @@ class ModNode : public TermNode {
     term_ = std::move(term);
     factor_ = std::move(factor);
   }
+
+  inline std::unique_ptr<TermNode>& get_term() { return term_; }
+
+  inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
 
  private:
   std::unique_ptr<TermNode> term_;

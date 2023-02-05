@@ -7,7 +7,7 @@ class TNode {
  public:
   // TODO(nhjryan): implement accept_visitor for design extractor
   virtual std::unique_ptr<sp::TNodeVisitor> AcceptVisitor(
-      std::unique_ptr<sp::TNodeVisitor>) = 0;
+      std::unique_ptr<sp::TNodeVisitor> visitor) = 0;
 
  private:
 };

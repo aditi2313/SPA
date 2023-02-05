@@ -25,5 +25,5 @@ class PqlSemanticErrorException : public InvalidPqlException {
 
 class NotImplementedException : public std::exception {
  public:
-  char *what() { return "Not Implemented"; }
+  char *what() { return (char *) "Not Implemented"; }
 };

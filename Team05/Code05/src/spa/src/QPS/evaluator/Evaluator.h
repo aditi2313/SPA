@@ -5,11 +5,12 @@
 
 #include "../models/Query.h"
 #include "QPS/models/QueryResult.h"
+#include "MasterEntityFactory.h"
 
 namespace qps {
 class Evaluator {
  public:
-  QueryResult EvaluateQuery(std::unique_ptr<Query> query);
+  QueryResultPtr EvaluateQuery(std::unique_ptr<Query> query);
 
   // Helper method for writing integration tests
   // where we set up our own PKB
@@ -19,5 +20,6 @@ class Evaluator {
 
  private:
   std::unique_ptr<pkb::PKBRead> pkb_;
+  MasterEntityFactory master_entity_factory_;
 };
 }  // namespace qps

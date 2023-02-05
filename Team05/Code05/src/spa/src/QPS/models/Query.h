@@ -2,26 +2,34 @@
 
 #include <memory>
 #include <string>
+#include <iostream>
 #include <unordered_map>
 #include <utility>
 #include <vector>
 
 #include "Clause.h"
 #include "models/Entity.h"
+#include "PQL.h"
+
+using models::Synonym;
 
 namespace qps {
 class Query {
  public:
   // Returns false if synonym already exists in the declaration hashmap.
-  inline bool set_synonym(std::string synonym, models::Entity entity) {
+  inline bool set_synonym(Synonym synonym, models::EntityId entity) {
     if (synonym_declarations_.find(synonym) != synonym_declarations_.end())
       return false;
     synonym_declarations_[synonym] = entity;
     return true;
   }
 
-  inline models::Entity get_synonym(std::string synonym) {
+  inline models::EntityId get_synonym(Synonym synonym) {
     return synonym_declarations_.at(synonym);
+  }
+
+  inline bool is_synonym(std::string token) {
+    return synonym_declarations_.find(token) != synonym_declarations_.end();
   }
 
   inline void add_selected_synonym(std::string synonym) {
@@ -53,9 +61,30 @@ class Query {
         selected_synonyms_ == other.selected_synonyms_);
   }
 
+  inline ArgumentPtr CreateArgument(std::string token) {
+    if (is_synonym(token)) {
+      return std::make_unique<SynonymArg>(token, get_synonym(token));
+    }
+    if (token == "_") {
+      return std::make_unique<Wildcard>();
+    }
+
+    if (PQL::is_ident(token)) {
+      return std::make_unique<IdentArg>(token);
+    }
+
+    if (PQL::is_integer(token)) {
+      std::make_unique<IntegerArg>(stoi(token));
+    }
+
+    return std::make_unique<ExpressionArg>(token);
+  }
+
  private:
-  std::unordered_map<std::string, models::Entity> synonym_declarations_;
-  std::vector<std::string> selected_synonyms_;
+  std::unordered_map<Synonym, models::EntityId> synonym_declarations_;
+  std::vector<Synonym> selected_synonyms_;
   std::vector<std::unique_ptr<Clause>> clauses_;
 };
+
+using QueryPtr = std::unique_ptr<Query>;
 }  // namespace qps

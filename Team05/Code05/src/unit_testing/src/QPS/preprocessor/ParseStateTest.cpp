@@ -1,6 +1,7 @@
 #include <catch.hpp>
 
 #include "QPS/preprocessor/ParseState.h"
+#include "QPS/models/PQL.h"
 #include "common/Exceptions.h"
 
 using namespace qps; // NOLINT
@@ -23,7 +24,7 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
 
-    REQUIRE(query->get_synonym("v") == models::Entity());
+    REQUIRE(query->get_synonym("v") == PQL::kVariableEntityId);
     REQUIRE(itr == tokens.end());
   };
 
@@ -67,7 +68,7 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
-    auto expected_clause = ModifiesClause(Argument("6"), Argument("v"));
+    auto expected_clause = ModifiesClause(query->CreateArgument("6"), query->CreateArgument("v"));
 
     Clause *actual_clause =
         query->get_clauses().at(0).get();
@@ -101,7 +102,7 @@ TEST_CASE("Test PatternParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
-    auto expected_clause = PatternClause(Argument("_"), Argument("\"x + y\""));
+    auto expected_clause = PatternClause(query->CreateArgument("_"), query->CreateArgument("\"x + y\""));
 
     Clause *actual_clause = query->get_clauses().at(0).get();
 

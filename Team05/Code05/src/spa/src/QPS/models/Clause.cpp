@@ -14,15 +14,15 @@ QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
   // Modifies clauses
   QueryResult query_result;
 
-  int line = std::stoi(arg1.get_arg());
+//  int line = std::stoi(arg1.get_arg());
 
-  auto filter = std::make_unique<ModifiesFilterByLine>(line);
-  auto result = pkb->Modifies(std::move(filter));
+//  auto filter = std::make_unique<ModifiesFilterByLine>(line);
+//  auto result = pkb->Modifies(std::move(filter));
 
-  auto data = result->get_result()->get_row(line);
-  for (auto var : data.get_variables()) {
-    query_result.add_query_result(models::Entity(var));
-  }
+//  auto data = result->get_result()->get_row(line);
+//  for (auto var : data.get_variables()) {
+//    query_result.add_query_result(std::make_unique<Entity>(var));
+//  }
 
   return query_result;
 }

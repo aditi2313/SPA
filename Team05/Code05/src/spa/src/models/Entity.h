@@ -3,38 +3,17 @@
 #include <string>
 
 namespace models {
-// Stub for a design entity
-// Can be: procedure / stmt / variable / constant
+
+// Abstract base class for a design entity
+// Represents a:
+// Procedure | Stmt (Read | Print | Assign | Call | While | If)
+// Variable | Constant
 class Entity {
  public:
   Entity() {}
-  explicit Entity(std::string ident) : ident_(ident) {}
-
-  // TODO(JL): be replaced with real value in real Entity class
-  operator std::string() const { return ident_; }
+  virtual operator std::string() = 0;
   virtual ~Entity() = 0;
-
-  friend bool operator<(const Entity &LHS, const Entity &RHS) {
-    // TODO(JL): be replaced with real comparison in real Entity class
-    return true;
-  }
-  friend bool operator==(const Entity &LHS, const Entity &RHS) {
-    // TODO(JL): be replaced with real comparison in real Entity class
-    return true;
-  }
- private:
-  std::string ident_;
 };
 
-class Procedure : public Entity {
-
-};
-
-class Variable : public Entity {
-
-};
-
-class Constant : public Entity {
-
-};
+using EntityPtr = std::unique_ptr<Entity>;
 }  // namespace models

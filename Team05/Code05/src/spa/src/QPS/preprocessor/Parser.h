@@ -9,6 +9,7 @@
 #include "../models/Clause.h"
 #include "ParseState.h"
 #include "models/Entity.h"
+#include "models/Stmt.h"
 #include "common/Exceptions.h"
 
 namespace qps {
@@ -29,49 +30,7 @@ class Parser {
   bool ShouldGoToNextState(int current_state_index, std::string token);
   std::unique_ptr<Query> ParseQuery(std::string query_string);
 
-  static bool is_design_entity(std::string identifier) {
-    return design_entity_identifiers_.find(identifier)
-        != design_entity_identifiers_.end();
-  }
-
-  static models::Entity get_design_entity(std::string identifier) {
-    return design_entity_identifiers_.at(identifier);
-  }
-
-  static inline bool is_ident(std::string str) {
-    if (str.empty() || !isalpha(str[0])) return false;
-    for (char c : str) {
-      if (!isalnum(c)) return false;
-    }
-    return true;
-  }
-
-  static inline std::unique_ptr<Clause> get_rel_ref(
-      std::string rel_ref_ident, Argument arg1, Argument arg2) {
-    if (rel_ref_ident == "Modifies") {
-      return std::make_unique<ModifiesClause>(arg1, arg2);
-    }
-    if (rel_ref_ident == "pattern") {
-      return std::make_unique<PatternClause>(arg1, arg2);
-    }
-    throw PqlSyntaxErrorException("Unknown relationship in PQL query");
-  }
-
  private:
   std::vector<std::unique_ptr<ParseState>> states_{};
-
-  static inline std::unordered_map<std::string, models::Entity>
-      design_entity_identifiers_{
-      {"stmt", models::Entity()},
-      {"read", models::Entity()},
-      {"print", models::Entity()},
-      {"call", models::Entity()},
-      {"while", models::Entity()},
-      {"if", models::Entity()},
-      {"assign", models::Entity()},
-      {"variable", models::Entity()},
-      {"constant", models::Entity()},
-      {"procedure", models::Entity()},
-  };
 };
 }  // namespace qps

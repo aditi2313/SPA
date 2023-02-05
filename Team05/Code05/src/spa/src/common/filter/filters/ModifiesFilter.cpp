@@ -22,4 +22,9 @@ ModifiesTablePtr ModifiesFilterByVariable::FilterTable(
   }
   return std::move(result);
 }
+
+//template<>
+//ModifiesFilter::~IndexableFilter() = default;
+//ModifiesFilterByLine::~ModifiesFilterByLine() = default;
+
 }  // namespace filter

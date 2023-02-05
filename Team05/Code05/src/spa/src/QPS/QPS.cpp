@@ -33,8 +33,8 @@ void QPS::evaluate(std::string query, std::list<std::string> &results, std::uniq
   evaluator.inject_pkb(pkb); // Inject testing PKB here
   QueryResult result = evaluator.EvaluateQuery(std::move(query_object));
 
-  Formatter formatter;
-  results = formatter.FormatQuery(result);
+//  Formatter formatter;
+//  results = formatter.FormatQuery(result);
 }
 
 }

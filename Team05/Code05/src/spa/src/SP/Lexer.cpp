@@ -24,6 +24,16 @@ int Lexer::GetTok() {
 
         if (ident_ == "procedure") {
             return kTokProcedure;
+        } else if (ident_ == "read") {
+            return kTokRead;
+        } else if (ident_ == "print") {
+            return kTokPrint;
+        } else if (ident_ == "call") {
+            return kTokCall;
+        } else if (ident_ == "while") {
+            return kTokWhile;
+        } else if (ident_ == "if") {
+            return kTokIf;
         } else {
             return kTokIdent;
         }

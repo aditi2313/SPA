@@ -7,6 +7,11 @@ enum Token {
     kTokEof,
 
     kTokProcedure,
+    kTokRead,
+    kTokPrint,
+    kTokCall,
+    kTokWhile,
+    kTokIf,
 
     kTokIdent,
     kTokInteger,

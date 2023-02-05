@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <functional>
 
-#include "models/Token.h"
+#include "models/AST/Token.h"
 
 namespace sp {
 class Lexer {

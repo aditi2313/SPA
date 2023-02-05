@@ -46,36 +46,39 @@ void Parser::ParseProcedure() {
 }
 
 void Parser::ParseStmtLst() {
-    if (GetNextTok() != kTokIdent) {
-        throw std::runtime_error("expected at least 1 stmt in stmtLst");
-    }
+    GetNextTok();
 
-    while (current_tok_ != kTokCloseCurly) {
+    int stmt_count = 0;
+    while (current_tok_ == kTokProcedure || current_tok_ == kTokRead
+           || current_tok_ == kTokPrint || current_tok_ == kTokCall
+           || current_tok_ == kTokWhile || current_tok_ == kTokIf
+           || current_tok_ == kTokIdent) {
         ParseStmt();
         GetNextTok();
+        stmt_count++;
+    }
+
+    if (stmt_count <= 0) {
+        throw std::runtime_error("expected at least 1 stmt in stmtLst");
     }
 }
 
 void Parser::ParseStmt() {
-    if (current_tok_ != kTokIdent) {
-        throw std::runtime_error("expected stmt to begin with an ident_");
-    }
-
-    std::cout << "stmt\n";
-
-    std::string ident = lexer_->get_ident();
-    if (ident == "read") {
+    if (current_tok_ == kTokRead) {
         ParseRead();
-    } else if (ident == "print") {
+    } else if (current_tok_ == kTokPrint) {
         ParsePrint();
-    } else if (ident == "call") {
+    } else if (current_tok_ == kTokCall) {
         ParseCall();
-    } else if (ident == "while") {
+    } else if (current_tok_ == kTokWhile) {
         ParseWhile();
-    } else if (ident == "if") {
+    } else if (current_tok_ == kTokIf) {
         ParseIf();
-    } else {
+    } else if (current_tok_ == kTokIdent) {
         ParseExpr();
+    } else {
+        throw std::runtime_error("expected a stmt (read | print | call "
+                                 "| while | if | assign)");
     }
 }
 

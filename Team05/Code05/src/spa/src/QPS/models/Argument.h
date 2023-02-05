@@ -20,7 +20,7 @@ class Argument {
     return ss.str();
   }
 
-   private:
+    private:
        std::string arg;
-  };
 };
+}; //namespace qps

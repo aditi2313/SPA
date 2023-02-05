@@ -61,5 +61,4 @@ TEST_CASE("Test SynonymCheck") {
     std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
 
     require(!Validator::SynonymCheck(std::move(clauses2), synonym));
-
 }

@@ -10,6 +10,10 @@ Lexer::Lexer(std::string program) : program_(std::move(program)) {
 }
 
 int Lexer::GetTok() {
+    if (pointer_ >= program_.length()) {
+        return kTokEof;
+    }
+
     // ignore whitespaces
     while (isspace(current_char_)) {
         current_char_ = program_[pointer_++];
@@ -99,11 +103,6 @@ int Lexer::GetTok() {
     if (current_char_ == '%') {
         current_char_ = program_[pointer_++];
         return kTokMod;
-    }
-
-    if (current_char_ == EOF) {
-        current_char_ = program_[pointer_++];
-        return kTokEof;
     }
 
     return current_char_;

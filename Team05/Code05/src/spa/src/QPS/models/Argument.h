@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>
 #include <string>
+#include "models/models.h"
 
 namespace qps {
 // An argument for a clause.
@@ -23,4 +24,13 @@ class Argument {
  private:
   std::string arg;
 };
-};  // namespace qps
+
+// synonym | '_' | INTEGER
+class StmtRef : public Argument {
+ public:
+  models::stmt stmt_;
+};
+
+// synonym | '_' | "IDENT"
+class EntRef : public Argument {};
+}  // namespace qps

@@ -7,7 +7,7 @@
 
 namespace filter {
 
-template <class T>
+template<class T>
 class IndexableFilter {
  public:
   /// <summary>
@@ -17,7 +17,7 @@ class IndexableFilter {
   virtual pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) = 0;
 };
 
-template <class T>
+template<class T>
 using IndexableFilterPtr = std::unique_ptr<IndexableFilter<T>>;
 
 }  // namespace filter

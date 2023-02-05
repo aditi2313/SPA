@@ -1,15 +1,18 @@
+#include <memory>
+
 #include "ParseState.h"
+
 #include "Parser.h"
 #include "common/Exceptions.h"
 #include "models/EntityStub.h"
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
-ParseState::parse_position DeclarationParseState::parse(
+std::unique_ptr<Query> DeclarationParseState::parse(
     const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
-  if (!Parser::is_design_entity(*itr)) ThrowException();
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
+  if (itr == tokens.end() || !Parser::is_design_entity(*itr)) ThrowException();
 
   models::EntityStub design_entity = Parser::get_design_entity(*itr);
   bool has_set_one_synonym = false;
@@ -27,29 +30,32 @@ ParseState::parse_position DeclarationParseState::parse(
 
   if (!has_set_one_synonym) ThrowException();
   if (itr == tokens.end()) ThrowException();
-  return ++itr;
+  itr++;
+  return query;
 }
 
 // synonym (',' synonym)*
-ParseState::parse_position SynonymParseState::parse(
+std::unique_ptr<Query> SynonymParseState::parse(
     const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
-  if (*itr != "Select" && *itr != ",") ThrowException();
+  if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
   itr++;
   if (!Parser::is_ident(*itr)) ThrowException();
   query->add_selected_synonym(*itr);
-  return ++itr;
+  itr++;
+  return query;
 }
 
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
-ParseState::parse_position SuchThatParseState::parse(
+std::unique_ptr<Query> SuchThatParseState::parse(
     const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
+  if (itr == tokens.end()) ThrowException();
   if (*itr++ != "such") ThrowException();
   if (*itr++ != "that") ThrowException();
 
@@ -62,14 +68,16 @@ ParseState::parse_position SuchThatParseState::parse(
 
   query->add_clause(Parser::get_rel_ref(rel_ident, arg1, arg2));
 
-  return ++itr;
+  itr++;
+  return query;
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-ParseState::parse_position PatternParseState::parse(
+std::unique_ptr<Query> PatternParseState::parse(
     const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
+  if (itr == tokens.end()) ThrowException();
   if (*itr++ != "pattern") ThrowException();
   // TODO(jl): replace with check that it is syn-assign
   if (!Parser::is_ident(*itr++)) ThrowException();
@@ -80,7 +88,8 @@ ParseState::parse_position PatternParseState::parse(
   if (*itr != ")") ThrowException();
 
   query->add_clause(Parser::get_rel_ref("pattern", arg1, arg2));
-  return ++itr;
+  itr++;
+  return query;
 }
 
 ParseState::~ParseState() = default;

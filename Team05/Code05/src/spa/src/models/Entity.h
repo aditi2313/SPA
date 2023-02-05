@@ -12,7 +12,7 @@ class Entity {
 
   // TODO(JL): be replaced with real value in real Entity class
   operator std::string() const { return ident_; }
-  virtual ~Entity() {}
+  virtual ~Entity() = 0;
 
   friend bool operator<(const Entity &LHS, const Entity &RHS) {
     // TODO(JL): be replaced with real comparison in real Entity class
@@ -24,5 +24,17 @@ class Entity {
   }
  private:
   std::string ident_;
+};
+
+class Procedure : public Entity {
+
+};
+
+class Variable : public Entity {
+
+};
+
+class Constant : public Entity {
+
 };
 }  // namespace models

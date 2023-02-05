@@ -10,6 +10,7 @@ namespace ast {
 class ExprNode : public TNode {
  public:
   virtual std::unique_ptr<ExprNode> Copy() = 0;
+  virtual bool DeepEquals(ExprNode const&) = 0;
 };
 
 class TermNode : public ExprNode {

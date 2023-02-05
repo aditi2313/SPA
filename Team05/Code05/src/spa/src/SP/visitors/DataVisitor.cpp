@@ -19,12 +19,21 @@ void DataVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
 
 void DataVisitor::VisitAssign(ast::AssignNode* assign_node) {
   pkb_ptr_->add_stmt(assign_node->get_line());
+  pkb_ptr_->add_assign(assign_node->get_line());
 }
 void DataVisitor::VisitRead(ast::ReadNode* read_node) {
-  pkb_ptr_->add_variable(read_node->get_var());
+  pkb_ptr_->add_variable(read_node->get_var()->get_name());
+  pkb_ptr_->add_read(read_node->get_line());
+  pkb_ptr_->add_stmt(read_node->get_line());
 }
 void DataVisitor::VisitPrint(ast::PrintNode* print_node) {
+  pkb_ptr_->add_stmt(print_node->get_line());
   pkb_ptr_->add_print(print_node->get_line());
+}
+
+void DataVisitor::VisitCall(ast::CallNode* call_node) {
+  pkb_ptr_->add_calls(call_node->get_line());
+  pkb_ptr_->add_stmt(call_node->get_line());
 }
 void DataVisitor::VisitFactor(ast::FactorNode* factor_node) {}
 void DataVisitor::VisitExpr(ast::ExprNode* expr_node) {}
@@ -36,6 +45,5 @@ void DataVisitor::VisitMinus(ast::MinusNode* minus_node) {}
 void DataVisitor::VisitTimes(ast::TimesNode* times_node) {}
 void DataVisitor::VisitDiv(ast::DivNode* div_node) {}
 void DataVisitor::VisitMod(ast::ModNode* mod_node) {}
-void DataVisitor::VisitCall(ast::CallNode* call_node) {}
 
 }  // namespace sp

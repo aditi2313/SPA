@@ -57,6 +57,10 @@ class PKBWrite {
 
   void add_print(int p) { pkb_relation_table_->print_.insert(p); }
 
+  void add_read(int r) { pkb_relation_table_->read_.insert(r); }
+
+  void add_if(int i) { pkb_relation_table_->if_.insert(i); }
+
   /// <summary>
   /// Ends the writing.
   /// Renders this writer useless.

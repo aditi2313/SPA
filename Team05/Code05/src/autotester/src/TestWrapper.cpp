@@ -1,11 +1,15 @@
+#include "TestWrapper.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include "TestWrapper.h"
-#include "../../spa/src/SP/Lexer.h"
-#include "../../spa/src/SP/Parser.h"
 
 #include "../../spa/src/QPS/QPS.h"
+#include "../../spa/src/SP/Lexer.h"
+#include "../../spa/src/SP/Parser.h"
+#include "SP/visitors/AssignVisitor.h"
+#include "SP/visitors/DataVisitor.h"
+#include "SP/visitors/ModifiesVisitor.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -20,6 +24,7 @@ volatile bool AbstractWrapper::GlobalStop = false;
 TestWrapper::TestWrapper() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
+  pkb_relation_ = std::make_unique<pkb::PKBRelationTable>();
 }
 
 // method for parsing the SIMPLE source
@@ -37,10 +42,25 @@ void TestWrapper::parse(std::string filename) {
   buffer << file.rdbuf();
   std::string program = buffer.str();
   file.close();
-  
-  sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
-  parser.ParseProgram();
 
+  sp::Parser parser =
+      sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
+  auto root = parser.ParseProgram();
+  auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
+
+  sp::AssignVisitor av(std::move(writer));
+  root->AcceptVisitor(&av);
+  writer = av.EndVisit();
+
+  sp::DataVisitor dv(std::move(writer));
+  root->AcceptVisitor(&dv);
+  writer = dv.EndVisit();
+
+  sp::ModifiesVisitor mv(std::move(writer));
+  root->AcceptVisitor(&mv);
+  writer = mv.EndVisit();
+
+  pkb_relation_ = writer->EndWrite();
 }
 
 // method to evaluating a query

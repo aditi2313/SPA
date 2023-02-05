@@ -72,6 +72,10 @@ class CallNode : public StmtNode {
     var_ = std::move(var);
   }
 
+  inline std::unique_ptr<VarNode>& get_var() { return var_; }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
  private:
     std::unique_ptr<VarNode> var_;
 };

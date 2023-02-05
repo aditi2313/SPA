@@ -44,5 +44,7 @@ class AssignVisitor : public TNodeVisitor {
   void VisitDiv(ast::DivNode* div_node) {}
 
   void VisitMod(ast::ModNode* mod_node) {}
+
+  void VisitCall(ast::CallNode* call_node) {}
 };
 }  // namespace sp

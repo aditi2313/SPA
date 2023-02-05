@@ -47,6 +47,8 @@ class TNodeVisitor {
 
   virtual void VisitMod(ast::ModNode* mod_node) = 0;
 
+  virtual void VisitCall(ast::CallNode* call_node) = 0;
+
   std::unique_ptr<pkb::PKBWrite> EndVisit() { return std::move(pkb_ptr_); }
 
  protected:

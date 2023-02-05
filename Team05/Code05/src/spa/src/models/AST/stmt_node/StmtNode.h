@@ -49,4 +49,14 @@ class PrintNode : public StmtNode {
  private:
   std::unique_ptr<VarNode> var_;
 };
+
+class CallNode : public StmtNode {
+ public:
+  explicit CallNode(std::unique_ptr<VarNode> var, int line) : StmtNode(line) {
+    var_ = std::move(var);
+  }
+
+ private:
+    std::unique_ptr<VarNode> var_;
+};
 }  // namespace ast

@@ -6,9 +6,10 @@
 #include "SP/visitors/TNodeVisitor.h"
 
 namespace sp {
-class ModifiesVisitor : public TNodeVisitor {
+class AssignVisitor : public TNodeVisitor {
  public:
-  ModifiesVisitor(std::unique_ptr<pkb::PKBWrite> &&pkb_ptr) : TNodeVisitor(std::move(pkb_ptr)) {}
+  AssignVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
+      : TNodeVisitor(std::move(pkb_ptr)) {}
 
   void VisitProgram(ast::ProgramNode* program_node);
 
@@ -18,7 +19,7 @@ class ModifiesVisitor : public TNodeVisitor {
 
   void VisitAssign(ast::AssignNode* assign_node);
 
-  void VisitRead(ast::ReadNode* read_node);
+  void VisitRead(ast::ReadNode* read_node){};
 
   void VisitPrint(ast::PrintNode* print_node){};
 

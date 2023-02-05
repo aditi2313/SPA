@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <set>
 
 #include "data/AssignData.h"
 #include "data/FollowData.h"

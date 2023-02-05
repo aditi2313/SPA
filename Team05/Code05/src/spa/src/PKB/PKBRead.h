@@ -4,6 +4,7 @@
 #include <set>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include "PKBRelationTable.h"
 #include "PKBResult.h"

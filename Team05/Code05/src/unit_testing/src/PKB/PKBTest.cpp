@@ -44,8 +44,9 @@ TEST_CASE("PKB read and write test") {
     table = pkb_write.EndWrite();
 
     PKBRead pkb_read(std::move(table));
-    auto result = pkb_read.Assigns(std::make_unique<filter::AssignFilterAll>())
-                      ->get_result();
+    auto result =
+        pkb_read.Assigns(std::make_unique<filter::AssignFilterByLine>(10))
+            ->get_result();
     // unable to require as Assign Table is all references
     // REQUIRE(expected_table == *(result));
   }

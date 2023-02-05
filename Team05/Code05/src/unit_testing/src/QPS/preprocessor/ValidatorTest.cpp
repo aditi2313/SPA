@@ -70,30 +70,39 @@ TEST_CASE("Test SynonymCheck") {
 
   REQUIRE(Validator::SynonymCheck(std::move(clauses), synonym));
 }
-//
-//TEST_CASE("Invalid synonym used") {
-//  SECTION("Undeclared synoym used");
-//  // One undeclared synonym used
-//  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
-//
-//  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
-//  expected_query2.add_clause(
-//      std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
-//
-//  std::vector<std::unique_ptr<Clause>>& clauses2 =
-//      expected_query2.get_clauses();
-//  std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
-//
-//  REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
-//}
 
-TEST_CASE("Semantically correct") { 
+ TEST_CASE("Invalid synonym used") {
+  SECTION("Undeclared synoym used");
+  // One undeclared synonym used
+  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
+
+  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
+  expected_query2.add_clause(
+      std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
+
+  std::vector<std::unique_ptr<Clause>>& clauses2 =
+      expected_query2.get_clauses();
+  std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
+
+  REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
+}
+
+TEST_CASE("Semantically correct") {
     Parser parser;
   SECTION("All is valid");
-    std::string query_string = 
+    std::string query_string =
         "variable v; select v such that modifies(v, 6)";
     Query query  = parser.ParseQuery(query_string);
     Query result = Validator::validator(std::move(query));
     REQUIRE(result == query);
+}
+
+TEST_CASE("Semantically incorrect") {
+  Parser parser;
+  SECTION("Wrong semantics");
+  std::string query_string =
+      "variable v; select v such that modifies(v, 6)";
+  Query query = parser.ParseQuery(query_string);
+  REQUIRE_THROWS_AS(Validator::validator(query), PqlSemanticErrorException);
 }
 

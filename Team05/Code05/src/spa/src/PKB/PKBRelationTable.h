@@ -5,23 +5,19 @@
 #include <vector>
 
 #include "data/AssignData.h"
-#include "data/ConstantsData.h"
 #include "data/FollowData.h"
 #include "data/ModifiesData.h"
 #include "data/ParentData.h"
 #include "data/UsesData.h"
-#include "data/VariableData.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "tables/IndexableTable.h"
-
-
 
 namespace pkb {
 /// <summary>
 /// The table of relations
 /// used to wrap around all the
 /// tables used in the pkb.
-/// 
+///
 /// TODO(Gab) Think of a better name for this construct.
 /// </summary>
 class PKBRelationTable {

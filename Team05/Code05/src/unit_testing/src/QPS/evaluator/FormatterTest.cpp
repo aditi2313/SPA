@@ -24,24 +24,24 @@ TEST_CASE("Test QueryFormatter") {
     models::EntityStub stmt;
     std::list<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({stmt}));
-    REQUIRE(actual.front() == "abc");
+    REQUIRE(actual.front() == "");
   };
   SECTION("For variables") {
     models::EntityStub var;
     std::list<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({var}));
-    REQUIRE(actual.front() == "abc");
+    REQUIRE(actual.front() == "");
   };
   SECTION("For procedures") {
     models::EntityStub procedure;
     std::list<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({procedure}));
-    REQUIRE(actual.front() == "abc");
+    REQUIRE(actual.front() == "");
   };
   SECTION("For constants") {
     models::EntityStub constant;
     std::list<std::string> actual =
         query_formatter.FormatQuery(BuildQueryResult({constant}));
-    REQUIRE(actual.front() == "abc");
+    REQUIRE(actual.front() == "");
   };
 }

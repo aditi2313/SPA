@@ -6,7 +6,7 @@
 
 namespace pkb {
 
-template <class T>
+template<class T>
 std::unique_ptr<PKBResult<T>> create_result(
     std::unique_ptr<PKBRelationTable> rel_table, std::unique_ptr<T> result) {
   return std::move(
@@ -16,8 +16,9 @@ std::unique_ptr<PKBResult<T>> create_result(
 std::unique_ptr<PKBResult<ModifiesTable>> PKBRead::Modifies(
     IndexableFilterPtr<ModifiesData> filter) {
   auto result_table =
-      filter->FilterTable(relation_table_->modifies_table_.copy());
-  return create_result(std::move(relation_table_), std::move(result_table));
+      filter->FilterTable(std::move(relation_table_->modifies_table_.copy()));
+  return create_result(
+      std::move(relation_table_), std::move(result_table));
 }
 
 std::unique_ptr<PKBResult<AssignTable>> PKBRead::Assigns(

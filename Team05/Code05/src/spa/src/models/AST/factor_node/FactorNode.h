@@ -9,9 +9,9 @@ namespace ast {
 
 class ExprNode : public TNode {};
 
-class FactorNode : public ExprNode {};
-
 class TermNode : public ExprNode {};
+
+class FactorNode : public TermNode {};
 
 class VarNode : public FactorNode {
  public:

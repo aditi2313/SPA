@@ -4,5 +4,11 @@ procedure example {
 	print x;
 	call test;
 
-	x = x + 5 - y;
+	x = a + b;
 }
+
+procedure example2 {
+	read y;
+
+	y = a - b;
+} 

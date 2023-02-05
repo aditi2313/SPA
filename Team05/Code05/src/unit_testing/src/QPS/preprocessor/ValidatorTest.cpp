@@ -3,8 +3,9 @@
 #include <QPS/preprocessor/Parser.h>
 
 #include <exception>
-#include <catch.hpp>
 #include <utility>
+#include <catch.hpp>
+
 using qps::Argument;
 using qps::ModifiesClause;
 using qps::Validator;
@@ -71,7 +72,7 @@ TEST_CASE("Test SynonymCheck") {
 
   REQUIRE(Validator::SynonymCheck(std::move(clauses), synonym));
 }
-// TEST_CASE("Invalid synonym used") {
+//TEST_CASE("Invalid synonym used") {
 //  SECTION("Undeclared synoym used");
 //  // One undeclared synonym used
 //  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";

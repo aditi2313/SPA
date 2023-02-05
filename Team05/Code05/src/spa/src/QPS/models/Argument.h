@@ -8,7 +8,7 @@ namespace qps {
 // It can be a synonym for statement, procedure, variable,
 // character strings, wildcard, or expressions for exact/partial matches
 class Argument {
- public:
+  public:
   explicit Argument(std::string arg) : arg(arg) {}
   inline bool operator==(const Argument &other) const {
     return arg == other.arg;
@@ -20,7 +20,7 @@ class Argument {
     return ss.str();
   }
 
-    private:
-       std::string arg;
+  private:
+  std::string arg;
 };
-}; //namespace qps
+};  // namespace qps

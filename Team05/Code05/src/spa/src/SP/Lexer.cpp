@@ -1,8 +1,6 @@
 #include <utility>
 #include <stdexcept>
 
-#include "Lexer.h"
-
 namespace sp {
 
 Lexer::Lexer(std::string program) : program_(std::move(program)) {

@@ -37,9 +37,10 @@ void TestWrapper::parse(std::string filename) {
   buffer << file.rdbuf();
   std::string program = buffer.str();
   file.close();
-
+  
   sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
-  parser.MainLoop();
+  parser.ParseProgram();
+
 }
 
 // method to evaluating a query

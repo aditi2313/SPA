@@ -21,6 +21,7 @@ namespace filter {
                 break;
             }
         }
+
         return std::move(result);
     }
 }  // namespace filter

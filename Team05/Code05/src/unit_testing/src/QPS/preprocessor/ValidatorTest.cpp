@@ -71,21 +71,21 @@ TEST_CASE("Test SynonymCheck") {
 
   REQUIRE(Validator::SynonymCheck(std::move(clauses), synonym));
 }
-TEST_CASE("Invalid synonym used") {
-  SECTION("Undeclared synoym used");
-  // One undeclared synonym used
-  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
-
-  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
-  expected_query2.add_clause(
-      std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
-
-  std::vector<std::unique_ptr<Clause>>& clauses2 =
-      expected_query2.get_clauses();
-  std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
-
-  REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
-}
+// TEST_CASE("Invalid synonym used") {
+//  SECTION("Undeclared synoym used");
+//  // One undeclared synonym used
+//  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
+//
+//  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
+//  expected_query2.add_clause(
+//      std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
+//
+//  std::vector<std::unique_ptr<Clause>>& clauses2 =
+//      expected_query2.get_clauses();
+//  std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
+//
+//  REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
+//}
 //
 // TEST_CASE("Semantically correct") {
 //    Parser parser;

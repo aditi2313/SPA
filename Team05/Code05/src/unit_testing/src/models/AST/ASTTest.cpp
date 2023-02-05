@@ -1,8 +1,8 @@
-#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
+#include <catch.hpp>
 
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/AssignVisitor.h"

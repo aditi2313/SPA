@@ -40,13 +40,14 @@ class VarNode : public FactorNode {
 
   inline std::string get_name() { return var_name_; }
 
-  inline std::unique_ptr<FactorNode> CopyFactor() {
+  inline std::unique_ptr<FactorNode> CopyFactor() override {
     return std::make_unique<VarNode>(var_name_);
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() { return CopyFactor(); }
+  inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor();
+  }
 
-  inline std::unique_ptr<ExprNode> Copy() { return CopyFactor(); }
+  inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
 
  private:
   std::string var_name_;
@@ -60,7 +61,7 @@ class ConstNode : public FactorNode {
 
   inline int get_val() { return val_; }
 
-  inline std::unique_ptr<FactorNode> CopyFactor() {
+  inline std::unique_ptr<FactorNode> CopyFactor() override {
     return std::make_unique<ConstNode>(val_);
   }
 
@@ -72,9 +73,10 @@ class ConstNode : public FactorNode {
     return false;
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() { return CopyFactor(); }
+  inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor(); }
 
-  inline std::unique_ptr<ExprNode> Copy() { return CopyFactor(); }
+
+  inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
 
  private:
   int val_;
@@ -94,7 +96,7 @@ class PlusNode : public ExprNode {
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
-  inline std::unique_ptr<ExprNode> Copy() {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<PlusNode>(expr_->Copy(), term_->CopyTerm());
   }
 
@@ -125,7 +127,7 @@ class MinusNode : public ExprNode {
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
-  inline std::unique_ptr<ExprNode> Copy() {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<MinusNode>(expr_->Copy(), term_->CopyTerm());
   }
 
@@ -169,7 +171,7 @@ class TimesNode : public TermNode {
                                        factor_->CopyFactor());
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() {
+  inline std::unique_ptr<TermNode> CopyTerm() override {
     return std::make_unique<TimesNode>(term_->CopyTerm(),
                                        factor_->CopyFactor());
   }
@@ -193,11 +195,11 @@ class DivNode : public TermNode {
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
-  inline std::unique_ptr<ExprNode> Copy() {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<DivNode>(term_->CopyTerm(), factor_->CopyFactor());
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() {
+  inline std::unique_ptr<TermNode> CopyTerm() override {
     return std::make_unique<DivNode>(term_->CopyTerm(), factor_->CopyFactor());
   }
 
@@ -236,11 +238,11 @@ class ModNode : public TermNode {
     return false;
   }
 
-  inline std::unique_ptr<ExprNode> Copy() {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<ModNode>(term_->CopyTerm(), factor_->CopyFactor());
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() {
+  inline std::unique_ptr<TermNode> CopyTerm() override {
     return std::make_unique<ModNode>(term_->CopyTerm(), factor_->CopyFactor());
   }
 

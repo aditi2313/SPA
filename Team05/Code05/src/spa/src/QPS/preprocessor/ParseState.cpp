@@ -1,4 +1,5 @@
 #include "ParseState.h"
+
 #include "Parser.h"
 #include "common/Exceptions.h"
 #include "models/EntityStub.h"
@@ -6,10 +7,8 @@
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
 ParseState::parse_position DeclarationParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
-  if (!Parser::is_design_entity(*itr)) ThrowException();
+    const std::vector<std::string> &tokens, parse_position itr, Query *query) {
+  if (itr == tokens.end() || !Parser::is_design_entity(*itr)) ThrowException();
 
   models::EntityStub design_entity = Parser::get_design_entity(*itr);
   bool has_set_one_synonym = false;
@@ -32,12 +31,10 @@ ParseState::parse_position DeclarationParseState::parse(
 
 // synonym (',' synonym)*
 ParseState::parse_position SynonymParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    const std::vector<std::string> &tokens, parse_position itr, Query *query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
-  if (*itr != "Select" && *itr != ",") ThrowException();
+  if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
   itr++;
   if (!Parser::is_ident(*itr)) ThrowException();
   query->add_selected_synonym(*itr);
@@ -47,9 +44,8 @@ ParseState::parse_position SynonymParseState::parse(
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
 ParseState::parse_position SuchThatParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    const std::vector<std::string> &tokens, parse_position itr, Query *query) {
+  if (itr == tokens.end()) ThrowException();
   if (*itr++ != "such") ThrowException();
   if (*itr++ != "that") ThrowException();
 
@@ -67,9 +63,8 @@ ParseState::parse_position SuchThatParseState::parse(
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 ParseState::parse_position PatternParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position itr,
-    Query *query) {
+    const std::vector<std::string> &tokens, parse_position itr, Query *query) {
+  if (itr == tokens.end()) ThrowException();
   if (*itr++ != "pattern") ThrowException();
   // TODO(jl): replace with check that it is syn-assign
   if (!Parser::is_ident(*itr++)) ThrowException();

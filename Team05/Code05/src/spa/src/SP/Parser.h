@@ -3,6 +3,7 @@
 #include <unordered_set>
 #include <memory>
 #include <vector>
+#include <string>
 
 #include "Lexer.h"
 #include "models/AST/TNode.h"
@@ -20,6 +21,7 @@ class Parser {
 
     // temporary for simplified pattern matching
     static std::unique_ptr<ast::ExprNode> ParseExpr(std::string expr);
+
  private:
     std::unique_ptr<Lexer> lexer_;
     int current_tok_;

@@ -21,6 +21,11 @@ class ProgramNode : public TNode {  // root node
   inline void add_proc(std::unique_ptr<ProcNode> proc) {
     procs_.push_back(std::move(proc));
   }
+  inline std::vector<std::unique_ptr<ProcNode>>& get_children() {
+    return procs_;
+  }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
  private:
   std::vector<std::unique_ptr<ProcNode>> procs_;

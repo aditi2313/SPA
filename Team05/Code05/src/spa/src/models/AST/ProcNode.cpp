@@ -1,3 +1,9 @@
 #include "ProcNode.h"
 
-namespace ast {}  // namespace ast
+#include "SP/visitors/TNodeVisitor.h"
+
+namespace ast {
+void ProcNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitProc(this);
+}
+}  // namespace ast

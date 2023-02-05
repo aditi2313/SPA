@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 #include <functional>
+#include <stdexcept>
 
 #include "models/AST/Token.h"
 

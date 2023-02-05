@@ -14,4 +14,4 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-python@v1
     - run: pip install cpplint
-    - run: cpplint --exclude=./Team05/Code05/src/autotester_gui --exclude=./Team05/Code05/src/autotester --recursive --filter=-legal/copyright,-build/header_guard ./Team05/Code05/src
+    - run: cpplint --exclude=./Team05/Code05/src/autotester_gui --exclude=./Team05/Code05/src/autotester --recursive --filter=-legal/copyright,-build/header_guard,-runtime/references ./Team05/Code05/src

@@ -5,9 +5,11 @@
 #include "../../spa/src/SP/Lexer.h"
 #include "../../spa/src/SP/Parser.h"
 
+#include "../../spa/src/QPS/QPS.h"
+
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
-AbstractWrapper* WrapperFactory::wrapper = 0;
-AbstractWrapper* WrapperFactory::createWrapper() {
+AbstractWrapper *WrapperFactory::wrapper = 0;
+AbstractWrapper *WrapperFactory::createWrapper() {
   if (wrapper == 0) wrapper = new TestWrapper;
   return wrapper;
 }
@@ -25,26 +27,24 @@ void TestWrapper::parse(std::string filename) {
   // call your parser to do the parsing
   // ...rest of your code...
 
-    // Read source program from file
-    std::ifstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Unable to open file";
-        return;
-    }
-    std::stringstream buffer;
-    buffer << file.rdbuf();
-    std::string program = buffer.str();
-    file.close();
+  // Read source program from file
+  std::ifstream file(filename);
+  if (!file.is_open()) {
+    std::cout << "Unable to open file";
+    return;
+  }
+  std::stringstream buffer;
+  buffer << file.rdbuf();
+  std::string program = buffer.str();
+  file.close();
+  
+  sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
+  parser.ParseProgram();
 
-    sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
-    parser.MainLoop();
 }
 
 // method to evaluating a query
-void TestWrapper::evaluate(std::string query, std::list<std::string>& results) {
-  // call your evaluator to evaluate the query here
-  // ...code to evaluate query...
-
-  // store the answers to the query in the results list (it is initially empty)
-  // each result must be a string.
+void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
+  qps::QPS qps;
+  qps.evaluate(query, results);
 }

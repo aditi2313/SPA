@@ -20,10 +20,24 @@ TEST_CASE("Test Modifies by variable Filter") {
 
   vector<vector<string>> result_variables = {{"a", "b", "c"}, {"a", "b"}};
   auto table = InitialiseModifiesTestTable(variables);
-  std::unordered_set<string> filtered = {"a"};
+  std::unordered_set < string > filtered = {"a"};
   filter::ModifiesFilterByVariable variable_filter(filtered);
   auto new_table = variable_filter.FilterTable(std::move(table));
   auto expected = InitialiseModifiesTestTable(result_variables);
+  REQUIRE(*expected == *new_table);
+}
+
+TEST_CASE("Test ModifiesFilterByLine") {
+  vector<vector<string>> variables = {
+      {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
+
+  vector<vector<string>> result_variables = {{"a", "b", "c"}};
+  auto table = InitialiseModifiesTestTable(variables);
+  filter::ModifiesFilterByLine line_filter(0);
+
+  auto new_table = line_filter.FilterTable(std::move(table));
+  auto expected = InitialiseModifiesTestTable(result_variables);
+
   REQUIRE(*expected == *new_table);
 }
 

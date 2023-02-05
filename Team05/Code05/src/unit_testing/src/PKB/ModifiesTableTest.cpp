@@ -16,6 +16,6 @@ TEST_CASE("Test ModifiesTable") {
   SECTION("Retrieving ModifiesTable row") {
     ModifiesData retrieved_modifies_data = modifies_table.get_row(5);
     REQUIRE(((retrieved_modifies_data.get_line() == 10) &&
-             (retrieved_modifies_data.get_variables().at(0) == "a")));
+        (retrieved_modifies_data.get_variables().at(0) == "a")));
   };
 }

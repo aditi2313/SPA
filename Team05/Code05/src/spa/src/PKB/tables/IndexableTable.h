@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 
+#include "PKB/data/AssignData.h"
 #include "PKB/data/ModifiesData.h"
 #include "PKB/tables/IndexableTable.h"
 
@@ -22,7 +23,7 @@ class IndexableTable {
 
   inline void add_row(int line, T row) {
     id_map_[line] = rows_.size();
-    rows_.push_back(row);
+    rows_.push_back(std::move(row));
   }
   inline T get_row(int num) { return rows_.at(id_map_.at(num)); }
 
@@ -53,6 +54,7 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
+typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
 
 template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

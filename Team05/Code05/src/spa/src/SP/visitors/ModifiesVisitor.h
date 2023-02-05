@@ -1,6 +1,8 @@
 #pragma once
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "SP/visitors/TNodeVisitor.h"
@@ -8,7 +10,7 @@
 namespace sp {
 class ModifiesVisitor : public TNodeVisitor {
  public:
-  ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
+  explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : TNodeVisitor(std::move(pkb_ptr)) {}
 
   void VisitProgram(ast::ProgramNode* program_node);

@@ -5,8 +5,8 @@
 #include <catch.hpp>
 
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/AssignVisitor.h"
+#include "SP/visitors/ModifiesVisitor.h"
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/stmt_node/StmtNode.h"
@@ -36,7 +36,8 @@ TEST_CASE("1st Test") {
       std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
   std::unique_ptr<ast::PlusNode> plus1 =
       std::make_unique<ast::PlusNode>(std::move(minus1), std::move(const1));
-  ast::AssignNode assign1 = ast::AssignNode(std::move(var1), std::move(plus1), 3);
+  ast::AssignNode assign1 =
+      ast::AssignNode(std::move(var1), std::move(plus1), 3);
   sp::AssignVisitor av(std::move(mv.EndVisit()));
   av.VisitAssign(&assign1);
 

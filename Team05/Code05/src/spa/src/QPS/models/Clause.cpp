@@ -21,7 +21,7 @@ QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
 
   auto data = result->get_result()->get_row(line);
   for (auto var : data.get_variables()) {
-    query_result.add_query_result(models::EntityStub(var));
+    query_result.add_query_result(models::Entity(var));
   }
 
   return query_result;

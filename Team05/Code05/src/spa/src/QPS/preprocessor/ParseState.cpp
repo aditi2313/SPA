@@ -4,7 +4,7 @@
 
 #include "Parser.h"
 #include "common/Exceptions.h"
-#include "models/EntityStub.h"
+#include "models/Entity.h"
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
@@ -14,7 +14,7 @@ std::unique_ptr<Query> DeclarationParseState::parse(
     std::unique_ptr<Query> query) {
   if (itr == tokens.end() || !Parser::is_design_entity(*itr)) ThrowException();
 
-  models::EntityStub design_entity = Parser::get_design_entity(*itr);
+  models::Entity design_entity = Parser::get_design_entity(*itr);
   bool has_set_one_synonym = false;
   itr++;
   while (itr != tokens.end() && *itr != ";") {

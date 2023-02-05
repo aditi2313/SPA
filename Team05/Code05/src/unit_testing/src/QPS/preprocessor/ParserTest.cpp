@@ -7,7 +7,7 @@ using namespace qps; // NOLINT
 
 // Helper method for testing
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<std::string, models::EntityStub>> synonyms,
+    std::vector<std::pair<std::string, models::Entity>> synonyms,
     std::vector<std::string> selected_synonyms
 ) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
@@ -54,7 +54,7 @@ TEST_CASE("Test Parser methods") {
   };
 }
 
-// TODO(JL): Replace EntityStub
+// TODO(JL): Replace Entity
 TEST_CASE("Test ParseQuery") {
   Parser parser;
 
@@ -62,7 +62,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "procedure p; Select p";
     std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
     std::unique_ptr<Query> expected_query = BuildQuery(
-        {{"p", models::EntityStub()}},
+        {{"p", models::Entity()}},
         {"p"});
 
     REQUIRE(*actual_query == *expected_query);
@@ -72,7 +72,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "variable v; Select v such that Modifies(6, v)";
     std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
     std::unique_ptr<Query> expected_query = BuildQuery(
-        {{"v", models::EntityStub()}},
+        {{"v", models::Entity()}},
         {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
@@ -89,7 +89,7 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(_, \"x + y\") pattern a(_, \"x\")";
     std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
     std::unique_ptr<Query> expected_query = BuildQuery(
-        {{"v", models::EntityStub()}, {"p", models::EntityStub()}},
+        {{"v", models::Entity()}, {"p", models::Entity()}},
         {"v", "p"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
@@ -113,7 +113,7 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
     std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
     std::unique_ptr<Query> expected_query = BuildQuery(
-        {{"v", models::EntityStub()}, {"p", models::EntityStub()}},
+        {{"v", models::Entity()}, {"p", models::Entity()}},
         {"v", "p"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));

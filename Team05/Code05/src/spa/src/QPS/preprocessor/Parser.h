@@ -8,7 +8,7 @@
 #include "../models/Query.h"
 #include "../models/Clause.h"
 #include "ParseState.h"
-#include "models/EntityStub.h"
+#include "models/Entity.h"
 #include "common/Exceptions.h"
 
 namespace qps {
@@ -34,7 +34,7 @@ class Parser {
         != design_entity_identifiers_.end();
   }
 
-  static models::EntityStub get_design_entity(std::string identifier) {
+  static models::Entity get_design_entity(std::string identifier) {
     return design_entity_identifiers_.at(identifier);
   }
 
@@ -60,18 +60,18 @@ class Parser {
  private:
   std::vector<std::unique_ptr<ParseState>> states_{};
 
-  static inline std::unordered_map<std::string, models::EntityStub>
+  static inline std::unordered_map<std::string, models::Entity>
       design_entity_identifiers_{
-      {"stmt", models::EntityStub()},
-      {"read", models::EntityStub()},
-      {"print", models::EntityStub()},
-      {"call", models::EntityStub()},
-      {"while", models::EntityStub()},
-      {"if", models::EntityStub()},
-      {"assign", models::EntityStub()},
-      {"variable", models::EntityStub()},
-      {"constant", models::EntityStub()},
-      {"procedure", models::EntityStub()},
+      {"stmt", models::Entity()},
+      {"read", models::Entity()},
+      {"print", models::Entity()},
+      {"call", models::Entity()},
+      {"while", models::Entity()},
+      {"if", models::Entity()},
+      {"assign", models::Entity()},
+      {"variable", models::Entity()},
+      {"constant", models::Entity()},
+      {"procedure", models::Entity()},
   };
 };
 }  // namespace qps

@@ -13,7 +13,7 @@ void TestErrorCase(ParseState &state, std::vector<std::string> tokens) {
       state.parse(tokens, itr, std::move(query)), PqlSyntaxErrorException);
 }
 
-// TODO(jl): Replace EntityStub
+// TODO(jl): Replace Entity
 TEST_CASE("Test DeclarationParseState") {
   DeclarationParseState state;
 
@@ -23,7 +23,7 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
 
-    REQUIRE(query->get_synonym("v") == models::EntityStub());
+    REQUIRE(query->get_synonym("v") == models::Entity());
     REQUIRE(itr == tokens.end());
   };
 

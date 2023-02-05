@@ -11,13 +11,13 @@
 namespace sp {
 class TNodeVisitor {
  public:
-  explicit TNodeVisitor(std::unique_ptr<pkb::PKBWrite> pkb_ptr) {}
+  explicit TNodeVisitor(std::unique_ptr<pkb::PKBWrite> pkb_ptr) : pkb_ptr_(std::move(pkb_ptr)) {}
 
   virtual void VisitProgram(ast::ProgramNode* program_node) = 0;
 
   virtual void VisitProc(ast::ProcNode* proc_node) = 0;
 
-  virtual void VisitAssign(ast::ProcNode* proc_node) = 0;
+  virtual void VisitAssign(ast::AssignNode* assign_node) = 0;
 
   virtual void VisitRead(ast::ReadNode* read_node) = 0;
 
@@ -44,6 +44,6 @@ class TNodeVisitor {
   virtual void VisitMod(ast::ModNode* mod_node) = 0;
 
  private:
-  std::unique_ptr<pkb::PKBWrite> pkb_ptr;
+  std::unique_ptr<pkb::PKBWrite> pkb_ptr_;
 };
 }  // namespace sp

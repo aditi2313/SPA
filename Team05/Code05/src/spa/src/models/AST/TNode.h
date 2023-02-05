@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SP/TNodeVisitor.h"
+#include "SP/visitors/TNodeVisitor.h"
 
 namespace ast {
 class TNode {

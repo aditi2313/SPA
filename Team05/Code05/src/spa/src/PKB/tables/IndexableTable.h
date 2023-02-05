@@ -19,7 +19,7 @@ namespace pkb {
 template<class T>
 class IndexableTable {
  public:
-  IndexableTable() {}
+  IndexableTable() = default;
 
   inline void add_row(int line, T row) {
     id_map_[line] = rows_.size();

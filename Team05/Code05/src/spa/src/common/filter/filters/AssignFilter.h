@@ -34,7 +34,7 @@ namespace filter {
     class AssignFilterByVariable : public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
     public:
         explicit AssignFilterByVariable(std::string variable)
-                : variable_(std::move(variable)) {}
+                : variable_(variable) {}
 
         AssignTablePtr FilterTable(AssignTablePtr) override;
 

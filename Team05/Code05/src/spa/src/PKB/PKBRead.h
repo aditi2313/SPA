@@ -51,6 +51,7 @@ class PKBRead {
   const std::set<int>& get_stmts() { return relation_table_->stmts_; }
   const std::set<int>& get_calls() { return relation_table_->calls_; }
   const std::set<int>& get_assign() { return relation_table_->assign_; }
+  const std::set<int>& get_print() { return relation_table_->print_; }
 
   const std::set<std::string>& get_procedures() {
     return relation_table_->procedures_;

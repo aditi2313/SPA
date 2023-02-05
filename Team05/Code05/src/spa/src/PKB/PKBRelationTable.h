@@ -36,6 +36,7 @@ class PKBRelationTable {
   std::set<int> assign_;
   std::set<std::string> variables_;
   std::set<std::string> procedures_;
+  std::set<int> print_;
 
   // ptr needed as Assign data contains a unique ptr
   // Without the use of a pointer

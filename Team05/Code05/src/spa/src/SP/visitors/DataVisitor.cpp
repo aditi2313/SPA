@@ -52,7 +52,6 @@ void DataVisitor::VisitPlus(ast::PlusNode* plus_node) {
 void DataVisitor::VisitMinus(ast::MinusNode* node) {
   node->get_expr()->AcceptVisitor(this);
   node->get_term()->AcceptVisitor(this);
-
 }
 void DataVisitor::VisitTimes(ast::TimesNode* node) {
   node->get_factor()->AcceptVisitor(this);

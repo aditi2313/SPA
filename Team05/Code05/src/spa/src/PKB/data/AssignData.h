@@ -13,7 +13,7 @@ class AssignData {
   AssignData(std::string variable, int line,
              std::unique_ptr<ast::ExprNode> expression);
 
-  bool TestExpression(std::unique_ptr<ast::ExprNode> other_node) {
+  bool TestExpression(const std::unique_ptr<ast::ExprNode>& other_node) {
     return other_node->DeepEquals(*expression_);
   }
 

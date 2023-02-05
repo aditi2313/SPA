@@ -29,7 +29,7 @@ AssignTablePtr AssignFilterByExpression::FilterTable(AssignTablePtr assign) {
 
   for (int line : assign->get_indexes()) {
     auto assign_data = assign->get_row(line);
-    if (assign_data->TestExpression(expr_->Copy())) {
+    if (assign_data->TestExpression(expr_)) {
       result->add_row(line, assign_data);
     }
   }

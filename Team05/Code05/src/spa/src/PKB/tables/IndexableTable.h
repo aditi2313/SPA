@@ -54,7 +54,7 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
-typedef IndexableTable<AssignData> AssignTable;
+typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
 
 template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

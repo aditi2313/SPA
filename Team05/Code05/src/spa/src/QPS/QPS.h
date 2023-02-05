@@ -2,6 +2,7 @@
 
 #include <string>
 #include <list>
+#include <memory>
 
 #include "PKB/PKBRead.h"
 
@@ -14,7 +15,9 @@ class QPS {
 
   // Overloaded function to use for integration tests
   // where we inject our own PKB
-  void evaluate(std::string query, std::list<std::string> &results, std::unique_ptr<pkb::PKBRead> &pkb);
-
+  void evaluate(
+      std::string query,
+      std::list<std::string> &results,
+      std::unique_ptr<pkb::PKBRead> &pkb);
 };
 }  // namespace qps

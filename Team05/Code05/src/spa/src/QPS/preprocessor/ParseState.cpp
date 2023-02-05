@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "ParseState.h"
 
 #include "Parser.h"
@@ -7,7 +9,9 @@
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
 std::unique_ptr<Query> DeclarationParseState::parse(
-    const std::vector<std::string> &tokens, parse_position &itr, std::unique_ptr<Query> query) {
+    const std::vector<std::string> &tokens,
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
   if (itr == tokens.end() || !Parser::is_design_entity(*itr)) ThrowException();
 
   models::EntityStub design_entity = Parser::get_design_entity(*itr);
@@ -32,7 +36,9 @@ std::unique_ptr<Query> DeclarationParseState::parse(
 
 // synonym (',' synonym)*
 std::unique_ptr<Query> SynonymParseState::parse(
-    const std::vector<std::string> &tokens, parse_position &itr, std::unique_ptr<Query> query) {
+    const std::vector<std::string> &tokens,
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
   if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
@@ -46,7 +52,9 @@ std::unique_ptr<Query> SynonymParseState::parse(
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
 std::unique_ptr<Query> SuchThatParseState::parse(
-    const std::vector<std::string> &tokens, parse_position &itr, std::unique_ptr<Query> query) {
+    const std::vector<std::string> &tokens,
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
   if (itr == tokens.end()) ThrowException();
   if (*itr++ != "such") ThrowException();
   if (*itr++ != "that") ThrowException();
@@ -66,7 +74,9 @@ std::unique_ptr<Query> SuchThatParseState::parse(
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 std::unique_ptr<Query> PatternParseState::parse(
-    const std::vector<std::string> &tokens, parse_position &itr, std::unique_ptr<Query> query) {
+    const std::vector<std::string> &tokens,
+    parse_position &itr,
+    std::unique_ptr<Query> query) {
   if (itr == tokens.end()) ThrowException();
   if (*itr++ != "pattern") ThrowException();
   // TODO(jl): replace with check that it is syn-assign

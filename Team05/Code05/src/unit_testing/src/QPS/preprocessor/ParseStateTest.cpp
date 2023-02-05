@@ -27,7 +27,8 @@ TEST_CASE("Test DeclarationParseState") {
     REQUIRE(itr == tokens.end());
   };
 
-  SECTION("Invalid design entity identifier should throw PqlSyntaxErrorException") {
+  SECTION("Invalid design entity identifier should "
+          "throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"var", "v", ";"});
   }
 
@@ -55,8 +56,7 @@ TEST_CASE("Test SynonymParseState") {
     REQUIRE(query->get_selected_synonyms().at(0) == "v");
     REQUIRE(itr == tokens.end());
   }
-
-  //TODO(JL): Add some error cases here
+  // TODO(JL): Add some error cases here
 }
 
 TEST_CASE("Test SuchThatParseState") {

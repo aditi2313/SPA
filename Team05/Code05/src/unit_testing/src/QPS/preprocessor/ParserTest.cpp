@@ -108,9 +108,9 @@ TEST_CASE("Test ParseQuery") {
       "and multiple such-that and pattern clauses and many random whitespaces "
       "should parse correctly") {
     std::string query_string = "variable    v;    procedure    p; "
-                               "Select v,   p    such    that    Modifies(  6, v) "
+                               "Select v, p  such  that  Modifies(  6, v) "
                                "  such      that    Modifies(3, v) "
-                               "pattern    a(_, \"x + y\")    pattern     a(_,  \"x\")";
+                               "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
     std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
     std::unique_ptr<Query> expected_query = BuildQuery(
         {{"v", models::EntityStub()}, {"p", models::EntityStub()}},
@@ -127,7 +127,8 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
-  SECTION("Query with wrong order of states should throw PqlSyntaxErrorException") {
+  SECTION("Query with wrong order of states should "
+          "throw PqlSyntaxErrorException") {
     // Pattern should not be before such-that
     std::string query_string = "variable v; procedure p; "
                                "Select v, p pattern a(_, \"x + y\") "

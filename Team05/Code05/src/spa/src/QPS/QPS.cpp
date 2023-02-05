@@ -1,3 +1,6 @@
+#include <memory>
+#include <utility>
+
 #include "QPS.h"
 
 #include "QPS/preprocessor/Parser.h"
@@ -12,7 +15,7 @@ void QPS::evaluate(std::string query, std::list<std::string> &results) {
   std::unique_ptr<Query> query_object = parser.ParseQuery(query);
 
   Validator validator;
-  //TODO(Sarthak): something like validator.validate(query_object) here
+  // TODO(Sarthak): something like validator.validate(query_object) here
 
   Evaluator evaluator;
   QueryResult result = evaluator.EvaluateQuery(std::move(query_object));
@@ -22,19 +25,21 @@ void QPS::evaluate(std::string query, std::list<std::string> &results) {
 }
 
 // Used for integration tests
-void QPS::evaluate(std::string query, std::list<std::string> &results, std::unique_ptr<pkb::PKBRead> &pkb) {
+void QPS::evaluate(
+    std::string query,
+    std::list<std::string> &results,
+    std::unique_ptr<pkb::PKBRead> &pkb) {
   Parser parser;
   std::unique_ptr<Query> query_object = parser.ParseQuery(query);
 
   Validator validator;
-  //TODO(Sarthak): something like validator.validate(query_object) here
+  // TODO(Sarthak): something like validator.validate(query_object) here
 
   Evaluator evaluator;
-  evaluator.inject_pkb(pkb); // Inject testing PKB here
+  evaluator.inject_pkb(pkb);  // Inject testing PKB here
   QueryResult result = evaluator.EvaluateQuery(std::move(query_object));
 
-//  Formatter formatter;
-//  results = formatter.FormatQuery(result);
+  Formatter formatter;
+  results = formatter.FormatQuery(result);
 }
-
-}
+}  // namespace qps

@@ -27,27 +27,48 @@ std::unique_ptr<PKBRead> InitializePKB(
     pkb_write.AddModifiesData(line, variables);
   }
 
-  pkb_write.EndWrite();
-  return std::make_unique<PKBRead>(std::move(table));
+  return std::make_unique<PKBRead>(pkb_write.EndWrite());
 }
 
 TEST_CASE("Test PKB and QPS integration for Modifies clause") {
   QPS qps;
   std::unique_ptr<PKBRead> pkb = InitializePKB(
       {
-          {10, {"a", "b", "c"}}
-      }
-  );
+          {10, {"a", "b", "c"}},
+          {25, {"somebody"}},
+          {30, {"once", "told", "me"}}
+      });
 
-  SECTION("Modifies(statement, variable) should return correct results") {
+  SECTION("Modifies(statement, variable) should return correct results 1") {
     std::string query_string = "variable v; Select v such that Modifies(10, v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"a, b, c"};
+    std::list<std::string> expected_results{"a", "b", "c"};
 
     REQUIRE(actual_results == expected_results);
   }
 
+  SECTION("Modifies(statement, variable) should return correct results 2") {
+    std::string query_string = "variable v; Select v such that Modifies(25, v)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"somebody"};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Modifies(statement, variable) should return correct results 3") {
+    std::string query_string = "variable v; Select v such that Modifies(30, v)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"once", "told", "me"};
+
+    REQUIRE(actual_results == expected_results);
+  }
 }

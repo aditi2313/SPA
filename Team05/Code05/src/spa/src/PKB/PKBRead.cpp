@@ -15,13 +15,10 @@ std::unique_ptr<PKBResult<T>> create_result(
 
 std::unique_ptr<PKBResult<ModifiesTable>> PKBRead::Modifies(
     IndexableFilterPtr<ModifiesData> filter) {
-  auto table_copy = relation_table_->modifies_table_.copy();
   auto result_table =
-      filter->FilterTable(std::move(table_copy));
-  auto result = std::make_unique<ModifiesTable>();
+      filter->FilterTable(std::move(relation_table_->modifies_table_.copy()));
   return create_result(
-      std::move(relation_table_), std::move(result_table)
-  );
+      std::move(relation_table_), std::move(result_table));
 }
 
 std::unique_ptr<PKBResult<AssignTable>> PKBRead::Assigns(

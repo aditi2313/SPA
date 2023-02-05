@@ -30,8 +30,5 @@ class StmtRef : public Argument {
 };
 
 // synonym | '_' | "IDENT"
-class EntRef : public Argument {
-
-};
-
+class EntRef : public Argument {};
 }  // namespace qps

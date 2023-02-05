@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "common/Exceptions.h"
 
 #include "../models/Query.h"

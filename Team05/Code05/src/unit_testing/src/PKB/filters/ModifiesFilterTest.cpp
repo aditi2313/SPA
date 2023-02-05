@@ -33,7 +33,6 @@ TEST_CASE("Test ModifiesFilterByLine") {
 
   vector<vector<string>> result_variables = {{"a", "b", "c"}};
   auto table = InitialiseModifiesTestTable(variables);
-  
   filter::ModifiesFilterByLine line_filter(0);
 
   auto new_table = line_filter.FilterTable(std::move(table));

@@ -8,7 +8,7 @@ namespace models {
 class EntityStub {
  public:
   EntityStub() {}
-  EntityStub(std::string ident) : ident_(ident) {}
+  explicit EntityStub(std::string ident) : ident_(ident) {}
 
   // TODO(JL): be replaced with real value in real Entity class
   operator std::string() const { return ident_; }

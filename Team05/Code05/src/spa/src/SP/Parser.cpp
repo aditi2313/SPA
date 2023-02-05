@@ -66,7 +66,7 @@ std::unique_ptr<ast::StmtLstNode> Parser::ParseStmtLst() {
          current_tok_ == kTokPrint || current_tok_ == kTokCall ||
          current_tok_ == kTokWhile || current_tok_ == kTokIf ||
          current_tok_ == kTokIdent) {
-    stmt_nodes.push_back(std::move(ParseStmt(stmt_nodes.size() + 1)));
+    stmt_nodes.push_back(std::move(ParseStmt(ctr++)));
     GetNextTok();
   }
 

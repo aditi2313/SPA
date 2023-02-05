@@ -6,6 +6,7 @@ void DataVisitor::VisitProgram(ast::ProgramNode* program_node) {
   for (auto& child : program_node->get_children()) {
     child->AcceptVisitor(this);
   }
+  int n;
 }
 void DataVisitor::VisitProc(ast::ProcNode* proc_node) {
   pkb_ptr_->add_procedure(proc_node->get_name());
@@ -38,12 +39,32 @@ void DataVisitor::VisitCall(ast::CallNode* call_node) {
 void DataVisitor::VisitFactor(ast::FactorNode* factor_node) {}
 void DataVisitor::VisitExpr(ast::ExprNode* expr_node) {}
 void DataVisitor::VisitTerm(ast::TermNode* term_node) {}
-void DataVisitor::VisitVar(ast::VarNode* var_node) {}
-void DataVisitor::VisitConst(ast::ConstNode* const_node) {}
-void DataVisitor::VisitPlus(ast::PlusNode* plus_node) {}
-void DataVisitor::VisitMinus(ast::MinusNode* minus_node) {}
-void DataVisitor::VisitTimes(ast::TimesNode* times_node) {}
-void DataVisitor::VisitDiv(ast::DivNode* div_node) {}
-void DataVisitor::VisitMod(ast::ModNode* mod_node) {}
+void DataVisitor::VisitVar(ast::VarNode* var_node) {
+  pkb_ptr_->add_variable(var_node->get_name());
+}
+void DataVisitor::VisitConst(ast::ConstNode* const_node) {
+  pkb_ptr_->add_constant(const_node->get_val());
+}
+void DataVisitor::VisitPlus(ast::PlusNode* plus_node) {
+  plus_node->get_expr()->AcceptVisitor(this);
+  plus_node->get_term()->AcceptVisitor(this);
+}
+void DataVisitor::VisitMinus(ast::MinusNode* node) {
+  node->get_expr()->AcceptVisitor(this);
+  node->get_term()->AcceptVisitor(this);
+
+}
+void DataVisitor::VisitTimes(ast::TimesNode* node) {
+  node->get_factor()->AcceptVisitor(this);
+  node->get_term()->AcceptVisitor(this);
+}
+void DataVisitor::VisitDiv(ast::DivNode* node) {
+  node->get_factor()->AcceptVisitor(this);
+  node->get_term()->AcceptVisitor(this);
+}
+void DataVisitor::VisitMod(ast::ModNode* node) {
+  node->get_factor()->AcceptVisitor(this);
+  node->get_term()->AcceptVisitor(this);
+}
 
 }  // namespace sp

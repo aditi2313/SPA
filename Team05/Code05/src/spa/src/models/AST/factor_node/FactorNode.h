@@ -6,9 +6,10 @@
 #include "models/AST/TNode.h"
 
 namespace ast {
-class FactorNode : public TNode {};
 
-class ExprNode : public FactorNode {};
+class ExprNode : public TNode {};
+
+class FactorNode : public ExprNode {};
 
 class TermNode : public ExprNode {};
 

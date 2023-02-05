@@ -16,14 +16,14 @@ namespace filter {
     typedef std::unique_ptr<pkb::AssignTable> AssignTablePtr;
     typedef IndexableFilter<pkb::AssignData> AssignFilter;
 
-    class AssignFilterByLine : public IndexableFilter<pkb::AssignData> {
+    class AssignFilterByLine : public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
     public:
         explicit AssignFilterByLine(int line) : line_(line) {}
 
         inline AssignTablePtr FilterTable(AssignTablePtr table) override {
             AssignTablePtr result = std::make_unique<pkb::AssignTable>();
             auto row = table->get_row(line_);
-            result->add_row(row.get_line(), row);
+            result->add_row(row->get_line(), row);
             return result;
         }
 
@@ -31,7 +31,7 @@ namespace filter {
         int line_;
     };
 
-    class AssignFilterByVariable : public IndexableFilter<pkb::AssignData> {
+    class AssignFilterByVariable : public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
     public:
         explicit AssignFilterByVariable(std::string variable)
                 : variable_(std::move(variable)) {}

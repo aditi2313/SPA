@@ -16,7 +16,7 @@ namespace filter {
         for (int line : assign->get_indexes()) {
             auto assign_data = assign->get_row(line);
             std::string name = assign_data->get_variable();
-            if (variable_.find(name) != variable_.end()) {
+            if (variable_ == name) {
                 result->add_row(line, assign_data);
                 break;
             }

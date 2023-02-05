@@ -8,7 +8,7 @@ Query Validator::validator(Query query) {
   std::vector<std::unique_ptr<Clause>> clauses = std::move(query.get_clauses());
   std::vector<std::string> synonyms = query.Query::get_selected_synonyms();
 
-  if (isWildcard(std::move(clauses)) ||
+  if (isWildcard(std::move(clauses)) &&
       SynonymCheck(std::move(clauses), (synonyms))) {
     return query;
   } else {

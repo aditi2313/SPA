@@ -102,6 +102,7 @@ TEST_CASE("Semantically incorrect") {
   std::string query_string =
       "variable v; select v such that modifies(v, 6)";
   Query query = parser.ParseQuery(query_string);
-  REQUIRE_THROWS_AS(Validator::validator(std::move(query)), PqlSemanticErrorException);
+  REQUIRE_THROWS_AS(Validator::validator(std::move(query)),
+      PqlSemanticErrorException);
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "models/models.h"
 
 namespace qps {
 // An argument for a clause.
@@ -14,7 +15,20 @@ class Argument {
   inline bool operator==(const Argument &other) const {
     return arg == other.arg;
   }
+
+  std::string get_arg() {
+    return arg;
+  }
  private:
   std::string arg;
 };
+
+// synonym | '_' | INTEGER
+class StmtRef : public Argument {
+ public:
+  models::stmt stmt_;
+};
+
+// synonym | '_' | "IDENT"
+class EntRef : public Argument {};
 }  // namespace qps

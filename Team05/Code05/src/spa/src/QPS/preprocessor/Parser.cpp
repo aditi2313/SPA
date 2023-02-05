@@ -1,5 +1,5 @@
 #include <sstream>
-#include <iostream>
+#include <utility>
 
 #include "Parser.h"
 
@@ -51,8 +51,8 @@ std::vector<std::string> Parser::PreprocessQueryString(
 }
 
 // Parses query based on states
-Query Parser::ParseQuery(std::string query_string) {
-  Query query;
+std::unique_ptr<Query> Parser::ParseQuery(std::string query_string) {
+  std::unique_ptr<Query> query = std::make_unique<Query>();
   std::vector<std::string> tokens = PreprocessQueryString(query_string);
 
   int current_state_index = 0;
@@ -62,7 +62,8 @@ Query Parser::ParseQuery(std::string query_string) {
       current_state_index++;
       continue;  // Go to next state
     }
-    itr = states_.at(current_state_index)->parse(tokens, itr, &query);
+    query = states_.at(current_state_index)->parse(
+        tokens, itr, std::move(query));
   }
 
   return query;

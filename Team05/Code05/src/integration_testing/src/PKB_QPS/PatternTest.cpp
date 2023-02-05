@@ -37,8 +37,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
       {
           {"v", 1, "x + y"},
           {"v", 2, "abra + cadabra"}
-      }
-  );
+      });
 
   SECTION("pattern a(_, \"x+y\") should return correct results") {
     std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
@@ -50,12 +49,12 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
   }
 
   SECTION("pattern a(_, \"x+y\") should return correct results") {
-    std::string query_string = "assign a; Select a pattern a(_, \"abra + cadabra\")";
+    std::string query_string = "assign a; Select a "
+                               "pattern a(_, \"abra + cadabra\")";
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"2"};
     REQUIRE(actual_results == expected_results);
   }
-
 }

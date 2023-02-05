@@ -1,4 +1,5 @@
 #include <utility>
+#include <string>
 
 #include "Clause.h"
 #include "PKB/data/ModifiesData.h"

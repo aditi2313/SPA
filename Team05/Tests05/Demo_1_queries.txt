@@ -1,4 +1,4 @@
-1 - Modifies( stmt, variable_syn )
+1 - comment
 variable v;
 Select v such that Modifies(1, v)
 x

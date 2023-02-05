@@ -1,0 +1,20 @@
+1 - Modifies( stmt, variable_syn )
+variable v;
+Select v such that Modifies(1, v)
+x
+5000
+2 - comment
+variable v;
+Select v such that Modifies(2, v)
+y
+5000
+3 - comment
+assign a; 
+Select a pattern a(_, "a + b")
+5
+5000
+4 - comment
+assign a; 
+Select a pattern a(_, "a - b")
+7
+5000

@@ -22,7 +22,7 @@ namespace filter {
 
         inline AssignTablePtr FilterTable(AssignTablePtr table) override {
             AssignTablePtr result = std::make_unique<pkb::AssignTable>();
-            table->get_row(line_);
+            auto row = table->get_row(line_);
             result->add_row(row.get_line(), row);
             return result;
         }

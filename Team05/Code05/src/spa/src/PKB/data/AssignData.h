@@ -13,8 +13,9 @@ class AssignData {
   AssignData(std::string variable, int line,
              std::unique_ptr<ast::ExprNode> expression);
 
-// TODO(Gab) Make test expression accept a Visitor for pattern matching
-  bool TestExpression() { return true; }
+  bool TestExpression(std::unique_ptr<ast::ExprNode> other_node) {
+    return other_node->DeepEquals(*expression_);
+  }
 
   inline int get_line() { return line_; }
 

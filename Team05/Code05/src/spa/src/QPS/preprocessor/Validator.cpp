@@ -4,15 +4,25 @@
 #include <utility>
 namespace qps {
 
-Query Validator::validator(Query query) {
+std::unique_ptr<Query> Validator::converter(std::unique_ptr<Query> query) {
+  Query nounique = std::move(*query);
+
+  if (validator(nounique)) {
+    return std::move(query);
+  } else {
+    throw PqlSemanticErrorException("semantic error");
+  }
+}
+
+bool Validator::validator(Query query) {
   std::vector<std::unique_ptr<Clause>> clauses = std::move(query.get_clauses());
   std::vector<std::string> synonyms = query.Query::get_selected_synonyms();
 
   if (isWildcard(std::move(clauses)) &&
       SynonymCheck(std::move(clauses), (synonyms))) {
-    return query;
+    return true;
   } else {
-    throw PqlSemanticErrorException("Semantic error");
+    throw false;
   }
 }
 

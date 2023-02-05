@@ -1,7 +1,7 @@
-#include "Lexer.h"
-
 #include <utility>
 #include <stdexcept>
+
+#include "Lexer.h"
 
 namespace sp {
 

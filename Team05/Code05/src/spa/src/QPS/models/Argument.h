@@ -21,6 +21,8 @@ class Argument {
     return ss.str();
   }
 
+  std::string get_arg() { return arg; }
+
  private:
   std::string arg;
 };

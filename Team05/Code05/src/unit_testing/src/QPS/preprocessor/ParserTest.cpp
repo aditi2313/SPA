@@ -80,6 +80,18 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
+  SECTION("Query with one pattern clauses should parse correctly") {
+    std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
+    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
+    std::unique_ptr<Query> expected_query = BuildQuery(
+        {{"a", models::EntityStub()}},
+        {"a"});
+    expected_query->add_clause(
+        std::make_unique<PatternClause>(Argument("_"), Argument("x+y")));
+
+    REQUIRE(*actual_query == *expected_query);
+  }
+
   SECTION(
       "Query with multiple declarations, multiple synonyms "
       "and multiple such-that and pattern clauses should parse correctly") {

@@ -2,6 +2,8 @@
 
 #include "Clause.h"
 #include "PKB/data/ModifiesData.h"
+#include "SP/Parser.h"
+#include "common/filter/filters/AssignFilter.h"
 
 using namespace filter;  // NOLINT
 
@@ -27,8 +29,29 @@ QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
   return query_result;
 }
 QueryResult PatternClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
-  // TODO(jl): replace with pattern method
-  throw new NotImplementedException();
+  QueryResult query_result;
+
+  // preprocess expression string to insert whitespace
+  std::string expression = "";
+  for (char c : arg2.get_arg()) {
+    if (c == '+' || c == '-') {
+      expression += " " + std::string(1, c) + " ";
+    } else {
+      expression += c;
+    }
+  }
+
+  auto ASTNode = sp::Parser::ParseExpr(expression);
+  auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
+  auto result = pkb->Assigns(std::move(filter));
+
+  auto data = result->get_result()->get_indexes();
+
+  for (auto var : data) {
+    query_result.add_query_result(models::EntityStub(std::to_string(var)));
+  }
+
+  return query_result;
 }
 
 Clause::~Clause() = default;

@@ -1,11 +1,15 @@
 #include <Common/Exceptions.h>
 #include <QPS/preprocessor/Validator.h>
 #include <QPS/preprocessor/Parser.h>
-#include <QPS/preprocessor/Parser.cpp>
 
 #include <exception>
 #include <catch.hpp>
-using namespace qps;
+using qps::Argument;
+using qps::ModifiesClause;
+using qps::Validator;
+using qps::Query;
+using qps::Clause;
+using qps::Parser;
 
 void require1(bool b) { REQUIRE(b); }
 
@@ -31,7 +35,7 @@ TEST_CASE("Test isWildcard") {
 
   Query expected_query = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
   expected_query.add_clause(
-      std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
+      std::make_unique<qps::ModifiesClause>(Argument("6"), Argument("v")));
 
   std::vector<std::unique_ptr<Clause>>& clauses = expected_query.get_clauses();
   REQUIRE(Validator::isWildcard(std::move(clauses)));
@@ -44,7 +48,7 @@ TEST_CASE("Test invalidWildcard") {
 
     Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
     expected_query2.add_clause(
-        std::make_unique<ModifiesClause>(Argument("_"), Argument("v")));
+        std::make_unique<qps::ModifiesClause>(Argument("_"), Argument("v")));
 
     std::vector<std::unique_ptr<Clause>>& clauses2 =
         expected_query2.get_clauses();
@@ -86,7 +90,8 @@ TEST_CASE("Test SynonymCheck") {
 TEST_CASE("Semantically correct") { 
     Parser parser;
   SECTION("All is valid");
-    std::string query_string = "variable v; select v such that modifies(v, 6)";
+    std::string query_string = 
+        "variable v; select v such that modifies(v, 6)";
     Query query  = parser.ParseQuery(query_string);
     Query result = Validator::validator(std::move(query));
     REQUIRE(result == query);

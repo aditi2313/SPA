@@ -11,15 +11,14 @@ namespace pkb {
 class AssignData {
  public:
   AssignData(std::string variable, int line,
-             std::unique_ptr<ast::ExprNode> expression)
-      : variable_(variable), line_(line) {
-    expression_ = std::move(expression);
-  }
+             std::unique_ptr<ast::ExprNode> expression);
 
-  // TODO(Gab) Make test expression accept a Visitor for pattern matching
+// TODO(Gab) Make test expression accept a Visitor for pattern matching
   bool TestExpression() { return true; }
 
-  int get_line() { return line_; }
+  inline int get_line() { return line_; }
+
+  inline const std::string& get_variable() { return variable_; }
 
  private:
   std::string variable_;

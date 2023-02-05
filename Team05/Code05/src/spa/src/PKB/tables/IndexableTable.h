@@ -19,7 +19,7 @@ namespace pkb {
 template <class T>
 class IndexableTable {
  public:
-  IndexableTable() {}
+  IndexableTable() = default;
 
   inline void add_row(int line, T row) {
     id_map_[line] = rows_.size();
@@ -54,7 +54,7 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
-typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
+typedef IndexableTable<AssignData> AssignTable;
 
 template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

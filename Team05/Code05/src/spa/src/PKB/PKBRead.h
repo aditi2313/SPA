@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -41,6 +42,9 @@ class PKBRead {
 
   std::unique_ptr<PKBResult<AssignTable>> Assigns(
       IndexableFilterPtr<std::shared_ptr<AssignData>>);
+  std::set<std::string> get_variables() { return relation_table_->variables_; }
+
+  std::set<int> get_constants() { return relation_table_->constants_; }
 
  private:
   bool read_end_;

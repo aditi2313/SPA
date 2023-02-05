@@ -19,6 +19,7 @@ class ModifiesData {
   }
 
   inline int get_line() { return line_; }
+
   inline const std::vector<std::string>& get_variables() { return variables_; }
 
  private:

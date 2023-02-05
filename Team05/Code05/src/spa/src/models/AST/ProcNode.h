@@ -15,6 +15,12 @@ class ProcNode : public TNode {
     stmt_lst_ = std::move(stmt_lst);
   }
 
+  inline std::unique_ptr<StmtLstNode>& get_children() { return stmt_lst_; }
+
+  inline std::string get_name() { return proc_name_; }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
  private:
   std::string proc_name_;
   std::unique_ptr<StmtLstNode> stmt_lst_;

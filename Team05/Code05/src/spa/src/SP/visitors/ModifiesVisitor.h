@@ -46,6 +46,6 @@ class ModifiesVisitor : public TNodeVisitor {
   void VisitMod(ast::ModNode* mod_node) {}
 
   // TODO(Gab) Go into call node and get the information
-  void VisitCall(ast::CallNode* call_node){};
+  void VisitCall(ast::CallNode* call_node){}
 };
 }  // namespace sp

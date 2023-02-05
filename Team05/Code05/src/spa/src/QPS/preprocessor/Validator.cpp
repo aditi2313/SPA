@@ -1,7 +1,8 @@
 #pragma once
-#include "Validator.h"
 
 #include <utility>
+#include "Validator.h"
+
 namespace qps {
 
 std::unique_ptr<Query> Validator::converter(std::unique_ptr<Query> query) {
@@ -15,7 +16,7 @@ std::unique_ptr<Query> Validator::converter(std::unique_ptr<Query> query) {
     throw PqlSemanticErrorException("semantic error");
   }*/
 
-  //return query;
+  //  return query;
 }
 
 bool Validator::validator(Query query) {

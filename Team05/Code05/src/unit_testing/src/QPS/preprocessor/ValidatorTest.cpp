@@ -1,6 +1,9 @@
 #include <Common/Exceptions.h>
 #include <QPS/preprocessor/Validator.h>
+#include <QPS/preprocessor/Parser.h>
+#include <QPS/preprocessor/Parser.cpp>
 
+#include <exception>
 #include <catch.hpp>
 using namespace qps;
 
@@ -69,7 +72,8 @@ TEST_CASE("Invalid synonym used") {
   // One undeclared synonym used
   std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
 
-  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"a"});
+  Query expected_query2 = BuildQuery1({{"v", models::EntityStub()}}, {"v"});
+  std::cout << "painful";
   expected_query2.add_clause(
       std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
 
@@ -78,5 +82,13 @@ TEST_CASE("Invalid synonym used") {
   std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
 
   REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
+}
+
+TEST_CASE("semantic error") {
+  Parser parser;
+    SECTION("invalid wildcard");
+    std::string query_string2 = "variable v; select v such that modifies(_, a)";
+    Query query = parser.ParseQuery(query_string2);
+    REQUIRE_THROWS_AS(Validator::validator(std::move(query)), PqlSemanticErrorException);
 }
 

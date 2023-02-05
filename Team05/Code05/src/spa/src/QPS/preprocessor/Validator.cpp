@@ -46,13 +46,16 @@ bool Validator::SynonymCheck(std::vector<std::unique_ptr<Clause>> clauses,
     std::string arg1 = std::move(clause)->getarg1().to_string();
     std::string arg2 = std::move(clause)->getarg1().to_string();
 
+    std::cout << "args all work";
     if (!isdigit(arg1[0]) && !arg1.rfind("\"", 0) == 0) {
       if (std::find(synonyms.begin(), synonyms.end(), arg1) == synonyms.end()) {
+        std::cout << "first arg is false";
         return false;
       }
     }
     if (!isdigit(arg2[0]) && !arg2.rfind("\"", 0) == 0) {
       if (std::find(synonyms.begin(), synonyms.end(), arg2) == synonyms.end()) {
+        std::cout << "second arg is false";
         return false;
       }
     }

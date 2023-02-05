@@ -10,7 +10,7 @@
 namespace qps {
 class Validator {
  public:
-  Query validator(Query query);
+  static Query validator(Query query);
   bool DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
                             std::vector<std::string> synonyms);
   static bool isWildcard(std::vector<std::unique_ptr<Clause>> clauses);

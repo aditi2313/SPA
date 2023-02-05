@@ -27,7 +27,7 @@ class Parser {
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);
   bool ShouldGoToNextState(int current_state_index, std::string token);
-  Query ParseQuery(std::string query_string);
+  std::unique_ptr<Query> ParseQuery(std::string query_string);
 
   static bool is_design_entity(std::string identifier) {
     return design_entity_identifiers_.find(identifier)

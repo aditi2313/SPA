@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "common/Exceptions.h"
 
 #include "../models/Query.h"
@@ -15,10 +16,10 @@ class ParseState {
 
   explicit ParseState(std::string transition) :
       kTransitionKeyword(transition) {}
-  virtual parse_position parse(
+  virtual std::unique_ptr<Query> parse(
       const std::vector<std::string> &tokens,
-      parse_position itr,
-      Query *query) = 0;
+      parse_position &itr,
+      std::unique_ptr<Query> query) = 0;
   virtual ~ParseState() = 0;
  protected:
   const char *kExceptionMessage;
@@ -34,9 +35,9 @@ class DeclarationParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 
-  parse_position parse(const std::vector<std::string> &tokens,
-                       parse_position itr,
-                       Query *query) override;
+  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
+                               parse_position &itr,
+                               std::unique_ptr<Query> query) override;
 };
 
 // synonym (',' synonym)*
@@ -46,9 +47,9 @@ class SynonymParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 
-  parse_position parse(const std::vector<std::string> &tokens,
-                       parse_position itr,
-                       Query *query) override;
+  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
+                               parse_position &itr,
+                               std::unique_ptr<Query> query) override;
 };
 
 // 'such' 'that' relRef
@@ -58,9 +59,9 @@ class SuchThatParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
   }
 
-  parse_position parse(const std::vector<std::string> &tokens,
-                       parse_position itr,
-                       Query *query) override;
+  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
+                               parse_position &itr,
+                               std::unique_ptr<Query> query) override;
 };
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
@@ -70,8 +71,8 @@ class PatternParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
   }
 
-  parse_position parse(const std::vector<std::string> &tokens,
-                       parse_position itr,
-                       Query *query) override;
+  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
+                               parse_position &itr,
+                               std::unique_ptr<Query> query) override;
 };
 }  // namespace qps

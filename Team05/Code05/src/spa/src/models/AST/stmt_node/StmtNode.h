@@ -29,6 +29,8 @@ class AssignNode : public StmtNode {
 
   inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
 
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
  private:
   std::unique_ptr<VarNode> var_;
   std::unique_ptr<ExprNode> expr_;
@@ -42,6 +44,8 @@ class ReadNode : public StmtNode {
 
   inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
  private:
   std::unique_ptr<VarNode> var_;
 };
@@ -53,6 +57,8 @@ class PrintNode : public StmtNode {
   }
 
   inline std::unique_ptr<VarNode>& get_var() { return var_; }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
   // TODO(nhjryan): implement nodes for if-else and while loops
 

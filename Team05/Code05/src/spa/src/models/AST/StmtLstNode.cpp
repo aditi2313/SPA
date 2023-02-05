@@ -1,3 +1,9 @@
 #include "StmtLstNode.h"
 
-namespace ast {}  // namespace ast
+#include "SP/visitors/TNodeVisitor.h"
+
+namespace ast {
+void StmtLstNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitStmtLst(this);
+}
+}  // namespace ast

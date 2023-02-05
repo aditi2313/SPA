@@ -19,10 +19,7 @@ class ProcNode : public TNode {
 
   inline std::string get_name() { return proc_name_; }
 
-  inline std::unique_ptr<sp::TNodeVisitor> AcceptVisitor(
-      std::unique_ptr<sp::TNodeVisitor> visitor) override {
-    visitor->VisitProc(this);
-  }
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
  private:
   std::string proc_name_;

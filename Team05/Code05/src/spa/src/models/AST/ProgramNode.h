@@ -19,10 +19,7 @@ class ProgramNode : public TNode {  // root node
     return procs_;
   }
 
-  inline std::unique_ptr<sp::TNodeVisitor> AcceptVisitor(
-      std::unique_ptr<sp::TNodeVisitor> visitor) override {
-    visitor->VisitProgram(this);
-  }
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
  private:
   std::vector<std::unique_ptr<ProcNode>> procs_;

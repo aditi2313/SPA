@@ -1,3 +1,9 @@
 #include "ProgramNode.h"
 
-namespace ast {}  // namespace ast
+#include "SP/visitors/TNodeVisitor.h"
+
+namespace ast {
+void ProgramNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitProgram(this);
+}
+}  // namespace ast

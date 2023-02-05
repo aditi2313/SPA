@@ -2,6 +2,8 @@
 #include <utility>
 #include <memory>
 #include <string>
+#include <iostream>
+#include <sstream>
 
 #include "Parser.h"
 #include "Lexer.h"
@@ -225,6 +227,33 @@ std::unique_ptr<ast::FactorNode> Parser::ParseFactor() {
         // TODO(aizatazhar): parentheses support
         // TODO(aizatazhar): use custom exception
         throw std::runtime_error("expected an expression");
+    }
+}
+
+std::unique_ptr<ast::ExprNode> Parser::ParseExpr(std::string expr) {
+    std::istringstream iss(expr);
+    std::vector<std::string> tokens;
+    for (std::string token; getline(iss, token, ' ');) {
+        tokens.push_back(token);
+    }
+    if (tokens.size() != 3) {
+        throw std::runtime_error("expected 3 tokens");
+    }
+
+    auto lhs = std::make_unique<ast::VarNode>(
+            ast::VarNode(tokens[0]));
+    auto op = tokens[1][0];
+    auto rhs = std::make_unique<ast::VarNode>(
+            ast::VarNode(tokens[2]));
+
+    if (op == '+') {
+        return std::make_unique<ast::PlusNode>(
+                ast::PlusNode(std::move(rhs), std::move(lhs)));
+    } else if (op == '-') {
+        return std::make_unique<ast::MinusNode>(
+                ast::MinusNode(std::move(rhs), std::move(lhs)));
+    } else {
+        throw std::runtime_error("expected + or - operator");
     }
 }
 }  // namespace sp

@@ -38,6 +38,8 @@ void TestWrapper::parse(std::string filename) {
 
     sp::Parser parser = sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
     parser.ParseProgram();
+
+    auto res = sp::Parser::ParseExpr("a + b");
 }
 
 // method to evaluating a query

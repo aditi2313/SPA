@@ -18,6 +18,8 @@ class Parser {
 
     std::unique_ptr<ast::ProgramNode> ParseProgram();
 
+    // temporary for simplified pattern matching
+    static std::unique_ptr<ast::ExprNode> ParseExpr(std::string expr);
  private:
     std::unique_ptr<Lexer> lexer_;
     int current_tok_;

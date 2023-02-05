@@ -13,33 +13,35 @@
 
 namespace filter {
 
-    typedef std::unique_ptr<pkb::AssignTable> AssignTablePtr;
-    typedef IndexableFilter<pkb::AssignData> AssignFilter;
+typedef std::unique_ptr<pkb::AssignTable> AssignTablePtr;
+typedef IndexableFilter<pkb::AssignData> AssignFilter;
 
-    class AssignFilterByLine : public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
-    public:
-        explicit AssignFilterByLine(int line) : line_(line) {}
+class AssignFilterByLine :
+        public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
+ public:
+    explicit AssignFilterByLine(int line) : line_(line) {}
 
-        inline AssignTablePtr FilterTable(AssignTablePtr table) override {
-            AssignTablePtr result = std::make_unique<pkb::AssignTable>();
-            auto row = table->get_row(line_);
-            result->add_row(row->get_line(), row);
-            return result;
-        }
+    inline AssignTablePtr FilterTable(AssignTablePtr table) override {
+        AssignTablePtr result = std::make_unique<pkb::AssignTable>();
+        auto row = table->get_row(line_);
+        result->add_row(row->get_line(), row);
+        return result;
+    }
 
-    private:
-        int line_;
-    };
+ private:
+    int line_;
+};
 
-    class AssignFilterByVariable : public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
-    public:
-        explicit AssignFilterByVariable(std::string variable)
-                : variable_(variable) {}
+class AssignFilterByVariable :
+        public IndexableFilter<std::shared_ptr<pkb::AssignData>> {
+ public:
+    explicit AssignFilterByVariable(std::string variable)
+    : variable_(variable) {}
 
-        AssignTablePtr FilterTable(AssignTablePtr) override;
+    AssignTablePtr FilterTable(AssignTablePtr) override;
 
-    private:
-        std::string variable_;
-    };
+ private:
+    std::string variable_;
+};
 
 }  // namespace filter

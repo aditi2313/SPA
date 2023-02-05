@@ -33,8 +33,8 @@ bool Validator::isWildcard(std::vector<std::unique_ptr<Clause>> clauses) {
     if (arg1 == "_") {
         return false;
     }
-    return true;
     }
+    return true;
 }
 //Returns false if there is a clause used in the Query that has not been declared as a synonym previously.  
 bool Validator::SynonymCheck(
@@ -46,12 +46,12 @@ bool Validator::SynonymCheck(
     std::string arg1 = std::move(clause)->getarg1().to_string();
     std::string arg2 = std::move(clause)->getarg1().to_string();
 
-    if (!isdigit(arg1[0]) && !arg1._Starts_with("\"")) {
+    if (!isdigit(arg1[0]) && !arg1.rfind("\"", 0) == 0) {
       if (std::find(synonyms.begin(), synonyms.end(), arg1) == synonyms.end()) {
         return false;
       }
     }
-    if (!isdigit(arg2[0]) && !arg2._Starts_with("\"")) {
+    if (!isdigit(arg2[0]) && !arg2.rfind("\"", 0) == 0) {
       if (std::find(synonyms.begin(), synonyms.end(), arg2) == synonyms.end()) {
         return false;
       }

@@ -13,14 +13,11 @@ class Evaluator {
 
   // Helper method for writing integration tests
   // where we set up our own PKB
-  void inject_pkb(std::unique_ptr<pkb::PKBRead> &pkb) {
-    pkb_ = std::move(pkb);
-  }
+  void inject_pkb(std::unique_ptr<pkb::PKBRead> &pkb) { pkb_ = std::move(pkb); }
 
-  auto retrieve_pkb() { return std::move(pkb_);
-  }
+  auto retrieve_pkb() { return std::move(pkb_); }
 
- private:  
+ private:
   std::unique_ptr<pkb::PKBRead> pkb_;
 };
 }  // namespace qps

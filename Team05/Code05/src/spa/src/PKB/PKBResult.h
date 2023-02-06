@@ -9,7 +9,7 @@ namespace pkb {
 template <typename T>
 class PKBResult {
  public:
-  PKBResult(std::unique_ptr<T> result) { result_ = std::move(result); }
+  explicit PKBResult(std::unique_ptr<T> result) { result_ = std::move(result); }
 
   inline std::unique_ptr<T> get_result() { return std::move(result_); }
 

@@ -26,6 +26,10 @@ class PKBRead {
     read_end_ = false;
   }
 
+  std::unique_ptr<PKBRelationTable> EndRead() {
+    return std::move(relation_table_);
+  }
+
   /// <summary>
   /// Returns if the pkb read has ended.
   /// </summary>

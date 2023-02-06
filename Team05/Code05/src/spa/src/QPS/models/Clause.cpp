@@ -9,7 +9,7 @@
 using namespace filter;  // NOLINT
 
 namespace qps {
-QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
+QueryResult ModifiesClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
   // TODO(Gab): setup arguement to evaluate the filter.
 
   // CURRENTLY this only works for Modifies( statement number, variable )
@@ -29,7 +29,7 @@ QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
 
   return query_result;
 }
-QueryResult PatternClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
+QueryResult PatternClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
   QueryResult query_result;
 
   // preprocess expression string to insert whitespace

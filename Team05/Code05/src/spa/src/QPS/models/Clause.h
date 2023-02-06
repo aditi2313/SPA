@@ -15,7 +15,7 @@ class Clause {
  public:
   Clause(Argument arg1, Argument arg2) : arg1(arg1), arg2(arg2) {}
 
-  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) = 0;
+  virtual QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) = 0;
   virtual ~Clause() = 0;
 
   bool operator==(Clause const &other) const {
@@ -36,13 +36,13 @@ class Clause {
 
 class ModifiesClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
+  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) override;
   ModifiesClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
 };
 
 class PatternClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
+  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) override;
   PatternClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
 };
 }  // namespace qps

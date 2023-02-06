@@ -25,7 +25,7 @@ void QPS::evaluate(std::string query, std::list<std::string> &results) {
 }
 
 // Used for integration tests
-void QPS::evaluate(
+std::unique_ptr<pkb::PKBRead> QPS::evaluate(
     std::string query,
     std::list<std::string> &results,
     std::unique_ptr<pkb::PKBRead> &pkb) {
@@ -41,5 +41,6 @@ void QPS::evaluate(
 
   Formatter formatter;
   results = formatter.FormatQuery(result);
+  return evaluator.retrieve_pkb();
 }
 }  // namespace qps

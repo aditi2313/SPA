@@ -66,5 +66,8 @@ void TestWrapper::parse(std::string filename) {
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
   qps::QPS qps;
-  qps.evaluate(query, results);
+  pkb_relation_ =
+      qps.evaluate(query, results,
+                   std::make_unique<pkb::PKBRead>(std::move(pkb_relation_)))
+          ->EndRead();
 }

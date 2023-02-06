@@ -17,7 +17,10 @@ class Evaluator {
     pkb_ = std::move(pkb);
   }
 
- private:
+  auto retrieve_pkb() { return std::move(pkb_);
+  }
+
+ private:  
   std::unique_ptr<pkb::PKBRead> pkb_;
 };
 }  // namespace qps

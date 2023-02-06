@@ -39,7 +39,6 @@ class Query {
   inline void add_clause(std::unique_ptr<Clause> &&clause) {
     clauses_.push_back(std::move(clause));
   }
-
   // TODO(jl): Technically a query with the same clauses
   // but different order should compare as equal but I will
   // leave that logic as a TODO in the future

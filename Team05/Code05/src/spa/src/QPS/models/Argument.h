@@ -1,5 +1,5 @@
 #pragma once
-
+#include <sstream>
 #include <string>
 #include "models/models.h"
 
@@ -16,9 +16,14 @@ class Argument {
     return arg == other.arg;
   }
 
-  std::string get_arg() {
-    return arg;
+  inline std::string to_string() {
+    std::stringstream ss;
+    ss << arg;
+    return ss.str();
   }
+
+  inline std::string get_arg() { return arg; }
+
  private:
   std::string arg;
 };

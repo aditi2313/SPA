@@ -29,6 +29,9 @@ class Clause {
     return !(*this == other);
   }
 
+  Argument get_arg1() { return arg1; }
+  Argument get_arg2() { return arg2; }
+
  protected:
   Argument arg1;
   Argument arg2;

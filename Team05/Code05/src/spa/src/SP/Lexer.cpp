@@ -1,5 +1,4 @@
 #include "Lexer.h"
-
 #include <utility>
 #include <stdexcept>
 

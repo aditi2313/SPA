@@ -15,13 +15,13 @@ class Argument {
     return arg == other.arg;
   }
 
-  std::string to_string() {
+  inline std::string to_string() {
     std::stringstream ss;
     ss << arg;
     return ss.str();
   }
 
-  std::string get_arg() { return arg; }
+  inline std::string get_arg() { return arg; }
 
  private:
   std::string arg;

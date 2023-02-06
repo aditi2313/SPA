@@ -5,29 +5,11 @@
 
 namespace qps {
 
-std::unique_ptr<Query> Validator::converter(std::unique_ptr<Query> query) {
-  Query nounique = std::move(*query);
+bool Validator::validate(std::unique_ptr<Query> &query) {
+  std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
+  std::vector<std::string> synonyms = query->get_selected_synonyms();
 
-  if (validator(std::move(nounique))) {
-    return query;
-  }
-  /*  return (query);
-  } else {
-    throw PqlSemanticErrorException("semantic error");
-  }*/
-
-  //  return query;
-}
-
-bool Validator::validator(Query query) {
-  std::vector<std::unique_ptr<Clause>> clauses = std::move(query.get_clauses());
-  std::vector<std::string> synonyms = query.Query::get_selected_synonyms();
-
-  if (isWildcard(std::move(clauses))) {
-    return true;
-  } else {
-    return false;
-  }
+  return IsWildcard(clauses);
 }
 
 // TODO(Sarthak) check for the type of synonym
@@ -41,11 +23,11 @@ bool Validator::validator(Query query) {
 // Returns false if the clauses have a wildcard
 // declared as arg1 in the Modifies/Uses relationship
 
-bool Validator::isWildcard(std::vector<std::unique_ptr<Clause>> clauses) {
+bool Validator::IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses) {
   // TODO(SP) edit it to check for clause type first.
-  // As of know checks all clauses as all of them are modifies
-  for (auto& clause : std::move(clauses)) {
-    std::string arg1 = std::move(clause)->getarg1().to_string();
+  // As of now checks all clauses as all of them are modifies
+  for (auto &clause : clauses) {
+    std::string arg1 = clause->getarg1().to_string();
     if (arg1 == "_") {
       return false;
     }
@@ -54,11 +36,11 @@ bool Validator::isWildcard(std::vector<std::unique_ptr<Clause>> clauses) {
 }
 // Returns false if there is a clause
 // used in the Query that has not been declared as a synonym previously.
-bool Validator::SynonymCheck(std::vector<std::unique_ptr<Clause>> clauses,
+bool Validator::SynonymCheck(std::vector<std::unique_ptr<Clause>> &clauses,
                              std::vector<std::string> synonyms) {
-  for (auto& clause : std::move(clauses)) {
-    std::string arg1 = std::move(clause)->getarg1().to_string();
-    std::string arg2 = std::move(clause)->getarg1().to_string();
+  for (auto &clause : clauses) {
+    std::string arg1 = clause->getarg1().to_string();
+    std::string arg2 = clause->getarg1().to_string();
 
     std::cout << "args all work";
     if (!isdigit(arg1[0]) && !arg1.rfind("\"", 0) == 0) {

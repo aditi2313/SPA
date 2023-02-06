@@ -25,7 +25,7 @@ bool Validator::IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses) {
   // TODO(SP) edit it to check for clause type first.
   // As of now checks all clauses as all of them are modifies
   for (auto &clause : clauses) {
-    std::string arg1 = clause->getarg1().to_string();
+    std::string arg1 = clause->get_arg1().to_string();
     if (arg1 == "_") {
       return false;
     }
@@ -37,8 +37,8 @@ bool Validator::IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses) {
 bool Validator::SynonymCheck(std::vector<std::unique_ptr<Clause>> &clauses,
                              std::vector<std::string> synonyms) {
   for (auto &clause : clauses) {
-    std::string arg1 = clause->getarg1().to_string();
-    std::string arg2 = clause->getarg1().to_string();
+    std::string arg1 = clause->get_arg1().to_string();
+    std::string arg2 = clause->get_arg2().to_string();
 
     std::cout << "args all work";
     if (!isdigit(arg1[0]) && !arg1.rfind("\"", 0) == 0) {

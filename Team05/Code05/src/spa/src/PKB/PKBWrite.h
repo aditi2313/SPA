@@ -43,6 +43,24 @@ class PKBWrite {
     pkb_relation_table_->constants_.insert(constant);
   }
 
+  void add_stmt(int stmt) { pkb_relation_table_->stmts_.insert(stmt); }
+
+  void add_whiles(int w) { pkb_relation_table_->whiles_.insert(w); }
+
+  void add_assign(int a) { pkb_relation_table_->assign_.insert(a); }
+
+  void add_calls(int c) { pkb_relation_table_->calls_.insert(c); }
+
+  void add_procedure(std::string p) {
+    pkb_relation_table_->procedures_.insert(p);
+  }
+
+  void add_print(int p) { pkb_relation_table_->print_.insert(p); }
+
+  void add_read(int r) { pkb_relation_table_->read_.insert(r); }
+
+  void add_if(int i) { pkb_relation_table_->if_.insert(i); }
+
   /// <summary>
   /// Ends the writing.
   /// Renders this writer useless.

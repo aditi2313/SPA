@@ -1,10 +1,10 @@
 #pragma once
 
 #include <memory>
-#include <set>
+#include <unordered_set>
+#include <string>
 #include <utility>
 #include <vector>
-#include <string>
 
 #include "PKBRelationTable.h"
 #include "PKBResult.h"
@@ -43,9 +43,29 @@ class PKBRead {
 
   std::unique_ptr<PKBResult<AssignTable>> Assigns(
       IndexableFilterPtr<std::shared_ptr<AssignData>>);
-  std::set<std::string> get_variables() { return relation_table_->variables_; }
+  std::unordered_set<std::string> get_variables() {
+    return relation_table_->variables_;
+  }
 
-  std::set<int> get_constants() { return relation_table_->constants_; }
+  std::unordered_set<int> get_constants() {
+    return relation_table_->constants_;
+  }
+
+  const std::unordered_set<int>& get_whiles() {
+    return relation_table_->whiles_;
+  }
+  const std::unordered_set<int>& get_stmts() { return relation_table_->stmts_; }
+  const std::unordered_set<int>& get_calls() { return relation_table_->calls_; }
+  const std::unordered_set<int>& get_assign() {
+    return relation_table_->assign_;
+  }
+  const std::unordered_set<int>& get_print() { return relation_table_->print_; }
+  const std::unordered_set<int>& get_read() { return relation_table_->read_; }
+  const std::unordered_set<int>& get_if() { return relation_table_->if_; }
+
+  const std::unordered_set<std::string>& get_procedures() {
+    return relation_table_->procedures_;
+  }
 
  private:
   bool read_end_;

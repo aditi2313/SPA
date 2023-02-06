@@ -1,9 +1,9 @@
 #pragma once
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
-#include <set>
 
 #include "data/AssignData.h"
 #include "data/FollowData.h"
@@ -29,8 +29,16 @@ class PKBRelationTable {
   IndexableTable<FollowData> follow_table_;
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
-  std::set<int> constants_;
-  std::set<std::string> variables_;
+  std::unordered_set<int> constants_;
+  std::unordered_set<int> whiles_;
+  std::unordered_set<int> stmts_;
+  std::unordered_set<int> calls_;
+  std::unordered_set<int> assign_;
+  std::unordered_set<int> read_;
+  std::unordered_set<int> print_;
+  std::unordered_set<int> if_;
+  std::unordered_set<std::string> variables_;
+  std::unordered_set<std::string> procedures_;
 
   // ptr needed as Assign data contains a unique ptr
   // Without the use of a pointer

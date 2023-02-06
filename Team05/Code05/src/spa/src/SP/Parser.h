@@ -26,7 +26,7 @@ class Parser {
     std::unique_ptr<Lexer> lexer_;
     int current_tok_;
     std::unique_ptr<ast::ProgramNode> root_;
-
+    int ctr = 1;
     int GetNextTok();
 
     std::unique_ptr<ast::ProcNode> ParseProcedure();

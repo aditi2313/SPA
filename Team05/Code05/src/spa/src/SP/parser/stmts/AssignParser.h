@@ -2,7 +2,7 @@
 
 #include "SP/parser/Parser.h"
 #include "SP/parser/ProgramParser.h"
-#include "expression/ExpressionParser.h"
+#include "SP/parser/expression/ExpressionParser.h"
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {

@@ -54,7 +54,7 @@ class Lexer {
   int current_tok_;
   std::string word_;
   int integer_;
-  int stmt_ctr_;
+  int stmt_ctr_ = 1;
   void ValidateInteger(std::string basicString);
 };
 }  // namespace sp

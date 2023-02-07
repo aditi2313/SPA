@@ -28,7 +28,7 @@ QueryResult ModifiesClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
   if (!res->exists(line)) {
     return query_result;
   }
-  auto data = result->get_result()->get_row(line);
+  auto data = res->get_row(line);
   
   for (auto var : data.get_variables()) {
     query_result.add_query_result(models::EntityStub(var));

@@ -8,8 +8,6 @@
 namespace sp {
 class AssignParser : Parser<ast::AssignNode> {
  public:
-  AssignParser(ProgramParser* parent) { parent_ = parent; }
-
   std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
@@ -20,10 +18,7 @@ class AssignParser : Parser<ast::AssignNode> {
     }
 
     return std::make_unique<ast::AssignNode>(
-        ast::AssignNode(std::move(var_node), expr_parser.parse(lxr), line));
+        ast::AssignNode(std::move(var_node), expr_parser.parse(lxr), lxr.get_and_increment_stmtctr());
   }
-
- private:
-  ProgramParser* parent_;
 };
 }  // namespace sp

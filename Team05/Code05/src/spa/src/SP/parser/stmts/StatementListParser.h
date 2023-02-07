@@ -7,11 +7,6 @@
 namespace sp {
 class StatementListParser : Parser<ast::StmtLstNode> {
  public:
-  StatementListParser(ProgramParser* parent) { parent_ = parent; }
-
-  std::unique_ptr<ast::StmtLstNode> parse(Lexer&);
-
- private:
-  ProgramParser* parent_;
+  std::unique_ptr<ast::StmtLstNode> parse(Lexer&)
 };
 }  // namespace sp

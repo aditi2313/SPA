@@ -22,7 +22,7 @@ class PrintParser : Parser<ast::PrintNode> {
 
     auto var_node = std::make_unique<ast::VarNode>(ast::VarNode(var_name));
     return std::make_unique<ast::PrintNode>(
-        ast::PrintNode(std::move(var_node), line));
+        ast::PrintNode(std::move(var_node), lxr.get_and_increment_stmtctr()));
   }
 };
 }  // namespace sp

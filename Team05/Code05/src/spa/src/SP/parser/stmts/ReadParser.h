@@ -7,7 +7,6 @@
 namespace sp {
 class ReadParser : Parser<ast::ReadNode> {
  public:
-  explicit ReadParser(ProgramParser* parent) { parent_ = parent; }
   std::unique_ptr<ast::ReadNode> parse(Lexer& lxr) override {
     if (lxr.GetTok() != kTokIdent) {
       // TODO(aizatazhar): use custom exception
@@ -24,10 +23,9 @@ class ReadParser : Parser<ast::ReadNode> {
 
     auto var_node = std::make_unique<ast::VarNode>(ast::VarNode(var_name));
     return std::make_unique<ast::ReadNode>(
-        ast::ReadNode(std::move(var_node), parent_->get_and_increment_ctr()));
+        ast::ReadNode(std::move(var_node), lxr.get_and_increment_stmtctr()));
   }
 
  private:
-  ProgramParser* parent_;
 };
 }  // namespace sp

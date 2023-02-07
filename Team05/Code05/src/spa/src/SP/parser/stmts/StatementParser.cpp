@@ -7,11 +7,13 @@
 
 namespace sp {
 std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
-  ReadParser read_parser(this->parent_);
-  PrintParser print_parser(this->parent_);
-  CallParser call_parser(this->parent_);
-  AssignParser assign_parser(this->parent_);
-  switch (prev_token_) {
+  ReadParser read_parser;
+  PrintParser print_parser;
+  CallParser call_parser;
+  AssignParser assign_parser;
+  auto tok = lxr.GetTok();
+  lxr.Increment();
+  switch (tok) {
     case kTokRead:
       return read_parser.parse(lxr);
     case kTokPrint:

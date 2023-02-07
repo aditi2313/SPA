@@ -7,7 +7,8 @@ namespace sp {
 class ExpressionParser : Parser<ast::ExprNode> {
  public:
   std::unique_ptr<ast::ExprNode> parse(Lexer&) {
-
+    // todo(Gab): Bring code for expression here
+    return nullptr;
   }
 
 };

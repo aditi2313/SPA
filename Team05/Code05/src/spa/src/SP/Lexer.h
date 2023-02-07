@@ -54,7 +54,7 @@ class Lexer {
   // Token
   int pointer_;
 
-  // The enum representing the current token  
+  // The enum representing the current token
   int current_tok_;
 
   // The word representing the current token (Only used for idents or read,
@@ -66,7 +66,6 @@ class Lexer {
 
   // Stores the statement count
   int stmt_ctr_ = 1;
-
 
   void ValidateInteger(std::string basicString);
 };

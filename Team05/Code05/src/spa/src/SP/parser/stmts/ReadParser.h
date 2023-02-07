@@ -1,5 +1,9 @@
 #pragma once
 
+#include <memory>
+#include <utility>
+#include <string>
+
 #include "SP/parser/Parser.h"
 #include "SP/parser/ProgramParser.h"
 #include "models/AST/stmt_node/StmtNode.h"

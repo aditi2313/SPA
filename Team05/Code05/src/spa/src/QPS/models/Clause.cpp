@@ -1,7 +1,8 @@
-#include <utility>
-#include <string>
-
 #include "Clause.h"
+
+#include <string>
+#include <utility>
+
 #include "PKB/data/ModifiesData.h"
 #include "SP/Lexer.h"
 #include "SP/parser/expression/ExpressionParser.h"
@@ -22,15 +23,13 @@ QueryResult ModifiesClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
 
   auto filter = std::make_unique<ModifiesFilterByLine>(line);
   auto result = pkb->Modifies(std::move(filter));
-  
-  
-  
+
   auto res = result->get_result();
   if (!res->exists(line)) {
     return query_result;
   }
   auto data = res->get_row(line);
-  
+
   for (auto var : data.get_variables()) {
     query_result.add_query_result(models::EntityStub(var));
   }
@@ -49,8 +48,8 @@ QueryResult PatternClause::Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) {
       expression += c;
     }
   }
-  
-  sp::Lexer lxr(expression);  
+
+  sp::Lexer lxr(expression);
   sp::ExpressionParser exp_parser;
   auto ASTNode = exp_parser.parse(lxr);
   auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));

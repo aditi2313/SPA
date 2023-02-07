@@ -6,7 +6,7 @@
 
 namespace qps {
 class QueryResult {
- public:  
+ public:
   inline std::set<models::EntityStub> &get_query_results() {
     return query_results_;
   }

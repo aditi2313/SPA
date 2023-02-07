@@ -6,7 +6,7 @@ namespace sp {
 bool IsStmt(int tok) {
   // TODO(Gab) Check if kTokProcedure should be removed from this
   // + implement this functionality inside of Token class if we are going to
-  // create one
+  // create one #40
   return tok == kTokProcedure || tok == kTokRead || tok == kTokPrint ||
          tok == kTokCall || tok == kTokWhile || tok == kTokIf ||
          tok == kTokIdent;

@@ -11,7 +11,7 @@ Lexer::Lexer(std::string program) : program_(std::move(program)) {
   Increment();
 }
 
-// TODO(Gab) Replace this logic using the token class
+// TODO(Gab) Replace this logic using the token class #40
 std::optional<Token> ProcessSpecialChars(char c) {
   switch (c) {
     case '{':

@@ -22,7 +22,7 @@ class Lexer {
   void Increment();
 
   /// <summary>
-  /// Todo(Gab): switch from auto to whatever type we are sticking with.
+  /// Todo(Gab): switch from auto to whatever type we are sticking with. #40
   /// </summary>
   /// <returns></returns>
   inline auto GetTokAndIncrement() {
@@ -49,12 +49,25 @@ class Lexer {
 
   bool ReadInt();
 
-  // Define ptr to point towards the current char
+  // Define ptr to point towards the next token
+  // On Increment, the pointer will point to one after the
+  // Token
   int pointer_;
+
+  // The enum representing the current token  
   int current_tok_;
+
+  // The word representing the current token (Only used for idents or read,
+  // print, procedure, ...)
   std::string word_;
+
+  // stores the integer which is reached
   int integer_;
+
+  // Stores the statement count
   int stmt_ctr_ = 1;
+
+
   void ValidateInteger(std::string basicString);
 };
 }  // namespace sp

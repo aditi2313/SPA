@@ -10,7 +10,7 @@ std::unique_ptr<ast::ProgramNode> ProgramParser::parse(Lexer& lxr) {
   auto first_child = proc_parser.parse(lxr);
   auto root = std::make_unique<ast::ProgramNode>(std::move(first_child));
   // todo(gab) think of how to refactor
-  // token and lxr
+  // token and lxr #40
   int current_tok = lxr.GetTokAndIncrement();
   while (true) {
     if (current_tok == kTokEof) {

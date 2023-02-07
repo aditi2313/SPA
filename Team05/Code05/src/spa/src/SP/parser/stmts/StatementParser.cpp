@@ -11,7 +11,7 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
   PrintParser print_parser;
   CallParser call_parser;
   AssignParser assign_parser;
-  auto tok = lxr.GetTok();
+  auto tok = lxr.get_tok();
   lxr.Increment();
   switch (tok) {
     case kTokRead:

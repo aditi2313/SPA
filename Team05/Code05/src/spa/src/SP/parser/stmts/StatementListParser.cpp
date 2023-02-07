@@ -13,13 +13,13 @@ bool IsStmt(int tok) {
 }
 
 std::unique_ptr<ast::StmtLstNode> StatementListParser::parse(Lexer& lxr) {
-  int current_tok = lxr.GetTok();
+  int current_tok = lxr.get_tok();
 
   std::vector<std::unique_ptr<ast::StmtNode>> stmt_nodes;
   while (IsStmt(current_tok)) {
     StatementParser stmt_parser;
     stmt_nodes.push_back(std::move(stmt_parser.parse(lxr)));
-    current_tok = lxr.GetTok();
+    current_tok = lxr.get_tok();
   }
 
   if (stmt_nodes.empty()) {

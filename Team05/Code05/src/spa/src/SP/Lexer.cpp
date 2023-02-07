@@ -37,7 +37,7 @@ std::optional<Token> ProcessSpecialChars(char c) {
   }
 }
 
-int Lexer::GetTok() { return current_tok_; }
+int Lexer::get_tok() { return current_tok_; }
 
 bool Lexer::ReadWord() {
   int p = pointer_;

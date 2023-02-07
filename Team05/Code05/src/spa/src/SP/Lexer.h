@@ -13,7 +13,7 @@ class Lexer {
   explicit Lexer(std::string program);
 
   // returns the type of the next token
-  int GetTok();
+  int get_tok();
 
   /// <summary>
   /// Grabs the current word and
@@ -26,7 +26,7 @@ class Lexer {
   /// </summary>
   /// <returns></returns>
   inline auto GetTokAndIncrement() {
-    auto tok = GetTok();
+    auto tok = get_tok();
     Increment();
     return tok;
   }

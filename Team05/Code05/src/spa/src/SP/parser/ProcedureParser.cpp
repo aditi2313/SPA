@@ -10,7 +10,7 @@
 namespace sp {
 std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {
   StatementListParser stmt_list_parser;
-  if (lxr.GetTok() != kTokIdent) {
+  if (lxr.get_tok() != kTokIdent) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("procedure should be followed by a name");
   }

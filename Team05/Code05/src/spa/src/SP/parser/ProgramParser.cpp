@@ -17,7 +17,7 @@ std::unique_ptr<ast::ProgramNode> ProgramParser::parse(Lexer& lxr) {
       break;
     } else if (current_tok == kTokProcedure) {
       root->add_proc(proc_parser.parse(lxr));
-      current_tok = lxr.GetTok();
+      current_tok = lxr.get_tok();
     } else {
       current_tok = lxr.GetTokAndIncrement();
     }

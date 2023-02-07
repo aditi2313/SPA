@@ -6,8 +6,7 @@
 namespace sp {
 class AddParser : Parser<ast::PlusNode> {
  public:
-  std::unique_ptr<ast::PlusNode> parse(Lexer&) {
-    
+  std::unique_ptr<ast::PlusNode> parse(Lexer&) { return nullptr;
   }
 
 };

@@ -77,6 +77,9 @@ class CallNode : public StmtNode {
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
  private:
-    std::unique_ptr<VarNode> var_;
+  std::unique_ptr<VarNode> var_;
 };
+
+class WhileNode : public StmtNode {};
+class IfNode : public StmtNode {};
 }  // namespace ast

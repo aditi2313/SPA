@@ -2,7 +2,8 @@
 
 #include <memory>
 
-#include "Lexer.h"
+#include "SP/Lexer.h"
+#include "Parser.h"
 #include "models/AST/ProgramNode.h"
 
 namespace sp {

@@ -12,13 +12,14 @@ class AssignParser : Parser<ast::AssignNode> {
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
     ExpressionParser expr_parser;
-    if (lxr.GetTok() != kTokEquals) {
+    if (lxr.GetTokAndIncrement() != kTokEquals) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("expected '=' in assignment");
     }
 
-    return std::make_unique<ast::AssignNode>(
-        ast::AssignNode(std::move(var_node), expr_parser.parse(lxr), lxr.get_and_increment_stmtctr());
+    return std::make_unique<ast::AssignNode>(std::move(var_node),
+                                             expr_parser.parse(lxr),
+                                             lxr.GetAndIncrementStmtCtr());
   }
 };
 }  // namespace sp

@@ -6,6 +6,6 @@
 namespace sp {
 class DivParser : Parser<ast::DivNode> {
  public:
-  std::unique_ptr<ast::DivNode> parse(Lexer&) {}
+  std::unique_ptr<ast::DivNode> parse(Lexer&) { return nullptr; }
 };
 }  // namespace sp

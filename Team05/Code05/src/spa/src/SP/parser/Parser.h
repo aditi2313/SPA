@@ -2,12 +2,13 @@
 
 #include <memory>
 
-#include "Lexer.h"
+#include "SP/Lexer.h"
 
 namespace sp {
-<typename T> class Parser {
+template <typename T>
+class Parser {
  public:
-  std::unique_ptr<T> parse(Lexer&) = 0;
+  virtual std::unique_ptr<T> parse(Lexer&) = 0;
 };
 
 }  // namespace sp

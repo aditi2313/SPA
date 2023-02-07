@@ -25,6 +25,10 @@ class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
 
   inline ModifiesTablePtr FilterTable(ModifiesTablePtr table) override {
     ModifiesTablePtr result = std::make_unique<pkb::ModifiesTable>();
+    auto indexes = table->get_indexes();
+    if (indexes.find(line_) == indexes.end()) {      
+      return result;
+    }
     auto row = table->get_row(line_);
     result->add_row(row.get_line(), row);
     return result;

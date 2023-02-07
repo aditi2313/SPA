@@ -6,6 +6,6 @@
 namespace sp {
 class ConstParser : Parser<ast::ConstNode> {
  public:
-  std::unique_ptr<ast::ConstNode> parse(Lexer&) {}
+  std::unique_ptr<ast::ConstNode> parse(Lexer&) { return nullptr; }
 };
 }  // namespace sp

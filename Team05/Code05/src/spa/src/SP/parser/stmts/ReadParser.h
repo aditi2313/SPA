@@ -8,22 +8,22 @@ namespace sp {
 class ReadParser : Parser<ast::ReadNode> {
  public:
   std::unique_ptr<ast::ReadNode> parse(Lexer& lxr) override {
-    if (lxr.GetTok() != kTokIdent) {
+    if (lxr.GetTokAndIncrement() != kTokIdent) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("read should be followed by a name");
     }
 
     std::string var_name = lxr.get_ident();
-    std::cout << "read " + lxr.get_ident() + "\n";
+    std::cout << "read " + lxr.get_ident() << std::endl;
 
-    if (lxr.GetTok() != kTokSemicolon) {
+    if (lxr.GetTokAndIncrement() != kTokSemicolon) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("expected end of a statement");
     }
 
     auto var_node = std::make_unique<ast::VarNode>(ast::VarNode(var_name));
     return std::make_unique<ast::ReadNode>(
-        ast::ReadNode(std::move(var_node), lxr.get_and_increment_stmtctr()));
+        ast::ReadNode(std::move(var_node), lxr.GetAndIncrementStmtCtr()));
   }
 
  private:

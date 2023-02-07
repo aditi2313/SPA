@@ -6,6 +6,6 @@
 namespace sp {
 class AddParser : Parser<ast::VarNode> {
  public:
-  std::unique_ptr<ast::VarNode> parse(Lexer&) {}
+  std::unique_ptr<ast::VarNode> parse(Lexer&) { return nullptr; }
 };
 }  // namespace sp

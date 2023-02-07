@@ -6,6 +6,6 @@
 namespace sp {
 class TimesParser : Parser<ast::TimesNode> {
  public:
-  std::unique_ptr<ast::TimesNode> parse(Lexer&) {}
+  std::unique_ptr<ast::TimesNode> parse(Lexer&) { return nullptr; }
 };
 }  // namespace sp

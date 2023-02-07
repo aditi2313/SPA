@@ -40,7 +40,7 @@ std::unique_ptr<ast::ProcNode> Parser::ParseProcedure() {
   }
 
   std::string proc_name = lexer_->get_ident();
-  std::cout << "procedure\n";
+  std::cout << "procedure" << std::endl;
 
   if (GetNextTok() != kTokOpenCurly) {
     // TODO(aizatazhar): use custom exception
@@ -109,7 +109,7 @@ std::unique_ptr<ast::ReadNode> Parser::ParseRead(int line) {
   }
 
   std::string var_name = lexer_->get_ident();
-  std::cout << "read " + lexer_->get_ident() + "\n";
+  std::cout << "read " + lexer_->get_ident() << std::endl;
 
   if (GetNextTok() != kTokSemicolon) {
     // TODO(aizatazhar): use custom exception
@@ -128,7 +128,7 @@ std::unique_ptr<ast::PrintNode> Parser::ParsePrint(int line) {
   }
 
   std::string var_name = lexer_->get_ident();
-  std::cout << "print " + lexer_->get_ident() + "\n";
+  std::cout << "print " + lexer_->get_ident() << std::endl;
 
   if (GetNextTok() != kTokSemicolon) {
     // TODO(aizatazhar): use custom exception
@@ -147,7 +147,7 @@ std::unique_ptr<ast::CallNode> Parser::ParseCall(int line) {
   }
 
   std::string var_name = lexer_->get_ident();
-  std::cout << "call " + lexer_->get_ident() + "\n";
+  std::cout << "call " + lexer_->get_ident() << std::endl;
 
   if (GetNextTok() != kTokSemicolon) {
     // TODO(aizatazhar): use custom exception

@@ -4,7 +4,7 @@
 #include <list>
 #include <catch.hpp>
 
-#include "SP/Parser.h"
+#include "SP/parser/expression/ExpressionParser.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "PKB/PKBRead.h"
@@ -24,7 +24,9 @@ std::unique_ptr<PKBRead> InitializePKB(
   PKBWrite pkb_write(std::move(table));
 
   for (auto [var, line, expr] : data) {
-    auto ASTNode = sp::Parser::ParseExpr(expr);
+    sp::ExpressionParser expr_parser;
+    sp::Lexer lxr(expr);
+    auto ASTNode = expr_parser.parse(lxr);
     pkb_write.AddAssignData(var, line, std::move(ASTNode));
   }
 

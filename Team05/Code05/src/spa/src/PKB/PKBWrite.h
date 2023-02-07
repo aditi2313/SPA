@@ -24,7 +24,6 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="variables"></param>
   void AddModifiesData(int line, const std::vector<std::string>& variables);
-  // Todo(Gab): add datastructure for assignment as well as tables.
 
   /// <summary>
   /// Adds assign data.

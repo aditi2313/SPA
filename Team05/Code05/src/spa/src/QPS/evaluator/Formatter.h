@@ -9,6 +9,6 @@
 namespace qps {
 class Formatter {
  public:
-  std::list<std::string> FormatQuery(QueryResultPtr query_result);
+  std::list<std::string> FormatQuery(QueryResultPtr &query_result);
 };
 }  // namespace qps

@@ -10,13 +10,13 @@
 namespace qps {
 class Evaluator {
  public:
-  QueryResultPtr EvaluateQuery(std::unique_ptr<Query> query);
+  QueryResultPtr EvaluateQuery(std::unique_ptr<Query> &query);
 
   // Helper method for writing integration tests
   // where we set up our own PKB
-  void inject_pkb(std::unique_ptr<pkb::PKBRead> &pkb) {
-    pkb_ = std::move(pkb);
-  }
+  void inject_pkb(std::unique_ptr<pkb::PKBRead> &pkb) { pkb_ = std::move(pkb); }
+
+  inline auto retrieve_pkb() { return std::move(pkb_); }
 
  private:
   std::unique_ptr<pkb::PKBRead> pkb_;

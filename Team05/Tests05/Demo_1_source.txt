@@ -1,0 +1,12 @@
+procedure example {
+	read x;
+	read y;
+	print x;
+	call test;
+	x = a + b;
+}
+
+procedure example2 {
+	read y;
+	y = a - b;
+} 

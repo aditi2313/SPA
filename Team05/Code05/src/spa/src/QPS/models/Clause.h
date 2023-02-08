@@ -15,7 +15,7 @@ class Clause {
  public:
   Clause(ArgumentPtr arg1, ArgumentPtr arg2) : arg1(std::move(arg1)), arg2(std::move(arg2)) {}
 
-  virtual QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) = 0;
+  virtual QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
   virtual ~Clause() = 0;
 
   bool operator==(Clause const &other) const {
@@ -50,14 +50,14 @@ class Clause {
 // RS between a Statement/Procedure and a Variable
 class ModifiesClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
   ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2) : Clause(std::move(arg1), std::move(arg2)) {}
+  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 class PatternClause : public Clause {
  public:
-  QueryResult Evaluate(std::unique_ptr<pkb::PKBRead> pkb) override;
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2) : Clause(std::move(arg1), std::move(arg2)) {}
+  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

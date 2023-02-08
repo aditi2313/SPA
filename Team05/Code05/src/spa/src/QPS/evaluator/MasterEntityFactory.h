@@ -17,11 +17,12 @@ class MasterEntityFactory {
     return entity_factories_.at(entity_id)->CreateInstance(number);
   }
 
-  EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr pkb) {
+  EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
     return entity_factories_.at(entity_id)->GetAllFromPKB(std::move(pkb));
   }
 
  private:
+
   std::unordered_map<std::string, EntityFactoryPtr> entity_factories_;
 };
 }

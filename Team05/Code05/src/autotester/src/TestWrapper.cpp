@@ -6,7 +6,7 @@
 
 #include "../../spa/src/QPS/QPS.h"
 #include "../../spa/src/SP/Lexer.h"
-#include "../../spa/src/SP/Parser.h"
+#include "../../spa/src/SP/parser/ProgramParser.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
@@ -42,10 +42,9 @@ void TestWrapper::parse(std::string filename) {
   buffer << file.rdbuf();
   std::string program = buffer.str();
   file.close();
-
-  sp::Parser parser =
-      sp::Parser(std::make_unique<sp::Lexer>(sp::Lexer(program)));
-  auto root = parser.ParseProgram();
+  sp::Lexer lxr(program);
+  sp::ProgramParser program_parser;
+  auto root = program_parser.parse(lxr);
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
 
   sp::AssignVisitor av(std::move(writer));
@@ -66,5 +65,6 @@ void TestWrapper::parse(std::string filename) {
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
   qps::QPS qps;
-  qps.evaluate(query, results);
+  auto reader = std::make_unique<pkb::PKBRead>(std::move(pkb_relation_));
+  pkb_relation_ = qps.evaluate(query, results, reader)->EndRead();
 }

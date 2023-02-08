@@ -1,12 +1,17 @@
+#include "Clause.h"
+
+#include <string>
 #include <utility>
 
-#include "Clause.h"
 #include "PKB/data/ModifiesData.h"
+#include "SP/Lexer.h"
+#include "SP/parser/expression/ExpressionParser.h"
+#include "common/filter/filters/AssignFilter.h"
 
 using namespace filter;  // NOLINT
 
 namespace qps {
-QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
+QueryResult ModifiesClause::Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) {
   // TODO(Gab): setup arguement to evaluate the filter.
 
   // CURRENTLY this only works for Modifies( statement number, variable )
@@ -19,16 +24,44 @@ QueryResult ModifiesClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
 //  auto filter = std::make_unique<ModifiesFilterByLine>(line);
 //  auto result = pkb->Modifies(std::move(filter));
 
-//  auto data = result->get_result()->get_row(line);
+//  auto res = query_result->get_result();
+//  if (!res->exists(line)) {
+//    return query_result;
+//  }
+//  auto data = res->get_row(line);
+//
 //  for (auto var : data.get_variables()) {
-//    query_result.add_query_result(std::make_unique<Entity>(var));
+//    query_result.add_query_result(models::EntityStub(var));
 //  }
 
   return query_result;
 }
-QueryResult PatternClause::Evaluate(std::unique_ptr<pkb::PKBRead> pkb) {
-  // TODO(jl): replace with pattern method
-  throw new NotImplementedException();
+QueryResult PatternClause::Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) {
+  QueryResult query_result;
+
+  // preprocess expression string to insert whitespace
+//  std::string expression = "";
+//  for (char c : arg2.get_arg()) {
+//    if (c == '+' || c == '-') {
+//      expression += " " + std::string(1, c) + " ";
+//    } else {
+//      expression += c;
+//    }
+//  }
+//
+//  sp::Lexer lxr(expression);
+//  sp::ExpressionParser exp_parser;
+//  auto ASTNode = exp_parser.parse(lxr);
+//  auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
+//  auto result = pkb->Assigns(std::move(filter));
+//
+//  auto data = result->get_result()->get_indexes();
+//
+//  for (auto var : data) {
+//    query_result.add_query_result(models::EntityStub(std::to_string(var)));
+//  }
+
+  return query_result;
 }
 
 Clause::~Clause() = default;

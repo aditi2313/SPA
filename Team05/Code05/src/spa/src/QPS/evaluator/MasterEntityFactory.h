@@ -18,7 +18,7 @@ class MasterEntityFactory {
   }
 
   EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
-    return entity_factories_.at(entity_id)->GetAllFromPKB(std::move(pkb));
+    return entity_factories_.at(entity_id)->GetAllFromPKB(pkb);
   }
 
  private:

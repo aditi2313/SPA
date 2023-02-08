@@ -1,3 +1,5 @@
 #include "EntityFactory.h"
 
-namespace qps {}
+namespace qps {
+EntityFactory::~EntityFactory() = default;
+}

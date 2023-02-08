@@ -32,6 +32,11 @@ std::optional<Token> ProcessSpecialChars(char c) {
       return {Token::kTokDiv};
     case '%':
       return {Token::kTokMod};
+    case '(':
+      return {Token::kTokOpenBracket};
+    case ')':
+      return {Token::kTokCloseBracket};
+
     default:
       return std::nullopt;
   }

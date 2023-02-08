@@ -1,3 +1,5 @@
+#pragma once
+
 namespace sp {
 class Validator {
  public:

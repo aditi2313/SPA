@@ -1,3 +1,5 @@
 #include "TNode.h"
 
-namespace ast {}  // namespace ast
+namespace ast {
+  TNode::~TNode() = default;
+}  // namespace ast

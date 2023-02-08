@@ -19,6 +19,8 @@ enum Token {
     kTokOpenCurly,
     kTokCloseCurly,
     kTokSemicolon,
+    kTokOpenBracket,
+    kTokCloseBracket,
 
     kTokEquals,
     kTokPlus,
@@ -26,6 +28,17 @@ enum Token {
     kTokTimes,
     kTokDiv,
     kTokMod,
+
+    // relations
+    kTokLess,
+    kTokGreater,
+    kTokGreaterEqual,
+    kTokLessEqual,
+
+    // conditions
+    kTokOr,
+    kTokAnd,
+    kTokNot
 };
 
 }  // namespace sp

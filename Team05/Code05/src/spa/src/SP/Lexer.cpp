@@ -114,6 +114,7 @@ void Lexer::Increment() {
     pointer_++;
     return;
   }
+
   ReadInt();
 }
 
@@ -121,6 +122,28 @@ void Lexer::ValidateInteger(std::string number_string) {
   if (number_string[0] == '0' && number_string.length() > 1) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("integer cannot have leading zeroes");
+  }
+}
+
+// Todo(Gab) refactor
+// out of this class
+Token ParseLessGreater(char c) {
+  if (c == '<') return Token::kTokLess;
+  if (c == '>') return Token::kTokGreater;
+  throw std::runtime_error("Invalid input into ParseLessGreater");
+}
+
+// Temporary utility function. Todo(Gab): remove
+std::optional<Token> Lexer::ReadRelation(int& pointer) {
+  // check for < or >
+  pointer = pointer_;
+  char c = program_[pointer];
+  if (c == '>' || c == '<') {
+    pointer++;
+    if (pointer >= program_.length()) {
+      return {ParseLessGreater(c)};
+    }
+    
   }
 }
 }  // namespace sp

@@ -4,7 +4,7 @@
 
 namespace sp {
 
-bool IsRelation(Token& token) { return true; }
+bool IsRelation(Token& token) { return token == Token::kTokEquals; }
 std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
   auto left_factor = rel_parser_.parse(lxr);
   auto middle = lxr.get_tok();
@@ -14,6 +14,7 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
   lxr.Increment();
   auto right_factor = rel_parser_.parse(lxr);
 
+  // Todo(Gab) 
   return std::make_unique<ast::RelExprNode>(
       std::move(left_factor, right_factor));
 }

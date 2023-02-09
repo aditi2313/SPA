@@ -6,46 +6,47 @@
 #include <vector>
 
 #include "SP/visitors/TNodeVisitor.h"
+#include "PKBWritingVisitor.h"
 
 namespace sp {
-class ModifiesVisitor : public TNodeVisitor {
+class ModifiesVisitor : public PKBWritingVisitor {
  public:
   explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
-      : TNodeVisitor(std::move(pkb_ptr)) {}
+      : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitProgram(ast::ProgramNode* program_node);
+  void VisitProgram(ast::ProgramNode* program_node) override;
 
-  void VisitProc(ast::ProcNode* proc_node);
+  void VisitProc(ast::ProcNode* proc_node) override;
 
-  void VisitStmtLst(ast::StmtLstNode* stmtlst_node);
+  void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
 
-  void VisitAssign(ast::AssignNode* assign_node);
+  void VisitAssign(ast::AssignNode* assign_node) override;
 
-  void VisitRead(ast::ReadNode* read_node);
+  void VisitRead(ast::ReadNode* read_node) override;
 
-  void VisitPrint(ast::PrintNode* print_node) {}
+  void VisitPrint(ast::PrintNode* print_node) override {}
 
-  void VisitFactor(ast::FactorNode* factor_node) {}
+  void VisitFactor(ast::FactorNode* factor_node) override {}
 
-  void VisitExpr(ast::ExprNode* expr_node) {}
+  void VisitExpr(ast::ExprNode* expr_node) override {}
 
-  void VisitTerm(ast::TermNode* term_node) {}
+  void VisitTerm(ast::TermNode* term_node) override {}
 
-  void VisitVar(ast::VarNode* var_node) {}
+  void VisitVar(ast::VarNode* var_node) override {}
 
-  void VisitConst(ast::ConstNode* const_node) {}
+  void VisitConst(ast::ConstNode* const_node) override {}
 
-  void VisitPlus(ast::PlusNode* plus_node) {}
+  void VisitPlus(ast::PlusNode* plus_node) override {}
 
-  void VisitMinus(ast::MinusNode* minus_node) {}
+  void VisitMinus(ast::MinusNode* minus_node) override {}
 
-  void VisitTimes(ast::TimesNode* times_node) {}
+  void VisitTimes(ast::TimesNode* times_node) override {}
 
-  void VisitDiv(ast::DivNode* div_node) {}
+  void VisitDiv(ast::DivNode* div_node) override {}
 
-  void VisitMod(ast::ModNode* mod_node) {}
+  void VisitMod(ast::ModNode* mod_node) override {}
 
   // TODO(Gab) Go into call node and get the information #41
-  void VisitCall(ast::CallNode* call_node){}
+  void VisitCall(ast::CallNode* call_node) override {}
 };
 }  // namespace sp

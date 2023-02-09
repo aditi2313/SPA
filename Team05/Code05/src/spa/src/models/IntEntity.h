@@ -1,9 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "Entity.h"
 
 namespace models {
-
 // An entity identified by an INTEGER
 // e.g. Stmt / Constant
 class IntEntity : public Entity {
@@ -26,8 +27,6 @@ class IntEntity : public Entity {
 
 class Constant : public IntEntity {
  public:
-  Constant(int number) : IntEntity(number) {}
+  explicit Constant(int number) : IntEntity(number) {}
 };
-}
-
-#include "Stmt.h"
+}  // namespace models

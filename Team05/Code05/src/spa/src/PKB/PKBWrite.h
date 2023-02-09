@@ -23,7 +23,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line, const std::vector<std::string>& variables);
+  void AddModifiesData(int line, const std::vector<std::string> &variables);
 
   /// <summary>
   /// Adds assign data.
@@ -44,11 +44,11 @@ class PKBWrite {
 
   void add_stmt(int stmt) { pkb_relation_table_->stmts_.insert(stmt); }
 
-  void add_whiles(int w) { pkb_relation_table_->whiles_.insert(w); }
+  void add_while(int w) { pkb_relation_table_->whiles_.insert(w); }
 
   void add_assign(int a) { pkb_relation_table_->assign_.insert(a); }
 
-  void add_calls(int c) { pkb_relation_table_->calls_.insert(c); }
+  void add_call(int c) { pkb_relation_table_->calls_.insert(c); }
 
   void add_procedure(std::string p) {
     pkb_relation_table_->procedures_.insert(p);

@@ -1,8 +1,8 @@
 #include <memory>
+#include <utility>
 
 #include "ParseState.h"
 
-#include "Parser.h"
 #include "QPS/models/PQL.h"
 #include "common/Exceptions.h"
 #include "models/Entity.h"
@@ -67,7 +67,8 @@ std::unique_ptr<Query> SuchThatParseState::parse(
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();
 
-  query->add_clause(PQL::get_rel_ref(rel_ident, std::move(arg1), std::move(arg2)));
+  query->add_clause(PQL::get_rel_ref(
+      rel_ident, std::move(arg1), std::move(arg2)));
 
   itr++;
   return query;
@@ -88,7 +89,8 @@ std::unique_ptr<Query> PatternParseState::parse(
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();
 
-  query->add_clause(PQL::get_rel_ref("pattern", std::move(arg1), std::move(arg2)));
+  query->add_clause(PQL::get_rel_ref(
+      "pattern", std::move(arg1), std::move(arg2)));
   itr++;
   return query;
 }

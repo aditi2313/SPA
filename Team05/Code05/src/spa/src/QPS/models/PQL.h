@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include <utility>
 
 #include "common/Exceptions.h"
 #include "models/types.h"
@@ -25,7 +27,8 @@ class PQL {
   inline static EntityId kProcedureEntityId = "procedure";
 
   inline static std::vector<EntityId> kAllEntityIds{
-      kStmtEntityId, kReadEntityId, kPrintEntityId, kCallEntityId, kWhileEntityId, kIfEntityId, kAssignEntityId,
+      kStmtEntityId, kReadEntityId, kPrintEntityId, kCallEntityId,
+      kWhileEntityId, kIfEntityId, kAssignEntityId,
       kVariableEntityId, kConstantEntityId, kProcedureEntityId
   };
 

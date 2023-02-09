@@ -1,9 +1,10 @@
 #pragma once
 
+#include <string>
+
 #include "Entity.h"
 
 namespace models {
-
 // An entity identified by an IDENT
 // e.g. Procedure / Variable
 class IdentEntity : public Entity {
@@ -26,11 +27,11 @@ class IdentEntity : public Entity {
 
 class Procedure : public IdentEntity {
  public:
-  Procedure(std::string ident) : IdentEntity(ident) {}
+  explicit Procedure(std::string ident) : IdentEntity(ident) {}
 };
 
 class Variable : public IdentEntity {
  public:
-  Variable(std::string ident) : IdentEntity(ident) {}
+  explicit Variable(std::string ident) : IdentEntity(ident) {}
 };
-}
+}  // namespace models

@@ -1,6 +1,9 @@
 #pragma once
 
 #include <set>
+#include <vector>
+#include <utility>
+#include <memory>
 
 #include "models/Entity.h"
 #include "QPS/evaluator/EntityFactory.h"
@@ -9,7 +12,7 @@ namespace qps {
 class QueryResult {
  public:
   QueryResult() {}
-  QueryResult(EntityPtrList &entities) {
+  explicit QueryResult(EntityPtrList &entities) {
     for (auto &entity : entities) {
       query_results_.push_back(std::move(entity));
     }

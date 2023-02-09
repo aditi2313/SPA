@@ -3,6 +3,7 @@
 #include <iostream>
 #include <memory>
 #include <typeinfo>
+#include <utility>
 
 #include "Argument.h"
 #include "PKB/PKBRead.h"
@@ -13,7 +14,8 @@ namespace qps {
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  Clause(ArgumentPtr arg1, ArgumentPtr arg2) : arg1(std::move(arg1)), arg2(std::move(arg2)) {}
+  Clause(ArgumentPtr arg1, ArgumentPtr arg2) :
+      arg1(std::move(arg1)), arg2(std::move(arg2)) {}
 
   virtual QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
   virtual ~Clause() = 0;
@@ -50,13 +52,15 @@ class Clause {
 // RS between a Statement/Procedure and a Variable
 class ModifiesClause : public Clause {
  public:
-  ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2) : Clause(std::move(arg1), std::move(arg2)) {}
+  ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {}
   QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 class PatternClause : public Clause {
  public:
-  PatternClause(ArgumentPtr arg1, ArgumentPtr arg2) : Clause(std::move(arg1), std::move(arg2)) {}
+  PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {}
   QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 

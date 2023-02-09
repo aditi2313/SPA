@@ -2,4 +2,4 @@
 
 namespace qps {
 EntityFactory::~EntityFactory() = default;
-}
+}  // namespace qps

@@ -1,5 +1,10 @@
 #pragma once
 
+#include <vector>
+#include <unordered_set>
+#include <string>
+#include <memory>
+
 #include "models/EntityExport.h"
 #include "PKB/PKBRead.h"
 
@@ -198,5 +203,4 @@ class IfEntityFactory : public IntEntityFactory {
 };
 
 using EntityFactoryPtr = std::unique_ptr<EntityFactory>;
-
-}
+}  // namespace qps

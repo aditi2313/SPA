@@ -11,12 +11,12 @@ bool ProcedureValidator::Validate() {
 }
 
 bool ProcedureValidator::ValidateNoDuplicateProcedureNames() {
-  std::unordered_set<std::string> set;
+  std::unordered_set<std::string> proc_names_set;
   for (const auto &proc_name : proc_names_) {
-    if (set.count(proc_name)) {
+    if (proc_names_set.count(proc_name)) {
       return false;
     }
-    set.insert(proc_name);
+    proc_names_set.insert(proc_name);
   }
   return true;
 }

@@ -28,6 +28,8 @@ std::unique_ptr<PKBRead> InitializePKB(
     sp::Lexer lxr(expr);
     auto ASTNode = expr_parser.parse(lxr);
     pkb_write.AddAssignData(var, line, std::move(ASTNode));
+    pkb_write.add_assign(line);
+    pkb_write.add_stmt(line);
   }
 
   return std::make_unique<PKBRead>(pkb_write.EndWrite());

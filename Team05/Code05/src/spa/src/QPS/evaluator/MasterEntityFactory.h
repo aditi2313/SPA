@@ -40,6 +40,10 @@ class MasterEntityFactory {
     return entity_factories_.at(entity_id)->CreateInstance(number);
   }
 
+  EntityPtr CreateInstance(EntityId entity_id, Ident ident) {
+    return entity_factories_.at(entity_id)->CreateInstance(ident);
+  }
+
   EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
     return entity_factories_.at(entity_id)->GetAllFromPKB(pkb);
   }

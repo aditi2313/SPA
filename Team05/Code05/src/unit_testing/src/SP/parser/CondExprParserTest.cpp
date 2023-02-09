@@ -1,5 +1,6 @@
-#include <catch.hpp>
 #include <string>
+#include <catch.hpp>
+
 
 #include "SP/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"
@@ -60,7 +61,7 @@ TEST_CASE("More than equal expression parses") {
 TEST_CASE("And expression parses") {
   Lexer lxr("(a + b == a - b) && ( a + b <= a - b )");
   auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
-                                                   std::move(InitialseSub()));
+                                           std::move(InitialseSub()));
   auto other_less = std::make_unique<LessThanEqualNode>(
       std::move(InitialiseAdd()), std::move(InitialseSub()));
   auto overall =
@@ -71,7 +72,7 @@ TEST_CASE("And expression parses") {
 TEST_CASE("OR expression parses") {
   Lexer lxr("(a + b == a-b ) || (a + b <= a - b )");
   auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
-                                                   std::move(InitialseSub()));
+                                           std::move(InitialseSub()));
   auto other_less = std::make_unique<LessThanEqualNode>(
       std::move(InitialiseAdd()), std::move(InitialseSub()));
   auto overall =

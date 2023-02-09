@@ -8,7 +8,7 @@
 
 namespace sp {
 class RelFactorParser : public Parser<ast::RelFactor> {
- public:  
+ public:
   std::unique_ptr<ast::RelFactor> parse(Lexer&) override;
 
  private:

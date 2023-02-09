@@ -1,9 +1,9 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <stdexcept>
 #include <string>
-#include <optional>
 #include <unordered_map>
 
 #include "models/AST/Token.h"
@@ -74,6 +74,5 @@ class Lexer {
   // something that is more specific
   // takes in a reference where the final pointer will be referenced.
   std::optional<Token> ReadRelation(int& p);
-
 };
 }  // namespace sp

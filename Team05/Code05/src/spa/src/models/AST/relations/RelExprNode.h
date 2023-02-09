@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <utility>
+
 #include "CondExprNode.h"
 #include "common/Utiity.h"
 
@@ -11,7 +14,7 @@ namespace ast {
 /// </summary>
 class RelFactor : public TNode {
  public:
-  RelFactor(std::unique_ptr<ExprNode> expression) {
+  explicit RelFactor(std::unique_ptr<ExprNode> expression) {
     expression_ = std::move(expression);
   }
   const std::unique_ptr<ExprNode>& get_ref() { return expression_; }

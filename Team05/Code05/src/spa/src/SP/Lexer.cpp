@@ -149,7 +149,7 @@ std::optional<Token> ParseLessGreaterEqual(char c) {
 
 // Temporary utility function. Todo(Gab): reorganise in sp/rel-parser
 std::optional<Token> Lexer::ReadRelation(int& pointer) {
-  // check for < or >  
+  // check for < or >
   char c = program_[pointer];
   if (c == '=' && pointer + 1 < program_.length() &&
       program_[pointer + 1] == '=') {

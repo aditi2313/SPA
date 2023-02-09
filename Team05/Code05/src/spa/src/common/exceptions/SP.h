@@ -14,7 +14,7 @@ class ParseException : public std::exception {
 
 class ParseRelationSyntaxException : public ParseException {
  public:
-  explicit ParseRelationSyntaxException()
+  ParseRelationSyntaxException()
       : ParseException("Invalid synatx at parsing of relation") {}
 };
 }  // namespace sp

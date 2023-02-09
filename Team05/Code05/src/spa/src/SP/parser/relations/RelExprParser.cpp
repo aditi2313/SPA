@@ -1,5 +1,8 @@
 #include "RelExprParser.h"
 
+#include <memory>
+#include <utility>
+
 #include "models/AST/Token.h"
 
 namespace sp {

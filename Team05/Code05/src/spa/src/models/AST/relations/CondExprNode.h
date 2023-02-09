@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <utility>
 
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
@@ -62,7 +63,9 @@ class OrExprNode : public DoubleCondExprNode {
 
 class NotExprNode : public CondExprNode {
  public:
-  NotExprNode(std::unique_ptr<CondExprNode> cond) { cond_ = std::move(cond); }
+  explicit NotExprNode(std::unique_ptr<CondExprNode> cond) {
+    cond_ = std::move(cond);
+  }
 
   bool DeepEquals(const CondExprNode& other) override {
     if (dynamic_cast<const NotExprNode*>(&other)) {

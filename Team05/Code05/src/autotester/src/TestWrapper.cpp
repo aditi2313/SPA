@@ -52,7 +52,7 @@ void TestWrapper::parse(std::string filename) {
 
   // Validate AST
   auto validator = sp::ProgramValidator(root);
-  validator.Validate();
+  std::cout << validator.Validate() << std::endl;
 
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
 

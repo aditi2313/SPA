@@ -1,7 +1,7 @@
 #include "ProcNode.h"
 
 #include "SP/visitors/TNodeVisitor.h"
-#include "SP/validators/ValidatorVisitor.h"
+#include "SP/visitors/ValidatorVisitor.h"
 
 namespace ast {
 void ProcNode::AcceptVisitor(sp::TNodeVisitor* visitor) {

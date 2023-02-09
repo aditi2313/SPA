@@ -8,7 +8,7 @@
 
 #include "models/AST/ProgramNode.h"
 #include "Validator.h"
-#include "ValidatorVisitor.h"
+#include "SP/visitors/ValidatorVisitor.h"
 
 namespace sp {
 class ProgramValidator : public Validator, ValidatorVisitor {
@@ -20,10 +20,21 @@ class ProgramValidator : public Validator, ValidatorVisitor {
 
     void Visit(ast::ProgramNode* program_node) override;
     void Visit(ast::ProcNode* proc_node) override;
+    void Visit(ast::StmtLstNode* stmtlst_node) override;
     void Visit(ast::ReadNode* proc_node) override;
     void Visit(ast::PrintNode* proc_node) override;
     void Visit(ast::CallNode* proc_node) override;
     void Visit(ast::AssignNode* proc_node) override;
+    void Visit(ast::FactorNode* factor_node) override { }
+    void Visit(ast::ExprNode* expr_node) override { }
+    void Visit(ast::TermNode* term_node) override { }
+    void Visit(ast::VarNode* var_node) override { }
+    void Visit(ast::ConstNode* const_node) override { }
+    void Visit(ast::PlusNode* plus_node) override { }
+    void Visit(ast::MinusNode* minus_node) override { }
+    void Visit(ast::TimesNode* times_node) override { }
+    void Visit(ast::DivNode* div_node) override { }
+    void Visit(ast::ModNode* mod_node) override { }
 
  private:
     std::unique_ptr<ast::ProgramNode> &root_;

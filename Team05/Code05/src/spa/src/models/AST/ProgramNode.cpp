@@ -1,7 +1,7 @@
 #include "ProgramNode.h"
 
 #include "SP/visitors/TNodeVisitor.h"
-#include "SP/validators/ValidatorVisitor.h"
+#include "SP/visitors/ValidatorVisitor.h"
 
 namespace ast {
 void ProgramNode::AcceptVisitor(sp::TNodeVisitor* visitor) {

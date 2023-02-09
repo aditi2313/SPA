@@ -52,7 +52,10 @@ void TestWrapper::parse(std::string filename) {
 
   // Validate AST
   auto validator = sp::ProgramValidator(root);
-  std::cout << validator.Validate() << std::endl;
+  if (!validator.Validate()) {
+      // TODO(aizatazhar) use custom exception and at the validator level
+      throw new std::runtime_error("Program is not semantically valid");
+  }
 
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
 

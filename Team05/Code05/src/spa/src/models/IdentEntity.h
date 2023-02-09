@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "Entity.h"
 
@@ -11,15 +12,29 @@ class IdentEntity : public Entity {
  public:
   explicit IdentEntity(std::string ident) : Entity(), ident_(ident) {}
 
-  bool operator<(const IdentEntity &other) {
-    return ident_ < other.ident_;
+  inline bool operator<(Entity &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    return ident_ <
+        (reinterpret_cast<IdentEntity *>(&other))->ident_;
   }
 
-  bool operator==(const IdentEntity &other) {
-    return ident_ == other.ident_;
+  inline bool operator==(Entity &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    return ident_ ==
+        (reinterpret_cast<IdentEntity *>(&other))->ident_;
   }
 
-  operator std::string() { return ident_; }
+  inline EntityPtr Copy() override {
+    return std::make_unique<IdentEntity>(*this);
+  }
+
+  operator std::string() override { return ident_; }
 
  private:
   std::string ident_;

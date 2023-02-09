@@ -73,7 +73,7 @@ class Query {
     }
 
     if (PQL::is_integer(token)) {
-      std::make_unique<IntegerArg>(stoi(token));
+      return std::make_unique<IntegerArg>(stoi(token));
     }
 
     return std::make_unique<ExpressionArg>(token);

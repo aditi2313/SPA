@@ -25,6 +25,9 @@ std::unique_ptr<PKBRead> InitializePKB(
   // Seed testing data
   for (auto [line, variables] : data) {
     pkb_write.AddModifiesData(line, variables);
+    for (auto var : variables) {
+      pkb_write.add_variable(var);
+    }
   }
 
   return std::make_unique<PKBRead>(pkb_write.EndWrite());
@@ -67,7 +70,7 @@ TEST_CASE("Test PKB and QPS integration for Modifies clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"once", "told", "me"};
+    std::list<std::string> expected_results{"me", "once", "told"};
 
     REQUIRE(actual_results == expected_results);
   }

@@ -7,7 +7,6 @@
 
 #include "common/Exceptions.h"
 #include "models/types.h"
-#include "Clause.h"
 
 using models::EntityId;
 
@@ -39,17 +38,6 @@ class PQL {
 
   inline static EntityId kModifiesRelId = "Modifies";
   inline static EntityId kPatternRelId = "pattern";
-
-  inline static ClausePtr get_rel_ref(
-      EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
-    if (rel_ref_ident == kModifiesRelId) {
-      return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
-    }
-    if (rel_ref_ident == kPatternRelId) {
-      return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
-    }
-    throw PqlSyntaxErrorException("Unknown relationship in PQL query");
-  }
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;

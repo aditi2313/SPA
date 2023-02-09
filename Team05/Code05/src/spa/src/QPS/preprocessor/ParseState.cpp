@@ -67,7 +67,7 @@ std::unique_ptr<Query> SuchThatParseState::parse(
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();
 
-  query->add_clause(PQL::get_rel_ref(
+  query->add_clause(Clause::CreateClause(
       rel_ident, std::move(arg1), std::move(arg2)));
 
   itr++;
@@ -89,7 +89,7 @@ std::unique_ptr<Query> PatternParseState::parse(
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();
 
-  query->add_clause(PQL::get_rel_ref(
+  query->add_clause(Clause::CreateClause(
       "pattern", std::move(arg1), std::move(arg2)));
   itr++;
   return query;

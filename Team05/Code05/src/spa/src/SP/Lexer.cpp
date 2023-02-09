@@ -108,7 +108,15 @@ void Lexer::Increment() {
     return;
   }
 
-  std::optional<Token> new_token = ProcessSpecialChars(c);
+  int p = pointer_;
+  auto new_token = ReadRelation(p);
+  if (new_token.has_value()) {
+    current_tok_ = new_token.value();
+    pointer_ = p;
+    return;
+  }
+
+  new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
     current_tok_ = new_token.value();
     pointer_++;
@@ -125,7 +133,7 @@ void Lexer::ValidateInteger(std::string number_string) {
   }
 }
 
-// Todo(Gab) refactor
+// Todo(Gab) refactor in sp/rel-parser
 // out of this class
 Token ParseLessGreater(char c) {
   if (c == '<') return Token::kTokLess;
@@ -133,17 +141,50 @@ Token ParseLessGreater(char c) {
   throw std::runtime_error("Invalid input into ParseLessGreater");
 }
 
-// Temporary utility function. Todo(Gab): remove
+std::optional<Token> ParseLessGreaterEqual(char c) {
+  if (c == '<') return {Token::kTokLessEqual};
+  if (c == '>') return {Token::kTokGreaterEqual};
+  return std::nullopt;
+}
+
+// Temporary utility function. Todo(Gab): reorganise in sp/rel-parser
 std::optional<Token> Lexer::ReadRelation(int& pointer) {
-  // check for < or >
-  pointer = pointer_;
+  // check for < or >  
   char c = program_[pointer];
+  if (c == '=' && pointer + 1 < program_.length() &&
+      program_[pointer + 1] == '=') {
+    pointer += 2;
+    return {Token::kTokEquiv};
+  }
+
   if (c == '>' || c == '<') {
     pointer++;
     if (pointer >= program_.length()) {
+      pointer++;
       return {ParseLessGreater(c)};
     }
-    
+    if (program_[pointer] == '=') {
+      pointer++;
+      return {ParseLessGreaterEqual(c)};
+    }
+    return {ParseLessGreater(c)};
   }
+
+  if (c == '&' || c == '|') {
+    pointer++;
+    if (pointer >= program_.length()) {
+      return Token::kTokEof;
+    }
+    if (program_[pointer] != c) {
+      return {Token::kTokError};
+    }
+    if (c == '&') {
+      return {Token::kTokAnd};
+    }
+    if (c == '|') {
+      return {Token::kTokOr};
+    }
+  }
+  return std::nullopt;
 }
 }  // namespace sp

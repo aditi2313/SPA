@@ -14,8 +14,25 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
   lxr.Increment();
   auto right_factor = rel_parser_.parse(lxr);
 
-  // Todo(Gab) 
-  return std::make_unique<ast::RelExprNode>(
-      std::move(left_factor, right_factor));
+  if (middle == Token::kTokLess) {
+    return std::make_unique<ast::LessThanNode>(std::move(left_factor),
+                                               std::move(right_factor));
+  }
+  if (middle == Token::kTokLessEqual) {
+    return std::make_unique<ast::LessThanEqualNode>(std::move(left_factor),
+                                               std::move(right_factor));
+  }
+  if (middle == Token::kTokGreater) {
+    return std::make_unique<ast::MoreThanNode>(std::move(left_factor),
+                                               std::move(right_factor));
+  }
+  if (middle == Token::kTokGreaterEqual) {
+    return std::make_unique<ast::MoreThanEqualNode>(std::move(left_factor),
+                                                    std::move(right_factor));
+  }
+  
+
+  return std::make_unique<ast::RelExprNode>(std::move(left_factor),
+                                            std::move(right_factor));
 }
 }  // namespace sp

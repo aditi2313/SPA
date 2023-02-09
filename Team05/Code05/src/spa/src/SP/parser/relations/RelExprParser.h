@@ -11,7 +11,5 @@ class RelExprParser : public Parser<ast::RelExprNode> {
 
  private:
   RelFactorParser rel_parser_;
-  bool IsRelation() { return false; } 
-  // TODO(Gab) implement a way to validate if it is <=, || ... without use of enums
 };
 }  // namespace sp

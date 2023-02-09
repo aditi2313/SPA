@@ -63,9 +63,9 @@ TEST_CASE("And expression parses") {
                                                    std::move(InitialseSub()));
   auto other_less = std::make_unique<LessThanEqualNode>(
       std::move(InitialiseAdd()), std::move(InitialseSub()));
-  auto and =
+  auto overall =
       std::make_unique<AndExprNode>(std::move(equal), std::move(other_less));
-  TestCondExpr(lxr, *and);
+  TestCondExpr(lxr, *overall);
 }
 
 TEST_CASE("OR expression parses") {
@@ -74,9 +74,9 @@ TEST_CASE("OR expression parses") {
                                                    std::move(InitialseSub()));
   auto other_less = std::make_unique<LessThanEqualNode>(
       std::move(InitialiseAdd()), std::move(InitialseSub()));
-  auto and =
+  auto overall =
       std::make_unique<OrExprNode>(std::move(equal), std::move(other_less));
-  TestCondExpr(lxr, *and);
+  TestCondExpr(lxr, *overall);
 }
 
 std::unique_ptr<RelFactor> InitialiseAdd() {

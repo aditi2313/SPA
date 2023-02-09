@@ -178,6 +178,7 @@ std::optional<Token> Lexer::ReadRelation(int& pointer) {
     if (program_[pointer] != c) {
       return {Token::kTokError};
     }
+    pointer++;
     if (c == '&') {
       return {Token::kTokAnd};
     }

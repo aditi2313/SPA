@@ -57,6 +57,28 @@ TEST_CASE("More than equal expression parses") {
   TestCondExpr(lxr, *equal);
 }
 
+TEST_CASE("And expression parses") {
+  Lexer lxr("(a + b == a - b) && ( a + b <= a - b )");
+  auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
+                                                   std::move(InitialseSub()));
+  auto other_less = std::make_unique<LessThanEqualNode>(
+      std::move(InitialiseAdd()), std::move(InitialseSub()));
+  auto and =
+      std::make_unique<AndExprNode>(std::move(equal), std::move(other_less));
+  TestCondExpr(lxr, *and);
+}
+
+TEST_CASE("OR expression parses") {
+  Lexer lxr("(a + b == a-b ) || (a + b <= a - b )");
+  auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
+                                                   std::move(InitialseSub()));
+  auto other_less = std::make_unique<LessThanEqualNode>(
+      std::move(InitialiseAdd()), std::move(InitialseSub()));
+  auto and =
+      std::make_unique<OrExprNode>(std::move(equal), std::move(other_less));
+  TestCondExpr(lxr, *and);
+}
+
 std::unique_ptr<RelFactor> InitialiseAdd() {
   auto a = MakeVar("a");
   auto b = MakeVar("b");

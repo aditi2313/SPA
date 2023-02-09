@@ -20,7 +20,7 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
   }
   if (middle == Token::kTokLessEqual) {
     return std::make_unique<ast::LessThanEqualNode>(std::move(left_factor),
-                                               std::move(right_factor));
+                                                    std::move(right_factor));
   }
   if (middle == Token::kTokGreater) {
     return std::make_unique<ast::MoreThanNode>(std::move(left_factor),
@@ -30,7 +30,11 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
     return std::make_unique<ast::MoreThanEqualNode>(std::move(left_factor),
                                                     std::move(right_factor));
   }
-  
+
+  if (middle == Token::kTokEquiv) {
+    return std::make_unique<ast::EqualNode>(std::move(left_factor),
+                                                    std::move(right_factor));
+  }
 
   return std::make_unique<ast::RelExprNode>(std::move(left_factor),
                                             std::move(right_factor));

@@ -25,6 +25,8 @@ class RelFactor : public TNode {
     return LHS.expression_->DeepEquals(*(RHS.expression_));
   }
 
+  std::unique_ptr<ExprNode>& get_expr() { return expression_; }
+
  protected:
   std::unique_ptr<ExprNode> expression_;
 };
@@ -49,6 +51,10 @@ class RelExprNode : public CondExprNode {
     }
     return false;
   }
+
+  std::unique_ptr<RelFactor>& get_left_factor() { return left_factor_; }
+
+  std::unique_ptr<RelFactor>& get_right_factor() { return right_factor_; }
 
  protected:
   std::unique_ptr<RelFactor> left_factor_;

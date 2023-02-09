@@ -34,6 +34,10 @@ class DoubleCondExprNode : public CondExprNode {
     return false;
   }
 
+  std::unique_ptr<CondExprNode>& get_left_cond() { return left_cond_; }
+
+  std::unique_ptr<CondExprNode>& get_right_cond() { return right_cond_; }
+
  protected:
   std::unique_ptr<CondExprNode> left_cond_;
   std::unique_ptr<CondExprNode> right_cond_;
@@ -74,6 +78,8 @@ class NotExprNode : public CondExprNode {
     }
     return false;
   }
+
+  std::unique_ptr<CondExprNode> get_cond() { return cond_; }
 
  private:
   std::unique_ptr<CondExprNode> cond_;

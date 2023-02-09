@@ -21,14 +21,15 @@ namespace sp {
     void ProgramValidator::Visit(ast::ProcNode *proc_node) {
         auto proc_name = proc_node->get_name();
         procedure_names_.push_back(proc_name);
-        procedure_stack_.insert(proc_name);
 
-        auto stmt_nodes = std::move(proc_node->get_children()->get_children());
-        for (auto &stmt_node : stmt_nodes) {
+        auto stmtlst_node = std::move(proc_node->get_children());
+        stmtlst_node->AcceptVisitor(this);
+    }
+
+    void ProgramValidator::Visit(ast::StmtLstNode *stmtlst_node) {
+        for (auto &stmt_node : stmtlst_node->get_children()) {
             stmt_node->AcceptVisitor(this);
         }
-
-        procedure_stack_.erase(proc_name);
     }
 
     void ProgramValidator::Visit(ast::ReadNode *read_node) { }

@@ -1,7 +1,7 @@
 #include "StmtNode.h"
 
 #include "SP/visitors/TNodeVisitor.h"
-#include "SP/validators/ValidatorVisitor.h"
+#include "SP/visitors/ValidatorVisitor.h"
 
 namespace ast {
 

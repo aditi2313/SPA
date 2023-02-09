@@ -19,22 +19,4 @@ TEST_CASE("Test QueryFormatter") {
         query_formatter.FormatQuery(query_result);
     REQUIRE(actual.front() == "1");
   };
-//  SECTION("For variables") {
-//    models::Entity var;
-//    std::list<std::string> actual =
-//        query_formatter.FormatQuery(BuildQueryResult({var}));
-//    REQUIRE(actual.front() == "");
-//  };
-//  SECTION("For procedures") {
-//    models::Entity procedure;
-//    std::list<std::string> actual =
-//        query_formatter.FormatQuery(BuildQueryResult({procedure}));
-//    REQUIRE(actual.front() == "");
-//  };
-//  SECTION("For constants") {
-//    models::Entity constant;
-//    std::list<std::string> actual =
-//        query_formatter.FormatQuery(BuildQueryResult({constant}));
-//    REQUIRE(actual.front() == "");
-//  };
 }

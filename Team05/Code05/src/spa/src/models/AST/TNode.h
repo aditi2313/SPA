@@ -10,7 +10,7 @@ namespace ast {
 class TNode {
  public:
   // TODO(nhjryan): implement accept_visitor for design extractor
-  virtual void AcceptVisitor(sp::TNodeVisitor *visitor) = 0;
+  virtual void AcceptVisitor(sp::TNodeVisitor* visitor) = 0;
   virtual ~TNode() = 0;
 
  private:

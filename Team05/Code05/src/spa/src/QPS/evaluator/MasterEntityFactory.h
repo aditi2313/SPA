@@ -36,15 +36,15 @@ class MasterEntityFactory {
     return entity_factories_.find(entity_id) != entity_factories_.end();
   }
 
-  EntityPtr CreateInstance(EntityId entity_id, int number) {
+  inline EntityPtr CreateInstance(EntityId entity_id, int number) {
     return entity_factories_.at(entity_id)->CreateInstance(number);
   }
 
-  EntityPtr CreateInstance(EntityId entity_id, Ident ident) {
+  inline EntityPtr CreateInstance(EntityId entity_id, Ident ident) {
     return entity_factories_.at(entity_id)->CreateInstance(ident);
   }
 
-  EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
+  inline EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
     return entity_factories_.at(entity_id)->GetAllFromPKB(pkb);
   }
 

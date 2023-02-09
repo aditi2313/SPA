@@ -50,9 +50,6 @@ class Clause {
   static std::unique_ptr<Clause> CreateClause(
       EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
 
-  static std::unique_ptr<Clause> CreateClause(
-      EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
-
  protected:
   ArgumentPtr arg1;
   ArgumentPtr arg2;

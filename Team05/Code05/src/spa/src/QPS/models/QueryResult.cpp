@@ -7,8 +7,6 @@ namespace qps {
 // Intersection is defined as the list of elements that occur
 // in both lists.
 void QueryResult::IntersectWith(QueryResultPtr &other_result) {
-  if (other_result->is_empty()) return;
-
   EntityPtrList result_list;
 
   // Vector, hence not guaranteed to be in ascending order

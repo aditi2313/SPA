@@ -12,11 +12,11 @@ bool Validator::validate(std::unique_ptr<Query> &query) {
 
 // TODO(Sarthak) check for the type of synonym
 // used to ensure that the design entity is correct
-bool Validator::DesignEntitySynonyms(
-    std::vector<std::unique_ptr<Clause>> clauses,
-    std::vector<std::string> synonyms) {
-  return true;
-}
+// bool Validator::DesignEntitySynonyms(
+//    std::vector<std::unique_ptr<Clause>> clauses,
+//    std::vector<std::string> synonyms) {
+//  return true;
+// }
 
 // Returns false if the clauses have a wildcard
 // declared as arg1 in the Modifies/Uses relationship

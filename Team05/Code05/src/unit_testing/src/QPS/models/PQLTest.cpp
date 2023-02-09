@@ -3,7 +3,6 @@
 
 using qps::PQL; // NOLINT
 
-// TODO(JL): replace with real unit tests after PKB is implemented
 TEST_CASE("Test PQL") {
   SECTION("Validation methods") {
     REQUIRE(PQL::is_ident("a") == true);

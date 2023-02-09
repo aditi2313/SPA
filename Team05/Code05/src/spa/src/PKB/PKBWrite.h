@@ -23,7 +23,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line, const std::vector<std::string> &variables);
+  void AddModifiesData(int line, const std::vector<std::string>& variables);
 
   /// <summary>
   /// Adds assign data.

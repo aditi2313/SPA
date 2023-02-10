@@ -12,8 +12,7 @@ bool ProgramValidator::Validate() {
 }
 
 void ProgramValidator::VisitProgram(ast::ProgramNode *program_node) {
-  auto proc_nodes = std::move(program_node->get_children());
-  for (auto &proc_node : proc_nodes) {
+  for (auto &proc_node : program_node->get_children()) {
     proc_node->AcceptVisitor(this);
   }
 }
@@ -22,8 +21,7 @@ void ProgramValidator::VisitProc(ast::ProcNode *proc_node) {
   auto proc_name = proc_node->get_name();
   procedure_names_.push_back(proc_name);
 
-  auto stmtlst_node = std::move(proc_node->get_children());
-  stmtlst_node->AcceptVisitor(this);
+  proc_node->get_children()->AcceptVisitor(this);
 }
 
 void ProgramValidator::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {

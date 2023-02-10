@@ -13,7 +13,6 @@ class StmtNode : public TNode {
   virtual int get_line() { return line_; }
 
   virtual void AcceptVisitor(sp::TNodeVisitor* visitor) = 0;
-  virtual void AcceptVisitor(sp::ValidatorVisitor* visitor) = 0;
 
  private:
   int line_;
@@ -33,7 +32,6 @@ class AssignNode : public StmtNode {
   inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
  private:
   std::unique_ptr<VarNode> var_;
@@ -49,7 +47,6 @@ class ReadNode : public StmtNode {
   inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
  private:
   std::unique_ptr<VarNode> var_;
@@ -64,7 +61,6 @@ class PrintNode : public StmtNode {
   inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   // TODO(nhjryan): implement nodes for if-else and while loops
 
@@ -81,7 +77,6 @@ class CallNode : public StmtNode {
   inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
  private:
   std::unique_ptr<VarNode> var_;

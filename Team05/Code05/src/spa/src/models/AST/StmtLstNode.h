@@ -26,7 +26,6 @@ class StmtLstNode : public TNode {
   }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
  private:
   std::vector<std::unique_ptr<StmtNode>> stmts_;

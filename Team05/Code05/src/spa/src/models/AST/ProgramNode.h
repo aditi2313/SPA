@@ -26,7 +26,6 @@ class ProgramNode : public TNode {  // root node
   }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor *visitor);
 
  private:
   std::vector<std::unique_ptr<ProcNode>> procs_;

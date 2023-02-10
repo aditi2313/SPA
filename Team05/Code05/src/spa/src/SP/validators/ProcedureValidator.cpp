@@ -3,9 +3,6 @@
 #include <utility>
 
 namespace sp {
-ProcedureValidator::ProcedureValidator(std::vector<std::string> proc_names)
-    : proc_names_(std::move(proc_names)) {}
-
 bool ProcedureValidator::Validate() {
   return ValidateNoDuplicateProcedureNames();
 }
@@ -19,5 +16,9 @@ bool ProcedureValidator::ValidateNoDuplicateProcedureNames() {
     proc_names_set.insert(proc_name);
   }
   return true;
+}
+
+void ProcedureValidator::Accept(ast::ProcNode &proc_node) {
+  proc_names_.push_back(proc_node.get_name());
 }
 }  // namespace sp

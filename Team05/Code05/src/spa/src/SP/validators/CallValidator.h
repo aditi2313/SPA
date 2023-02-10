@@ -3,23 +3,23 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_set>
 
 #include "Validator.h"
+#include "models/AST/ProcNode.h"
 
 namespace sp {
 
 class CallValidator : public Validator {
  public:
-  CallValidator(std::vector<std::string> procedure_names,
-                std::vector<std::string> call_names)
-      : procedure_names_(std::move(procedure_names)),
-        call_names_(std::move(call_names)) {}
-
   bool Validate() override;
 
+  void Accept(ast::ProcNode &proc_node);
+  void Accept(ast::CallNode &call_node);
+
  private:
-  std::vector<std::string> procedure_names_;
-  std::vector<std::string> call_names_;
+  std::unordered_set<std::string> procedure_names_set_;
+  std::unordered_set<std::string> call_names_set;
 
   bool ValidateProcedureNameExists();
 };

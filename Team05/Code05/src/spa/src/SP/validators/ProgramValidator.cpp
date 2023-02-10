@@ -6,9 +6,7 @@ namespace sp {
 bool ProgramValidator::Validate() {
   // Traverse tree to get required info
   root_->AcceptVisitor(this);
-  auto procedure_validator = sp::ProcedureValidator(procedure_names_);
-  auto call_validator = sp::CallValidator(procedure_names_, call_names_);
-  return procedure_validator.Validate() && call_validator.Validate();
+  return procedure_validator_.Validate() && call_validator_.Validate();
 }
 
 void ProgramValidator::VisitProgram(ast::ProgramNode *program_node) {
@@ -18,8 +16,8 @@ void ProgramValidator::VisitProgram(ast::ProgramNode *program_node) {
 }
 
 void ProgramValidator::VisitProc(ast::ProcNode *proc_node) {
-  auto proc_name = proc_node->get_name();
-  procedure_names_.push_back(proc_name);
+  procedure_validator_.Accept(*proc_node);
+  call_validator_.Accept(*proc_node);
 
   proc_node->get_children()->AcceptVisitor(this);
 }
@@ -31,8 +29,7 @@ void ProgramValidator::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
 }
 
 void ProgramValidator::VisitCall(ast::CallNode *call_node) {
-  auto proc_name = call_node->get_var()->get_name();
-  call_names_.push_back(proc_name);
+  call_validator_.Accept(*call_node);
 }
 
 }  // namespace sp

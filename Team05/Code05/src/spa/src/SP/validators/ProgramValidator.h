@@ -6,6 +6,8 @@
 #include <utility>
 #include <vector>
 
+#include "CallValidator.h"
+#include "ProcedureValidator.h"
 #include "SP/visitors/ValidatorVisitor.h"
 #include "Validator.h"
 #include "models/AST/ProgramNode.h"
@@ -39,7 +41,7 @@ class ProgramValidator : public Validator, ValidatorVisitor {
 
  private:
   std::unique_ptr<ast::ProgramNode> &root_;
-  std::vector<std::string> procedure_names_;
-  std::vector<std::string> call_names_;
+  sp::ProcedureValidator procedure_validator_;
+  sp::CallValidator call_validator_;
 };
 }  // namespace sp

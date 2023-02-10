@@ -690,3 +690,6 @@ FodyWeavers.xsd
 # vscode
 /build/
 /.vscode/
+
+# Autotester output
+Team05/Tests05/out.xml

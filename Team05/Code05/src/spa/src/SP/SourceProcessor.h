@@ -1,13 +1,16 @@
+#pragma once
+
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "../models/AST/factor_node/FactorNode.h"
-#include "Lexer.h"
+#include "lexer/Lexer.h"
 #include "SP/parser/ProgramParser.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
-#include <memory>
-#include <string>
-#include <utility>
 
 namespace sp {
 
@@ -25,6 +28,5 @@ class SourceProcessor {
     sp::ProgramParser program_parser;
     return program_parser.parse(lxr);
   }
-
 };
 }  // namespace sp

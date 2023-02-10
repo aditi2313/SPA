@@ -10,7 +10,6 @@
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
-#include "SP/validators/ProcedureValidator.h"
 #include "SP/validators/ProgramValidator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines

@@ -29,7 +29,6 @@ class VarNode : public FactorNode {
   explicit VarNode(std::string var_name) : var_name_(var_name) {}
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   bool DeepEquals(ExprNode const& other) override {
     if (dynamic_cast<const VarNode*>(&other)) {
@@ -59,10 +58,8 @@ class ConstNode : public FactorNode {
   explicit ConstNode(int val) : val_(val) {}
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
-
-    inline int get_val() { return val_; }
+  inline int get_val() { return val_; }
 
   inline std::unique_ptr<FactorNode> CopyFactor() override {
     return std::make_unique<ConstNode>(val_);
@@ -98,10 +95,8 @@ class PlusNode : public ExprNode {
   inline std::unique_ptr<TermNode>& get_term() { return term_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
-
-    inline std::unique_ptr<ExprNode> Copy() override {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<PlusNode>(expr_->Copy(), term_->CopyTerm());
   }
 
@@ -131,7 +126,6 @@ class MinusNode : public ExprNode {
   inline std::unique_ptr<TermNode>& get_term() { return term_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<MinusNode>(expr_->Copy(), term_->CopyTerm());
@@ -163,7 +157,6 @@ class TimesNode : public TermNode {
   inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   bool DeepEquals(ExprNode const& other) override {
     if (dynamic_cast<const TimesNode*>(&other)) {
@@ -201,7 +194,6 @@ class DivNode : public TermNode {
   inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<DivNode>(term_->CopyTerm(), factor_->CopyFactor());
@@ -237,7 +229,6 @@ class ModNode : public TermNode {
   inline std::unique_ptr<FactorNode>& get_factor() { return factor_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-  void AcceptVisitor(sp::ValidatorVisitor* visitor) override;
 
   bool DeepEquals(ExprNode const& other) override {
     if (dynamic_cast<const ModNode*>(&other)) {

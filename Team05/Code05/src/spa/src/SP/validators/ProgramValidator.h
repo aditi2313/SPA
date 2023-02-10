@@ -21,9 +21,9 @@ class ProgramValidator : public Validator, ValidatorVisitor {
   void VisitProgram(ast::ProgramNode *program_node) override;
   void VisitProc(ast::ProcNode* proc_node) override;
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
-  void VisitAssign(ast::AssignNode* assign_node) override;
-  void VisitRead(ast::ReadNode* read_node) override;
-  void VisitPrint(ast::PrintNode* print_node) override;
+  void VisitAssign(ast::AssignNode* assign_node) override {};
+  void VisitRead(ast::ReadNode* read_node) override {};
+  void VisitPrint(ast::PrintNode* print_node) override {};
   void VisitCall(ast::CallNode* call_node) override;
 
   void VisitFactor(ast::FactorNode* factor_node) override {};

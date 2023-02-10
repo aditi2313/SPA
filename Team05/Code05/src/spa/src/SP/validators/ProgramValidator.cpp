@@ -32,14 +32,9 @@ void ProgramValidator::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
   }
 }
 
-void ProgramValidator::VisitRead(ast::ReadNode *read_node) {}
-
-void ProgramValidator::VisitPrint(ast::PrintNode *print_node) {}
-
 void ProgramValidator::VisitCall(ast::CallNode *call_node) {
   auto proc_name = call_node->get_var()->get_name();
   call_names_.push_back(proc_name);
 }
 
-void ProgramValidator::VisitAssign(ast::AssignNode *assign_node) {}
 }  // namespace sp

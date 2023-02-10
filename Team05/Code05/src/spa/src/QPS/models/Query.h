@@ -16,6 +16,7 @@ using models::Synonym;
 namespace qps {
 class Query {
  public:
+  // Set a synonym declaration
   // Returns false if synonym already exists in the declaration hashmap.
   inline bool set_synonym(Synonym synonym, models::EntityId entity) {
     if (synonym_declarations_.find(synonym) != synonym_declarations_.end())
@@ -24,18 +25,24 @@ class Query {
     return true;
   }
 
+  // Get the declaration for the synonym
   inline models::EntityId get_synonym(Synonym synonym) {
     return synonym_declarations_.at(synonym);
   }
 
+  // Returns true if `token` is a synonym that has been declared
   inline bool is_synonym(std::string token) {
     return synonym_declarations_.find(token) != synonym_declarations_.end();
   }
 
+  // A selected synonym is a synonym that comes after `Select`
+  // (Note: to support Advanced SPA requirements, currently
+  // it will always be just one selected synonym)
   inline void add_selected_synonym(std::string synonym) {
     selected_synonyms_.push_back(synonym);
   }
 
+  // A selected synonym is a synonym that comes after `Select`
   inline std::vector<std::string> get_selected_synonyms() {
     return selected_synonyms_;
   }

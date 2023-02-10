@@ -108,16 +108,16 @@ void TestQuery(
 TEST_CASE("Test PKB and QPS integration for Select with no clauses") {
   QPS qps;
   std::unique_ptr<PKBRead> pkb = InitializePKB(
-      {"proc1", "proc2"},
-      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
-      {1, 3, 5},
-      {2, 4, 6},
-      {7, 9},
-      {8, 10},
-      {11},
-      {12},
-      {"x", "y", "z"},
-      {123, 456, 789});
+      /* procedures */ {"proc1", "proc2"},
+      /* stmts */ {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12},
+      /* reads */ {1, 3, 5},
+      /* prints */ {2, 4, 6},
+      /* assigns */ {7, 9},
+      /* calls */ {8, 10},
+      /* whiles */ {11},
+      /* ifs */  {12},
+      /* variables */ {"x", "y", "z"},
+      /* constants */ {123, 456, 789});
 
   SECTION("Get all procedures from PKB") {
     TestQuery(qps, pkb,

@@ -8,15 +8,6 @@
 using models::Synonym;
 
 namespace qps {
-
-enum ArgumentType {
-  kInteger,
-  kIdent,
-  kSynonym,
-  kWildcard,
-  kExpression
-};
-
 // An argument for a clause.
 // e.g. Clause(Argument, Argument)
 // It can be a synonym for statement, procedure, variable,
@@ -24,36 +15,14 @@ enum ArgumentType {
 // TODO(JL): replace string with OOP and include wildcards etc.
 class Argument {
  public:
-  explicit Argument(ArgumentType arg_type) : arg_type_(arg_type) {}
-
   // synonym | _ | INTEGER
-  bool inline IsStmtRef() {
-    return (
-        arg_type_ == ArgumentType::kInteger
-            || arg_type_ == ArgumentType::kWildcard
-            || arg_type_ == ArgumentType::kSynonym);
-  }
-
+  virtual bool IsStmtRef() { return false; }
   // synonym | _ | "ident"
-  bool inline IsEntRef() {
-    return (
-        arg_type_ == ArgumentType::kIdent
-            || arg_type_ == ArgumentType::kWildcard
-            || arg_type_ == ArgumentType::kSynonym);
-  }
-
-  bool inline IsExact() {
-    return (arg_type_ == ArgumentType::kInteger ||
-        arg_type_ == ArgumentType::kIdent);
-  }
-
-  bool inline IsWildcard() {
-    return arg_type_ == ArgumentType::kWildcard;
-  }
-
-  bool inline IsSynonym() {
-    return arg_type_ == ArgumentType::kSynonym;
-  }
+  virtual bool IsEntRef() { return false; }
+  // "ident" | INTEGER
+  virtual bool IsExact() { return false;  }
+  virtual bool IsWildcard() { return false; }
+  virtual bool IsSynonym() { return false; }
 
   bool operator==(Argument const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -73,14 +42,15 @@ class Argument {
   friend inline std::ostream &operator<<(std::ostream &o, Argument &base) {
     return base.dump(o);
   }
-
- protected:
-  const ArgumentType arg_type_;
 };
 
 class Wildcard : public Argument {
  public:
-  Wildcard() : Argument(ArgumentType::kWildcard) {}
+  Wildcard() : Argument() {}
+
+  inline bool IsWildcard() override { return true; }
+  inline bool IsEntRef() override { return true; }
+  inline bool IsStmtRef() override { return true; }
 
   inline std::ostream &dump(std::ostream &str) const override {
     return str << "Wildcard";
@@ -90,10 +60,13 @@ class Wildcard : public Argument {
 class SynonymArg : public Argument {
  public:
   SynonymArg(Synonym syn, models::EntityId entity_id)
-      : Argument(ArgumentType::kSynonym), syn_(syn), entity_id_(entity_id) {}
+      : Argument(), syn_(syn), entity_id_(entity_id) {}
+
+  inline bool IsSynonym() override { return true; }
 
   inline Synonym get_syn() { return syn_; }
   models::EntityId get_entity_id() { return entity_id_; }
+
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Synonym: " << syn_ << "->" << entity_id_;
@@ -108,7 +81,10 @@ class SynonymArg : public Argument {
 class IdentArg : public Argument {
  public:
   explicit IdentArg(std::string ident) :
-      Argument(ArgumentType::kIdent), ident_(ident) {}
+      Argument(), ident_(ident) {}
+
+  inline bool IsEntRef() override { return true; }
+  inline bool IsExact() override { return true; }
 
   inline std::string get_ident() { return ident_; }
 
@@ -123,7 +99,10 @@ class IdentArg : public Argument {
 class IntegerArg : public Argument {
  public :
   explicit IntegerArg(int number) :
-      Argument(ArgumentType::kInteger), number_(number) {}
+      Argument(), number_(number) {}
+
+  inline bool IsStmtRef() override { return true; }
+  inline bool IsExact() override { return true; }
 
   inline int get_number() { return number_; }
 
@@ -138,7 +117,7 @@ class IntegerArg : public Argument {
 class ExpressionArg : public Argument {
  public:
   explicit ExpressionArg(std::string expr) :
-      Argument(ArgumentType::kExpression), expr_(expr) {}
+      Argument(), expr_(expr) {}
 
   inline std::string get_expression() { return expr_; }
   inline std::ostream &dump(std::ostream &str) const override {
@@ -151,4 +130,3 @@ class ExpressionArg : public Argument {
 
 using ArgumentPtr = std::unique_ptr<Argument>;
 }  // namespace qps
-

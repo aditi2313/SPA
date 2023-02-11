@@ -1,7 +1,7 @@
 #include <string>
 #include <catch.hpp>
 
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"
 #include "common/exceptions/SP.h"
 #include "models/AST/factor_node/FactorNode.h"

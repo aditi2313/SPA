@@ -2,7 +2,7 @@
 #include <vector>
 #include <catch.hpp>
 
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 #include "models/AST/Token.h"
 
 using sp::Lexer;

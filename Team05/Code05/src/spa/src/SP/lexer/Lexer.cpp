@@ -147,7 +147,8 @@ std::optional<Token> ParseLessGreaterEqual(char c) {
   return std::nullopt;
 }
 
-// Temporary utility function. Todo(Gab): reorganise in sp/rel-parser
+// Temporary utility function. Todo(Gab): reorganise in #40 with Token
+// modifications
 std::optional<Token> Lexer::ReadRelation(int& pointer) {
   // check for < or >
   char c = program_[pointer];

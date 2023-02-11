@@ -8,12 +8,12 @@
 namespace sp {
 void AssertOpenBracket(Lexer& lxr) {
   if (lxr.GetTokAndIncrement() == Token::kTokOpenBracket) return;
-  throw ParseRelationSyntaxException();
+  throw ParseRelationSyntaxException("Missing open bracket.");
 }
 
 void AssertCloseBracket(Lexer& lxr) {
   if (lxr.GetTokAndIncrement() == Token::kTokCloseBracket) return;
-  throw ParseRelationSyntaxException();
+  throw ParseRelationSyntaxException("Missing closed bracket");
 }
 std::unique_ptr<ast::CondExprNode> ParseDoubleCond(Lexer& lxr) {
   AssertOpenBracket(lxr);
@@ -35,7 +35,7 @@ std::unique_ptr<ast::CondExprNode> ParseDoubleCond(Lexer& lxr) {
   if (mid == kTokOr) {
     return std::make_unique<ast::OrExprNode>(std::move(left), std::move(right));
   }
-  throw ParseRelationSyntaxException();
+  throw ParseRelationSyntaxException("Expected && or ||");
 }
 
 std::unique_ptr<ast::CondExprNode> ParseNot(Lexer& lxr) {

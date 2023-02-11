@@ -1,9 +1,9 @@
-#include <string>
 #include <catch.hpp>
-
+#include <string>
 
 #include "SP/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"
+#include "common/exceptions/SP.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
 #include "models/AST/relations/RelExprNode.h"
@@ -70,7 +70,7 @@ TEST_CASE("And expression parses") {
 }
 
 TEST_CASE("OR expression parses") {
-  Lexer lxr("(a + b == a-b ) || (a + b <= a - b )");
+  Lexer lxr("(a + b == a-b ) || (a + b <=a-b )");
   auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
                                            std::move(InitialseSub()));
   auto other_less = std::make_unique<LessThanEqualNode>(
@@ -78,6 +78,13 @@ TEST_CASE("OR expression parses") {
   auto overall =
       std::make_unique<OrExprNode>(std::move(equal), std::move(other_less));
   TestCondExpr(lxr, *overall);
+}
+
+// testing parsing with error
+TEST_CASE("Invalid expression throws error") {
+  Lexer lxr("(a + b & a-b) || (a+b <=a-b)");
+  CondExprParser parser;
+  REQUIRE_THROWS_AS(parser.parse(lxr), sp::ParseRelationSyntaxException);
 }
 
 std::unique_ptr<RelFactor> InitialiseAdd() {

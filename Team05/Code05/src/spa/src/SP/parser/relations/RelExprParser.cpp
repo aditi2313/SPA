@@ -37,7 +37,7 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
                                             std::move(right_factor));
   }
 
-  throw ParseRelationSyntaxException("Missing relation in relational expression");
-
+  throw ParseRelationSyntaxException(
+      "Missing relation in relational expression");
 }
 }  // namespace sp

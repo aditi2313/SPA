@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <string>
+#include <catch.hpp>
 
 #include "SP/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"

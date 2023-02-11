@@ -29,9 +29,9 @@ class DoubleCondExprNode : public CondExprNode {
     right_cond_ = std::move(right_cond);
   }
 
-  virtual void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
-  virtual bool DeepEquals(const CondExprNode& other) override {
+  bool DeepEquals(const CondExprNode& other) override {
     if (dynamic_cast<const DoubleCondExprNode*>(&other)) {
       const DoubleCondExprNode& o_a =
           dynamic_cast<const DoubleCondExprNode&>(other);
@@ -55,7 +55,7 @@ class AndExprNode : public DoubleCondExprNode {
   AndExprNode(std::unique_ptr<CondExprNode> left_cond,
               std::unique_ptr<CondExprNode> right_cond)
       : DoubleCondExprNode(std::move(left_cond), std::move(right_cond)) {}
-  virtual bool DeepEquals(const CondExprNode& other) override {
+  bool DeepEquals(const CondExprNode& other) override {
     return DoubleCondExprNode::DeepEquals(other) &&
            dynamic_cast<const AndExprNode*>(&other);
   }
@@ -66,7 +66,7 @@ class OrExprNode : public DoubleCondExprNode {
   OrExprNode(std::unique_ptr<CondExprNode> left_cond,
              std::unique_ptr<CondExprNode> right_cond)
       : DoubleCondExprNode(std::move(left_cond), std::move(right_cond)) {}
-  virtual bool DeepEquals(const CondExprNode& other) override {
+  bool DeepEquals(const CondExprNode& other) override {
     return DoubleCondExprNode::DeepEquals(other) &&
            dynamic_cast<const OrExprNode*>(&other);
   }
@@ -78,9 +78,9 @@ class NotExprNode : public CondExprNode {
     cond_ = std::move(cond);
   }
 
-  virtual void AcceptVisitor(sp::TNodeVisitor*) override;
+  void AcceptVisitor(sp::TNodeVisitor*) override;
 
-  virtual bool DeepEquals(const CondExprNode& other) override {
+  bool DeepEquals(const CondExprNode& other) override {
     if (dynamic_cast<const NotExprNode*>(&other)) {
       const NotExprNode& o_a = dynamic_cast<const NotExprNode&>(other);
       return o_a.cond_->DeepEquals(*cond_);

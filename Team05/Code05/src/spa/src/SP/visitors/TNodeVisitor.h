@@ -7,42 +7,50 @@
 
 #include "PKB/PKBWrite.h"
 #include "models/AST/ProgramNode.h"
+#include "models/AST/relations/CondExprNode.h"
+#include "models/AST/relations/RelExprNode.h"
 
 namespace sp {
 class TNodeVisitor {
  public:
-  virtual void VisitProgram(ast::ProgramNode* program_node) = 0;
+  virtual void VisitProgram(ast::ProgramNode* program_node) {}
 
-  virtual void VisitProc(ast::ProcNode* proc_node) = 0;
+  virtual void VisitProc(ast::ProcNode* proc_node) {}
 
-  virtual void VisitStmtLst(ast::StmtLstNode* stmtlst_node) = 0;
+  virtual void VisitStmtLst(ast::StmtLstNode* stmtlst_node) {}
 
-  virtual void VisitAssign(ast::AssignNode* assign_node) = 0;
+  virtual void VisitAssign(ast::AssignNode* assign_node) {}
 
-  virtual void VisitRead(ast::ReadNode* read_node) = 0;
+  virtual void VisitRead(ast::ReadNode* read_node) {}
 
-  virtual void VisitPrint(ast::PrintNode* print_node) = 0;
+  virtual void VisitPrint(ast::PrintNode* print_node) {}
 
-  virtual void VisitFactor(ast::FactorNode* factor_node) = 0;
+  virtual void VisitFactor(ast::FactorNode* factor_node) {}
 
-  virtual void VisitExpr(ast::ExprNode* expr_node) = 0;
+  virtual void VisitExpr(ast::ExprNode* expr_node) {}
 
-  virtual void VisitTerm(ast::TermNode* term_node) = 0;
+  virtual void VisitTerm(ast::TermNode* term_node) {}
 
-  virtual void VisitVar(ast::VarNode* var_node) = 0;
+  virtual void VisitVar(ast::VarNode* var_node) {}
 
-  virtual void VisitConst(ast::ConstNode* const_node) = 0;
+  virtual void VisitConst(ast::ConstNode* const_node) {}
 
-  virtual void VisitPlus(ast::PlusNode* plus_node) = 0;
+  virtual void VisitPlus(ast::PlusNode* plus_node) {}
 
-  virtual void VisitMinus(ast::MinusNode* minus_node) = 0;
+  virtual void VisitMinus(ast::MinusNode* minus_node) {}
 
-  virtual void VisitTimes(ast::TimesNode* times_node) = 0;
+  virtual void VisitTimes(ast::TimesNode* times_node) {}
 
-  virtual void VisitDiv(ast::DivNode* div_node) = 0;
+  virtual void VisitDiv(ast::DivNode* div_node) {}
 
-  virtual void VisitMod(ast::ModNode* mod_node) = 0;
+  virtual void VisitMod(ast::ModNode* mod_node) {}
 
-  virtual void VisitCall(ast::CallNode* call_node) = 0;
+  virtual void VisitCall(ast::CallNode* call_node) {}
+
+  virtual void VisitCondExpr(ast::CondExprNode*) {}
+
+  virtual void VisitRelExpr(ast::RelExprNode*) {}
+
+  virtual void VisitRelFactor(ast::RelFactor*) {}
 };
 }  // namespace sp

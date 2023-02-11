@@ -7,10 +7,14 @@
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace ast {
+
+/// <summary>
+/// Class reprenting a conditional expression.
+/// For instance (a + b == a - b) || (a > b).
+/// </summary>
 class CondExprNode : public TNode {
  public:
   virtual bool DeepEquals(const CondExprNode& other) = 0;
-  void AcceptVisitor(sp::TNodeVisitor* visitor) override {}
 };
 
 /// <summary>
@@ -24,7 +28,10 @@ class DoubleCondExprNode : public CondExprNode {
     left_cond_ = std::move(left_cond);
     right_cond_ = std::move(right_cond);
   }
-  bool DeepEquals(const CondExprNode& other) override {
+
+  virtual void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
+  virtual bool DeepEquals(const CondExprNode& other) override {
     if (dynamic_cast<const DoubleCondExprNode*>(&other)) {
       const DoubleCondExprNode& o_a =
           dynamic_cast<const DoubleCondExprNode&>(other);
@@ -48,7 +55,7 @@ class AndExprNode : public DoubleCondExprNode {
   AndExprNode(std::unique_ptr<CondExprNode> left_cond,
               std::unique_ptr<CondExprNode> right_cond)
       : DoubleCondExprNode(std::move(left_cond), std::move(right_cond)) {}
-  bool DeepEquals(const CondExprNode& other) override {
+  virtual bool DeepEquals(const CondExprNode& other) override {
     return DoubleCondExprNode::DeepEquals(other) &&
            dynamic_cast<const AndExprNode*>(&other);
   }
@@ -59,7 +66,7 @@ class OrExprNode : public DoubleCondExprNode {
   OrExprNode(std::unique_ptr<CondExprNode> left_cond,
              std::unique_ptr<CondExprNode> right_cond)
       : DoubleCondExprNode(std::move(left_cond), std::move(right_cond)) {}
-  bool DeepEquals(const CondExprNode& other) override {
+  virtual bool DeepEquals(const CondExprNode& other) override {
     return DoubleCondExprNode::DeepEquals(other) &&
            dynamic_cast<const OrExprNode*>(&other);
   }
@@ -71,7 +78,9 @@ class NotExprNode : public CondExprNode {
     cond_ = std::move(cond);
   }
 
-  bool DeepEquals(const CondExprNode& other) override {
+  virtual void AcceptVisitor(sp::TNodeVisitor*) override;
+
+  virtual bool DeepEquals(const CondExprNode& other) override {
     if (dynamic_cast<const NotExprNode*>(&other)) {
       const NotExprNode& o_a = dynamic_cast<const NotExprNode&>(other);
       return o_a.cond_->DeepEquals(*cond_);

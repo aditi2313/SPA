@@ -19,7 +19,7 @@ class RelFactor : public TNode {
   }
   const std::unique_ptr<ExprNode>& get_ref() { return expression_; }
 
-  void AcceptVisitor(sp::TNodeVisitor* visitor) override {}
+  virtual void AcceptVisitor(sp::TNodeVisitor* visitor);
 
   friend bool operator==(const RelFactor& LHS, const RelFactor& RHS) {
     return LHS.expression_->DeepEquals(*(RHS.expression_));
@@ -43,7 +43,9 @@ class RelExprNode : public CondExprNode {
     right_factor_ = std::move(right_factor);
   }
 
-  bool DeepEquals(const CondExprNode& other) {
+  virtual void AcceptVisitor(sp::TNodeVisitor* visitor);
+
+  virtual bool DeepEquals(const CondExprNode& other) {
     if (util::InstanceOf<RelExprNode, CondExprNode>(other)) {
       const auto& other_rel = dynamic_cast<const RelExprNode&>(other);
       return *(other_rel.left_factor_) == *(left_factor_) &&
@@ -66,7 +68,7 @@ class MoreThanNode : public RelExprNode {
   MoreThanNode(std::unique_ptr<RelFactor> left_factor,
                std::unique_ptr<RelFactor> right_factor)
       : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
-  bool DeepEquals(const CondExprNode& other) {
+  virtual bool DeepEquals(const CondExprNode& other) {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<MoreThanNode, CondExprNode>(other);
   }
@@ -76,7 +78,7 @@ class LessThanNode : public RelExprNode {
   LessThanNode(std::unique_ptr<RelFactor> left_factor,
                std::unique_ptr<RelFactor> right_factor)
       : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
-  bool DeepEquals(const CondExprNode& other) {
+  virtual bool DeepEquals(const CondExprNode& other) {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<LessThanNode, CondExprNode>(other);
   }
@@ -87,7 +89,7 @@ class MoreThanEqualNode : public RelExprNode {
                     std::unique_ptr<RelFactor> right_factor)
       : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
 
-  bool DeepEquals(const CondExprNode& other) {
+  virtual bool DeepEquals(const CondExprNode& other) {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<MoreThanEqualNode, CondExprNode>(other);
   }
@@ -97,7 +99,7 @@ class LessThanEqualNode : public RelExprNode {
   LessThanEqualNode(std::unique_ptr<RelFactor> left_factor,
                     std::unique_ptr<RelFactor> right_factor)
       : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
-  bool DeepEquals(const CondExprNode& other) {
+  virtual bool DeepEquals(const CondExprNode& other) {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<LessThanEqualNode, CondExprNode>(other);
   }
@@ -107,7 +109,7 @@ class EqualNode : public RelExprNode {
   EqualNode(std::unique_ptr<RelFactor> left_factor,
             std::unique_ptr<RelFactor> right_factor)
       : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
-  bool DeepEquals(const CondExprNode& other) {
+  virtual bool DeepEquals(const CondExprNode& other) {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<EqualNode, CondExprNode>(other);
   }

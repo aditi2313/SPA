@@ -47,7 +47,11 @@ class TNodeVisitor {
 
   virtual void VisitCall(ast::CallNode* call_node) {}
 
-  virtual void VisitCondExpr(ast::CondExprNode*) {}
+  // Relational nodes
+
+  virtual void VisitNot(ast::NotExprNode*) {}
+
+  virtual void VisitDoubleCond(ast::DoubleCondExprNode*) {}
 
   virtual void VisitRelExpr(ast::RelExprNode*) {}
 

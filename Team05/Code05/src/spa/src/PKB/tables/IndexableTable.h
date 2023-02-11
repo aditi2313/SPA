@@ -35,7 +35,8 @@ class IndexableTable {
     return result;
   }
 
-  bool exists(int line) { return id_map_.find(line) != id_map_.end();
+  bool exists(int line) {
+    return id_map_.find(line) != id_map_.end();
   }
 
   friend bool operator==(const IndexableTable<T> &LHS,

@@ -18,7 +18,7 @@ void QPS::evaluate(std::string query, std::list<std::string> &results) {
   // TODO(Sarthak): something like validator.validate(query_object) here
 
   Evaluator evaluator;
-  QueryResult result = evaluator.EvaluateQuery(std::move(query_object));
+  QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
   Formatter formatter;
   results = formatter.FormatQuery(result);
@@ -37,7 +37,7 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
 
   Evaluator evaluator;
   evaluator.inject_pkb(pkb);  // Inject testing PKB here
-  QueryResult result = evaluator.EvaluateQuery(std::move(query_object));
+  QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
   Formatter formatter;
   results = formatter.FormatQuery(result);

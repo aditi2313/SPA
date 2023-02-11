@@ -79,7 +79,7 @@ class NotExprNode : public CondExprNode {
     return false;
   }
 
-  std::unique_ptr<CondExprNode> get_cond() { return cond_; }
+  std::unique_ptr<CondExprNode>& get_cond() { return cond_; }
 
  private:
   std::unique_ptr<CondExprNode> cond_;

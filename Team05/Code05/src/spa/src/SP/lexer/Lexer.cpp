@@ -1,4 +1,4 @@
-#include "lexer/Lexer.h"
+#include "Lexer.h"
 
 #include <optional>
 #include <stdexcept>

@@ -14,7 +14,7 @@ class ParseException : public std::exception {
 
 class ParseRelationSyntaxException : public ParseException {
  public:
-  ParseRelationSyntaxException(const char *additional)
+  explicit ParseRelationSyntaxException(const char *additional)
       : ParseException("Invalid synatx at parsing of relation: ") {}
   ParseRelationSyntaxException()
       : ParseException("Invalid synatx at parsing of relation") {}

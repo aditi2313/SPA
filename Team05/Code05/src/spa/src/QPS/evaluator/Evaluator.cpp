@@ -1,5 +1,7 @@
 #include "Evaluator.h"
 
+#include <set>
+
 namespace qps {
 // Initialize every synonym in the query with all possible values.
 void Evaluator::InitializeSynonyms(QueryPtr &query) {
@@ -75,10 +77,12 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
 }
 
 void Evaluator::InitializeEntitiesFromArgument(
-    QueryPtr &query, ArgumentPtr &arg, EntityName entity_name, EntityPtrList &result) {
+    QueryPtr &query, ArgumentPtr &arg,
+    EntityName entity_name, EntityPtrList &result) {
   if (arg->IsExpression()) { return; }
   if (arg->IsWildcard()) {
-    for (auto &entity : master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {
+    for (auto &entity :
+        master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {
       result.push_back(std::move(entity));
     }
   } else if (arg->IsSynonym()) {
@@ -106,9 +110,10 @@ void Evaluator::InitializeEntitiesFromArgument(
   }
 }
 
-void Evaluator::UpdateSynonymEntityList(QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result) {
-  if (!arg->IsSynonym()) return; // Not a synonym
-  
+void Evaluator::UpdateSynonymEntityList(
+    QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result) {
+  if (!arg->IsSynonym()) return;  // Not a synonym
+
   SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
   SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
 
@@ -119,5 +124,4 @@ void Evaluator::UpdateSynonymEntityList(QueryPtr &query, ArgumentPtr &arg, std::
 
   synonym->set_possible_entities(new_entity_ptr_list);
 }
-
 }  // namespace qps

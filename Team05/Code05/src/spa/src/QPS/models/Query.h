@@ -19,8 +19,10 @@ namespace qps {
 class Query {
  public:
   // Set a synonym declaration
-  inline void declare_synonym(SynonymName syn_id, models::EntityName entity_name) {
-    synonym_declarations_.push_back(std::make_unique<Synonym>(syn_id, entity_name));
+  inline void declare_synonym(
+      SynonymName syn_id, models::EntityName entity_name) {
+    synonym_declarations_.push_back(
+        std::make_unique<Synonym>(syn_id, entity_name));
   }
 
   // Returns true if `token` is a synonym that has been declared
@@ -79,7 +81,9 @@ class Query {
 
   inline bool operator==(const Query &other) const {
     if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
-    if (!util::CompareVectorOfPointers(synonym_declarations_, other.synonym_declarations_)) return false;
+    if (!util::CompareVectorOfPointers(
+        synonym_declarations_, other.synonym_declarations_))
+      return false;
 
     return selected_synonyms_ == other.selected_synonyms_;
   }

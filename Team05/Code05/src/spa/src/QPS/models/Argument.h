@@ -59,7 +59,7 @@ class Wildcard : public Argument {
 
 class SynonymArg : public Argument {
  public:
-  SynonymArg(SynonymName syn_name)
+  explicit SynonymArg(SynonymName syn_name)
       : Argument(), syn_name_(syn_name) {}
 
   inline bool IsSynonym() override { return true; }

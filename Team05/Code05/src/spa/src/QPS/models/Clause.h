@@ -39,7 +39,7 @@ class Clause {
     }
 
     return result;
-  };
+  }
 
   bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);

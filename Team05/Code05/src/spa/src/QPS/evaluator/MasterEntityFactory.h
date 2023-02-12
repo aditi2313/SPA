@@ -11,7 +11,8 @@ class MasterEntityFactory {
  public:
   MasterEntityFactory() {
     entity_factories_.insert(
-        {PQL::kProcedureEntityName, std::make_unique<ProcedureEntityFactory>()});
+        {PQL::kProcedureEntityName,
+         std::make_unique<ProcedureEntityFactory>()});
     entity_factories_.insert(
         {PQL::kStmtEntityName, std::make_unique<StmtEntityFactory>()});
     entity_factories_.insert(
@@ -30,8 +31,6 @@ class MasterEntityFactory {
         {PQL::kVariableEntityName, std::make_unique<VariableEntityFactory>()});
     entity_factories_.insert(
         {PQL::kConstantEntityName, std::make_unique<ConstantEntityFactory>()});
-    entity_factories_.insert(
-        {PQL::kExpressionEntityName, std::make_unique<ExpressionEntityFactory>()});
   }
 
   inline bool is_entity_name(EntityName entity_name) {

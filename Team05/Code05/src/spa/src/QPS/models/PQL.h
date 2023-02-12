@@ -24,7 +24,6 @@ class PQL {
   inline static std::string kVariableEntityName = "variable";
   inline static std::string kConstantEntityName = "constant";
   inline static std::string kProcedureEntityName = "procedure";
-  inline static std::string kExpressionEntityName = "expression";
 
   inline static std::vector<std::string> kAllEntityName{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,

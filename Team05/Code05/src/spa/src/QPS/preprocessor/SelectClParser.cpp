@@ -7,7 +7,8 @@ namespace qps {
 
 // Compares token with the transition keyword of the next stage
 // to determine if the machine should go to next state
-bool SelectClParser::ShouldGoToNextState(int current_state_index, std::string token) {
+bool SelectClParser::ShouldGoToNextState(
+    int current_state_index, std::string token) {
   if (current_state_index >= states_.size() - 1) return false;  // last stage
 
   if (current_state_index == 1 && token == "pattern") {

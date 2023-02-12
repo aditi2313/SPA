@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <utility>
+#include <memory>
 
 #include "models/Entity.h"
 #include "models/types.h"
@@ -51,5 +53,3 @@ class Synonym {
 
 using SynonymPtr = std::unique_ptr<Synonym>;
 }  // namespace qps
-
-

@@ -58,13 +58,4 @@ class Variable : public IdentEntity {
     return std::make_unique<Variable>(*this);
   }
 };
-
-class Expression : public IdentEntity {
- public:
-  explicit Expression(std::string ident) : IdentEntity(ident) {}
-
-  inline EntityPtr Copy() override {
-    return std::make_unique<Expression>(*this);
-  }
-};
 }  // namespace models

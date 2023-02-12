@@ -54,7 +54,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   }
 
   SECTION("Modifies(StmtSynonym, VarSynonym) should return correct results") {
-    std::string query_string = "variable v; stmt s; Select v such that Modifies(s, v)";
+    std::string query_string = "variable v; stmt s; "
+                               "Select v such that Modifies(s, v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -64,7 +65,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   }
 
   SECTION("Modifies(StmtSynonym, VarSynonym) should return correct results") {
-    std::string query_string = "variable v; stmt s; Select s such that Modifies(s, v)";
+    std::string query_string = "variable v; stmt s; "
+                               "Select s such that Modifies(s, v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -74,7 +76,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   }
 
   SECTION("Modifies(IntArg, IdentArg) should return correct results") {
-    std::string query_string = "variable v; Select v such that Modifies(10, \"a\")";
+    std::string query_string = "variable v; "
+                               "Select v such that Modifies(10, \"a\")";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -94,7 +97,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   }
 
   SECTION("Modifies(IntArg, Wildcard) should return correct results") {
-    std::string query_string = "variable v; stmt s; Select v such that Modifies(10, _)";
+    std::string query_string = "variable v; stmt s; "
+                               "Select v such that Modifies(10, _)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

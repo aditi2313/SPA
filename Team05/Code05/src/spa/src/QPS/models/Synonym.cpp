@@ -1,5 +1,3 @@
 #include "Synonym.h"
 
-namespace qps {
-
-}
+namespace qps {}  // namespace qps

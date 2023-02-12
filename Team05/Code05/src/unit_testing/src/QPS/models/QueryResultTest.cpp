@@ -8,7 +8,7 @@ using namespace qps; // NOLINT
 // Helper method for testing
 EntityPtrList BuildStmtList(std::vector<int> stmts) {
   EntityPtrList result;
-  for(int stmt : stmts) {
+  for (int stmt : stmts) {
     result.push_back(std::make_unique<Stmt>(stmt));
   }
   return result;
@@ -34,6 +34,7 @@ TEST_CASE("Test QueryResult") {
     result1->IntersectWith(result2);
 
     EntityPtrList expected_list = BuildStmtList({2, 4, 6});
-    REQUIRE(util::CompareVectorOfPointers(result1->get_query_results(), expected_list));
+    REQUIRE(util::CompareVectorOfPointers(
+        result1->get_query_results(), expected_list));
   };
 }

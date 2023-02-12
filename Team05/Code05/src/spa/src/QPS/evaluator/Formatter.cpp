@@ -12,12 +12,13 @@ namespace qps {
 std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
   std::list<std::string> output;
 
-  if(query_result->IsBoolean()) {
+  if (query_result->IsBoolean()) {
     // Note: This is for ADVANCED SPA requirements
-    BoolQueryResult* bool_query_result = dynamic_cast<BoolQueryResult*>(
-        query_result.get()
-    );
-    bool_query_result->IsTrue() ? output.push_back("TRUE") : output.push_back("FALSE");
+    BoolQueryResult *bool_query_result = dynamic_cast<BoolQueryResult *>(
+        query_result.get());
+    bool_query_result->IsTrue()
+    ? output.push_back("TRUE")
+    : output.push_back("FALSE");
 
   } else {
     ListQueryResult *list_query_result = dynamic_cast<ListQueryResult *>(

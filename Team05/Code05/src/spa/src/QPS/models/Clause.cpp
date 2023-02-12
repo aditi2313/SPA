@@ -51,7 +51,8 @@ EntityPtrList PatternClause::Index(
   int line = line_arg->get_number();
   // Preprocess expression string to insert whitespace
   std::string expression = "";
-  ExpressionArg *expression_arg = reinterpret_cast<ExpressionArg *> (arg2_.get());
+  ExpressionArg *expression_arg = reinterpret_cast<ExpressionArg *>(
+      arg2_.get());
   for (char c : expression_arg->get_expression()) {
     if (c == '+' || c == '-') {
       expression += " " + std::string(1, c) + " ";

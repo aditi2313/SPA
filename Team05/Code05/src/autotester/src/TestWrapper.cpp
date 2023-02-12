@@ -5,7 +5,7 @@
 #include <sstream>
 
 #include "../../spa/src/QPS/QPS.h"
-#include "../../spa/src/SP/Lexer.h"
+#include "../../spa/src/SP/lexer/Lexer.h"
 #include "../../spa/src/SP/parser/ProgramParser.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"

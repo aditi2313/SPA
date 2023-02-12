@@ -3,7 +3,7 @@
 
 #include "Clause.h"
 #include "QPS/models/PQL.h"
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 #include "SP/parser/expression/ExpressionParser.h"
 #include "common/filter/filters/AssignFilter.h"
 

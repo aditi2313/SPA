@@ -32,6 +32,16 @@ std::optional<Token> ProcessSpecialChars(char c) {
       return {Token::kTokDiv};
     case '%':
       return {Token::kTokMod};
+    case '(':
+      return {Token::kTokOpenBracket};
+    case ')':
+      return {Token::kTokCloseBracket};
+    case '!':
+      return {Token::kTokNot};
+    case '<':
+      return {Token::kTokLess};
+    case '>':
+      return {Token::kTokGreater};
     default:
       return std::nullopt;
   }
@@ -103,12 +113,21 @@ void Lexer::Increment() {
     return;
   }
 
-  std::optional<Token> new_token = ProcessSpecialChars(c);
+  int p = pointer_;
+  auto new_token = ProcessLengthTwoTokens(p);
+  if (new_token.has_value()) {
+    current_tok_ = new_token.value();
+    pointer_ = p;
+    return;
+  }
+
+  new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
     current_tok_ = new_token.value();
     pointer_++;
     return;
   }
+
   ReadInt();
 }
 
@@ -117,5 +136,31 @@ void Lexer::ValidateInteger(std::string number_string) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("integer cannot have leading zeroes");
   }
+}
+
+std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
+  if (pointer + 1 >= program_.length()) return std::nullopt;
+  std::string relation =
+      std::string() + program_[pointer] + program_[pointer + 1];
+  pointer += 2;
+  if (relation == "!=") {
+    return {Token::kTokNotEqual};
+  }
+  if (relation == "==") {
+    return {Token::kTokEquiv};
+  }
+  if (relation == "<=") {
+    return {Token::kTokLessEqual};
+  }
+  if (relation == ">=") {
+    return {Token::kTokGreaterEqual};
+  }
+  if (relation == "||") {
+    return {Token::kTokOr};
+  }
+  if (relation == "&&") {
+    return {Token::kTokAnd};
+  }
+  return std::nullopt;
 }
 }  // namespace sp

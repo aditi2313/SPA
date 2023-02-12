@@ -1,7 +1,7 @@
 #include "ProgramParser.h"
 
 #include "ProcedureParser.h"
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 
 namespace sp {
 std::unique_ptr<ast::ProgramNode> ProgramParser::parse(Lexer& lxr) {

@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Parser.h"
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 
 namespace sp {

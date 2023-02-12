@@ -6,7 +6,7 @@
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace sp {
-class AddParser : SelectClParser<ast::VarNode> {
+class AddParser : Parser<ast::VarNode> {
  public:
   std::unique_ptr<ast::VarNode> parse(Lexer&) { return nullptr; }
 };

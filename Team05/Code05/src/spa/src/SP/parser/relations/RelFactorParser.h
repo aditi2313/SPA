@@ -7,7 +7,7 @@
 #include "models/AST/relations/RelExprNode.h"
 
 namespace sp {
-class RelFactorParser : public SelectClParser<ast::RelFactor> {
+class RelFactorParser : public Parser<ast::RelFactor> {
  public:
   std::unique_ptr<ast::RelFactor> parse(Lexer&) override;
 

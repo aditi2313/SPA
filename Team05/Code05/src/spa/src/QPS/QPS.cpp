@@ -25,6 +25,6 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
 
   Formatter formatter;
   results = formatter.FormatQuery(result);
-  return std::move(pkb);
+  return evaluator.retrieve_pkb();
 }
 }  // namespace qps

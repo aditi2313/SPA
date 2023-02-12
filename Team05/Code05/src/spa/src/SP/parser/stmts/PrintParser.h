@@ -8,7 +8,7 @@
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class PrintParser : SelectClParser<ast::PrintNode> {
+class PrintParser : Parser<ast::PrintNode> {
  public:
   std::unique_ptr<ast::PrintNode> parse(Lexer& lxr) override {
     if (lxr.GetTokAndIncrement() != kTokIdent) {

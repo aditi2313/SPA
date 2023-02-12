@@ -42,8 +42,6 @@ class IntEntity : public Entity {
     return std::to_string(number_);
   }
 
-  virtual ~IntEntity() = 0;
-
  private:
   int number_;
 };

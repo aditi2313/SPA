@@ -13,9 +13,9 @@ namespace util {
 /// <typeparam name="Derived">The possibly derived class of the
 /// object.</typeparam> <param name="other">The object to check</param>
 /// <returns></returns>
-template<class Derived, class Base>
-bool InstanceOf(const Base &object) {
-  return dynamic_cast<const Derived *>(&object) != nullptr;
+template <class Derived, class Base>
+bool InstanceOf(const Base& object) {
+  return dynamic_cast<const Derived*>(&object) != nullptr;
 }
 
 /// <summary>

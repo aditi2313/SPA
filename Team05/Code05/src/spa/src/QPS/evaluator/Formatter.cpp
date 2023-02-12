@@ -19,8 +19,8 @@ std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
     bool_query_result->IsTrue()
     ? output.push_back("TRUE")
     : output.push_back("FALSE");
-
   } else {
+    // Basic SPA
     ListQueryResult *list_query_result = dynamic_cast<ListQueryResult *>(
         query_result.get());
     list_query_result->Sort();

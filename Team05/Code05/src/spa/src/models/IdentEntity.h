@@ -35,7 +35,6 @@ class IdentEntity : public Entity {
   }
 
   operator std::string() override { return ident_; }
-  virtual ~IdentEntity() = 0;
 
  private:
   std::string ident_;

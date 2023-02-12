@@ -34,6 +34,7 @@ std::unique_ptr<PKBRead> InitializePKB(
   return std::make_unique<PKBRead>(pkb_write.EndWrite());
 }
 
+// Note: First argument for ModifiesS clause cannot be wildcard
 TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   QPS qps;
   std::unique_ptr<PKBRead> pkb = InitializePKB(

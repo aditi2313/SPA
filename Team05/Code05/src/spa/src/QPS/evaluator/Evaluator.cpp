@@ -79,7 +79,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
 void Evaluator::InitializeEntitiesFromArgument(
     QueryPtr &query, ArgumentPtr &arg,
     EntityName entity_name, EntityPtrList &result) {
-  if (arg->IsExpression()) { return; }
+  if (arg->IsExpression()) return;
   if (arg->IsWildcard()) {
     for (auto &entity :
         master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {

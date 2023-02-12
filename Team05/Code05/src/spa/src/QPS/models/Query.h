@@ -26,7 +26,7 @@ class Query {
   }
 
   // Returns true if `token` is a synonym that has been declared
-  inline bool is_declared_synonym_id(std::string token) {
+  inline bool is_declared_synonym_name(std::string token) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_id() == token) return true;
     }
@@ -39,13 +39,6 @@ class Query {
       if (syn == *declared_syn) return true;
     }
     return false;
-  }
-
-  inline EntityName get_syn_entity_name(std::string token) {
-    for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_id() == token) return syn->get_entity_name();
-    }
-    throw std::runtime_error("Synonym has not been declared");
   }
 
   inline SynonymPtr &get_synonym(std::string token) {
@@ -82,14 +75,13 @@ class Query {
   inline bool operator==(const Query &other) const {
     if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
     if (!util::CompareVectorOfPointers(
-        synonym_declarations_, other.synonym_declarations_))
-      return false;
+        synonym_declarations_, other.synonym_declarations_)) return false;
 
     return selected_synonyms_ == other.selected_synonyms_;
   }
 
   inline ArgumentPtr CreateArgument(std::string token) {
-    if (is_declared_synonym_id(token)) {
+    if (is_declared_synonym_name(token)) {
       return std::make_unique<SynonymArg>(token);
     }
 

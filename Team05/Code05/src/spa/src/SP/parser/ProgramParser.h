@@ -8,7 +8,7 @@
 #include "models/AST/ProgramNode.h"
 
 namespace sp {
-class ProgramParser : SelectClParser<ast::ProgramNode> {
+class ProgramParser : Parser<ast::ProgramNode> {
  public:
   std::unique_ptr<ast::ProgramNode> parse(Lexer&) override;
 

@@ -44,7 +44,8 @@ class VarNode : public FactorNode {
     return std::make_unique<VarNode>(var_name_);
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor();
+  inline std::unique_ptr<TermNode> CopyTerm() override {
+    return CopyFactor();
   }
 
   inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
@@ -65,7 +66,7 @@ class ConstNode : public FactorNode {
     return std::make_unique<ConstNode>(val_);
   }
 
-  bool DeepEquals(ExprNode const& other) {
+  bool DeepEquals(ExprNode const& other) override {
     if (dynamic_cast<const ConstNode*>(&other)) {
       const ConstNode& o_v = dynamic_cast<const ConstNode&>(other);
       return o_v.val_ == val_;
@@ -74,7 +75,6 @@ class ConstNode : public FactorNode {
   }
 
   inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor(); }
-
 
   inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
 
@@ -166,7 +166,7 @@ class TimesNode : public TermNode {
     return false;
   }
 
-  inline std::unique_ptr<ExprNode> Copy() {
+  inline std::unique_ptr<ExprNode> Copy() override {
     return std::make_unique<TimesNode>(term_->CopyTerm(),
                                        factor_->CopyFactor());
   }

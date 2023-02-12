@@ -1,19 +1,15 @@
 #include <common/Exceptions.h>
 #include <QPS/preprocessor/Validator.h>
 #include <QPS/preprocessor/Parser.h>
+#include <QPS/models/PQL.h>
 
 #include <utility>
 #include <catch.hpp>
 
-using qps::Argument;
-using qps::ModifiesClause;
-using qps::Validator;
-using qps::Query;
-using qps::Clause;
-using qps::Parser;
+using namespace qps;  // NOLINT
 
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<std::string, models::EntityStub>> synonyms,
+    std::vector<std::pair<Synonym, EntityId>> synonyms,
     std::vector<std::string> selected_synonyms);  // Forward declaration
 
 TEST_CASE("Test IsWildcard") {
@@ -21,9 +17,11 @@ TEST_CASE("Test IsWildcard") {
   SECTION("Happy path") {
     // No wildcard
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", models::EntityStub()}}, {"v"});
+        {{"v", PQL::kVariableEntityId}}, {"v"});
     query->add_clause(
-        std::make_unique<qps::ModifiesClause>(Argument("6"), Argument("v")));
+        std::make_unique<qps::ModifiesClause>(
+            query->CreateArgument("6"),
+            query->CreateArgument("v")));
 
     std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
     REQUIRE(Validator::IsWildcard(clauses));
@@ -33,9 +31,11 @@ TEST_CASE("Test IsWildcard") {
 TEST_CASE("Test invalidWildcard") {
   SECTION("Wildcard is in the wrong area") {
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", models::EntityStub()}}, {"v"});
+        {{"v", PQL::kVariableEntityId}}, {"v"});
     query->add_clause(
-        std::make_unique<qps::ModifiesClause>(Argument("_"), Argument("v")));
+        std::make_unique<qps::ModifiesClause>(
+            query->CreateArgument("_"),
+            query->CreateArgument("v")));
 
     std::vector<std::unique_ptr<Clause>> &clauses2 =
         query->get_clauses();
@@ -48,14 +48,13 @@ TEST_CASE("Test SynonymCheck") {
   SECTION("Happy path") {
     // All used synonyms are declared
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", models::EntityStub()}}, {"v"});
+        {{"v", PQL::kVariableEntityId}}, {"v"});
     query->add_clause(
-        std::make_unique<ModifiesClause>(Argument("6"), Argument("v")));
+        std::make_unique<ModifiesClause>(
+            query->CreateArgument("6"),
+            query->CreateArgument("v")));
 
-    std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
-    std::vector<std::string> synonym = query->get_selected_synonyms();
-
-    REQUIRE(Validator::SynonymCheck(clauses, synonym));
+    REQUIRE(Validator::SynonymCheck(query));
   }
 }
 //  TEST_CASE("Invalid synonym used") {

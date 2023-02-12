@@ -1,9 +1,8 @@
-#pragma once
-
 #include "ModifiesVisitor.h"
 
 #include <memory>
 #include <utility>
+
 namespace sp {
 void ModifiesVisitor::VisitProgram(ast::ProgramNode* program_node) {
   for (auto& child : program_node->get_children()) {

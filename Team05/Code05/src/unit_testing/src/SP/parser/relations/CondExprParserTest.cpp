@@ -5,7 +5,7 @@ void TestCondExpr(Lexer& lxr, const CondExprNode& expected);
 template <class T>
 void RequiresException(std::string);
 
-TEST_CASE("And expression parses") {
+TEST_CASE("AND expression parses") {
   Lexer lxr("(a + b == a - b) && ( a + b <= a - b )");
   auto equal = std::make_unique<EqualNode>(std::move(InitialiseAdd()),
                                            std::move(InitialiseSub()));

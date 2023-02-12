@@ -9,7 +9,7 @@
 namespace ast {
 /// <summary>
 /// A Relation factor. Shouldn't be used
-/// for structural comparisons. Simplty a wrapper.
+/// for structural comparisons. Simply a wrapper.
 /// Contains an expression.
 /// </summary>
 class RelFactor : public TNode {

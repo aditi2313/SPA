@@ -19,5 +19,4 @@ void PrintNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
 void CallNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitCall(this);
 }
-
 }  // namespace ast

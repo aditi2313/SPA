@@ -13,15 +13,15 @@
 
 namespace filter {
 
-    template<class T, typename Predicate>
-    class PredicateFilter
-            : public IndexableFilter<T> {
-    public:
-        explicit PredicateFilter(Predicate predicate) : predicate_(predicate) {}
+template<class T, typename Predicate>
+class PredicateFilter
+        : public IndexableFilter<T> {
+ public:
+    explicit PredicateFilter(Predicate predicate) : predicate_(predicate) {}
 
-        pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
+    pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
 
-    private:
-        Predicate predicate_;
-    };
+ private:
+    Predicate predicate_;
+};
 }  // namespace pkb

@@ -1,6 +1,6 @@
 #include <common/Exceptions.h>
 #include <QPS/preprocessor/Validator.h>
-#include <QPS/preprocessor/Parser.h>
+#include <QPS/preprocessor/SelectClParser.h>
 #include <QPS/models/PQL.h>
 
 #include <utility>
@@ -74,7 +74,7 @@ TEST_CASE("Test SynonymCheck") {
 //}
 //
 // TEST_CASE("Semantically correct") {
-//    Parser parser;
+//    SelectClParser parser;
 //  SECTION("All is valid");
 //    std::string query_string =
 //        "variable v; select v such that modifies(v, 6)";
@@ -84,7 +84,7 @@ TEST_CASE("Test SynonymCheck") {
 //}
 //
 // TEST_CASE("Semantically incorrect") {
-//  Parser parser;
+//  SelectClParser parser;
 //  SECTION("Wrong semantics");
 //  std::string query_string =
 //      "variable v; select v such that modifies(v, 6)";

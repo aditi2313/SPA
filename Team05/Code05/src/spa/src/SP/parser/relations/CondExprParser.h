@@ -6,7 +6,7 @@
 #include "models/AST/relations/CondExprNode.h"
 
 namespace sp {
-class CondExprParser : public Parser<ast::CondExprNode> {
+class CondExprParser : public SelectClParser<ast::CondExprNode> {
  public:
   std::unique_ptr<ast::CondExprNode> parse(Lexer&) override;
 };

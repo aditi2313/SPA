@@ -9,7 +9,7 @@
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class ReadParser : Parser<ast::ReadNode> {
+class ReadParser : SelectClParser<ast::ReadNode> {
  public:
   std::unique_ptr<ast::ReadNode> parse(Lexer& lxr) override {
     if (lxr.GetTokAndIncrement() != kTokIdent) {

@@ -6,7 +6,7 @@
 #include "models/AST/ProcNode.h"
 
 namespace sp {
-class ProcedureParser : Parser<ast::ProcNode> {
+class ProcedureParser : SelectClParser<ast::ProcNode> {
  public:
   std::unique_ptr<ast::ProcNode> parse(Lexer&) override;
 };

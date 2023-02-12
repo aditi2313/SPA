@@ -13,9 +13,9 @@
 #include "common/Exceptions.h"
 
 namespace qps {
-class Parser {
+class SelectClParser {
  public:
-  Parser() {
+  SelectClParser() {
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
     // State Order is defined as

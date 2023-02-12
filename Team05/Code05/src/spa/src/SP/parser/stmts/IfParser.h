@@ -7,5 +7,5 @@
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class IfParser : public Parser<ast::IfNode> {};
+class IfParser : public SelectClParser<ast::IfNode> {};
 }  // namespace sp

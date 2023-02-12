@@ -10,7 +10,7 @@
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class CallParser : Parser<ast::CallNode> {
+class CallParser : SelectClParser<ast::CallNode> {
  public:
   std::unique_ptr<ast::CallNode> parse(Lexer& lxr) override {
     if (lxr.GetTokAndIncrement() != kTokIdent) {

@@ -9,7 +9,7 @@
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class AssignParser : Parser<ast::AssignNode> {
+class AssignParser : SelectClParser<ast::AssignNode> {
  public:
   std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
     auto var_node =

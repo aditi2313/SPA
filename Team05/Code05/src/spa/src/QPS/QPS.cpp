@@ -3,7 +3,7 @@
 
 #include "QPS.h"
 
-#include "QPS/preprocessor/Parser.h"
+#include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/preprocessor/Validator.h"
 #include "QPS/evaluator/Evaluator.h"
 #include "QPS/evaluator/Formatter.h"
@@ -11,7 +11,7 @@
 namespace qps {
 // Called in TestWrapper
 void QPS::evaluate(std::string query, std::list<std::string> &results) {
-  Parser parser;
+  SelectClParser parser;
   std::unique_ptr<Query> query_object = parser.ParseQuery(query);
 
   Validator validator;
@@ -29,7 +29,7 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
     std::string query,
     std::list<std::string> &results,
     std::unique_ptr<pkb::PKBRead> &pkb) {
-  Parser parser;
+  SelectClParser parser;
   std::unique_ptr<Query> query_object = parser.ParseQuery(query);
 
   Validator validator;

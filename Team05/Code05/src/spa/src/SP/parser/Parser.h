@@ -6,7 +6,7 @@
 
 namespace sp {
 template <typename T>
-class Parser {
+class SelectClParser {
  public:
   virtual std::unique_ptr<T> parse(Lexer&) = 0;
 };

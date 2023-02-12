@@ -9,7 +9,7 @@
 #include "models/AST/StmtLstNode.h"
 
 namespace sp {
-class StatementListParser : Parser<ast::StmtLstNode> {
+class StatementListParser : SelectClParser<ast::StmtLstNode> {
  public:
   std::unique_ptr<ast::StmtLstNode> parse(Lexer&);
 };

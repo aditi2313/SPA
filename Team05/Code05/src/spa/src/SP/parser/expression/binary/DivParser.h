@@ -6,7 +6,7 @@
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace sp {
-class DivParser : Parser<ast::DivNode> {
+class DivParser : SelectClParser<ast::DivNode> {
  public:
   std::unique_ptr<ast::DivNode> parse(Lexer&) { return nullptr; }
 };

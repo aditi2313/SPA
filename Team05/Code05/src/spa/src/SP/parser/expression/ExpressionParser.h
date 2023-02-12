@@ -6,7 +6,7 @@
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace sp {
-class ExpressionParser : Parser<ast::ExprNode> {
+class ExpressionParser : SelectClParser<ast::ExprNode> {
  public:
   // TODO(Gab): Decide on how to implement expression parser. Use CYK or some
   // other grammar algorithm? Alternative would be to bruteforce all possible

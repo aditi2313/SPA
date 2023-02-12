@@ -1,7 +1,7 @@
 #include <exception>
 #include <catch.hpp>
 
-#include "QPS/preprocessor/Parser.h"
+#include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/models/PQL.h"
 
 using namespace qps; // NOLINT
@@ -22,8 +22,8 @@ QueryPtr BuildQuery(
   return query;
 }
 
-TEST_CASE("Test Parser methods") {
-  Parser parser;
+TEST_CASE("Test SelectClParser methods") {
+  SelectClParser parser;
   SECTION("Test PreprocessQueryString") {
     std::string query_string = "variable p; select p such that "
                                "Modifies(6, v) pattern a(_, \" x + y \")";
@@ -49,7 +49,7 @@ TEST_CASE("Test Parser methods") {
 }
 
 TEST_CASE("Test ParseQuery") {
-  Parser parser;
+  SelectClParser parser;
 
   SECTION("Query with no clauses should parse correctly") {
     std::string query_string = "procedure p; Select p";

@@ -35,6 +35,7 @@ enum Token {
   kTokGreaterEqual,  // >=
   kTokLessEqual,     // <=
   kTokEquiv,         // ==
+  kTokNotEqual,      // !=
 
   // conditions
   kTokOr,

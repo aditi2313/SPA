@@ -36,7 +36,12 @@ std::optional<Token> ProcessSpecialChars(char c) {
       return {Token::kTokOpenBracket};
     case ')':
       return {Token::kTokCloseBracket};
-
+    case '!':
+      return {Token::kTokNot};
+    case '<':
+      return {Token::kTokLess};
+    case '>':
+      return {Token::kTokGreater};
     default:
       return std::nullopt;
   }
@@ -133,59 +138,27 @@ void Lexer::ValidateInteger(std::string number_string) {
   }
 }
 
-// Todo(Gab) refactor in sp/rel-parser
-// out of this class
-Token ParseLessGreater(char c) {
-  if (c == '<') return Token::kTokLess;
-  if (c == '>') return Token::kTokGreater;
-  throw std::runtime_error("Invalid input into ParseLessGreater");
-}
-
-std::optional<Token> ParseLessGreaterEqual(char c) {
-  if (c == '<') return {Token::kTokLessEqual};
-  if (c == '>') return {Token::kTokGreaterEqual};
-  return std::nullopt;
-}
-
-// Temporary utility function. Todo(Gab): reorganise in #40 with Token
-// modifications
 std::optional<Token> Lexer::ReadRelation(int& pointer) {
-  // check for < or >
-  char c = program_[pointer];
-  if (c == '=' && pointer + 1 < program_.length() &&
-      program_[pointer + 1] == '=') {
-    pointer += 2;
+  if (pointer + 1 >= program_.length()) return std::nullopt;
+  std::string relation = "" + program_[pointer_] + program_[pointer_ + 1];
+  pointer_ += 2;
+  if (relation == "!=") {
+    return {Token::kTokNotEqual};
+  }
+  if (relation == "==") {
     return {Token::kTokEquiv};
   }
-
-  if (c == '>' || c == '<') {
-    pointer++;
-    if (pointer >= program_.length()) {
-      pointer++;
-      return {ParseLessGreater(c)};
-    }
-    if (program_[pointer] == '=') {
-      pointer++;
-      return {ParseLessGreaterEqual(c)};
-    }
-    return {ParseLessGreater(c)};
+  if (relation == "<=") {
+    return {Token::kTokLessEqual};
   }
-
-  if (c == '&' || c == '|') {
-    pointer++;
-    if (pointer >= program_.length()) {
-      return Token::kTokEof;
-    }
-    if (program_[pointer] != c) {
-      return {Token::kTokError};
-    }
-    pointer++;
-    if (c == '&') {
-      return {Token::kTokAnd};
-    }
-    if (c == '|') {
-      return {Token::kTokOr};
-    }
+  if (relation == ">=") {
+    return {Token::kTokGreaterEqual};
+  }
+  if (relation == "||") {
+    return {Token::kTokOr};
+  }
+  if (relation == "&&") {
+    return {Token::kTokAnd};
   }
   return std::nullopt;
 }

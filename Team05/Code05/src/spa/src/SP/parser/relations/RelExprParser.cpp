@@ -37,6 +37,11 @@ std::unique_ptr<ast::RelExprNode> RelExprParser::parse(Lexer& lxr) {
                                             std::move(right_factor));
   }
 
+  if (middle == Token::kTokNotEqual) {
+    return std::make_unique<ast::NotEqualNode>(std::move(left_factor),
+                                               std::move(right_factor));
+  }
+
   throw ParseRelationSyntaxException(
       "Missing relation in relational expression");
 }

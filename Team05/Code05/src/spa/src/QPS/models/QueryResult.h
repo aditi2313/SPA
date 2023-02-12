@@ -1,23 +1,44 @@
 #pragma once
 
 #include <set>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <memory>
 
-#include "models/EntityStub.h"
+#include "models/Entity.h"
+#include "QPS/evaluator/EntityFactory.h"
 
 namespace qps {
 class QueryResult {
  public:
-  inline std::set<models::EntityStub> &get_query_results() {
+  QueryResult() {}
+  explicit QueryResult(EntityPtrList &entities) {
+    for (auto &entity : entities) {
+      query_results_.push_back(std::move(entity));
+    }
+  }
+  inline std::vector<models::EntityPtr> &get_query_results() {
     return query_results_;
   }
+  inline void add_query_result(EntityPtr &&entity) {
+    query_results_.push_back(std::move(entity));
+  }
   inline bool is_empty() { return query_results_.empty(); }
-  inline void add_query_result(models::EntityStub entity) {
-    query_results_.insert(entity);
+
+  void IntersectWith(std::unique_ptr<QueryResult> &other_result);
+
+  inline void Sort() {
+    std::sort(query_results_.begin(), query_results_.end(),
+              [](EntityPtr const &LHS, EntityPtr const &RHS) {
+                return *LHS < *RHS;
+              });
   }
 
-  void IntersectWith(QueryResult other_result);
-
  private:
-  std::set<models::EntityStub> query_results_;
+  EntityPtrList query_results_;
 };
+
+using QueryResultPtr = std::unique_ptr<QueryResult>;
+
 }  // namespace qps

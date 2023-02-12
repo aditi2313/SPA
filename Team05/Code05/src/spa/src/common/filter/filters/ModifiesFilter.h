@@ -17,7 +17,8 @@ typedef IndexableFilter<pkb::ModifiesData> ModifiesFilter;
 
 /// <summary>
 /// A filter for a ModifiesTable by line.
-/// Obtains the row with the line given.
+/// Looks through the indexable table and returns all
+/// rows that have the line as its LHS.
 /// </summary>
 class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
  public:
@@ -40,7 +41,8 @@ class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
 
 /// <summary>
 /// A filter for an indexable table by variable.
-/// Looks through the indexable table and removes the variable.
+/// Looks through the indexable table and returns all rows
+/// that have the variable in the RHS.
 /// </summary>
 class ModifiesFilterByVariable : public IndexableFilter<pkb::ModifiesData> {
  public:

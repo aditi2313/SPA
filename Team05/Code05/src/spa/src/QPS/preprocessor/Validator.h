@@ -1,5 +1,4 @@
 #pragma once
-#include <models/EntityStub.h>
 #include <QPS/models/Query.h>
 #include <common/Exceptions.h>
 
@@ -14,8 +13,7 @@ class Validator {
   bool DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
                             std::vector<std::string> synonyms);
   static bool IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses);
-  static bool SynonymCheck(std::vector<std::unique_ptr<Clause>> &clauses,
-                           std::vector<std::string> synonyms);
+  static bool SynonymCheck(QueryPtr &query);
  private:
   std::vector<std::unique_ptr<Clause>> clauses_;
   std::vector<std::string> synonyms_;

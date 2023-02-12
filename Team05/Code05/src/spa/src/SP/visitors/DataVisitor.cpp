@@ -33,7 +33,7 @@ void DataVisitor::VisitPrint(ast::PrintNode* print_node) {
 }
 
 void DataVisitor::VisitCall(ast::CallNode* call_node) {
-  pkb_ptr_->add_calls(call_node->get_line());
+  pkb_ptr_->add_call(call_node->get_line());
   pkb_ptr_->add_stmt(call_node->get_line());
 }
 void DataVisitor::VisitFactor(ast::FactorNode* factor_node) {}

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <memory>
+#include <utility>
 #include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"

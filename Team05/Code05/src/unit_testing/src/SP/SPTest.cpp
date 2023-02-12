@@ -1,6 +1,6 @@
-#include <catch.hpp>
 #include <string>
 #include <vector>
+#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "models/AST/Token.h"

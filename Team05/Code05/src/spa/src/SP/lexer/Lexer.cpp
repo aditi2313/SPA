@@ -140,7 +140,8 @@ void Lexer::ValidateInteger(std::string number_string) {
 
 std::optional<Token> Lexer::ReadRelation(int& pointer) {
   if (pointer + 1 >= program_.length()) return std::nullopt;
-  std::string relation = std::string() + program_[pointer] + program_[pointer + 1];
+  std::string relation =
+      std::string() + program_[pointer] + program_[pointer + 1];
   pointer += 2;
   if (relation == "!=") {
     return {Token::kTokNotEqual};

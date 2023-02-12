@@ -5,8 +5,7 @@
 #include <sstream>
 
 #include "../../spa/src/QPS/QPS.h"
-#include "../../spa/src/SP/lexer/Lexer.h"
-#include "../../spa/src/SP/parser/ProgramParser.h"
+#include "../../spa/src/SP/SourceProcessor.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
@@ -45,9 +44,8 @@ void TestWrapper::parse(std::string filename) {
   file.close();
 
   // Parse and generate AST
-  sp::Lexer lxr(program);
-  sp::ProgramParser program_parser;
-  auto root = program_parser.parse(lxr);
+  sp::SourceProcessor source_processor;
+  auto root = source_processor.ParseProgram(program);
 
   // Validate AST
   auto validator = sp::ProgramValidator(root);

@@ -6,6 +6,7 @@ namespace sp {
 
 class Bracket : public Token {
  public:
+  inline bool IsBracket() { return true; }
 };
 
 }  // namespace sp

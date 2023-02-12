@@ -4,6 +4,7 @@
 
 namespace sp {
   class StmtToken : public Token {
-
-};
+ public:
+    inline bool IsStmt() override { return true; }
+  };
 }

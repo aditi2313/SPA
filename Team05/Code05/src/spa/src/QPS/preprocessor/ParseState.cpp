@@ -81,10 +81,9 @@ std::unique_ptr<Query> PatternParseState::parse(
     std::unique_ptr<Query> query) {
   if (itr == tokens.end()) ThrowException();
   if (*itr++ != "pattern") ThrowException();
-  // TODO(jl): replace with check that it is syn-assign
-  if (!PQL::is_ident(*itr++)) ThrowException();
-  if (*itr++ != "(") ThrowException();
   ArgumentPtr arg1 = query->CreateArgument(*itr++);
+  if (*itr++ != "(") ThrowException();
+  if (!PQL::is_wildcard(*itr++)) ThrowException();
   if (*itr++ != ",") ThrowException();
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();

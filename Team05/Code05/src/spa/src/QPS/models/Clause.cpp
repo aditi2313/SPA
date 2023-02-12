@@ -21,14 +21,6 @@ ClausePtr Clause::CreateClause(
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
-QueryResultPtr ModifiesClause::Evaluate(
-    const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-
-  ListQueryResultPtr query_result = std::make_unique<ListQueryResult>();
-  return query_result;
-}
-
 EntityPtrList ModifiesClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
@@ -50,36 +42,17 @@ EntityPtrList ModifiesClause::Index(
   return result;
 }
 
-EntityPtrList ModifiesClause::Filter(
+EntityPtrList PatternClause::Index(
     const EntityPtr &index,
-    const EntityPtrList &RHS_filter_values,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
-  // TODO(JL): replace with predicate filter
   EntityPtrList result;
-  for (auto &entity : Index(index, factory, pkb)) {
-    for (auto &filter_entity : RHS_filter_values) {
-      if (*entity == *filter_entity) {
-        result.push_back(entity->Copy());
-      }
-    }
-  }
-
-  return result;
-}
-
-QueryResultPtr PatternClause::Evaluate(
-    const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  // TODO(JL): generalize this to work for more types of
-  // Pattern clauses
-
-  ListQueryResultPtr query_result = std::make_unique<ListQueryResult>();
-
-//   preprocess expression string to insert whitespace
+  IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(index.get());
+  int line = line_arg->get_number();
+  // Preprocess expression string to insert whitespace
   std::string expression = "";
-  ExpressionArg *expr_arg = reinterpret_cast<ExpressionArg *> (arg2_.get());
-  for (char c : expr_arg->get_expression()) {
+  ExpressionArg *expression_arg = reinterpret_cast<ExpressionArg *> (arg2_.get());
+  for (char c : expression_arg->get_expression()) {
     if (c == '+' || c == '-') {
       expression += " " + std::string(1, c) + " ";
     } else {
@@ -91,16 +64,16 @@ QueryResultPtr PatternClause::Evaluate(
   sp::ExpressionParser exp_parser;
   auto ASTNode = exp_parser.parse(lxr);
   auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
-  auto result = pkb->Assigns(std::move(filter));
-
-  auto data = result->get_result()->get_indexes();
+  auto pkb_res = pkb->Assigns(std::move(filter));
+  auto data = pkb_res->get_result()->get_indexes();
+  if (data.find(line) == data.end()) return result;
 
   for (auto a : data) {
-    query_result->add_query_result(
+    result.push_back(
         factory->CreateInstance(PQL::kAssignEntityName, a));
   }
 
-  return query_result;
+  return result;
 }
 
 Clause::~Clause() = default;

@@ -22,9 +22,7 @@ class Argument {
   virtual bool IsEntRef() { return false; }
   virtual bool IsWildcard() { return false; }
   virtual bool IsSynonym() { return false; }
-  // INTEGER | "ident"
-  virtual bool IsExact() { return false; }
-
+  virtual bool IsExpression() { return false; }
 
   bool operator==(Argument const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -83,7 +81,6 @@ class IdentArg : public Argument {
       Argument(), ident_(ident) {}
 
   inline bool IsEntRef() override { return true; }
-  inline bool IsExact() override { return true; }
 
   inline std::string get_ident() { return ident_; }
 
@@ -101,7 +98,6 @@ class IntegerArg : public Argument {
       Argument(), number_(number) {}
 
   inline bool IsStmtRef() override { return true; }
-  inline bool IsExact() override { return true; }
 
   inline int get_number() { return number_; }
 
@@ -118,6 +114,7 @@ class ExpressionArg : public Argument {
   explicit ExpressionArg(std::string expr) :
       Argument(), expr_(expr) {}
 
+  inline bool IsExpression() override { return true; }
   inline std::string get_expression() { return expr_; }
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Expr Arg: " << expr_;

@@ -19,20 +19,27 @@ class Clause {
       arg1_(std::move(arg1)), arg2_(std::move(arg2)), LHS_(LHS), RHS_(RHS) {}
   virtual ~Clause() = 0;
 
-  virtual QueryResultPtr Evaluate(
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
-
   virtual EntityPtrList Index(
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
-  virtual EntityPtrList Filter(
+  inline EntityPtrList Filter(
       const EntityPtr &index,
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
+      const std::unique_ptr<pkb::PKBRead> &pkb) {
+    EntityPtrList result;
+    for (auto &entity : Index(index, factory, pkb)) {
+      for (auto &filter_entity : RHS_filter_values) {
+        if (*entity == *filter_entity) {
+          result.push_back(entity->Copy());
+        }
+      }
+    }
+
+    return result;
+  };
 
   bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -68,16 +75,8 @@ class ModifiesClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kStmtEntityName, PQL::kVariableEntityName) {}
 
-  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
-                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
   EntityPtrList Index(
       const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  EntityPtrList Filter(
-      const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
@@ -87,19 +86,11 @@ class PatternClause : public Clause {
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kAssignEntityName, PQL::kAssignEntityName) {}
-  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
-                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
   EntityPtrList Index(
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override {}
-
-  EntityPtrList Filter(
-      const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override {}
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

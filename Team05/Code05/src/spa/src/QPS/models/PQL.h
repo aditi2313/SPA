@@ -24,6 +24,7 @@ class PQL {
   inline static std::string kVariableEntityName = "variable";
   inline static std::string kConstantEntityName = "constant";
   inline static std::string kProcedureEntityName = "procedure";
+  inline static std::string kExpressionEntityName = "expression";
 
   inline static std::vector<std::string> kAllEntityName{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
@@ -53,6 +54,10 @@ class PQL {
       if (!isdigit(c)) return false;
     }
     return true;
+  }
+
+  inline static bool is_wildcard(std::string str) {
+    return str == "_";
   }
 };
 }  // namespace qps

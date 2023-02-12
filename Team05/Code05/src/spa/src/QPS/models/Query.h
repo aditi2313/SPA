@@ -25,36 +25,36 @@ class Query {
 
   // Returns true if `token` is a synonym that has been declared
   inline bool is_declared_synonym_id(std::string token) {
-    for(auto &syn : synonym_declarations_) {
-      if(syn->get_syn_id() == token) return true;
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_id() == token) return true;
     }
     return false;
   }
 
   // Returns true if `syn` has been declared
   inline bool does_synonym_exist(Synonym syn) {
-    for(auto &declared_syn : synonym_declarations_) {
-      if(syn == *declared_syn) return true;
+    for (auto &declared_syn : synonym_declarations_) {
+      if (syn == *declared_syn) return true;
     }
     return false;
   }
 
   inline EntityName get_syn_entity_name(std::string token) {
-    for(auto &syn : synonym_declarations_) {
-      if(syn->get_syn_id() == token) return syn->get_entity_name();
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_id() == token) return syn->get_entity_name();
     }
     throw std::runtime_error("Synonym has not been declared");
   }
 
-  inline SynonymPtr& get_synonym(std::string token) {
-    for(auto &syn : synonym_declarations_) {
-      if(syn->get_syn_id() == token) return syn;
+  inline SynonymPtr &get_synonym(std::string token) {
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_id() == token) return syn;
     }
     throw std::runtime_error("Synonym has not been declared");
   }
 
-  inline std::vector<SynonymPtr> & get_declared_synonyms() {
-   return synonym_declarations_;
+  inline std::vector<SynonymPtr> &get_declared_synonyms() {
+    return synonym_declarations_;
   }
 
   // A selected synonym is a synonym that comes after `Select`
@@ -78,8 +78,8 @@ class Query {
   }
 
   inline bool operator==(const Query &other) const {
-    if(!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
-    if(!util::CompareVectorOfPointers(synonym_declarations_, other.synonym_declarations_)) return false;
+    if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
+    if (!util::CompareVectorOfPointers(synonym_declarations_, other.synonym_declarations_)) return false;
 
     return selected_synonyms_ == other.selected_synonyms_;
   }
@@ -89,7 +89,7 @@ class Query {
       return std::make_unique<SynonymArg>(token);
     }
 
-    if (token == "_") {
+    if (PQL::is_wildcard(token)) {
       return std::make_unique<Wildcard>();
     }
 

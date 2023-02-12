@@ -79,6 +79,20 @@ class VariableEntityFactory : public IdentEntityFactory {
   }
 };
 
+class ExpressionEntityFactory : public IdentEntityFactory {
+ public:
+  ExpressionEntityFactory() : IdentEntityFactory() {}
+  inline EntityPtr CreateInstance(std::string ident) override {
+    return std::make_unique<Expression>(ident);
+  }
+  inline EntityPtr CreateInstance(int number) override {
+    throw NotImplementedException();
+  }
+  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+    throw NotImplementedException();
+  }
+};
+
 class ConstantEntityFactory : public IntEntityFactory {
  public:
   ConstantEntityFactory() : IntEntityFactory() {}

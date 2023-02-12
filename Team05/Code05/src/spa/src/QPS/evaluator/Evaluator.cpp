@@ -37,6 +37,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   // Fill with candidate values
   EntityPtrList LHS;
   EntityPtrList RHS;
+
   InitializeEntitiesFromArgument(query, arg1, clause->LHS(), LHS);
   InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
 
@@ -47,7 +48,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   // Query PKB with LHS possible values
   for (auto &index : LHS) {
     EntityPtrList results;
-    if (arg2->IsWildcard()) {
+    if (arg2->IsWildcard() || arg2->IsExpression()) {
       // Just index and return all
       results = clause->Index(index, master_entity_factory_, pkb_);
     } else {
@@ -75,6 +76,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
 
 void Evaluator::InitializeEntitiesFromArgument(
     QueryPtr &query, ArgumentPtr &arg, EntityName entity_name, EntityPtrList &result) {
+  if (arg->IsExpression()) { return; }
   if (arg->IsWildcard()) {
     for (auto &entity : master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {
       result.push_back(std::move(entity));
@@ -100,16 +102,13 @@ void Evaluator::InitializeEntitiesFromArgument(
       result.push_back(master_entity_factory_->CreateInstance(
           entity_name,
           ident_arg->get_ident()));
-    } else {
-      // TODO(JL): replace with custom exception
-      throw std::runtime_error("Unrecognized arg type in clause");
     }
   }
 }
 
 void Evaluator::UpdateSynonymEntityList(QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result) {
   if (!arg->IsSynonym()) return; // Not a synonym
-
+  
   SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
   SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
 

@@ -6,7 +6,7 @@ namespace qps {
 // object with the intersection between the two lists.
 // Intersection is defined as the list of elements that occur
 // in both lists.
-void ListQueryResult::IntersectWith(ListQueryResult &other_result) {
+void QueryResult::IntersectWith(QueryResult &other_result) {
   EntityPtrList result_list;
 
   // Vector, hence not guaranteed to be in ascending order
@@ -40,6 +40,4 @@ void ListQueryResult::IntersectWith(ListQueryResult &other_result) {
     query_results_.push_back(std::move(entity));
   }
 }
-
-QueryResult::~QueryResult() = default;
 }  // namespace qps

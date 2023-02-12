@@ -9,7 +9,7 @@
 namespace ast {
 /// <summary>
 /// A Relation factor. Shouldn't be used
-/// for structural comparisons. Simplty a wrapper.
+/// for structural comparisons. Simply a wrapper.
 /// Contains an expression.
 /// </summary>
 class RelFactor : public TNode {
@@ -112,6 +112,17 @@ class EqualNode : public RelExprNode {
   bool DeepEquals(const CondExprNode& other) override {
     return RelExprNode::DeepEquals(other) &&
            util::InstanceOf<EqualNode, CondExprNode>(other);
+  }
+};
+
+class NotEqualNode : public RelExprNode {
+ public:
+  NotEqualNode(std::unique_ptr<RelFactor> left_factor,
+               std::unique_ptr<RelFactor> right_factor)
+      : RelExprNode(std::move(left_factor), std::move(right_factor)) {}
+  bool DeepEquals(const CondExprNode& other) override {
+    return RelExprNode::DeepEquals(other) &&
+           util::InstanceOf<NotEqualNode, CondExprNode>(other);
   }
 };
 

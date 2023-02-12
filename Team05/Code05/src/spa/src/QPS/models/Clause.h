@@ -3,9 +3,11 @@
 #include <iostream>
 #include <memory>
 #include <typeinfo>
+#include <utility>
 
 #include "Argument.h"
 #include "PKB/PKBRead.h"
+#include "QPS/evaluator/MasterEntityFactory.h"
 #include "QueryResult.h"
 
 namespace qps {
@@ -13,39 +15,63 @@ namespace qps {
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  Clause(Argument arg1, Argument arg2) : arg1(arg1), arg2(arg2) {}
+  Clause(ArgumentPtr arg1, ArgumentPtr arg2) :
+      arg1(std::move(arg1)), arg2(std::move(arg2)) {}
 
-  virtual QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) = 0;
+  virtual QueryResultPtr Evaluate(
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
   virtual ~Clause() = 0;
 
   bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);
     const std::type_info &ti2 = typeid(other);
 
-    return ti1 == ti2 && arg1 == other.arg1 && arg2 == other.arg2;
+    return ti1 == ti2 && *arg1 == *other.arg1 && *arg2 == *other.arg2;
   }
 
   inline bool operator!=(Clause const &other) const {
     return !(*this == other);
   }
 
-  Argument get_arg1() { return arg1; }
-  Argument get_arg2() { return arg2; }
+  // Evaluating this clause returns only TRUE or FALSE
+  // instead of a list of results
+  inline bool IsExact() {
+    return arg1->IsExact() && arg2->IsExact();
+  }
+
+  inline bool HasWildcard() {
+    return arg1->IsWildcard() || arg2->IsWildcard();
+  }
+
+  inline ArgumentPtr &get_arg1() { return arg1; }
+  inline ArgumentPtr &get_arg2() { return arg2; }
+
+  static std::unique_ptr<Clause> CreateClause(
+      EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
 
  protected:
-  Argument arg1;
-  Argument arg2;
+  ArgumentPtr arg1;
+  ArgumentPtr arg2;
 };
 
+// RS between a Statement/Procedure and a Variable
 class ModifiesClause : public Clause {
  public:
-  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) override;
-  ModifiesClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
+  ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {}
+  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
+                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 class PatternClause : public Clause {
  public:
-  QueryResult Evaluate(const std::unique_ptr<pkb::PKBRead>& pkb) override;
-  PatternClause(Argument arg1, Argument arg2) : Clause(arg1, arg2) {}
+  PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {}
+  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
+                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
+
+using ClausePtr = std::unique_ptr<Clause>;
+
 }  // namespace qps

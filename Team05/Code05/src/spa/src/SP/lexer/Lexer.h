@@ -73,6 +73,6 @@ class Lexer {
   // TODO(Gab) Refactor this functionality with #40
   // something that is more specific
   // takes in a reference where the final pointer will be referenced.
-  std::optional<Token> ReadRelation(int& p);
+  std::optional<Token> ProcessLengthTwoTokens(int& p);
 };
 }  // namespace sp

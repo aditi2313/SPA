@@ -1,3 +1,5 @@
 #include "Argument.h"
 
-namespace qps {}
+namespace qps {
+Argument::~Argument() = default;
+}  // namespace qps

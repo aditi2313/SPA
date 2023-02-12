@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "models/EntityStub.h"
+#include "models/Entity.h"
 
 namespace pkb {
 class ModifiesData {
@@ -11,7 +11,7 @@ class ModifiesData {
   ModifiesData(int line, const std::vector<std::string>& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
-           (LHS.line_ == RHS.line_ && LHS.variables_ < RHS.variables_);
+        (LHS.line_ == RHS.line_ && LHS.variables_ < RHS.variables_);
   }
 
   friend bool operator==(const ModifiesData& LHS, const ModifiesData& RHS) {

@@ -114,7 +114,7 @@ void Lexer::Increment() {
   }
 
   int p = pointer_;
-  auto new_token = ReadRelation(p);
+  auto new_token = ProcessLengthTwoTokens(p);
   if (new_token.has_value()) {
     current_tok_ = new_token.value();
     pointer_ = p;
@@ -138,7 +138,7 @@ void Lexer::ValidateInteger(std::string number_string) {
   }
 }
 
-std::optional<Token> Lexer::ReadRelation(int& pointer) {
+std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
   if (pointer + 1 >= program_.length()) return std::nullopt;
   std::string relation =
       std::string() + program_[pointer] + program_[pointer + 1];

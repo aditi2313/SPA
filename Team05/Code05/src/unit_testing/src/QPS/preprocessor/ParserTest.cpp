@@ -7,11 +7,11 @@
 using namespace qps; // NOLINT
 
 // Helper method for testing
-std::unique_ptr<Query> BuildQuery(
+QueryPtr BuildQuery(
     std::vector<std::pair<SynonymName, EntityName>> synonyms,
     std::vector<std::string> selected_synonyms
 ) {
-  std::unique_ptr<Query> query = std::make_unique<Query>();
+  QueryPtr query = std::make_unique<Query>();
   for (auto [syn, entity] : synonyms) {
     query->declare_synonym(syn, entity);
   }
@@ -48,14 +48,13 @@ TEST_CASE("Test Parser methods") {
   };
 }
 
-// TODO(JL): Replace Entity
 TEST_CASE("Test ParseQuery") {
   Parser parser;
 
   SECTION("Query with no clauses should parse correctly") {
     std::string query_string = "procedure p; Select p";
-    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
-    std::unique_ptr<Query> expected_query = BuildQuery(
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
         {{"p", PQL::kProcedureEntityId}},
         {"p"});
 
@@ -64,8 +63,8 @@ TEST_CASE("Test ParseQuery") {
 
   SECTION("Query with one such-that clauses should parse correctly") {
     std::string query_string = "variable v; Select v such that Modifies(6, v)";
-    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
-    std::unique_ptr<Query> expected_query = BuildQuery(
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityId}},
         {"v"});
     expected_query->add_clause(
@@ -78,8 +77,8 @@ TEST_CASE("Test ParseQuery") {
 
   SECTION("Query with one pattern clauses should parse correctly") {
     std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
-    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
-    std::unique_ptr<Query> expected_query = BuildQuery(
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
         {{"a", PQL::kAssignEntityId}},
         {"a"});
     expected_query->add_clause(
@@ -97,8 +96,8 @@ TEST_CASE("Test ParseQuery") {
                                "Select v, p such that Modifies(6, v) "
                                "such that Modifies(3, v) "
                                "pattern a(_, \"x + y\") pattern a(_, \"x\")";
-    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
-    std::unique_ptr<Query> expected_query = BuildQuery(
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityId}, {"p", PQL::kProcedureEntityId}},
         {"v", "p"});
     expected_query->add_clause(
@@ -129,8 +128,8 @@ TEST_CASE("Test ParseQuery") {
                                "Select v, p  such  that  Modifies(  6, v) "
                                "  such      that    Modifies(3, v) "
                                "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
-    std::unique_ptr<Query> actual_query = parser.ParseQuery(query_string);
-    std::unique_ptr<Query> expected_query = BuildQuery(
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityId}, {"p", PQL::kProcedureEntityId}},
         {"v", "p"});
     expected_query->add_clause(

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <catch.hpp>
 #include "QPS/models/QueryResult.h"
+#include "common/Utiity.h"
 
 using namespace qps; // NOLINT
 
@@ -11,14 +12,6 @@ EntityPtrList BuildStmtList(std::vector<int> stmts) {
     result.push_back(std::make_unique<Stmt>(stmt));
   }
   return result;
-}
-
-bool CompareEntityPtrList(const EntityPtrList &LHS, const EntityPtrList &RHS) {
-  if(LHS.size() != RHS.size()) return false;
-  for(int N = LHS.size(), i = 0; i < N; ++i) {
-    if(*LHS.at(i) != *RHS.at(i)) return false;
-  }
-  return true;
 }
 
 TEST_CASE("Test QueryResult") {
@@ -41,6 +34,6 @@ TEST_CASE("Test QueryResult") {
     result1->IntersectWith(result2);
 
     EntityPtrList expected_list = BuildStmtList({2, 4, 6});
-    REQUIRE(CompareEntityPtrList(result1->get_query_results(), expected_list));
+    REQUIRE(util::CompareVectorOfPointers(result1->get_query_results(), expected_list));
   };
 }

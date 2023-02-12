@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 
 namespace sp {
 template <typename T>

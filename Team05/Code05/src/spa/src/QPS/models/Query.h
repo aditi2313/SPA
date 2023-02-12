@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Clause.h"
+#include "common/Utiity.h"
 #include "models/Entity.h"
 #include "Synonym.h"
 #include "PQL.h"
@@ -66,17 +67,10 @@ class Query {
   }
 
   inline bool operator==(const Query &other) const {
-    if (clauses_.size() != other.clauses_.size()) return false;
-    int num_clauses = clauses_.size();
-    for (int i = 0; i < num_clauses; ++i) {
-      if (*clauses_.at(i) != *other.clauses_.at(i)) return false;
-    }
+    if(!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
+    if(!util::CompareVectorOfPointers(synonym_declarations_, other.synonym_declarations_)) return false;
 
-    if(synonym_declarations_.size() != other.synonym_declarations_.size()) return false;
-
-
-    return (synonym_declarations_ == other.synonym_declarations_ &&
-        selected_synonyms_ == other.selected_synonyms_);
+    return selected_synonyms_ == other.selected_synonyms_;
   }
 
   inline ArgumentPtr CreateArgument(std::string token) {
@@ -102,7 +96,7 @@ class Query {
  private:
   std::vector<SynonymPtr> synonym_declarations_;
   std::vector<SynonymName> selected_synonyms_;
-  std::vector<std::unique_ptr<Clause>> clauses_;
+  std::vector<ClausePtr> clauses_;
 };
 
 using QueryPtr = std::unique_ptr<Query>;

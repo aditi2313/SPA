@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "models/Entity.h"
+#include "models/types.h"
 
 using models::EntityPtrList;
 using models::EntityName;
@@ -37,6 +38,11 @@ class Synonym {
     return syn_id_ == other.syn_id_
     && entity_id_ == other.entity_id_;
   }
+
+  inline bool operator!=(const Synonym &other) const {
+    return !(*this == other);
+  }
+
 
  private:
   SynonymName syn_id_;

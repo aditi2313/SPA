@@ -4,46 +4,46 @@
 namespace sp {
 
 enum Token {
-  kTokEof,
+    kTokEof,
 
-  kTokProcedure,
-  kTokRead,
-  kTokPrint,
-  kTokCall,
-  kTokWhile,
-  kTokIf,
+    kTokProcedure,
+    kTokRead,
+    kTokPrint,
+    kTokCall,
+    kTokWhile,
+    kTokIf,
 
-  kTokIdent,
-  kTokInteger,
+    kTokIdent,
+    kTokInteger,
 
-  kTokOpenCurly,
-  kTokCloseCurly,
-  kTokSemicolon,
-  kTokOpenBracket,
-  kTokCloseBracket,
+    kTokOpenCurly,
+    kTokCloseCurly,
+    kTokSemicolon,
+    kTokOpenBracket,
+    kTokCloseBracket,
 
-  kTokEquals,
-  kTokPlus,
-  kTokMinus,
-  kTokTimes,
-  kTokDiv,
-  kTokMod,
+    kTokEquals,
+    kTokPlus,
+    kTokMinus,
+    kTokTimes,
+    kTokDiv,
+    kTokMod,
 
-  // relations
-  kTokLess,          // <
-  kTokGreater,       // >
-  kTokGreaterEqual,  // >=
-  kTokLessEqual,     // <=
-  kTokEquiv,         // ==
-  kTokNotEqual,      // !=
+    // relations
+    kTokLess,          // <
+    kTokGreater,       // >
+    kTokGreaterEqual,  // >=
+    kTokLessEqual,     // <=
+    kTokEquiv,         // ==
+    kTokNotEqual,      // !=
 
-  // conditions
-  kTokOr,
-  kTokAnd,
-  kTokNot,
+    // conditions
+    kTokOr,
+    kTokAnd,
+    kTokNot,
 
-  // error
-  kTokError,
+    // error
+    kTokError,
 };
 
 }  // namespace sp

@@ -10,6 +10,7 @@
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
+#include "SP/validators/ProgramValidator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -42,9 +43,19 @@ void TestWrapper::parse(std::string filename) {
   buffer << file.rdbuf();
   std::string program = buffer.str();
   file.close();
+
+  // Parse and generate AST
   sp::Lexer lxr(program);
   sp::ProgramParser program_parser;
   auto root = program_parser.parse(lxr);
+
+  // Validate AST
+  auto validator = sp::ProgramValidator(root);
+  if (!validator.Validate()) {
+      // TODO(aizatazhar) use custom exception and at the validator level
+      throw std::runtime_error("Program is not semantically valid");
+  }
+
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
 
   sp::AssignVisitor av(std::move(writer));

@@ -33,7 +33,7 @@ std::unique_ptr<PKBRead> InitializePKB(
   return std::make_unique<PKBRead>(pkb_write.EndWrite());
 }
 
-TEST_CASE("Test PKB and QPS integration for Modifies clause") {
+TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   QPS qps;
   std::unique_ptr<PKBRead> pkb = InitializePKB(
       {
@@ -75,3 +75,14 @@ TEST_CASE("Test PKB and QPS integration for Modifies clause") {
     REQUIRE(actual_results == expected_results);
   }
 }
+
+// Add testcases for
+// Modifies(_, v)
+// Modifies(s, v)
+// Modifies(10, "var")
+// Modifies(_, "var")
+// Modifies(s, "var")
+// Modifies(10, _)
+// Modifies(_, _)
+// Modifies (s, _)
+

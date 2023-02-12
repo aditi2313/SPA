@@ -8,12 +8,12 @@ using namespace qps; // NOLINT
 
 // Helper method for testing
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<Synonym, EntityId>> synonyms,
+    std::vector<std::pair<SynonymName, EntityName>> synonyms,
     std::vector<std::string> selected_synonyms
 ) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
   for (auto [syn, entity] : synonyms) {
-    query->set_synonym(syn, entity);
+    query->declare_synonym(syn, entity);
   }
   for (auto selected_syn : selected_synonyms) {
     query->add_selected_synonym(selected_syn);

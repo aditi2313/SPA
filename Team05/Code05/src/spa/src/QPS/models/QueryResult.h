@@ -27,7 +27,7 @@ class ListQueryResult : public QueryResult {
     }
   }
 
-  inline std::vector<models::EntityPtr> &get_query_results() {
+  inline EntityPtrList &get_query_results() {
     return query_results_;
   }
 

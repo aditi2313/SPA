@@ -9,7 +9,7 @@
 using namespace qps;  // NOLINT
 
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<Synonym, EntityId>> synonyms,
+    std::vector<std::pair<SynonymName, EntityName>> synonyms,
     std::vector<std::string> selected_synonyms);  // Forward declaration
 
 TEST_CASE("Test IsWildcard") {

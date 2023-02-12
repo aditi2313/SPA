@@ -11,7 +11,7 @@ using namespace filter;  // NOLINT
 
 namespace qps {
 ClausePtr Clause::CreateClause(
-    EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
+    EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
   if (rel_ref_ident == PQL::kModifiesRelId) {
     return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
   }
@@ -24,11 +24,7 @@ ClausePtr Clause::CreateClause(
 QueryResultPtr ModifiesClause::Evaluate(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
-  // TODO(Gab): setup arguement to evaluate the filter.
 
-  // CURRENTLY this only works for Modifies( statement number, variable )
-  // TODO(JL): generalize this to work for more types of
-  // Modifies clauses
   ListQueryResultPtr query_result = std::make_unique<ListQueryResult>();
 
   IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(arg1.get());

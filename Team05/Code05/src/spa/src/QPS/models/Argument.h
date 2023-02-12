@@ -4,8 +4,9 @@
 #include <memory>
 
 #include "models/types.h"
+#include "QPS/models/Synonym.h"
 
-using models::Synonym;
+using models::SynonymName;
 
 namespace qps {
 // An argument for a clause.
@@ -59,23 +60,20 @@ class Wildcard : public Argument {
 
 class SynonymArg : public Argument {
  public:
-  SynonymArg(Synonym syn, models::EntityId entity_id)
-      : Argument(), syn_(syn), entity_id_(entity_id) {}
+  SynonymArg(SynonymName syn_name)
+      : Argument(), syn_name_(syn_name) {}
 
   inline bool IsSynonym() override { return true; }
 
-  inline Synonym get_syn() { return syn_; }
-  models::EntityId get_entity_id() { return entity_id_; }
-
+  inline SynonymName get_syn_name() { return syn_name_; }
 
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_ << "->" << entity_id_;
+    str << "Synonym: " << syn_name_;
     return str;
   }
 
  private:
-  Synonym syn_;
-  models::EntityId entity_id_;
+  SynonymName syn_name_;
 };
 
 class IdentArg : public Argument {

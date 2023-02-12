@@ -2,8 +2,8 @@
 
 namespace qps {
 ListQueryResultPtr Evaluator::EvaluateQuery(std::unique_ptr<Query> &query) {
-  Synonym selected_synonym = query->get_selected_synonyms().at(0);
-  EntityId entity = query->get_synonym(selected_synonym);
+  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
+  EntityName entity = query->get_declared_synonym(selected_synonym);
   EntityPtrList all_entities = master_entity_factory_->GetAllFromPKB(
       entity, pkb_);
   ListQueryResultPtr result = std::make_unique<ListQueryResult>(all_entities);

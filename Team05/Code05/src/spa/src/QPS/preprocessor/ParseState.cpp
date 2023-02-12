@@ -15,13 +15,13 @@ std::unique_ptr<Query> DeclarationParseState::parse(
     std::unique_ptr<Query> query) {
   if (itr == tokens.end() || !PQL::is_entity_id(*itr)) ThrowException();
 
-  EntityId entity_id = *itr;
+  EntityName entity_id = *itr;
   bool has_set_one_synonym = false;
   itr++;
   while (itr != tokens.end() && *itr != ";") {
     if (!PQL::is_ident(*itr)) ThrowException();
 
-    query->set_synonym(*itr, entity_id);
+    query->declare_synonym(*itr, entity_id);
     has_set_one_synonym = true;
     itr++;
     if (itr != tokens.end() && *itr == ",") {

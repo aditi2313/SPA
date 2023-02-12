@@ -8,36 +8,36 @@
 #include "common/Exceptions.h"
 #include "models/types.h"
 
-using models::EntityId;
+using models::EntityName;
 
 namespace qps {
 
 class PQL {
  public:
-  inline static EntityId kStmtEntityId = "stmt";
-  inline static EntityId kReadEntityId = "read";
-  inline static EntityId kPrintEntityId = "print";
-  inline static EntityId kCallEntityId = "call";
-  inline static EntityId kWhileEntityId = "while";
-  inline static EntityId kIfEntityId = "if";
-  inline static EntityId kAssignEntityId = "assign";
-  inline static EntityId kVariableEntityId = "variable";
-  inline static EntityId kConstantEntityId = "constant";
-  inline static EntityId kProcedureEntityId = "procedure";
+  inline static EntityName kStmtEntityId = "stmt";
+  inline static EntityName kReadEntityId = "read";
+  inline static EntityName kPrintEntityId = "print";
+  inline static EntityName kCallEntityId = "call";
+  inline static EntityName kWhileEntityId = "while";
+  inline static EntityName kIfEntityId = "if";
+  inline static EntityName kAssignEntityId = "assign";
+  inline static EntityName kVariableEntityId = "variable";
+  inline static EntityName kConstantEntityId = "constant";
+  inline static EntityName kProcedureEntityId = "procedure";
 
-  inline static std::vector<EntityId> kAllEntityIds{
+  inline static std::vector<EntityName> kAllEntityIds{
       kStmtEntityId, kReadEntityId, kPrintEntityId, kCallEntityId,
       kWhileEntityId, kIfEntityId, kAssignEntityId,
       kVariableEntityId, kConstantEntityId, kProcedureEntityId
   };
 
-  inline static bool const is_entity_id(EntityId const token) {
+  inline static bool const is_entity_id(EntityName const token) {
     return find(kAllEntityIds.begin(), kAllEntityIds.end(), token)
         != kAllEntityIds.end();
   }
 
-  inline static EntityId kModifiesRelId = "Modifies";
-  inline static EntityId kPatternRelId = "pattern";
+  inline static EntityName kModifiesRelId = "Modifies";
+  inline static EntityName kPatternRelId = "pattern";
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;

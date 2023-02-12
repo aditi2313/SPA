@@ -21,4 +21,5 @@ class Entity {
 };
 
 using EntityPtr = std::unique_ptr<Entity>;
+using EntityPtrList = std::vector<EntityPtr>;
 }  // namespace models

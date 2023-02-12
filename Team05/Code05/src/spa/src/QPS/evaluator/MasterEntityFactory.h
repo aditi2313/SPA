@@ -32,19 +32,19 @@ class MasterEntityFactory {
         {PQL::kConstantEntityId, std::make_unique<ConstantEntityFactory>()});
   }
 
-  inline bool is_entity_id(EntityId entity_id) {
+  inline bool is_entity_id(EntityName entity_id) {
     return entity_factories_.find(entity_id) != entity_factories_.end();
   }
 
-  inline EntityPtr CreateInstance(EntityId entity_id, int number) {
+  inline EntityPtr CreateInstance(EntityName entity_id, int number) {
     return entity_factories_.at(entity_id)->CreateInstance(number);
   }
 
-  inline EntityPtr CreateInstance(EntityId entity_id, Ident ident) {
+  inline EntityPtr CreateInstance(EntityName entity_id, Ident ident) {
     return entity_factories_.at(entity_id)->CreateInstance(ident);
   }
 
-  inline EntityPtrList GetAllFromPKB(EntityId entity_id, PKBPtr &pkb) {
+  inline EntityPtrList GetAllFromPKB(EntityName entity_id, PKBPtr &pkb) {
     return entity_factories_.at(entity_id)->GetAllFromPKB(pkb);
   }
 

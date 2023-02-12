@@ -34,7 +34,7 @@ bool Validator::SynonymCheck(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
     if (clause->get_arg1()->IsSynonym()) {
       auto arg = reinterpret_cast<SynonymArg *>(clause->get_arg1().get());
-      if (!query->is_synonym(arg->get_syn())) {
+      if (!query->is_declared_synonym_id(arg->get_syn_name())) {
         std::cout << "first arg is false";
         return false;
       }
@@ -42,7 +42,7 @@ bool Validator::SynonymCheck(QueryPtr &query) {
 
     if (clause->get_arg2()->IsSynonym()) {
       auto arg = reinterpret_cast<SynonymArg *>(clause->get_arg2().get());
-      if (!query->is_synonym(arg->get_syn())) {
+      if (!query->is_declared_synonym_id(arg->get_syn_name())) {
         std::cout << "second arg is false";
         return false;
       }

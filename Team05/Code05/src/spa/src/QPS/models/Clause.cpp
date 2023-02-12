@@ -3,8 +3,7 @@
 
 #include "Clause.h"
 #include "QPS/models/PQL.h"
-#include "SP/lexer/Lexer.h"
-#include "SP/parser/expression/ExpressionParser.h"
+#include "SP/SourceProcessor.h"
 #include "common/filter/filters/AssignFilter.h"
 
 using namespace filter;  // NOLINT
@@ -61,9 +60,8 @@ EntityPtrList PatternClause::Index(
     }
   }
 
-  sp::Lexer lxr(expression);
-  sp::ExpressionParser exp_parser;
-  auto ASTNode = exp_parser.parse(lxr);
+  sp::SourceProcessor source_processor;
+  auto ASTNode = source_processor.ParseExpression(expression);
   auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();

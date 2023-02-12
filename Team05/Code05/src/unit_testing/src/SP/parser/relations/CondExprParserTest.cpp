@@ -1,6 +1,8 @@
 #include "RelationTesting.h"
 
 void TestCondExpr(Lexer& lxr, const CondExprNode& expected);
+
+template <class T>
 void RequiresException(std::string);
 
 TEST_CASE("And expression parses") {
@@ -35,19 +37,22 @@ TEST_CASE("NOT expression parses") {
 // testing parsing with error
 TEST_CASE("Invalid expression throws error") {
   SECTION("Invalid token") {
-    RequiresException("(a + b & a-b) || (a+b <=a-b)");
+    RequiresException<std::exception>("(a + b & a-b) || (a+b <=a-b)");
   }
   SECTION("Invalid bracket placement") {
-    RequiresException("(a + b) && a - b || (a - b)");
-    RequiresException("(a+b == a-b || (a-b)");
+    RequiresException<std::exception>("(a + b) && a - b || (a - b)");
+    RequiresException<std::exception>("(a+b == a-b || (a-b)");
   }
-  SECTION("Invalid syntax") { RequiresException("(a+b && a-b)"); }
+  SECTION("Invalid syntax") {
+    RequiresException<ParseException>("(a+b && a-b)");
+  }
 }
 
+template <class T>
 void RequiresException(std::string val) {
   Lexer lxr(val);
   CondExprParser parser;
-  REQUIRE_THROWS_AS(parser.parse(lxr), std::exception);
+  REQUIRE_THROWS_AS(parser.parse(lxr), T);
 }
 
 void TestCondExpr(Lexer& lxr, const CondExprNode& expected) {

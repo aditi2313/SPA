@@ -24,4 +24,4 @@ class PredicateFilter
  private:
     Predicate predicate_;
 };
-}  // namespace pkb
+}  // namespace filter

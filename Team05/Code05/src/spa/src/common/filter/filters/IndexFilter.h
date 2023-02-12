@@ -16,12 +16,12 @@ namespace filter {
 template<class T>
 class IndexFilter
         : public IndexableFilter<T> {
-public:
+ public:
     explicit IndexFilter(int line) : line_(line) {}
 
     pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
 
-private:
+ private:
     int line_;
 };
 }

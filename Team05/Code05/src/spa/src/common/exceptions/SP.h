@@ -6,7 +6,7 @@ namespace sp {
 class ParseException : public std::exception {
  public:
   explicit ParseException(const std::string msg) : message(msg) {}
-  const std::string what() { return message; }
+  const char* what() const throw() override { return message.c_str(); }
 
  private:
   const std::string message;
@@ -20,6 +20,6 @@ class ParseRelationSyntaxException : public ParseException {
       : ParseException(kParseRelationSyntaxMessage) {}
 
  private:
-  static const std::string kParseRelationSyntaxMessage;
+  static const char kParseRelationSyntaxMessage[];
 };
 }  // namespace sp

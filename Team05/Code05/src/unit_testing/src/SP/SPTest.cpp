@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <string>
 #include <vector>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "models/AST/Token.h"
@@ -12,8 +12,10 @@ void TestLexerForToken(std::string vals, std::vector<Token> tokens);
 
 TEST_CASE("Testing lexer functionality") {
   SECTION("Test relational functionality") {
-    TestLexerForToken("< == <= &&", {Token::kTokLess, Token::kTokEquiv,
-                                    Token::kTokLessEqual, Token::kTokAnd});
+    TestLexerForToken(
+        "< == <= && || != !",
+        {Token::kTokLess, Token::kTokEquiv, Token::kTokLessEqual,
+         Token::kTokAnd, Token::kTokOr, Token::kTokNotEqual, Token::kTokNot});
   }
 }
 

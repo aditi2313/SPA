@@ -25,7 +25,7 @@ TEST_CASE("Test DeclarationParseState") {
     query = state.parse(tokens, itr, std::move(query));
 
     REQUIRE(query->does_synonym_exist(
-        Synonym("v", PQL::kVariableEntityId)));
+        Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
 

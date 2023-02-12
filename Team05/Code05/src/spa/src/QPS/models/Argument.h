@@ -20,10 +20,11 @@ class Argument {
   virtual bool IsStmtRef() { return false; }
   // synonym | _ | "ident"
   virtual bool IsEntRef() { return false; }
-  // "ident" | INTEGER
-  virtual bool IsExact() { return false;  }
   virtual bool IsWildcard() { return false; }
   virtual bool IsSynonym() { return false; }
+  // INTEGER | "ident"
+  virtual bool IsExact() { return false; }
+
 
   bool operator==(Argument const &other) const {
     const std::type_info &ti1 = typeid(*this);

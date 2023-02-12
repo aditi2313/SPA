@@ -9,21 +9,6 @@
 #include "QPS/evaluator/Formatter.h"
 
 namespace qps {
-// Called in TestWrapper
-void QPS::evaluate(std::string query, std::list<std::string> &results) {
-  SelectClParser parser;
-  std::unique_ptr<Query> query_object = parser.ParseQuery(query);
-
-  Validator validator;
-  // TODO(Sarthak): something like validator.validate(query_object) here
-
-  Evaluator evaluator;
-  ListQueryResultPtr result = evaluator.EvaluateQuery(query_object);
-
-  Formatter formatter;
-  results = formatter.FormatQuery(result);
-}
-
 // Used for integration tests
 std::unique_ptr<pkb::PKBRead> QPS::evaluate(
     std::string query,
@@ -35,9 +20,8 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
   Validator validator;
   // TODO(Sarthak): something like validator.validate(query_object) here
 
-  Evaluator evaluator;
-  evaluator.inject_pkb(pkb);  // Inject testing PKB here
-  ListQueryResultPtr result = evaluator.EvaluateQuery(query_object);
+  Evaluator evaluator(pkb);
+  QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
   Formatter formatter;
   results = formatter.FormatQuery(result);

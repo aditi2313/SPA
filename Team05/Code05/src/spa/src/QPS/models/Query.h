@@ -19,8 +19,8 @@ namespace qps {
 class Query {
  public:
   // Set a synonym declaration
-  inline void declare_synonym(SynonymName syn_id, models::EntityName entity_id) {
-    synonym_declarations_.push_back(std::make_unique<Synonym>(syn_id, entity_id));
+  inline void declare_synonym(SynonymName syn_id, models::EntityName entity_name) {
+    synonym_declarations_.push_back(std::make_unique<Synonym>(syn_id, entity_name));
   }
 
   // Returns true if `token` is a synonym that has been declared
@@ -39,11 +39,22 @@ class Query {
     return false;
   }
 
-  inline EntityName get_declared_synonym(std::string token) {
+  inline EntityName get_syn_entity_name(std::string token) {
     for(auto &syn : synonym_declarations_) {
-      if(syn->get_syn_id() == token) return syn->get_entity_id();
+      if(syn->get_syn_id() == token) return syn->get_entity_name();
     }
     throw std::runtime_error("Synonym has not been declared");
+  }
+
+  inline SynonymPtr& get_synonym(std::string token) {
+    for(auto &syn : synonym_declarations_) {
+      if(syn->get_syn_id() == token) return syn;
+    }
+    throw std::runtime_error("Synonym has not been declared");
+  }
+
+  inline std::vector<SynonymPtr> & get_declared_synonyms() {
+   return synonym_declarations_;
   }
 
   // A selected synonym is a synonym that comes after `Select`

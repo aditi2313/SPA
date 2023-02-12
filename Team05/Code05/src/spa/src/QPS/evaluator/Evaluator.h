@@ -9,14 +9,19 @@
 namespace qps {
 class Evaluator {
  public:
-  Evaluator() {
+  Evaluator(std::unique_ptr<pkb::PKBRead> &pkb) {
     master_entity_factory_ = std::make_unique<MasterEntityFactory>();
+    pkb_ = std::move(pkb);
   }
-  ListQueryResultPtr EvaluateQuery(std::unique_ptr<Query> &query);
 
-  // Helper method for writing integration tests
-  // where we set up our own PKB
-  void inject_pkb(std::unique_ptr<pkb::PKBRead> &pkb) { pkb_ = std::move(pkb); }
+  void InitializeSynonyms(QueryPtr &query);
+  void InitializeEntitiesFromArgument(
+      QueryPtr &query, ArgumentPtr &arg, EntityName entity_name, EntityPtrList &result);
+  void UpdateSynonymEntityList(
+      QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result);
+
+  QueryResultPtr EvaluateQuery(QueryPtr &query);
+  bool EvaluateClause(QueryPtr &query, ClausePtr &clause);
 
   inline auto retrieve_pkb() { return std::move(pkb_); }
 

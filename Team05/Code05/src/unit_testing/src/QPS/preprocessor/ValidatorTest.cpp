@@ -17,7 +17,7 @@ TEST_CASE("Test IsWildcard") {
   SECTION("Happy path") {
     // No wildcard
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<qps::ModifiesClause>(
             query->CreateArgument("6"),
@@ -31,7 +31,7 @@ TEST_CASE("Test IsWildcard") {
 TEST_CASE("Test invalidWildcard") {
   SECTION("Wildcard is in the wrong area") {
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<qps::ModifiesClause>(
             query->CreateArgument("_"),
@@ -48,7 +48,7 @@ TEST_CASE("Test SynonymCheck") {
   SECTION("Happy path") {
     // All used synonyms are declared
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<ModifiesClause>(
             query->CreateArgument("6"),

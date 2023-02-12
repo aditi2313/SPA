@@ -55,7 +55,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "procedure p; Select p";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"p", PQL::kProcedureEntityId}},
+        {{"p", PQL::kProcedureEntityName}},
         {"p"});
 
     REQUIRE(*actual_query == *expected_query);
@@ -65,7 +65,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "variable v; Select v such that Modifies(6, v)";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}},
+        {{"v", PQL::kVariableEntityName}},
         {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
@@ -79,7 +79,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"a", PQL::kAssignEntityId}},
+        {{"a", PQL::kAssignEntityName}},
         {"a"});
     expected_query->add_clause(
         std::make_unique<PatternClause>(
@@ -98,7 +98,7 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(_, \"x + y\") pattern a(_, \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}, {"p", PQL::kProcedureEntityId}},
+        {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v", "p"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
@@ -130,7 +130,7 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}, {"p", PQL::kProcedureEntityId}},
+        {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v", "p"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(

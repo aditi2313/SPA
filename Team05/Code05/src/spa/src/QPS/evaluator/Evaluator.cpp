@@ -1,33 +1,124 @@
 #include "Evaluator.h"
 
 namespace qps {
-ListQueryResultPtr Evaluator::EvaluateQuery(std::unique_ptr<Query> &query) {
-  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-  EntityName entity = query->get_declared_synonym(selected_synonym);
-  EntityPtrList all_entities = master_entity_factory_->GetAllFromPKB(
-      entity, pkb_);
-  ListQueryResultPtr result = std::make_unique<ListQueryResult>(all_entities);
+// Initialize every synonym in the query with all possible values.
+void Evaluator::InitializeSynonyms(QueryPtr &query) {
+  for (auto &syn : query->get_declared_synonyms()) {
+    EntityPtrList list = master_entity_factory_->GetAllFromPKB(
+        syn->get_entity_name(), pkb_);
+    syn->set_possible_entities(list);
+  }
+}
+
+QueryResultPtr Evaluator::EvaluateQuery(QueryPtr &query) {
+  InitializeSynonyms(query);
 
   for (std::unique_ptr<Clause> &clause : query->get_clauses()) {
-    QueryResultPtr clause_result = clause->Evaluate(
-        master_entity_factory_, pkb_);
+    bool clause_result = EvaluateClause(query, clause);
 
-    if(clause_result->IsBoolean()) {
-      BoolQueryResult* bool_query_result = dynamic_cast<BoolQueryResult*>(
-          clause_result.get()
-      );
-      if(!bool_query_result->IsTrue()) {
-        // Clause is false
-        result->clear();
-      }
-    } else {
-      ListQueryResult* list_query_result = dynamic_cast<ListQueryResult*>(
-          clause_result.get());
-
-      result->IntersectWith(*list_query_result);
+    if (!clause_result) {
+      // Clause is false, can immediately return empty result.
+      return std::make_unique<ListQueryResult>();
     }
   }
 
+  // For Basic SPA, just one for now.
+  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
+  ListQueryResultPtr result = std::make_unique<ListQueryResult>(
+      query->get_synonym(selected_synonym)->get_possible_entities());
   return result;
 }
+
+// Returns true if there are still results, false otherwise
+bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
+  ArgumentPtr &arg1 = clause->get_arg1();
+  ArgumentPtr &arg2 = clause->get_arg2();
+
+  // Fill with candidate values
+  EntityPtrList LHS;
+  EntityPtrList RHS;
+  InitializeEntitiesFromArgument(query, arg1, clause->LHS(), LHS);
+  InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
+
+  // Takes care of duplicates
+  std::set < EntityPtr > RHS_results;
+  std::set < EntityPtr > LHS_results;
+
+  // Query PKB with LHS possible values
+  for (auto &index : LHS) {
+    EntityPtrList results;
+    if (arg2->IsWildcard()) {
+      // Just index and return all
+      results = clause->Index(index, master_entity_factory_, pkb_);
+    } else {
+      // Is synonym or exact (int or ident), need filter
+      results = clause->Filter(index, RHS, master_entity_factory_, pkb_);
+    }
+
+    for (auto &entity : results) {
+      // Remove duplicates
+      RHS_results.insert(std::move(entity));
+    }
+
+    if (!results.empty()) {
+      LHS_results.insert(index->Copy());
+    }
+  }
+
+  // Update list of possible values for arg1 and/or arg2
+  // if they are synonyms
+  UpdateSynonymEntityList(query, arg1, LHS_results);
+  UpdateSynonymEntityList(query, arg2, RHS_results);
+
+  return !RHS_results.empty();
+}
+
+void Evaluator::InitializeEntitiesFromArgument(
+    QueryPtr &query, ArgumentPtr &arg, EntityName entity_name, EntityPtrList &result) {
+  if (arg->IsWildcard()) {
+    for (auto &entity : master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {
+      result.push_back(std::move(entity));
+    }
+  } else if (arg->IsSynonym()) {
+    SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
+    SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
+    for (auto &entity : synonym->get_possible_entities()) {
+      result.push_back(entity->Copy());
+    }
+  } else {
+    // Int or Ident Arg
+    if (arg->IsStmtRef()) {
+      // INT
+      IntegerArg *integer_arg = dynamic_cast<IntegerArg *>(arg.get());
+      result.push_back(master_entity_factory_->CreateInstance(
+          entity_name,
+          integer_arg->get_number()));
+
+    } else if (arg->IsEntRef()) {
+      // IDENT
+      IdentArg *ident_arg = dynamic_cast<IdentArg *>(arg.get());
+      result.push_back(master_entity_factory_->CreateInstance(
+          entity_name,
+          ident_arg->get_ident()));
+    } else {
+      // TODO(JL): replace with custom exception
+      throw std::runtime_error("Unrecognized arg type in clause");
+    }
+  }
+}
+
+void Evaluator::UpdateSynonymEntityList(QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result) {
+  if (!arg->IsSynonym()) return; // Not a synonym
+
+  SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
+  SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
+
+  EntityPtrList new_entity_ptr_list;
+  for (auto &entity : result) {
+    new_entity_ptr_list.push_back(entity->Copy());
+  }
+
+  synonym->set_possible_entities(new_entity_ptr_list);
+}
+
 }  // namespace qps

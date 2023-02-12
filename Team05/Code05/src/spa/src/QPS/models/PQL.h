@@ -14,26 +14,26 @@ namespace qps {
 
 class PQL {
  public:
-  inline static EntityName kStmtEntityId = "stmt";
-  inline static EntityName kReadEntityId = "read";
-  inline static EntityName kPrintEntityId = "print";
-  inline static EntityName kCallEntityId = "call";
-  inline static EntityName kWhileEntityId = "while";
-  inline static EntityName kIfEntityId = "if";
-  inline static EntityName kAssignEntityId = "assign";
-  inline static EntityName kVariableEntityId = "variable";
-  inline static EntityName kConstantEntityId = "constant";
-  inline static EntityName kProcedureEntityId = "procedure";
+  inline static std::string kStmtEntityName = "stmt";
+  inline static std::string kReadEntityName = "read";
+  inline static std::string kPrintEntityName = "print";
+  inline static std::string kCallEntityName = "call";
+  inline static std::string kWhileEntityName = "while";
+  inline static std::string kIfEntityName = "if";
+  inline static std::string kAssignEntityName = "assign";
+  inline static std::string kVariableEntityName = "variable";
+  inline static std::string kConstantEntityName = "constant";
+  inline static std::string kProcedureEntityName = "procedure";
 
-  inline static std::vector<EntityName> kAllEntityIds{
-      kStmtEntityId, kReadEntityId, kPrintEntityId, kCallEntityId,
-      kWhileEntityId, kIfEntityId, kAssignEntityId,
-      kVariableEntityId, kConstantEntityId, kProcedureEntityId
+  inline static std::vector<std::string> kAllEntityName{
+      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
+      kWhileEntityName, kIfEntityName, kAssignEntityName,
+      kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
-  inline static bool const is_entity_id(EntityName const token) {
-    return find(kAllEntityIds.begin(), kAllEntityIds.end(), token)
-        != kAllEntityIds.end();
+  inline static bool const is_entity_name(std::string const token) {
+    return find(kAllEntityName.begin(), kAllEntityName.end(), token)
+        != kAllEntityName.end();
   }
 
   inline static EntityName kModifiesRelId = "Modifies";

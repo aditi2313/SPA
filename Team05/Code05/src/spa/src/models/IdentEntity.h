@@ -30,11 +30,12 @@ class IdentEntity : public Entity {
         (reinterpret_cast<IdentEntity *>(&other))->ident_;
   }
 
-  inline EntityPtr Copy() override {
-    return std::make_unique<IdentEntity>(*this);
+  inline bool operator!=(Entity &other) override {
+    return !(*this == other);
   }
 
   operator std::string() override { return ident_; }
+  virtual ~IdentEntity() = 0;
 
  private:
   std::string ident_;
@@ -43,10 +44,18 @@ class IdentEntity : public Entity {
 class Procedure : public IdentEntity {
  public:
   explicit Procedure(std::string ident) : IdentEntity(ident) {}
+
+  inline EntityPtr Copy() override {
+    return std::make_unique<Procedure>(*this);
+  }
 };
 
 class Variable : public IdentEntity {
  public:
   explicit Variable(std::string ident) : IdentEntity(ident) {}
+
+  inline EntityPtr Copy() override {
+    return std::make_unique<Variable>(*this);
+  }
 };
 }  // namespace models

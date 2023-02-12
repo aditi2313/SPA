@@ -12,7 +12,7 @@ class Evaluator {
   Evaluator() {
     master_entity_factory_ = std::make_unique<MasterEntityFactory>();
   }
-  QueryResultPtr EvaluateQuery(std::unique_ptr<Query> &query);
+  ListQueryResultPtr EvaluateQuery(std::unique_ptr<Query> &query);
 
   // Helper method for writing integration tests
   // where we set up our own PKB

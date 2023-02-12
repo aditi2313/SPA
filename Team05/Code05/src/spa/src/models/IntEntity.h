@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <iostream>
 
 #include "Entity.h"
 
@@ -30,13 +31,18 @@ class IntEntity : public Entity {
         (reinterpret_cast<IntEntity *>(&other))->number_;
   }
 
-  inline EntityPtr Copy() override {
-    return std::make_unique<IntEntity>(*this);
+  inline bool operator!=(Entity &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+
+    return !(*this == other);
   }
 
   operator std::string() override {
     return std::to_string(number_);
   }
+
+  virtual ~IntEntity() = 0;
 
  private:
   int number_;
@@ -45,5 +51,9 @@ class IntEntity : public Entity {
 class Constant : public IntEntity {
  public:
   explicit Constant(int number) : IntEntity(number) {}
+
+  inline EntityPtr Copy() override {
+    return std::make_unique<Constant>(*this);
+  }
 };
 }  // namespace models

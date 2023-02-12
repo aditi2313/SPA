@@ -15,6 +15,7 @@ class Entity {
   virtual operator std::string() = 0;
   virtual ~Entity() = 0;
   virtual bool operator==(Entity &other) = 0;
+  virtual bool operator!=(Entity &other) = 0;
   virtual bool operator<(Entity &other) = 0;
   virtual std::unique_ptr<Entity> Copy() = 0;
 };

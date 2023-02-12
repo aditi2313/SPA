@@ -29,7 +29,7 @@ QueryResultPtr ModifiesClause::Evaluate(
   // CURRENTLY this only works for Modifies( statement number, variable )
   // TODO(JL): generalize this to work for more types of
   // Modifies clauses
-  QueryResultPtr query_result = std::make_unique<QueryResult>();
+  ListQueryResultPtr query_result = std::make_unique<ListQueryResult>();
 
   IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(arg1.get());
   int line = line_arg->get_number();
@@ -53,7 +53,7 @@ QueryResultPtr PatternClause::Evaluate(
   // TODO(JL): generalize this to work for more types of
   // Pattern clauses
 
-  QueryResultPtr query_result = std::make_unique<QueryResult>();
+  ListQueryResultPtr query_result = std::make_unique<ListQueryResult>();
 
 //   preprocess expression string to insert whitespace
   std::string expression = "";

@@ -7,14 +7,13 @@
 using namespace qps; // NOLINT
 using namespace models;  // NOLINT
 
-// TODO(JL): replace with real unit tests after Entity is implemented
 TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 
   SECTION("For statements") {
     EntityPtrList entities;
     entities.push_back(std::make_unique<Stmt>(1));
-    QueryResultPtr query_result = std::make_unique<QueryResult>(entities);
+    ListQueryResultPtr query_result = std::make_unique<ListQueryResult>(entities);
     std::list<std::string> actual =
         query_formatter.FormatQuery(query_result);
     REQUIRE(actual.front() == "1");

@@ -3,42 +3,42 @@
 #include "models/AST/Token.h"
 
 namespace sp {
-  std::optional<Token> SingleCharHandler::HandleInner(int& ptr, std::string& program) {
-    char c = program[ptr++];
-    switch (c) {
+std::optional<Token> SingleCharHandler::HandleInner(int& ptr,
+                                                    std::string& program) {
+  char c = program[ptr++];
+  switch (c) {
     case '{':
-      return { Token::kTokOpenCurly };
+      return {Token::kTokOpenCurly};
     case '}':
-      return { Token::kTokCloseCurly };
+      return {Token::kTokCloseCurly};
     case ';':
-      return { Token::kTokSemicolon };
+      return {Token::kTokSemicolon};
     case '=':
-      return { Token::kTokEquals };
+      return {Token::kTokEquals};
     case '+':
-      return { Token::kTokPlus };
+      return {Token::kTokPlus};
     case '-':
-      return { Token::kTokMinus };
+      return {Token::kTokMinus};
     case '*':
-      return { Token::kTokTimes };
+      return {Token::kTokTimes};
     case '/':
-      return { Token::kTokDiv };
+      return {Token::kTokDiv};
     case '%':
-      return { Token::kTokMod };
+      return {Token::kTokMod};
     case '(':
-      return { Token::kTokOpenBracket };
+      return {Token::kTokOpenBracket};
     case ')':
-      return { Token::kTokCloseBracket };
+      return {Token::kTokCloseBracket};
     case '!':
-      return { Token::kTokNot };
+      return {Token::kTokNot};
     case '<':
-      return { Token::kTokLess };
+      return {Token::kTokLess};
     case '>':
-      return { Token::kTokGreater };
+      return {Token::kTokGreater};
     default:
       ptr--;
       return std::nullopt;
-    }
   }
-
-
 }
+
+}  // namespace sp

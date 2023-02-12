@@ -11,4 +11,4 @@ pkb::IndexableTablePtr<T> IndexFilter<T>::FilterTable
     result->add_row(row->get_line(), row);
     return result;
 }
-}  // namespace pkb
+}  // namespace filter

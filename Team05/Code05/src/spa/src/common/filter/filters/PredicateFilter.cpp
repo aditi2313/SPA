@@ -17,4 +17,4 @@ pkb::IndexableTablePtr<T> PredicateFilter<T, Predicate>::FilterTable
     }
     return std::move(result);
 }
-}  // namespace pkb
+}  // namespace filter

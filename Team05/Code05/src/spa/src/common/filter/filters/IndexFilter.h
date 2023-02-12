@@ -24,4 +24,4 @@ class IndexFilter
  private:
     int line_;
 };
-}
+}  // namespace filter

@@ -22,4 +22,15 @@ class ParseRelationSyntaxException : public ParseException {
  private:
   static const char kParseRelationSyntaxMessage[];
 };
+
+class ParseFactorSyntaxException : public ParseException {
+ public:
+  explicit ParseFactorSyntaxException(std::string additional)
+      : ParseException(kParseFactorSyntaxMessage + additional) {}
+  ParseFactorSyntaxException()
+      : ParseException(kParseFactorSyntaxMessage) {}
+
+ private:
+  static const char kParseFactorSyntaxMessage[];
+};
 }  // namespace sp

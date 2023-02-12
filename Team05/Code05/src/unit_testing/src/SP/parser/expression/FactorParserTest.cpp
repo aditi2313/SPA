@@ -4,7 +4,7 @@
 #include <string>
 #include <catch.hpp>
 #include "SP/parser/expression/FactorParser.h"
-#include "SP/Lexer.h"
+#include "SP/lexer/Lexer.h"
 
 // INTEGER : 0 | NZDIGIT ( DIGIT )*
 // NAME: LETTER (LETTER | DIGIT)*

@@ -1,4 +1,5 @@
 #include "FactorParser.h"
+#include "common/exceptions/SP.h"
 
 namespace sp {
 std::unique_ptr<ast::FactorNode> FactorParser::parse(Lexer &lxr) {
@@ -9,8 +10,7 @@ std::unique_ptr<ast::FactorNode> FactorParser::parse(Lexer &lxr) {
   } else if (tok == Token::kTokInteger) {
     return std::make_unique<ast::ConstNode>(ast::ConstNode(lxr.get_integer()));
   } else {  // TODO(aizatazhar): parse '(' expr ')'
-    // TODO(aizatazhar): use custom exception
-    throw std::runtime_error("Expected variable or constant");
+    throw ParseFactorSyntaxException("Expected variable, constant or expr");
   }
 }
 }  // namespace sp

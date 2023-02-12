@@ -52,7 +52,8 @@ int Lexer::get_tok() { return current_tok_; }
 bool Lexer::ReadWord() {
   int p = pointer_;
   char c = program_[p];
-  if (!(isalnum(c))) {
+  // NAME: LETTER (LETTER | DIGIT)*
+  if (!isalpha(c)) {
     return false;
   }
   word_ = c;
@@ -70,13 +71,15 @@ bool Lexer::ReadInt() {
   if (!isdigit(current_char)) {
     return false;
   }
+
   // current token is an INTEGER
+  // INTEGER : 0 | NZDIGIT ( DIGIT )*
   std::string number_string;
   number_string += current_char;
-  while (isdigit(current_char = program_[p++])) {
+  while (p < program_.length() && !isspace(current_char = program_[p++])) {
     number_string += current_char;
-    current_char = program_[p++];
   }
+
   ValidateInteger(number_string);
   integer_ = std::stoi(number_string);
   current_tok_ = Token::kTokInteger;
@@ -135,6 +138,13 @@ void Lexer::ValidateInteger(std::string number_string) {
   if (number_string[0] == '0' && number_string.length() > 1) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("integer cannot have leading zeroes");
+  }
+
+  for (int i = 0; i < number_string.length(); i++) {
+    if (!isdigit(number_string[i])) {
+      // TODO(aizatazhar): use custom exception
+      throw std::runtime_error("integer cannot have non-digits");
+    }
   }
 }
 

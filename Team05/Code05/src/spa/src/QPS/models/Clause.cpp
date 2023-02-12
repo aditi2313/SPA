@@ -65,7 +65,8 @@ QueryResultPtr PatternClause::Evaluate(
     }
   }
 
-  auto ASTNode = sp::SourceProcessor::CreateAstExpression(expression);
+  sp::SourceProcessor source_processor;
+  auto ASTNode = source_processor.ParseExpression(expression);
   auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
   auto result = pkb->Assigns(std::move(filter));
 

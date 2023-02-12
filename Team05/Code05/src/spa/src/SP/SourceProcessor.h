@@ -17,13 +17,13 @@ namespace sp {
 // Facade class that serves as entry point for other components
 class SourceProcessor {
  public:
-  static std::unique_ptr<ast::ExprNode> CreateAstExpression(std::string expr) {
+  std::unique_ptr<ast::ExprNode> ParseExpression(std::string expr) {
     sp::Lexer lxr(std::move(expr));
     sp::ExpressionParser exp_parser;
     return exp_parser.parse(lxr);
   }
 
-  static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
+  std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
     sp::Lexer lxr(std::move(program));
     sp::ProgramParser program_parser;
     return program_parser.parse(lxr);

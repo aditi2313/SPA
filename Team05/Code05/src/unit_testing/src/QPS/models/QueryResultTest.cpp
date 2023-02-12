@@ -17,8 +17,8 @@ EntityPtrList BuildStmtList(std::vector<int> stmts) {
 TEST_CASE("Test QueryResult") {
   SECTION("Intersect with empty list should be empty list") {
     EntityPtrList list1 = BuildStmtList({1, 2, 3});
-    ListQueryResultPtr result1 = std::make_unique<ListQueryResult>(list1);
-    ListQueryResult result2;
+    QueryResultPtr result1 = std::make_unique<QueryResult>(list1);
+    QueryResult result2;
 
     result1->IntersectWith(result2);
     REQUIRE(result1->is_empty());
@@ -27,9 +27,9 @@ TEST_CASE("Test QueryResult") {
   SECTION("Intersect two lists should have correct elements") {
     // Not necessarily sorted
     EntityPtrList list1 = BuildStmtList({6, 5, 4, 3, 2, 1});
-    ListQueryResultPtr result1 = std::make_unique<ListQueryResult>(list1);
+    QueryResultPtr result1 = std::make_unique<QueryResult>(list1);
     EntityPtrList list2 = BuildStmtList({2, 7, 10, 4, 8, 6});
-    ListQueryResult result2 = ListQueryResult(list2);
+    QueryResult result2 = QueryResult(list2);
 
     result1->IntersectWith(result2);
 

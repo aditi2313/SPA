@@ -20,13 +20,13 @@ QueryResultPtr Evaluator::EvaluateQuery(QueryPtr &query) {
 
     if (!clause_result) {
       // Clause is false, can immediately return empty result.
-      return std::make_unique<ListQueryResult>();
+      return std::make_unique<QueryResult>();
     }
   }
 
   // For Basic SPA, just one for now.
   SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-  ListQueryResultPtr result = std::make_unique<ListQueryResult>(
+  QueryResultPtr result = std::make_unique<QueryResult>(
       query->get_synonym(selected_synonym)->get_possible_entities());
   return result;
 }

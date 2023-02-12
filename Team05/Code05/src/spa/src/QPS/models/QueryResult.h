@@ -13,15 +13,8 @@ namespace qps {
 class QueryResult {
  public:
   QueryResult() {}
-  virtual ~QueryResult() = 0;
-  virtual inline bool IsBoolean() { return false; }
-};
 
-class ListQueryResult : public QueryResult {
- public:
-  ListQueryResult() {}
-
-  explicit ListQueryResult(EntityPtrList &entities): QueryResult() {
+  explicit QueryResult(EntityPtrList &entities): QueryResult() {
     for (auto &entity : entities) {
       query_results_.push_back(std::move(entity));
     }
@@ -39,7 +32,7 @@ class ListQueryResult : public QueryResult {
 
   inline void clear() { query_results_.clear(); }
 
-  void IntersectWith(ListQueryResult &other_result);
+  void IntersectWith(QueryResult &other_result);
 
   inline void Sort() {
     std::sort(query_results_.begin(), query_results_.end(),
@@ -52,18 +45,5 @@ class ListQueryResult : public QueryResult {
   EntityPtrList query_results_;
 };
 
-class BoolQueryResult : public QueryResult {
- public:
-  explicit BoolQueryResult(bool is_true) :
-    QueryResult(), is_true_(is_true) {}
-
-    inline bool IsBoolean() override { return true; }
-    inline bool IsTrue() { return is_true_; }
-
- private:
-  bool is_true_;
-};
-
 using QueryResultPtr = std::unique_ptr<QueryResult>;
-using ListQueryResultPtr = std::unique_ptr<ListQueryResult>;
 }  // namespace qps

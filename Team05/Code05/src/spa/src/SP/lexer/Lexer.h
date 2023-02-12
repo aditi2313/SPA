@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -68,5 +69,10 @@ class Lexer {
   int stmt_ctr_ = 1;
 
   void ValidateInteger(std::string basicString);
+
+  // TODO(Gab) Refactor this functionality with #40
+  // something that is more specific
+  // takes in a reference where the final pointer will be referenced.
+  std::optional<Token> ProcessLengthTwoTokens(int& p);
 };
 }  // namespace sp

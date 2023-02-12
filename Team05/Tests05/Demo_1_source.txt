@@ -2,7 +2,7 @@ procedure example {
 	read x;
 	read y;
 	print x;
-	call test;
+	call example2;
 	x = a + b;
 }
 

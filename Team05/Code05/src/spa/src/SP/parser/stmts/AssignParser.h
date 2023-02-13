@@ -6,6 +6,7 @@
 #include "SP/parser/Parser.h"
 #include "SP/parser/ProgramParser.h"
 #include "SP/parser/expression/ExpressionParser.h"
+#include "common/exceptions/SP.h"
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
@@ -19,10 +20,13 @@ class AssignParser : Parser<ast::AssignNode> {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("expected '=' in assignment");
     }
+    auto expr = expr_parser.parse(lxr);
+    if (lxr.GetTokAndIncrement() != Token::kTokSemicolon) {
+      throw ParseAssignSyntaxException();
+    }
 
-    return std::make_unique<ast::AssignNode>(std::move(var_node),
-                                             expr_parser.parse(lxr),
-                                             lxr.GetAndIncrementStmtCtr());
+    return std::make_unique<ast::AssignNode>(
+        std::move(var_node), std::move(expr), lxr.GetAndIncrementStmtCtr());
   }
 };
 }  // namespace sp

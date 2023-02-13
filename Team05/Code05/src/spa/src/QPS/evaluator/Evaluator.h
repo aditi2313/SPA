@@ -15,6 +15,10 @@ class Evaluator {
     pkb_ = std::move(pkb);
   }
 
+  QueryResultPtr EvaluateQuery(QueryPtr &query);
+  inline auto retrieve_pkb() { return std::move(pkb_); }
+
+ private:
   void InitializeSynonyms(QueryPtr &query);
   void InitializeEntitiesFromArgument(
       QueryPtr &query, ArgumentPtr &arg,
@@ -22,13 +26,8 @@ class Evaluator {
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result);
-
-  QueryResultPtr EvaluateQuery(QueryPtr &query);
   bool EvaluateClause(QueryPtr &query, ClausePtr &clause);
 
-  inline auto retrieve_pkb() { return std::move(pkb_); }
-
- private:
   std::unique_ptr<pkb::PKBRead> pkb_;
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
 };

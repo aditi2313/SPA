@@ -19,7 +19,7 @@ class IntEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return number_ <
-        (reinterpret_cast<IntEntity *>(&other))->number_;
+        (dynamic_cast<IntEntity *>(&other))->number_;
   }
 
   inline bool operator==(Entity &other) override {
@@ -28,7 +28,7 @@ class IntEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return number_ ==
-        (reinterpret_cast<IntEntity *>(&other))->number_;
+        (dynamic_cast<IntEntity *>(&other))->number_;
   }
 
   inline bool operator!=(Entity &other) override {
@@ -41,6 +41,8 @@ class IntEntity : public Entity {
   operator std::string() override {
     return std::to_string(number_);
   }
+
+  inline int get_number() { return number_; }
 
  private:
   int number_;

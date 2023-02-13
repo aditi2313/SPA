@@ -40,7 +40,7 @@ class ModifiesFilterByLine : public IndexableFilter<pkb::ModifiesData> {
 };
 
 /// <summary>
-/// A filter for an indexable table by variable.
+/// A filter for an Indexable table by variable.
 /// Looks through the indexable table and returns all rows
 /// that have the variable in the RHS.
 /// </summary>

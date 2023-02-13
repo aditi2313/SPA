@@ -9,7 +9,6 @@
 #include "PKBRelationTable.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
-#include "common/filter/filters/ModifiesFilter.h"
 
 using filter::IndexableFilterPtr;
 

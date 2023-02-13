@@ -136,12 +136,16 @@ void Lexer::Increment() {
 int Lexer::Peek() {
   int original_pointer = pointer_;
   int original_tok = current_tok_;
+  std::string original_ident = get_ident();
+  int original_integer = get_integer();
 
   Increment();
   int res = get_tok();
 
   current_tok_ = original_tok;
   pointer_ = original_pointer;
+  word_ = original_ident;
+  integer_ = original_integer;
 
   return res;
 }

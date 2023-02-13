@@ -29,6 +29,7 @@ class PKBRelationTable {
   IndexableTable<FollowData> follow_table_;
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
+  IndexableTable<AssignData> assign_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -39,15 +40,6 @@ class PKBRelationTable {
   std::unordered_set<int> if_;
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
-
-  // ptr needed as Assign data contains a unique ptr
-  // Without the use of a pointer
-  // An alternative would be to overload the assign operator for AssignData.
-  //
-  // With the use of unique ptr, Indexable Table does not support such
-  // behaviour, as we would have to move data every time we add a row. Therefore
-  // shared ptr is used.
-  IndexableTable<AssignData> assign_table_;
 
   void add_modifies_data(const int line,
                          const std::vector<std::string>& variables) {

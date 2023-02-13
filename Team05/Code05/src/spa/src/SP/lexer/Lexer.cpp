@@ -140,7 +140,7 @@ std::pair<int, int> Lexer::PeekTokenAndPointer() {
     return {kTokInteger, p};
   }
 
-  throw std::runtime_error("??");
+  throw std::runtime_error("Lexer unknown token");
 }
 
 void Lexer::ValidateInteger(std::string number_string) {

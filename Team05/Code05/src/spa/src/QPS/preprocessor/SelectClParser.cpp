@@ -1,13 +1,14 @@
 #include <sstream>
 #include <utility>
 
-#include "Parser.h"
+#include "SelectClParser.h"
 
 namespace qps {
 
 // Compares token with the transition keyword of the next stage
 // to determine if the machine should go to next state
-bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
+bool SelectClParser::ShouldGoToNextState(
+    int current_state_index, std::string token) {
   if (current_state_index >= states_.size() - 1) return false;  // last stage
 
   if (current_state_index == 1 && token == "pattern") {
@@ -19,7 +20,7 @@ bool Parser::ShouldGoToNextState(int current_state_index, std::string token) {
 }
 
 // Returns a vector of tokens retrieved from query_string
-std::vector<std::string> Parser::PreprocessQueryString(
+std::vector<std::string> SelectClParser::PreprocessQueryString(
     std::string query_string) {
   // First insert whitespaces around special characters
   // (e.g. semicolons and brackets) for easier delimitation
@@ -57,7 +58,7 @@ std::vector<std::string> Parser::PreprocessQueryString(
 }
 
 // Parses query based on states
-std::unique_ptr<Query> Parser::ParseQuery(std::string query_string) {
+std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
   std::vector<std::string> tokens = PreprocessQueryString(query_string);
 

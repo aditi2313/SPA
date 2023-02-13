@@ -8,7 +8,6 @@
 #include "../models/Query.h"
 
 namespace qps {
-
 class ParseState {
  public:
   using parse_position = std::vector<std::string>::iterator;

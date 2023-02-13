@@ -33,6 +33,6 @@ std::unique_ptr<ast::TermNode> TermParser::parse(Lexer &lxr) {
         ast::ModNode(std::move(lhs), std::move(rhs)));
   }
 
-  throw std::runtime_error("Unknown token (shouldnt reach here)");
+  throw std::runtime_error("TermParser unknown token");
 }
 }  // namespace sp

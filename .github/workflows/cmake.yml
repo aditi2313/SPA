@@ -46,4 +46,4 @@ jobs:
 
     - name: Autotester
       working-directory: Team05/Tests05
-      run: ${{github.workspace}}/build/src/autotester Demo_1_source.txt Demo_1_queries.txt output.xml
+      run: ${{github.workspace}}/build/src/autotester/autotester Demo_1_source.txt Demo_1_queries.txt output.xml

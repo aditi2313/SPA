@@ -133,6 +133,7 @@ std::pair<int, int> Lexer::PeekTokenAndPointer() {
 
   new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
+    p++;
     return {new_token.value(), p};
   }
 
@@ -158,6 +159,7 @@ void Lexer::ValidateInteger(std::string number_string) {
 }
 
 std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
+  int original_pointer = pointer;
   if (pointer + 1 >= program_.length()) return std::nullopt;
   std::string relation =
       std::string() + program_[pointer] + program_[pointer + 1];
@@ -180,6 +182,9 @@ std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
   if (relation == "&&") {
     return {Token::kTokAnd};
   }
+
+  // Reset pointer if not tokenized
+  pointer = original_pointer;
   return std::nullopt;
 }
 }  // namespace sp

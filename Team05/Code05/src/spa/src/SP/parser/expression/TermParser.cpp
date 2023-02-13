@@ -13,10 +13,8 @@ std::unique_ptr<ast::TermNode> TermParser::parse(Lexer &lxr) {
   }
 
   auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
-
   lxr.Increment();  // eat ident
   auto op = lxr.GetTokAndIncrement();
-
   auto rhs = factor_parser.parse(lxr);
 
   if (op == kTokTimes) {

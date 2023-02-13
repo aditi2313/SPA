@@ -47,8 +47,6 @@ std::optional<Token> ProcessSpecialChars(char c) {
   }
 }
 
-int Lexer::get_tok() { return current_tok_; }
-
 bool Lexer::ReadWord() {
   int p = pointer_;
   char c = program_[p];

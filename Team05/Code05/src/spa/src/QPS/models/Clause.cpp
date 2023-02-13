@@ -4,6 +4,7 @@
 #include "Clause.h"
 #include "QPS/models/PQL.h"
 #include "SP/SourceProcessor.h"
+#include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/AssignFilter.h"
 
 using namespace filter;  // NOLINT
@@ -27,7 +28,7 @@ EntityPtrList ModifiesClause::Index(
   EntityPtrList result;
   IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(index.get());
   int line = line_arg->get_number();
-  auto filter = std::make_unique<ModifiesFilterByLine>(line);
+  auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
 
   if (!pkb_res->exists(line)) return result;

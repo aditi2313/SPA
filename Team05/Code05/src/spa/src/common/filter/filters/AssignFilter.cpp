@@ -4,7 +4,6 @@
 #include <string>
 #include <utility>
 
-#include "ModifiesFilter.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace filter {

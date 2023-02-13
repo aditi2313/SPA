@@ -8,6 +8,8 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "common/filter/filters/AssignFilter.h"
+#include "common/filter/filters/IndexFilter.h"
+
 #include "models/AST/factor_node/FactorNode.h"
 
 using namespace pkb;  // NOLINT
@@ -27,7 +29,7 @@ TEST_CASE("PKB read and write test") {
 
     PKBRead pkb_read(std::move(table));
     std::unique_ptr<ModifiesTable> result =
-        pkb_read.Modifies(std::make_unique<filter::ModifiesFilterByLine>(10))
+        pkb_read.Modifies(std::make_unique<filter::ModifiesIndexFilter>(10))
             ->get_result();
     REQUIRE(expected_table == *(result));
   }

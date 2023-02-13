@@ -13,15 +13,30 @@
 
 namespace filter {
 
-template<class T, typename Predicate>
+template<class T>
 class PredicateFilter
-        : public IndexableFilter<T> {
+    : public IndexableFilter<T> {
  public:
-    explicit PredicateFilter(Predicate predicate) : predicate_(predicate) {}
+  explicit PredicateFilter(std::function<bool(T)> predicate)
+      : predicate_(predicate) {}
 
-    pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
+  pkb::IndexableTablePtr<T> FilterTable(
+      pkb::IndexableTablePtr<T> table) override {
+    pkb::IndexableTablePtr<T> result =
+        std::make_unique<pkb::IndexableTable<T>>();
+
+    for (int line : table->get_indexes()) {
+      auto data = table->get_row(line);
+      if (predicate_(data)) {
+        result->add_row(line, data);
+      }
+    }
+    return std::move(result);
+  }
 
  private:
-    Predicate predicate_;
+  std::function<bool(T)> predicate_;
 };
+
+using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
 }  // namespace filter

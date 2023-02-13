@@ -43,3 +43,7 @@ jobs:
     - name: Integration Tests
       working-directory: ${{github.workspace}}/build/src/integration_testing
       run: ./integration_testing
+
+    - name: Autotester
+      working-directory: Team05/Tests05
+      run: ${{github.workspace}}/build/src/autotester Demo_1_source.txt Demo_1_queries.txt ouput.xml

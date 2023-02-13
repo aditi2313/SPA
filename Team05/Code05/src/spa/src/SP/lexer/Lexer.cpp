@@ -32,6 +32,16 @@ std::optional<Token> ProcessSpecialChars(char c) {
       return {Token::kTokDiv};
     case '%':
       return {Token::kTokMod};
+    case '(':
+      return {Token::kTokOpenBracket};
+    case ')':
+      return {Token::kTokCloseBracket};
+    case '!':
+      return {Token::kTokNot};
+    case '<':
+      return {Token::kTokLess};
+    case '>':
+      return {Token::kTokGreater};
     default:
       return std::nullopt;
   }
@@ -42,7 +52,8 @@ int Lexer::get_tok() { return current_tok_; }
 bool Lexer::ReadWord() {
   int p = pointer_;
   char c = program_[p];
-  if (!(isalnum(c))) {
+  // NAME: LETTER (LETTER | DIGIT)*
+  if (!isalpha(c)) {
     return false;
   }
   word_ = c;
@@ -56,17 +67,20 @@ bool Lexer::ReadWord() {
 bool Lexer::ReadInt() {
   std::string result_int;
   int p = pointer_;
-  char current_char = program_[p++];
+  char current_char = program_[p];
   if (!isdigit(current_char)) {
     return false;
   }
+
   // current token is an INTEGER
+  // INTEGER : 0 | NZDIGIT ( DIGIT )*
   std::string number_string;
-  number_string += current_char;
-  while (isdigit(current_char = program_[p++])) {
+  while (p < program_.length() && !isspace(current_char)
+         && current_char != ';') {
     number_string += current_char;
-    current_char = program_[p++];
+    current_char = program_[++p];
   }
+
   ValidateInteger(number_string);
   integer_ = std::stoi(number_string);
   current_tok_ = Token::kTokInteger;
@@ -103,12 +117,21 @@ void Lexer::Increment() {
     return;
   }
 
-  std::optional<Token> new_token = ProcessSpecialChars(c);
+  int p = pointer_;
+  auto new_token = ProcessLengthTwoTokens(p);
+  if (new_token.has_value()) {
+    current_tok_ = new_token.value();
+    pointer_ = p;
+    return;
+  }
+
+  new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
     current_tok_ = new_token.value();
     pointer_++;
     return;
   }
+
   ReadInt();
 }
 
@@ -117,5 +140,38 @@ void Lexer::ValidateInteger(std::string number_string) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("integer cannot have leading zeroes");
   }
+
+  for (int i = 0; i < number_string.length(); i++) {
+    if (!isdigit(number_string[i])) {
+      // TODO(aizatazhar): use custom exception
+      throw std::runtime_error("integer cannot have non-digits");
+    }
+  }
+}
+
+std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
+  if (pointer + 1 >= program_.length()) return std::nullopt;
+  std::string relation =
+      std::string() + program_[pointer] + program_[pointer + 1];
+  pointer += 2;
+  if (relation == "!=") {
+    return {Token::kTokNotEqual};
+  }
+  if (relation == "==") {
+    return {Token::kTokEquiv};
+  }
+  if (relation == "<=") {
+    return {Token::kTokLessEqual};
+  }
+  if (relation == ">=") {
+    return {Token::kTokGreaterEqual};
+  }
+  if (relation == "||") {
+    return {Token::kTokOr};
+  }
+  if (relation == "&&") {
+    return {Token::kTokAnd};
+  }
+  return std::nullopt;
 }
 }  // namespace sp

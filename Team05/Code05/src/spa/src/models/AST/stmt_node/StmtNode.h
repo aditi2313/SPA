@@ -12,6 +12,8 @@ class StmtNode : public TNode {
 
   virtual int get_line() { return line_; }
 
+  virtual void AcceptVisitor(sp::TNodeVisitor* visitor) = 0;
+
  private:
   int line_;
 };

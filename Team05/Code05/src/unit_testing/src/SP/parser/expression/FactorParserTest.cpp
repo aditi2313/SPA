@@ -30,10 +30,20 @@ TEST_CASE("Valid variable name with letters and digits should return VarNode") {
   REQUIRE(expected_result->DeepEquals(*actual_result));
 }
 
-TEST_CASE("Valid constant should return ConstNode") {
+TEST_CASE("Valid constant should return ConstNode 123") {
   sp::Lexer lxr = sp::Lexer("123");
   sp::FactorParser factor_parser;
   auto expected_result = std::make_unique<ast::ConstNode>(ast::ConstNode(123));
+
+  auto actual_result = factor_parser.parse(lxr);
+
+  REQUIRE(expected_result->DeepEquals(*actual_result));
+}
+
+TEST_CASE("Valid constant should return ConstNode 0") {
+  sp::Lexer lxr = sp::Lexer("0");
+  sp::FactorParser factor_parser;
+  auto expected_result = std::make_unique<ast::ConstNode>(ast::ConstNode(0));
 
   auto actual_result = factor_parser.parse(lxr);
 

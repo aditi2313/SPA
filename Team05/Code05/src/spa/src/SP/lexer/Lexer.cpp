@@ -67,7 +67,7 @@ bool Lexer::ReadWord() {
 bool Lexer::ReadInt() {
   std::string result_int;
   int p = pointer_;
-  char current_char = program_[p++];
+  char current_char = program_[p];
   if (!isdigit(current_char)) {
     return false;
   }
@@ -75,9 +75,10 @@ bool Lexer::ReadInt() {
   // current token is an INTEGER
   // INTEGER : 0 | NZDIGIT ( DIGIT )*
   std::string number_string;
-  number_string += current_char;
-  while (p < program_.length() && !isspace(current_char = program_[p++])) {
+  while (p < program_.length() && !isspace(current_char)
+         && current_char != ';') {
     number_string += current_char;
+    current_char = program_[++p];
   }
 
   ValidateInteger(number_string);

@@ -2,5 +2,8 @@
 
 namespace sp {
 const char ParseRelationSyntaxException::kParseRelationSyntaxMessage[] =
-    "Invalid synatx at parsing of relation";
+    "Invalid syntax at parsing of relation";
+
+const char ParseFactorSyntaxException::kParseFactorSyntaxMessage[] =
+    "Invalid syntax at parsing of factor";
 }  // namespace sp

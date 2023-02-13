@@ -13,15 +13,15 @@ std::unique_ptr<Query> DeclarationParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     std::unique_ptr<Query> query) {
-  if (itr == tokens.end() || !PQL::is_entity_id(*itr)) ThrowException();
+  if (itr == tokens.end() || !PQL::is_entity_name(*itr)) ThrowException();
 
-  EntityId entity_id = *itr;
+  EntityName entity_name = *itr;
   bool has_set_one_synonym = false;
   itr++;
   while (itr != tokens.end() && *itr != ";") {
     if (!PQL::is_ident(*itr)) ThrowException();
 
-    query->set_synonym(*itr, entity_id);
+    query->declare_synonym(*itr, entity_name);
     has_set_one_synonym = true;
     itr++;
     if (itr != tokens.end() && *itr == ",") {
@@ -81,10 +81,9 @@ std::unique_ptr<Query> PatternParseState::parse(
     std::unique_ptr<Query> query) {
   if (itr == tokens.end()) ThrowException();
   if (*itr++ != "pattern") ThrowException();
-  // TODO(jl): replace with check that it is syn-assign
-  if (!PQL::is_ident(*itr++)) ThrowException();
-  if (*itr++ != "(") ThrowException();
   ArgumentPtr arg1 = query->CreateArgument(*itr++);
+  if (*itr++ != "(") ThrowException();
+  if (!PQL::is_wildcard(*itr++)) ThrowException();
   if (*itr++ != ",") ThrowException();
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();

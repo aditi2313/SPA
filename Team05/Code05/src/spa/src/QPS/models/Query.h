@@ -8,31 +8,48 @@
 #include <vector>
 
 #include "Clause.h"
+#include "common/Utiity.h"
 #include "models/Entity.h"
+#include "Synonym.h"
 #include "PQL.h"
 
-using models::Synonym;
+using models::SynonymName;
 
 namespace qps {
 class Query {
  public:
   // Set a synonym declaration
-  // Returns false if synonym already exists in the declaration hashmap.
-  inline bool set_synonym(Synonym synonym, models::EntityId entity) {
-    if (synonym_declarations_.find(synonym) != synonym_declarations_.end())
-      return false;
-    synonym_declarations_[synonym] = entity;
-    return true;
-  }
-
-  // Get the declaration for the synonym
-  inline models::EntityId get_synonym(Synonym synonym) {
-    return synonym_declarations_.at(synonym);
+  inline void declare_synonym(
+      SynonymName syn_id, models::EntityName entity_name) {
+    synonym_declarations_.push_back(
+        std::make_unique<Synonym>(syn_id, entity_name));
   }
 
   // Returns true if `token` is a synonym that has been declared
-  inline bool is_synonym(std::string token) {
-    return synonym_declarations_.find(token) != synonym_declarations_.end();
+  inline bool is_declared_synonym_name(std::string token) {
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_id() == token) return true;
+    }
+    return false;
+  }
+
+  // Returns true if `syn` has been declared
+  inline bool does_synonym_exist(Synonym syn) {
+    for (auto &declared_syn : synonym_declarations_) {
+      if (syn == *declared_syn) return true;
+    }
+    return false;
+  }
+
+  inline SynonymPtr &get_synonym(std::string token) {
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_id() == token) return syn;
+    }
+    throw std::runtime_error("Synonym has not been declared");
+  }
+
+  inline std::vector<SynonymPtr> &get_declared_synonyms() {
+    return synonym_declarations_;
   }
 
   // A selected synonym is a synonym that comes after `Select`
@@ -54,24 +71,21 @@ class Query {
   inline void add_clause(std::unique_ptr<Clause> &&clause) {
     clauses_.push_back(std::move(clause));
   }
-  // TODO(jl): Technically a query with the same clauses
-  // but different order should compare as equal but I will
-  // leave that logic as a TODO in the future
+
   inline bool operator==(const Query &other) const {
-    if (clauses_.size() != other.clauses_.size()) return false;
-    int num_clauses = clauses_.size();
-    for (int i = 0; i < num_clauses; ++i) {
-      if (*clauses_.at(i) != *other.clauses_.at(i)) return false;
-    }
-    return (synonym_declarations_ == other.synonym_declarations_ &&
-        selected_synonyms_ == other.selected_synonyms_);
+    if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
+    if (!util::CompareVectorOfPointers(
+        synonym_declarations_, other.synonym_declarations_)) return false;
+
+    return selected_synonyms_ == other.selected_synonyms_;
   }
 
   inline ArgumentPtr CreateArgument(std::string token) {
-    if (is_synonym(token)) {
-      return std::make_unique<SynonymArg>(token, get_synonym(token));
+    if (is_declared_synonym_name(token)) {
+      return std::make_unique<SynonymArg>(token);
     }
-    if (token == "_") {
+
+    if (PQL::is_wildcard(token)) {
       return std::make_unique<Wildcard>();
     }
 
@@ -87,9 +101,9 @@ class Query {
   }
 
  private:
-  std::unordered_map<Synonym, models::EntityId> synonym_declarations_;
-  std::vector<Synonym> selected_synonyms_;
-  std::vector<std::unique_ptr<Clause>> clauses_;
+  std::vector<SynonymPtr> synonym_declarations_;
+  std::vector<SynonymName> selected_synonyms_;
+  std::vector<ClausePtr> clauses_;
 };
 
 using QueryPtr = std::unique_ptr<Query>;

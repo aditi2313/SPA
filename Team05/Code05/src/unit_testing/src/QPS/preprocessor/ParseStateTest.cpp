@@ -24,7 +24,8 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
 
-    REQUIRE(query->get_synonym("v") == PQL::kVariableEntityId);
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
 
@@ -105,7 +106,7 @@ TEST_CASE("Test PatternParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
     auto expected_clause = PatternClause(
-        query->CreateArgument("_"),
+        query->CreateArgument("a"),
         query->CreateArgument("\"x + y\""));
 
     Clause *actual_clause = query->get_clauses().at(0).get();

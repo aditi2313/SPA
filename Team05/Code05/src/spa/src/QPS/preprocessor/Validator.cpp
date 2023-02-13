@@ -33,16 +33,16 @@ bool Validator::IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses) {
 bool Validator::SynonymCheck(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
     if (clause->get_arg1()->IsSynonym()) {
-      auto arg = reinterpret_cast<SynonymArg *>(clause->get_arg1().get());
-      if (!query->is_synonym(arg->get_syn())) {
+      auto arg = dynamic_cast<SynonymArg *>(clause->get_arg1().get());
+      if (!query->is_declared_synonym_name(arg->get_syn_name())) {
         std::cout << "first arg is false";
         return false;
       }
     }
 
     if (clause->get_arg2()->IsSynonym()) {
-      auto arg = reinterpret_cast<SynonymArg *>(clause->get_arg2().get());
-      if (!query->is_synonym(arg->get_syn())) {
+      auto arg = dynamic_cast<SynonymArg *>(clause->get_arg2().get());
+      if (!query->is_declared_synonym_name(arg->get_syn_name())) {
         std::cout << "second arg is false";
         return false;
       }

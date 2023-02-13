@@ -1,6 +1,6 @@
 #include <common/Exceptions.h>
 #include <QPS/preprocessor/Validator.h>
-#include <QPS/preprocessor/Parser.h>
+#include <QPS/preprocessor/SelectClParser.h>
 #include <QPS/models/PQL.h>
 
 #include <utility>
@@ -9,7 +9,7 @@
 using namespace qps;  // NOLINT
 
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<Synonym, EntityId>> synonyms,
+    std::vector<std::pair<SynonymName, EntityName>> synonyms,
     std::vector<std::string> selected_synonyms);  // Forward declaration
 
 TEST_CASE("Test IsWildcard") {
@@ -17,7 +17,7 @@ TEST_CASE("Test IsWildcard") {
   SECTION("Happy path") {
     // No wildcard
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<qps::ModifiesClause>(
             query->CreateArgument("6"),
@@ -31,7 +31,7 @@ TEST_CASE("Test IsWildcard") {
 TEST_CASE("Test invalidWildcard") {
   SECTION("Wildcard is in the wrong area") {
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<qps::ModifiesClause>(
             query->CreateArgument("_"),
@@ -48,7 +48,7 @@ TEST_CASE("Test SynonymCheck") {
   SECTION("Happy path") {
     // All used synonyms are declared
     std::unique_ptr<Query> query = BuildQuery(
-        {{"v", PQL::kVariableEntityId}}, {"v"});
+        {{"v", PQL::kVariableEntityName}}, {"v"});
     query->add_clause(
         std::make_unique<ModifiesClause>(
             query->CreateArgument("6"),
@@ -74,7 +74,7 @@ TEST_CASE("Test SynonymCheck") {
 //}
 //
 // TEST_CASE("Semantically correct") {
-//    Parser parser;
+//    SelectClParser parser;
 //  SECTION("All is valid");
 //    std::string query_string =
 //        "variable v; select v such that modifies(v, 6)";
@@ -84,7 +84,7 @@ TEST_CASE("Test SynonymCheck") {
 //}
 //
 // TEST_CASE("Semantically incorrect") {
-//  Parser parser;
+//  SelectClParser parser;
 //  SECTION("Wrong semantics");
 //  std::string query_string =
 //      "variable v; select v such that modifies(v, 6)";

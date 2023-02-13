@@ -15,61 +15,82 @@ namespace qps {
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  Clause(ArgumentPtr arg1, ArgumentPtr arg2) :
-      arg1(std::move(arg1)), arg2(std::move(arg2)) {}
+  Clause(ArgumentPtr arg1, ArgumentPtr arg2, EntityName LHS, EntityName RHS) :
+      arg1_(std::move(arg1)), arg2_(std::move(arg2)), LHS_(LHS), RHS_(RHS) {}
+  virtual ~Clause() = 0;
 
-  virtual QueryResultPtr Evaluate(
+  virtual EntityPtrList Index(
+      const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
-  virtual ~Clause() = 0;
+
+  inline EntityPtrList Filter(
+      const EntityPtr &index,
+      const EntityPtrList &RHS_filter_values,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) {
+    EntityPtrList result;
+    for (auto &entity : Index(index, factory, pkb)) {
+      for (auto &filter_entity : RHS_filter_values) {
+        if (*entity == *filter_entity) {
+          result.push_back(entity->Copy());
+        }
+      }
+    }
+
+    return result;
+  }
 
   bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);
     const std::type_info &ti2 = typeid(other);
 
-    return ti1 == ti2 && *arg1 == *other.arg1 && *arg2 == *other.arg2;
+    return ti1 == ti2 && *arg1_ == *other.arg1_
+        && *arg2_ == *other.arg2_;
   }
 
   inline bool operator!=(Clause const &other) const {
     return !(*this == other);
   }
 
-  // Evaluating this clause returns only TRUE or FALSE
-  // instead of a list of results
-  inline bool IsExact() {
-    return arg1->IsExact() && arg2->IsExact();
-  }
-
-  inline bool HasWildcard() {
-    return arg1->IsWildcard() || arg2->IsWildcard();
-  }
-
-  inline ArgumentPtr &get_arg1() { return arg1; }
-  inline ArgumentPtr &get_arg2() { return arg2; }
+  inline ArgumentPtr &get_arg1() { return arg1_; }
+  inline ArgumentPtr &get_arg2() { return arg2_; }
+  inline EntityName LHS() { return LHS_; }
+  inline EntityName RHS() { return RHS_; }
 
   static std::unique_ptr<Clause> CreateClause(
-      EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
+      EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
 
  protected:
-  ArgumentPtr arg1;
-  ArgumentPtr arg2;
+  ArgumentPtr arg1_;
+  ArgumentPtr arg2_;
+  EntityName LHS_;
+  EntityName RHS_;
 };
 
 // RS between a Statement/Procedure and a Variable
 class ModifiesClause : public Clause {
  public:
   ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {}
-  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
-                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      : Clause(std::move(arg1), std::move(arg2),
+               PQL::kStmtEntityName, PQL::kVariableEntityName) {}
+
+  EntityPtrList Index(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 class PatternClause : public Clause {
  public:
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {}
-  QueryResultPtr Evaluate(const std::unique_ptr<MasterEntityFactory> &factory,
-                          const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      : Clause(std::move(arg1), std::move(arg2),
+               PQL::kAssignEntityName, PQL::kAssignEntityName) {}
+
+  EntityPtrList Index(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

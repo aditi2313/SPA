@@ -25,6 +25,7 @@ class IndexFilter
         std::make_unique<pkb::IndexableTable<T>>();
     auto row = table->get_row(line_);
     result->add_row(row.get_line(), row);
+
     return result;
   }
 
@@ -33,6 +34,5 @@ class IndexFilter
 };
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;
-using AssignIndexFilter = IndexFilter<pkb::AssignData>;
 
 }  // namespace filter

@@ -5,7 +5,7 @@
 #include "QPS/models/PQL.h"
 #include "SP/SourceProcessor.h"
 #include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/AssignFilter.h"
+#include "common/filter/filters/PredicateFilter.h"
 
 using namespace filter;  // NOLINT
 
@@ -63,7 +63,11 @@ EntityPtrList PatternClause::Index(
 
   sp::SourceProcessor source_processor;
   auto ASTNode = source_processor.ParseExpression(expression);
-  auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
+  auto filter = std::make_unique<AssignPredicateFilter>(
+      [&](auto data) {
+        return data->TestExpression(ASTNode);
+      }
+  );
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();
   if (data.find(line) == data.end()) return result;

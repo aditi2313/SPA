@@ -4,7 +4,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "PKB/tables/IndexableTable.h"
-#include "common/filter/filters/AssignFilter.h"
+#include "common/filter/filters/PredicateFilter.h"
 #include "models/AST/factor_node/FactorNode.h"
 
 TEST_CASE("Assign Filter test") {
@@ -18,7 +18,7 @@ TEST_CASE("Assign Filter test") {
         std::make_unique<ast::ConstNode>(3);
     std::unique_ptr<ast::MinusNode> minus1 =
         std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
-    std::unique_ptr<ast::PlusNode> plus1 =
+    std::unique_ptr<ast::ExprNode> plus1 =
         std::make_unique<ast::PlusNode>(std::move(minus1), std::move(const1));
 
     auto plus2 = plus1->Copy();
@@ -34,9 +34,9 @@ TEST_CASE("Assign Filter test") {
     table = writer.EndWrite();
 
     pkb::PKBRead reader(std::move(table));
-    auto result = reader.Assigns(
-        std::make_unique<filter::AssignFilterByExpression>(std::move(plus1)));
-
-    int a = 0;
+    auto result = reader.Assigns(std::make_unique<filter::AssignPredicateFilter>(
+        [&](auto data) {
+          return data->TestExpression(plus1);
+        }));
   }
 }

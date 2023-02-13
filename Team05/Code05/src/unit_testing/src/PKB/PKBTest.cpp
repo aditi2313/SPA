@@ -33,4 +33,29 @@ TEST_CASE("PKB read and write test") {
             ->get_result();
     REQUIRE(expected_table == *(result));
   }
+
+// TODO(JL): Commenting this test out for now because
+// Pattern is the only relationship uses a T type that is a pointer
+// which leads to some conflicts with the Index method.
+// Will move on to other relationships first, then rewrite/refactor
+// this testcase in a separate PR that also closes Issue 58.
+
+//  SECTION("PKB read and writes assign") {
+//    std::unique_ptr<PKBRelationTable> table =
+//        std::make_unique<PKBRelationTable>();
+//    PKBWrite pkb_write(std::move(table));
+//    pkb_write.AddAssignData("some", 10, std::make_unique<ast::ConstNode>(5));
+//    IndexableTable<std::shared_ptr<AssignData>> expected_table;
+//    expected_table.add_row(
+//        10, std::make_shared<AssignData>("some", 10,
+//                                         std::make_unique<ast::ConstNode>(5)));
+//    table = pkb_write.EndWrite();
+//
+//    PKBRead pkb_read(std::move(table));
+//    auto result =
+//        pkb_read.Assigns(std::make_unique<filter::AssignFilterByLine>(10))
+//            ->get_result();
+//    // unable to require as Assign Table is all references
+//    // REQUIRE(expected_table == *(result));
+//  }
 }

@@ -52,8 +52,6 @@ class IndexableTable {
     return std::move(result);
   }
 
-  ~IndexableTable() = default;
-
  protected:
   std::vector<T> rows_;
   std::unordered_map<int, int> id_map_;

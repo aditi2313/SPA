@@ -1,0 +1,36 @@
+<?xml-stylesheet type="text/xsl" href="analysis.xsl"?>
+<test_results>
+<info>
+<name>autotester</name><parsing_time_taken>3066.000000</parsing_time_taken>
+</info>
+<queries>
+<query>
+<id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="comment">1</id><querystr><![CDATA[variable v; Select v such that Modifies(1, v)]]></querystr>
+<stuans>x</stuans>
+<correct>x</correct>
+<time_taken>8.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" Modifies="1" SuchThat="1" CondNum="3" RelNum="1" comment="comment">2</id><querystr><![CDATA[variable v; Select v such that Modifies(2, v)]]></querystr>
+<stuans>y</stuans>
+<correct>y</correct>
+<time_taken>9.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="comment">3</id><querystr><![CDATA[assign a;  Select a pattern a(_, "a + b")]]></querystr>
+<stuans>5</stuans>
+<correct>5</correct>
+<time_taken>8.000000</time_taken>
+<passed/>
+</query>
+<query>
+<id ReturnTuple="1" UnnamedVar="1" Pattern="1" CondNum="3" RelNum="0" comment="comment">4</id><querystr><![CDATA[assign a;  Select a pattern a(_, "a - b")]]></querystr>
+<stuans>7</stuans>
+<correct>7</correct>
+<time_taken>10.000000</time_taken>
+<passed/>
+</query>
+</queries>
+</test_results>

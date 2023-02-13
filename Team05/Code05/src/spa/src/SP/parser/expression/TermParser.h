@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "../../../models/AST/factor_node/FactorNode.h"
-#include "../Parser.h"
+#include "models/AST/factor_node/FactorNode.h"
+#include "SP/parser/Parser.h"
 
 namespace sp {
 

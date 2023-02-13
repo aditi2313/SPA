@@ -47,25 +47,24 @@ std::optional<Token> ProcessSpecialChars(char c) {
   }
 }
 
-bool Lexer::ReadWord() {
-  int p = pointer_;
-  char c = program_[p];
+bool Lexer::ReadWord(int &temp_pointer) {
+  char c = program_[temp_pointer];
   // NAME: LETTER (LETTER | DIGIT)*
   if (!isalpha(c)) {
     return false;
   }
+
   word_ = c;
-  while (isalnum(c = program_[++p])) {
+  while (isalnum(c = program_[++temp_pointer])) {
     word_ += c;
   }
-  pointer_ = p;
+
   return true;
 }
 
-bool Lexer::ReadInt() {
+bool Lexer::ReadInt(int &temp_pointer) {
   std::string result_int;
-  int p = pointer_;
-  char current_char = program_[p];
+  char current_char = program_[temp_pointer];
   if (!isdigit(current_char)) {
     return false;
   }
@@ -73,64 +72,75 @@ bool Lexer::ReadInt() {
   // current token is an INTEGER
   // INTEGER : 0 | NZDIGIT ( DIGIT )*
   std::string number_string;
-  while (p < program_.length() && !isspace(current_char)
+  while (temp_pointer < program_.length() && !isspace(current_char)
          && current_char != ';') {
     number_string += current_char;
-    current_char = program_[++p];
+    current_char = program_[++temp_pointer];
   }
 
   ValidateInteger(number_string);
   integer_ = std::stoi(number_string);
-  current_tok_ = Token::kTokInteger;
-  pointer_ = p;
+
   return true;
 }
 
 void Lexer::Increment() {
-  if (pointer_ >= program_.length()) {
-    current_tok_ = Token::kTokEof;
-    return;
-  }
-  // ignore whitespaces
-  char c = program_[pointer_];
-  while (isspace(c)) {
-    c = program_[++pointer_];
-  }
-  if (ReadWord()) {
-    if (word_ == "procedure") {
-      current_tok_ = Token::kTokProcedure;
-    } else if (word_ == "read") {
-      current_tok_ = Token::kTokRead;
-    } else if (word_ == "print") {
-      current_tok_ = Token::kTokPrint;
-    } else if (word_ == "call") {
-      current_tok_ = Token::kTokCall;
-    } else if (word_ == "while") {
-      current_tok_ = Token::kTokWhile;
-    } else if (word_ == "if") {
-      current_tok_ = Token::kTokIf;
-    } else {
-      current_tok_ = Token::kTokIdent;
-    }
-    return;
+  auto next_token_and_pointer = PeekTokenAndPointer();
+  current_tok_ = next_token_and_pointer.first;
+  pointer_ = next_token_and_pointer.second;
+}
+
+int Lexer::Peek() {
+  return Lexer::PeekTokenAndPointer().first;
+}
+
+std::pair<int, int> Lexer::PeekTokenAndPointer() {
+  // don't update pointer_ when peeking
+  int p = pointer_;
+
+  if (p >= program_.length()) {
+    return {Token::kTokEof, p};
   }
 
-  int p = pointer_;
+  // ignore whitespaces
+  char c = program_[p];
+  while (isspace(c)) {
+    c = program_[++p];
+  }
+
+  if (ReadWord(p)) {
+    if (word_ == "procedure") {
+      return {Token::kTokProcedure, p};
+    } else if (word_ == "read") {
+      return {Token::kTokRead, p};
+    } else if (word_ == "print") {
+      return {Token::kTokPrint, p};
+    } else if (word_ == "call") {
+      return {Token::kTokCall, p};
+    } else if (word_ == "while") {
+      return {Token::kTokWhile, p};
+    } else if (word_ == "if") {
+      return {Token::kTokIf, p};
+    } else {
+      return {Token::kTokIdent, p};
+    }
+  }
+
   auto new_token = ProcessLengthTwoTokens(p);
   if (new_token.has_value()) {
-    current_tok_ = new_token.value();
-    pointer_ = p;
-    return;
+    return {new_token.value(), p};
   }
 
   new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
-    current_tok_ = new_token.value();
-    pointer_++;
-    return;
+    return {new_token.value(), p};
   }
 
-  ReadInt();
+  if (ReadInt(p)) {
+    return {kTokInteger, p};
+  }
+
+  throw std::runtime_error("??");
 }
 
 void Lexer::ValidateInteger(std::string number_string) {

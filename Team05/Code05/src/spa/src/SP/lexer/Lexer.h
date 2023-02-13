@@ -21,6 +21,9 @@ class Lexer {
   /// </summary>
   void Increment();
 
+  // Returns the next token without updating current_token_
+  int Peek();
+
   /// <summary>
   /// Todo(Gab): switch from auto to whatever type we are sticking with. #40
   /// </summary>
@@ -46,9 +49,9 @@ class Lexer {
   /// is not a valid word.
   /// </summary>
   /// <returns></returns>
-  bool ReadWord();
+  bool ReadWord(int &pointer);
 
-  bool ReadInt();
+  bool ReadInt(int &pointer);
 
   // Define ptr to point towards the next token
   // On Increment, the pointer will point to one after the
@@ -74,5 +77,9 @@ class Lexer {
   // something that is more specific
   // takes in a reference where the final pointer will be referenced.
   std::optional<Token> ProcessLengthTwoTokens(int& p);
+
+  // Returns <next token, next pointer position> without updating
+  // the current token and pointer
+  std::pair<int, int> PeekTokenAndPointer();
 };
 }  // namespace sp

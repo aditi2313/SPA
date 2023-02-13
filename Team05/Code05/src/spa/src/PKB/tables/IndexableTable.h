@@ -16,7 +16,7 @@ namespace pkb {
 /// Class for table indexable by id.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-template<class T>
+template <class T>
 class IndexableTable {
  public:
   IndexableTable() = default;
@@ -35,9 +35,7 @@ class IndexableTable {
     return result;
   }
 
-  bool exists(int line) {
-    return id_map_.find(line) != id_map_.end();
-  }
+  bool exists(int line) { return id_map_.find(line) != id_map_.end(); }
 
   friend bool operator==(const IndexableTable<T> &LHS,
                          const IndexableTable<T> &RHS) {
@@ -58,8 +56,8 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
-typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
+typedef IndexableTable<AssignData> AssignTable;
 
-template<typename T>
+template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;
 }  // namespace pkb

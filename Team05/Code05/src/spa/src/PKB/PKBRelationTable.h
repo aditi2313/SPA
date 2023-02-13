@@ -47,7 +47,7 @@ class PKBRelationTable {
   // With the use of unique ptr, Indexable Table does not support such
   // behaviour, as we would have to move data every time we add a row. Therefore
   // shared ptr is used.
-  IndexableTable<std::shared_ptr<AssignData>> assign_table_;
+  IndexableTable<AssignData> assign_table_;
 
   void add_modifies_data(const int line,
                          const std::vector<std::string>& variables) {
@@ -57,8 +57,8 @@ class PKBRelationTable {
   void add_assign_data(std::string variable, int line,
                        std::unique_ptr<ast::ExprNode> expression) {
     variables_.insert(variable);
-    assign_table_.add_row(line, std::make_shared<AssignData>(
-                                    variable, line, std::move(expression)));
+    assign_table_.add_row(line,
+                          AssignData(variable, line, std::move(expression)));
   }
 };
 

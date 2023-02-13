@@ -19,7 +19,7 @@ std::unique_ptr<PKBResult<ModifiesTable>> PKBRead::Modifies(
 }
 
 std::unique_ptr<PKBResult<AssignTable>> PKBRead::Assigns(
-    IndexableFilterPtr<std::shared_ptr<AssignData>> filter) {
+    IndexableFilterPtr<AssignData> filter) {
   auto result_table =
       filter->FilterTable(relation_table_->assign_table_.copy());
   return create_result(std::move(result_table));

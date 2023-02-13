@@ -26,8 +26,8 @@ class IndexFilter
         if (table->exists(line_)) {
             auto row = table->get_row(line_);
             result->add_row(row->get_line(), row);
-            return result;
         }
+        return result;
     }
 
  private:

@@ -15,30 +15,29 @@ namespace filter {
 
 template<class T>
 class PredicateFilter
-    : public IndexableFilter<T> {
+        : public IndexableFilter<T> {
  public:
-  explicit PredicateFilter(std::function<bool(T)> predicate)
-      : predicate_(predicate) {}
+    explicit PredicateFilter(std::function<bool(T)> predicate) :
+    predicate_(predicate) {}
 
-  pkb::IndexableTablePtr<T> FilterTable(
-      pkb::IndexableTablePtr<T> table) override {
-    pkb::IndexableTablePtr<T> result =
-        std::make_unique<pkb::IndexableTable<T>>();
+    inline pkb::IndexableTablePtr<T>
+    FilterTable(pkb::IndexableTablePtr<T> table) override {
+        pkb::IndexableTablePtr<T> result =
+                std::make_unique<pkb::IndexableTable<T>>();
 
-    for (int line : table->get_indexes()) {
-      auto data = table->get_row(line);
-      if (predicate_(data)) {
-        result->add_row(line, data);
-      }
+        for (int line : table->get_indexes()) {
+            auto data = table->get_row(line);
+            if (predicate_(data)) {
+                result->add_row(line, data);
+            }
+        }
+        return std::move(result);
     }
-    return std::move(result);
-  }
 
  private:
-  std::function<bool(T)> predicate_;
+    std::function<bool(T)> predicate_;
 };
 
 using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
 using AssignPredicateFilter = PredicateFilter<std::shared_ptr<pkb::AssignData>>;
-
 }  // namespace filter

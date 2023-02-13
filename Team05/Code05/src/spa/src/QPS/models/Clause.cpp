@@ -42,6 +42,11 @@ EntityPtrList ModifiesClause::Index(
   return result;
 }
 
+// TODO(JL): This method is a bit messy because it calls the
+// PredicateFilter inside of a function meant for Indexing.
+// Pattern is kind of tricky, will move on to
+// other relationships first, then rewrite/refactor
+// this method in a separate PR that also closes Issue 58.
 EntityPtrList PatternClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
@@ -66,8 +71,7 @@ EntityPtrList PatternClause::Index(
   auto filter = std::make_unique<AssignPredicateFilter>(
       [&](auto data) {
         return data->TestExpression(ASTNode);
-      }
-  );
+      });
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();
   if (data.find(line) == data.end()) return result;

@@ -34,7 +34,8 @@ TEST_CASE("Assign Filter test") {
     table = writer.EndWrite();
 
     pkb::PKBRead reader(std::move(table));
-    auto result = reader.Assigns(std::make_unique<filter::AssignPredicateFilter>(
+    auto result = reader.Assigns(
+        std::make_unique<filter::AssignPredicateFilter>(
         [&](auto data) {
           return data->TestExpression(plus1);
         }));

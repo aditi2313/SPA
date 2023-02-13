@@ -12,23 +12,20 @@ std::unique_ptr<ast::TermNode> TermParser::parse(Lexer &lxr) {
     return factor_parser.parse(lxr);
   }
 
-  auto lhs_ident = lxr.get_ident();
+  auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
+
   lxr.Increment();  // eat ident
   auto op = lxr.GetTokAndIncrement();
 
+  auto rhs = factor_parser.parse(lxr);
+
   if (op == kTokTimes) {
-    auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lhs_ident));
-    auto rhs = factor_parser.parse(lxr);
     return std::make_unique<ast::TimesNode>(
         ast::TimesNode(std::move(lhs), std::move(rhs)));
   } else if (op == kTokDiv) {
-    auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lhs_ident));
-    auto rhs = factor_parser.parse(lxr);
     return std::make_unique<ast::DivNode>(
         ast::DivNode(std::move(lhs), std::move(rhs)));
   } else if (op == kTokMod) {
-    auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lhs_ident));
-    auto rhs = factor_parser.parse(lxr);
     return std::make_unique<ast::ModNode>(
         ast::ModNode(std::move(lhs), std::move(rhs)));
   }

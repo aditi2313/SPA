@@ -47,24 +47,25 @@ std::optional<Token> ProcessSpecialChars(char c) {
   }
 }
 
-bool Lexer::ReadWord(int &temp_pointer) {
-  char c = program_[temp_pointer];
+bool Lexer::ReadWord() {
+  int p = pointer_;
+  char c = program_[p];
   // NAME: LETTER (LETTER | DIGIT)*
   if (!isalpha(c)) {
     return false;
   }
-
   word_ = c;
-  while (isalnum(c = program_[++temp_pointer])) {
+  while (isalnum(c = program_[++p])) {
     word_ += c;
   }
-
+  pointer_ = p;
   return true;
 }
 
-bool Lexer::ReadInt(int &temp_pointer) {
+bool Lexer::ReadInt() {
   std::string result_int;
-  char current_char = program_[temp_pointer];
+  int p = pointer_;
+  char current_char = program_[p];
   if (!isdigit(current_char)) {
     return false;
   }
@@ -72,76 +73,77 @@ bool Lexer::ReadInt(int &temp_pointer) {
   // current token is an INTEGER
   // INTEGER : 0 | NZDIGIT ( DIGIT )*
   std::string number_string;
-  while (temp_pointer < program_.length() && !isspace(current_char)
+  while (p < program_.length() && !isspace(current_char)
          && current_char != ';') {
     number_string += current_char;
-    current_char = program_[++temp_pointer];
+    current_char = program_[++p];
   }
 
   ValidateInteger(number_string);
   integer_ = std::stoi(number_string);
-
+  current_tok_ = Token::kTokInteger;
+  pointer_ = p;
   return true;
 }
 
 void Lexer::Increment() {
-  auto next_token_and_pointer = PeekTokenAndPointer();
-  current_tok_ = next_token_and_pointer.first;
-  pointer_ = next_token_and_pointer.second;
-}
-
-int Lexer::Peek() {
-  return Lexer::PeekTokenAndPointer().first;
-}
-
-std::pair<int, int> Lexer::PeekTokenAndPointer() {
-  // don't update pointer_ when peeking
-  int p = pointer_;
-
-  if (p >= program_.length()) {
-    return {Token::kTokEof, p};
+  if (pointer_ >= program_.length()) {
+    current_tok_ = Token::kTokEof;
+    return;
   }
-
   // ignore whitespaces
-  char c = program_[p];
+  char c = program_[pointer_];
   while (isspace(c)) {
-    c = program_[++p];
+    c = program_[++pointer_];
   }
-
-  if (ReadWord(p)) {
+  if (ReadWord()) {
     if (word_ == "procedure") {
-      return {Token::kTokProcedure, p};
+      current_tok_ = Token::kTokProcedure;
     } else if (word_ == "read") {
-      return {Token::kTokRead, p};
+      current_tok_ = Token::kTokRead;
     } else if (word_ == "print") {
-      return {Token::kTokPrint, p};
+      current_tok_ = Token::kTokPrint;
     } else if (word_ == "call") {
-      return {Token::kTokCall, p};
+      current_tok_ = Token::kTokCall;
     } else if (word_ == "while") {
-      return {Token::kTokWhile, p};
+      current_tok_ = Token::kTokWhile;
     } else if (word_ == "if") {
-      return {Token::kTokIf, p};
+      current_tok_ = Token::kTokIf;
     } else {
-      return {Token::kTokIdent, p};
+      current_tok_ = Token::kTokIdent;
     }
+    return;
   }
 
+  int p = pointer_;
   auto new_token = ProcessLengthTwoTokens(p);
   if (new_token.has_value()) {
-    return {new_token.value(), p};
+    current_tok_ = new_token.value();
+    pointer_ = p;
+    return;
   }
 
   new_token = ProcessSpecialChars(c);
   if (new_token.has_value()) {
-    p++;
-    return {new_token.value(), p};
+    current_tok_ = new_token.value();
+    pointer_++;
+    return;
   }
 
-  if (ReadInt(p)) {
-    return {kTokInteger, p};
-  }
+  ReadInt();
+}
 
-  throw std::runtime_error("Lexer unknown token");
+int Lexer::Peek() {
+  int original_pointer = pointer_;
+  int original_tok = current_tok_;
+
+  Increment();
+  int res = get_tok();
+
+  current_tok_ = original_tok;
+  pointer_ = original_pointer;
+
+  return res;
 }
 
 void Lexer::ValidateInteger(std::string number_string) {
@@ -159,7 +161,6 @@ void Lexer::ValidateInteger(std::string number_string) {
 }
 
 std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
-  int original_pointer = pointer;
   if (pointer + 1 >= program_.length()) return std::nullopt;
   std::string relation =
       std::string() + program_[pointer] + program_[pointer + 1];
@@ -182,9 +183,6 @@ std::optional<Token> Lexer::ProcessLengthTwoTokens(int& pointer) {
   if (relation == "&&") {
     return {Token::kTokAnd};
   }
-
-  // Reset pointer if not tokenized
-  pointer = original_pointer;
   return std::nullopt;
 }
 }  // namespace sp

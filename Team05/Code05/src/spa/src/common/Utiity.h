@@ -24,9 +24,9 @@ bool InstanceOf(const Base& object) {
 /// </summary>
 /// <returns>True if the two vectors are the same size and
 /// the object each pointer is pointing to compares equal</returns>
-template<class UniquePointer>
-bool CompareVectorOfPointers(const std::vector<UniquePointer> &LHS,
-                             const std::vector<UniquePointer> &RHS) {
+template<class UniquePointerLHS, class UniquePointerRHS>
+bool CompareVectorOfPointers(const std::vector<UniquePointerLHS> &LHS,
+                             const std::vector<UniquePointerRHS> &RHS) {
   if (LHS.size() != RHS.size()) return false;
   for (int N = LHS.size(), i = 0; i < N; ++i) {
     if (*(LHS.at(i)) != *(RHS.at(i))) return false;

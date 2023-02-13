@@ -26,7 +26,7 @@ EntityPtrList ModifiesClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
@@ -47,13 +47,13 @@ EntityPtrList PatternClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
   int line = line_arg->get_number();
   // Preprocess expression string to insert whitespace
   std::string expression = "";
-  ExpressionArg *expression_arg = reinterpret_cast<ExpressionArg *>(
-      arg2_.get());
-  for (char c : expression_arg->get_expression()) {
+  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
+      *arg2_.get());
+  for (char c : expression_arg.get_expression()) {
     if (c == '+' || c == '-') {
       expression += " " + std::string(1, c) + " ";
     } else {

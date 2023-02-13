@@ -44,8 +44,8 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
 
   // Takes care of duplicates
-  std::set < EntityPtr > RHS_results;
-  std::set < EntityPtr > LHS_results;
+  std::set<EntityPtr> RHS_results;
+  std::set<EntityPtr> LHS_results;
 
   // Query PKB with LHS possible values
   for (auto &index : LHS) {
@@ -85,28 +85,32 @@ void Evaluator::InitializeEntitiesFromArgument(
         master_entity_factory_->GetAllFromPKB(entity_name, pkb_)) {
       result.push_back(std::move(entity));
     }
-  } else if (arg->IsSynonym()) {
+    return;
+  }
+  if (arg->IsSynonym()) {
     SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
     SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
     for (auto &entity : synonym->get_possible_entities()) {
       result.push_back(entity->Copy());
     }
-  } else {
-    // Int or Ident Arg
-    if (arg->IsStmtRef()) {
-      // INT
-      IntegerArg *integer_arg = dynamic_cast<IntegerArg *>(arg.get());
-      result.push_back(master_entity_factory_->CreateInstance(
-          entity_name,
-          integer_arg->get_number()));
+    return;
+  }
 
-    } else if (arg->IsEntRef()) {
-      // IDENT
-      IdentArg *ident_arg = dynamic_cast<IdentArg *>(arg.get());
-      result.push_back(master_entity_factory_->CreateInstance(
-          entity_name,
-          ident_arg->get_ident()));
-    }
+  // Int or Ident Arg
+  if (arg->IsStmtRef()) {
+    // INT
+    IntegerArg *integer_arg = dynamic_cast<IntegerArg *>(arg.get());
+    result.push_back(master_entity_factory_->CreateInstance(
+        entity_name,
+        integer_arg->get_number()));
+  }
+
+  if (arg->IsEntRef()) {
+    // IDENT
+    IdentArg *ident_arg = dynamic_cast<IdentArg *>(arg.get());
+    result.push_back(master_entity_factory_->CreateInstance(
+        entity_name,
+        ident_arg->get_ident()));
   }
 }
 

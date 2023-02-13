@@ -18,7 +18,7 @@ class IdentEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return ident_ <
-        (reinterpret_cast<IdentEntity *>(&other))->ident_;
+        (dynamic_cast<IdentEntity *>(&other))->ident_;
   }
 
   inline bool operator==(Entity &other) override {
@@ -27,7 +27,7 @@ class IdentEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return ident_ ==
-        (reinterpret_cast<IdentEntity *>(&other))->ident_;
+        (dynamic_cast<IdentEntity *>(&other))->ident_;
   }
 
   inline bool operator!=(Entity &other) override {

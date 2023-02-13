@@ -20,7 +20,19 @@ class PredicateFilter
     explicit PredicateFilter(std::function<bool(T)> predicate) :
     predicate_(predicate) {}
 
-    pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
+    inline pkb::IndexableTablePtr<T>
+    FilterTable(pkb::IndexableTablePtr<T> table) override {
+        pkb::IndexableTablePtr<T> result =
+                std::make_unique<pkb::IndexableTable<T>>();
+
+        for (int line : table->get_indexes()) {
+            auto data = table->get_row(line);
+            if (predicate_(data)) {
+                result->add_row(line, data);
+            }
+        }
+        return std::move(result);
+    }
 
  private:
     std::function<bool(T)> predicate_;

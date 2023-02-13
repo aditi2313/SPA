@@ -17,7 +17,8 @@ template<class T>
 class PredicateFilter
         : public IndexableFilter<T> {
  public:
-    explicit PredicateFilter(std::function<bool(T)> predicate) : predicate_(predicate) {}
+    explicit PredicateFilter(std::function<bool(T)> predicate) :
+    predicate_(predicate) {}
 
     pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) override;
 

@@ -3,7 +3,8 @@
 namespace filter {
 
 template<class T>
-pkb::IndexableTablePtr<T> PredicateFilter<T>::FilterTable(pkb::IndexableTablePtr<T> table) {
+pkb::IndexableTablePtr<T> PredicateFilter<T>::
+        FilterTable(pkb::IndexableTablePtr<T> table) {
     pkb::IndexableTablePtr<T> result =
             std::make_unique<pkb::IndexableTable<T>>();
 

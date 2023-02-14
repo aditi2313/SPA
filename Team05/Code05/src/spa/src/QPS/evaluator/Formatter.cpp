@@ -14,7 +14,6 @@ std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
   query_result->Sort();
   EntityPtrList &result_entities =
       query_result->get_query_results();
-
   for (const EntityPtr &entity : result_entities) {
     output.push_back(entity->operator std::string());
   }

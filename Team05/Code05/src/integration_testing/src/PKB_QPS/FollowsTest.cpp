@@ -1,0 +1,10 @@
+// Add testcases for
+// Follows(1, 2)
+// Follows(_, 2)
+// Follows(s1, 2)
+// Follows(1, s2)
+// Follows(_, s2)
+// Follows(s1, s2)
+// Follows(1, _)
+// Follows(_, _)
+// Follows(s1, _)

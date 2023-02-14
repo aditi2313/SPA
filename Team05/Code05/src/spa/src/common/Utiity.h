@@ -1,6 +1,8 @@
 #pragma once
-namespace util {
 
+#include <vector>
+
+namespace util {
 // Todo(Gab) replace all dynamic cast checks with this.
 
 /// <summary>
@@ -16,4 +18,19 @@ bool InstanceOf(const Base& object) {
   return dynamic_cast<const Derived*>(&object) != nullptr;
 }
 
+/// <summary>
+/// Utility function for comparing between two vectors of
+/// unique pointers
+/// </summary>
+/// <returns>True if the two vectors are the same size and
+/// the object each pointer is pointing to compares equal</returns>
+template<class UniquePointerLHS, class UniquePointerRHS>
+bool CompareVectorOfPointers(const std::vector<UniquePointerLHS> &LHS,
+                             const std::vector<UniquePointerRHS> &RHS) {
+  if (LHS.size() != RHS.size()) return false;
+  for (int N = LHS.size(), i = 0; i < N; ++i) {
+    if (*(LHS.at(i)) != *(RHS.at(i))) return false;
+  }
+  return true;
+}
 }  // namespace util

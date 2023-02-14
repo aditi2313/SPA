@@ -11,7 +11,6 @@
 #include "LexerData.h"
 #include "handlers/AlphaNumericHandler.h"
 #include "handlers/DoubleCharHandler.h"
-#include "handlers/ErrorHandler.h"
 #include "handlers/IntegerHandler.h"
 #include "handlers/SingleCharHandler.h"
 #include "handlers/WhiteSpaceHandler.h"
@@ -27,13 +26,11 @@ class Lexer {
     auto double_handler = std::make_unique<DoubleCharHandler>();
     auto single_char_handler = std::make_unique<SingleCharHandler>();
     auto int_handler = std::make_unique<IntegerHandler>();
-    auto error_handler = std::make_unique<ErrorHandler>();
     handlers.push_back(std::move(white_handler));
     handlers.push_back(std::move(alpha_handler));
     handlers.push_back(std::move(double_handler));
     handlers.push_back(std::move(single_char_handler));
     handlers.push_back(std::move(int_handler));
-    handlers.push_back(std::move(error_handler));
     Increment();
   }
 

@@ -30,7 +30,7 @@ class LexerData {
     return *this;
   }
 
-  inline int GetStmtAndIncrment() { return current_stmt_++; }
+  inline int GetStmtAndIncrement() { return current_stmt_++; }
 
   inline int get_int() { return current_int_; }
 

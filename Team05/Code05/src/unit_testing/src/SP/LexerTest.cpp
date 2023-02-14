@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <string>
 #include <vector>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "common/exceptions/SP.h"
@@ -58,14 +58,16 @@ TEST_CASE("Testing lexer functionality") {
         "read x;"
         "print y;"
         "read y;"
-        "lemon }";
+        "lemon }"
+        "-100";
 
     std::vector<Token> tokens{
         Token::kTokProcedure, Token::kTokProcedure,  Token::kTokOpenCurly,
         Token::kTokRead,      Token::kTokIdent,      Token::kTokSemicolon,
         Token::kTokPrint,     Token::kTokIdent,      Token::kTokSemicolon,
         Token::kTokRead,      Token::kTokIdent,      Token::kTokSemicolon,
-        Token::kTokIdent,     Token::kTokCloseCurly, Token::kTokEof};
+        Token::kTokIdent,     Token::kTokCloseCurly, Token::kTokMinus,
+        Token::kTokInteger,   Token::kTokEof};
     TestLexerForToken(test, tokens);
   }
 

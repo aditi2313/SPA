@@ -40,7 +40,7 @@ class Lexer {
     return tok;
   }
 
-  int GetAndIncrementStmtCtr() { return data_.GetStmtAndIncrment(); }
+  int GetAndIncrementStmtCtr() { return data_.GetStmtAndIncrement(); }
 
   Token get_tok() { return current_token_; }
 

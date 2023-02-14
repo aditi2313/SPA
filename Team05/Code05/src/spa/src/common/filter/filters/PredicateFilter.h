@@ -37,4 +37,7 @@ class PredicateFilter
  private:
     std::function<bool(T)> predicate_;
 };
+
+using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
+using AssignPredicateFilter = PredicateFilter<std::shared_ptr<pkb::AssignData>>;
 }  // namespace filter

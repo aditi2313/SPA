@@ -8,6 +8,7 @@
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
+#include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/Exceptions.h"
 
@@ -40,4 +41,7 @@ class PredicateFilter
 
 using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
 using AssignPredicateFilter = PredicateFilter<std::shared_ptr<pkb::AssignData>>;
+using UsesPredicateFilter = PredicateFilter<pkb::UsesData>;
+using FollowsPredicateFilter = PredicateFilter<pkb::FollowsData>;
+using ParentPredicateFilter = PredicateFilter<pkb::ParentData>;
 }  // namespace filter

@@ -23,7 +23,7 @@ class ExpressionVisitor : public TNodeVisitor {
 
   void VisitMod(ast::ModNode* mod_node) override;
 
-  std::set<std::string> GetVars();
+  std::set<std::string> get_vars() { return vars; };
 
  private:
   std::set<std::string> vars;

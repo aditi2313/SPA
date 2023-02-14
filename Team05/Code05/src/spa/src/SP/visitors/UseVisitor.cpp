@@ -1,3 +1,4 @@
+#include "SP/visitors/ExpressionVisitor.h"
 #include "UseVisitor.h"
 
 namespace sp {
@@ -18,8 +19,10 @@ void UseVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
 }
 
 void UseVisitor::VisitAssign(ast::AssignNode* assign_node) {
-  
-  // pkb_ptr_->AddUseData(read_node->get_line(), );
+  ExpressionVisitor exprVisitor;
+  assign_node->get_expr()->AcceptVisitor(&exprVisitor);
+  std::set<std::string> vars = exprVisitor.get_vars();
+  // pkb_ptr_->AddUseData(read_node->get_line(), vars);
 }
 
 

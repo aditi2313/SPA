@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 
+#include "PKBWritingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
 
 namespace sp {

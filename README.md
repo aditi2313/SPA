@@ -17,3 +17,4 @@ No additional instructions required.
 Name | Mobile | Email | Development OS/Toolchain
 -:|:-:|:-|-|
 Au Chen Xi, Gabriel | 90938169 | au.gabriel@u.nus.edu | Windows 10/Visual Studio 2019
+Aizat Azhar | 98865111 | aizat.azhar@u.nus.edu | macOS Monterey/CLion

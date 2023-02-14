@@ -1,13 +1,15 @@
 #include "DoubleCharHandler.h"
 
+#include <string>
+
 // all the double length tokens
 
-const std::string kLessEqual = "<=";
-const std::string kGreaterEqual = ">=";
-const std::string kEqualTo = "==";
-const std::string kNotEqual = "!=";
-const std::string kAnd = "&&";
-const std::string kOr = "||";
+const char kLessEqual[] = "<=";
+const char kGreaterEqual[] = ">=";
+const char kEqualTo[] = "==";
+const char kNotEqual[] = "!=";
+const char kAnd[] = "&&";
+const char kOr[] = "||";
 
 namespace sp {
 std::optional<Token> DoubleCharHandler::Handle(LexerData& data) {

@@ -5,6 +5,8 @@
 // cleanly
 #include <list>
 #include <memory>
+#include <utility>
+#include <string>
 
 #include "LexerData.h"
 #include "handlers/AlphaNumericHandler.h"
@@ -17,7 +19,7 @@
 namespace sp {
 class Lexer {
  public:
-  Lexer(std::string program)
+  explicit Lexer(std::string program)
       : program_(program), data_(program_), current_token_(Token::kTokError) {
     // create the handlers
     auto white_handler = std::make_unique<WhiteSpaceHandler>();

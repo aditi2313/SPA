@@ -1,5 +1,7 @@
 #include "IntegerHandler.h"
 
+#include <string>
+
 #include "common/exceptions/SP.h"
 
 namespace sp {

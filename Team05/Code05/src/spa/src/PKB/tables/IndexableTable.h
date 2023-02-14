@@ -10,6 +10,7 @@
 #include "PKB/data/ModifiesData.h"
 #include "PKB/data/UsesData.h"
 #include "PKB/data/FollowsData.h"
+#include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
@@ -63,6 +64,7 @@ typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
 typedef IndexableTable<UsesData> UsesTable;
 typedef IndexableTable<FollowsData> FollowsTable;
+typedef IndexableTable<ParentData> ParentTable;
 
 template<typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

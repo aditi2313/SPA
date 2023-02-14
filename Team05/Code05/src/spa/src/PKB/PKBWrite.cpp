@@ -25,4 +25,8 @@ void PKBWrite::AddUsesData(const int line,
 void PKBWrite::AddFollowsData(const int line, const int follows) {
     pkb_relation_table_->add_follows_data(line, follows);
 }
+
+void PKBWrite::AddParentData(const int line, const int parent_line) {
+    pkb_relation_table_->add_parent_data(line, parent_line);
+}
 }  // namespace pkb

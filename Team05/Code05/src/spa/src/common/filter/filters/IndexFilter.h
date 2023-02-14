@@ -12,6 +12,7 @@
 #include "common/Exceptions.h"
 #include "PKB/data/UsesData.h"
 #include "PKB/data/FollowsData.h"
+#include "PKB/data/ParentData.h"
 
 namespace filter {
 
@@ -39,4 +40,5 @@ class IndexFilter
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;
 using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
+using ParentIndexFilter = IndexFilter<pkb::ParentData>;
 }  // namespace filter

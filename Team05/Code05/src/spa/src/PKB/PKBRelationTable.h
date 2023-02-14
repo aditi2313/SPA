@@ -69,5 +69,9 @@ class PKBRelationTable {
   void add_follows_data(const int line, const int follows) {
       follows_table_.add_row(line, FollowsData(line, follows));
   }
+
+  void add_parent_data(const int line, const int parent_line) {
+      parent_table_.add_row(line, ParentData(line, parent_line));
+  }
 };
 }  // namespace pkb

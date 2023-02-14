@@ -6,6 +6,7 @@ class FollowsData {
   FollowsData(int line, int follows);
 
   inline int get_line() { return line_; }
+
   inline int get_follows() { return follows_; }
 
  private:

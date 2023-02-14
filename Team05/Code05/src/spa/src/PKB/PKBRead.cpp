@@ -39,4 +39,12 @@ std::unique_ptr<PKBResult<FollowsTable>> PKBRead::Follows(
                     relation_table_->follows_table_.copy()));
     return create_result(std::move(result_table));
 }
+
+std::unique_ptr<PKBResult<ParentTable>> PKBRead::Parent(
+        IndexableFilterPtr<ParentData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(
+                    relation_table_->parent_table_.copy()));
+    return create_result(std::move(result_table));
+}
 }  // namespace pkb

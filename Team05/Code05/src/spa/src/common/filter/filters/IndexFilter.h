@@ -11,6 +11,7 @@
 #include "PKB/tables/IndexableTable.h"
 #include "common/Exceptions.h"
 #include "PKB/data/UsesData.h"
+#include "PKB/data/FollowsData.h"
 
 namespace filter {
 
@@ -37,4 +38,5 @@ class IndexFilter
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;
 using UsesIndexFilter = IndexFilter<pkb::UsesData>;
+using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 }  // namespace filter

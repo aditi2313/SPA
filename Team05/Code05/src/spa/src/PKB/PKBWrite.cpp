@@ -22,4 +22,7 @@ void PKBWrite::AddUsesData(const int line,
     pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
+void PKBWrite::AddFollowsData(const int line, const int follows) {
+    pkb_relation_table_->add_follows_data(line, follows);
+}
 }  // namespace pkb

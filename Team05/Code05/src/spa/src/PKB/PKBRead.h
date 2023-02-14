@@ -50,6 +50,9 @@ class PKBRead {
   std::unique_ptr<PKBResult<UsesTable>> Uses(
           IndexableFilterPtr<UsesData>);
 
+  std::unique_ptr<PKBResult<FollowsTable>> Follows(
+          IndexableFilterPtr<FollowsData>);
+
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
   }

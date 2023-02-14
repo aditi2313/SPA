@@ -42,6 +42,14 @@ class PKBWrite {
   /// <param name="variable_names"></param>
   void AddUsesData(int line, const std::vector<std::string>& variable_names);
 
+  /// <summary>
+  /// Adds a follows row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="follows"></param>
+  void AddFollowsData(int line, const int follows);
+
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
   }

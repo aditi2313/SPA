@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "data/AssignData.h"
-#include "data/FollowData.h"
+#include "data/FollowsData.h"
 #include "data/ModifiesData.h"
 #include "data/ParentData.h"
 #include "data/UsesData.h"
@@ -26,7 +26,7 @@ class PKBRelationTable {
   friend class PKBWrite;
   friend class PKBRead;
   IndexableTable<ModifiesData> modifies_table_;
-  IndexableTable<FollowData> follow_table_;
+  IndexableTable<FollowsData> follows_table_;
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
   IndexableTable<AssignData> assign_table_;
@@ -52,6 +52,18 @@ class PKBRelationTable {
     assign_table_.add_row(line,
                           AssignData(variable, line, std::move(expression)));
   }
-};
 
+  void add_uses_data(const int line,
+                         const std::vector<std::string>& variable_names) {
+      uses_table_.add_row(line, UsesData(line, variable_names));
+  }
+
+  void add_follows_data(const int line, const int follows) {
+      follows_table_.add_row(line, FollowsData(line, follows));
+  }
+
+  void add_parent_data(const int line, const int parent_line) {
+      parent_table_.add_row(line, ParentData(line, parent_line));
+  }
+};
 }  // namespace pkb

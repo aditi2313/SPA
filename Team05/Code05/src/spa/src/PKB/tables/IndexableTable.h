@@ -8,6 +8,9 @@
 
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ModifiesData.h"
+#include "PKB/data/UsesData.h"
+#include "PKB/data/FollowsData.h"
+#include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
@@ -56,6 +59,9 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
+typedef IndexableTable<UsesData> UsesTable;
+typedef IndexableTable<FollowsData> FollowsTable;
+typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 
 template <typename T>

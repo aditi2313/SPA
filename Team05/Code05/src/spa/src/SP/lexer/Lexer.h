@@ -14,13 +14,15 @@ class Lexer {
   explicit Lexer(std::string program);
 
   // returns the type of the next token
-  int get_tok();
 
   /// <summary>
   /// Grabs the current word and
   /// figures out what it is.
   /// </summary>
   void Increment();
+
+  // Returns the next token without updating current_token_
+  int Peek();
 
   /// <summary>
   /// Todo(Gab): switch from auto to whatever type we are sticking with. #40
@@ -32,6 +34,7 @@ class Lexer {
     return tok;
   }
 
+  inline int get_tok() const { return current_tok_; }
   inline std::string get_ident() const { return word_; }
   inline int get_integer() const { return integer_; }
 

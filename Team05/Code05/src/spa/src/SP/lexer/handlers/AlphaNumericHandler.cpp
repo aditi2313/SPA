@@ -1,5 +1,7 @@
 #include "AlphaNumericHandler.h"
 
+#include <string>
+
 namespace sp {
 std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
   char c = data.get_current_char();

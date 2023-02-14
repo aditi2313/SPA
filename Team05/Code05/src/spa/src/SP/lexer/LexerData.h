@@ -7,7 +7,7 @@
 /// </summary>
 class LexerData {
  public:
-  LexerData(std::string& program) : program_(program) {
+  explicit LexerData(std::string& program) : program_(program) {
     ptr_ = 0;
     current_stmt_ = 1;
     current_int_ = -1;

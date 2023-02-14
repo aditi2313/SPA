@@ -5,8 +5,8 @@
 // cleanly
 #include <list>
 #include <memory>
-#include <utility>
 #include <string>
+#include <utility>
 
 #include "LexerData.h"
 #include "handlers/AlphaNumericHandler.h"

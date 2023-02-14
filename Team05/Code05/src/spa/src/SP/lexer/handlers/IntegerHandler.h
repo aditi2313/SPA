@@ -8,9 +8,7 @@
 namespace sp {
 class IntegerHandler : public LexerHandler {
  public:
-   std::optional<Token> Handle(LexerData& data) {
-
-  }
+  std::optional<Token> Handle(LexerData& data) override;
 };
 
 }  // namespace sp

@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <string>
 #include <vector>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "models/AST/Token.h"
@@ -21,7 +21,7 @@ TEST_CASE("Testing lexer functionality") {
 
 void TestLexerForToken(std::string vals, std::vector<Token> tokens) {
   Lexer lxr(vals);
-  int tok;
+  Token tok;
   auto curr = tokens.begin();
   while ((tok = lxr.GetTokAndIncrement()) != Token::kTokEof &&
          curr != tokens.end()) {

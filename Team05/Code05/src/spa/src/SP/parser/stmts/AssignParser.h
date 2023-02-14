@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include "SP/parser/Parser.h"
@@ -16,7 +17,7 @@ class AssignParser : Parser<ast::AssignNode> {
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
     ExpressionParser expr_parser;
-    if (lxr.GetTokAndIncrement() != kTokEquals) {
+    if (lxr.GetTokAndIncrement() != Token::kTokEquals) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("expected '=' in assignment");
     }

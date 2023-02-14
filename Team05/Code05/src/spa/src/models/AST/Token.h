@@ -3,7 +3,7 @@
 
 namespace sp {
 
-enum Token {
+enum class Token {
     kTokEof,
 
     kTokProcedure,

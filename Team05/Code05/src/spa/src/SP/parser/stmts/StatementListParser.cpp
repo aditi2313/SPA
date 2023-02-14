@@ -1,19 +1,22 @@
 #include "StatementListParser.h"
 
+#include <stdexcept>
+
 #include "StatementParser.h"
 
 namespace sp {
-bool IsStmt(int tok) {
+bool IsStmt(Token tok) {
   // TODO(Gab) Check if kTokProcedure should be removed from this
   // + implement this functionality inside of Token class if we are going to
   // create one #40
-  return tok == kTokProcedure || tok == kTokRead || tok == kTokPrint ||
-         tok == kTokCall || tok == kTokWhile || tok == kTokIf ||
-         tok == kTokIdent;
+  return tok == Token::kTokProcedure || tok == Token::kTokRead ||
+         tok == Token::kTokPrint || tok == Token::kTokCall ||
+         tok == Token::kTokWhile || tok == Token::kTokIf ||
+         tok == Token::kTokIdent;
 }
 
 std::unique_ptr<ast::StmtLstNode> StatementListParser::parse(Lexer& lxr) {
-  int current_tok = lxr.get_tok();
+  Token current_tok = lxr.get_tok();
 
   std::vector<std::unique_ptr<ast::StmtNode>> stmt_nodes;
   while (IsStmt(current_tok)) {

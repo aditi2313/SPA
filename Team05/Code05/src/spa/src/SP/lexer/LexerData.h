@@ -29,7 +29,7 @@ class LexerData {
 
   inline int GetStmtAndIncrment() { return current_stmt_++; }
   inline int get_int() { return current_int_; }
-  inline std::string get_word() { return word_; }
+  inline std::string get_ident() { return word_; }
   inline char get_current_char() { return program_[ptr_]; }
   inline void increment_pointer() { ptr_++; }
   inline void decrement_pointer() { ptr_--; }

@@ -1,81 +1,67 @@
 #pragma once
 
-#include <functional>
-#include <optional>
-#include <stdexcept>
-#include <string>
-#include <unordered_map>
+// Temporary file to contain all the refactoring made to Lexer
+// To avoid conflicts with bug fixes so they can be added
+// cleanly
+#include <list>
+#include <memory>
 
-#include "models/AST/Token.h"
+#include "LexerData.h"
+#include "handlers/AlphaNumericHandler.h"
+#include "handlers/DoubleCharHandler.h"
+#include "handlers/ErrorHandler.h"
+#include "handlers/SingleCharHandler.h"
+#include "handlers/WhiteSpaceHandler.h"
 
 namespace sp {
 class Lexer {
  public:
-  explicit Lexer(std::string program);
+  Lexer(std::string program)
+      : data_(program), current_token_(Token::kTokError) {
+    // create the handlers
+    auto white_handler = std::make_unique<WhiteSpaceHandler>();
+    auto alpha_handler = std::make_unique<AlphaNumericHandler>();
+    auto double_handler = std::make_unique<DoubleCharHandler>();
+    auto single_char_handler = std::make_unique<SingleCharHandler>();
+    auto error_handler = std::make_unique<ErrorHandler>();
+    handlers.push_back(std::move(white_handler));
+    handlers.push_back(std::move(alpha_handler));
+    handlers.push_back(std::move(double_handler));
+    handlers.push_back(std::move(single_char_handler));
+    handlers.push_back(std::move(error_handler));
+  }
 
-  // returns the type of the next token
-
-  /// <summary>
-  /// Grabs the current word and
-  /// figures out what it is.
-  /// </summary>
-  void Increment();
-
-  // Returns the next token without updating current_token_
-  int Peek();
-
-  /// <summary>
-  /// Todo(Gab): switch from auto to whatever type we are sticking with. #40
-  /// </summary>
-  /// <returns></returns>
-  inline auto GetTokAndIncrement() {
+  Token GetTokAndIncrement() {
     auto tok = get_tok();
     Increment();
     return tok;
   }
 
-  inline int get_tok() const { return current_tok_; }
-  inline std::string get_ident() const { return word_; }
-  inline int get_integer() const { return integer_; }
+  int GetAndIncrementStmtCtr() { return data_.GetStmtAndIncrment(); }
 
-  inline int GetAndIncrementStmtCtr() { return stmt_ctr_++; }
+  Token get_tok() { return current_token_; }
+
+  Token Peek() {
+    auto temp_data = data_;
+    auto temp_curr = current_token_;
+
+    Increment();
+    auto res = get_tok();
+
+    data_ = temp_data;
+    current_token_ = temp_curr;
+
+    return res;
+  }
+
+  void Increment();
+
+  std::string get_ident() { return data_.get_ident(); }
+  int get_integer() { return data_.get_int(); }
 
  private:
-  std::string program_;
-
-  /// <summary>
-  /// Reads a word into word_.
-  /// Returns false if the next token
-  /// is not a valid word.
-  /// </summary>
-  /// <returns></returns>
-  bool ReadWord();
-
-  bool ReadInt();
-
-  // Define ptr to point towards the next token
-  // On Increment, the pointer will point to one after the
-  // Token
-  int pointer_;
-
-  // The enum representing the current token
-  int current_tok_;
-
-  // The word representing the current token (Only used for idents or read,
-  // print, procedure, ...)
-  std::string word_;
-
-  // stores the integer which is reached
-  int integer_;
-
-  // Stores the statement count
-  int stmt_ctr_ = 1;
-
-  void ValidateInteger(std::string basicString);
-
-  // TODO(Gab) Refactor this functionality with #40
-  // something that is more specific
-  // takes in a reference where the final pointer will be referenced.
-  std::optional<Token> ProcessLengthTwoTokens(int& p);
+  LexerData data_;
+  Token current_token_;
+  std::list<std::unique_ptr<LexerHandler>> handlers;
 };
 }  // namespace sp

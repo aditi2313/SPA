@@ -1,6 +1,6 @@
-#include <catch.hpp>
 #include <string>
 #include <vector>
+#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "common/exceptions/SP.h"
@@ -29,9 +29,9 @@ TEST_CASE("Testing lexer functionality") {
   }
 
   SECTION("Test ident functionality") {
-    TestLexerForToken(
-        "read procedure value",
-        {Token::kTokRead, Token::kTokProcedure, Token::kTokIdent});
+    TestLexerForToken("read procedure value if while print",
+                      {Token::kTokRead, Token::kTokProcedure, Token::kTokIdent,
+                       Token::kTokIf, Token::kTokWhile, Token::kTokPrint});
   }
 
   SECTION("Test single char functionality") {

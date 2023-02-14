@@ -51,9 +51,13 @@ class ParseFactorSyntaxException : public ParseException {
 };
 
 class ParseAssignSyntaxException : public ParseException {
- public:
-  ParseAssignSyntaxException()
-      : ParseException("Exception in parsing of assign") {}
+public:
+  explicit ParseAssignSyntaxException(std::string additional)
+      : ParseException(kParseAssignSyntaxMessage + additional) {}
+  ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
+
+private:
+  static const char kParseAssignSyntaxMessage[];
 };
 
 }  // namespace sp

@@ -70,7 +70,7 @@ EntityPtrList PatternClause::Index(
   auto ASTNode = source_processor.ParseExpression(expression);
   auto filter = std::make_unique<AssignPredicateFilter>(
       [&](auto data) {
-        return data->TestExpression(ASTNode);
+        return data.TestExpression(ASTNode);
       });
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();

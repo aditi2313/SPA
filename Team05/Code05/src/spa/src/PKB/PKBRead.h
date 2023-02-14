@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <unordered_set>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -45,7 +45,17 @@ class PKBRead {
       IndexableFilterPtr<ModifiesData>);
 
   std::unique_ptr<PKBResult<AssignTable>> Assigns(
-      IndexableFilterPtr<std::shared_ptr<AssignData>>);
+      IndexableFilterPtr<AssignData>);
+
+  std::unique_ptr<PKBResult<UsesTable>> Uses(
+          IndexableFilterPtr<UsesData>);
+
+  std::unique_ptr<PKBResult<FollowsTable>> Follows(
+          IndexableFilterPtr<FollowsData>);
+
+  std::unique_ptr<PKBResult<ParentTable>> Parent(
+          IndexableFilterPtr<ParentData>);
+
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
   }

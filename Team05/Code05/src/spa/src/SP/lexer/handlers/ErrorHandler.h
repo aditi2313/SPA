@@ -1,10 +1,10 @@
 #pragma once
 
-#include "AlphaNumericHandler.h"
 #include "LexerHandler.h"
+#include "SP/lexer/LexerData.h"
 
 namespace sp {
-class WhiteSpaceHandler : public LexerHandler {
+class ErrorHandler : public LexerHandler {
  public:
   std::optional<Token> Handle(LexerData&) override;
 };

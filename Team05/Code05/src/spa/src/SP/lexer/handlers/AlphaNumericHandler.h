@@ -4,7 +4,7 @@
 
 namespace sp {
 class AlphaNumericHandler : public LexerHandler {
- protected:
-  std::optional<Token> HandleInner(int& ptr, std::string& program);
+ public:
+  std::optional<Token> Handle(LexerData& program) override;
 };
 }  // namespace sp

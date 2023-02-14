@@ -8,11 +8,15 @@ const std::string kEqualTo = "==";
 const std::string kNotEqual = "!=";
 
 namespace sp {
-std::optional<Token> DoubleCharHandler::HandleInner(int& ptr,
-                                                    std::string& program) {
-  if (ptr + 1 >= program.length()) return std::nullopt;
-  std::string word = std::string() + program[ptr] + program[ptr + 1];
-  ptr += 2;
+std::optional<Token> DoubleCharHandler::Handle(LexerData& data) {
+  LexerData temp_data = data;
+  char c = data.get_current_char();
+  data.increment_pointer();
+
+  if (data.is_end()) return std::nullopt;
+  std::string word = std::string() + c + data.get_current_char();
+  data.increment_pointer();
+  
   if (word == kLessEqual) {
     return {Token::kTokLessEqual};
   }
@@ -25,6 +29,8 @@ std::optional<Token> DoubleCharHandler::HandleInner(int& ptr,
   if (word == kNotEqual) {
     return {Token::kTokNotEqual};
   }
+  data = temp_data;
+
   return std::nullopt;
 }
 }  // namespace sp

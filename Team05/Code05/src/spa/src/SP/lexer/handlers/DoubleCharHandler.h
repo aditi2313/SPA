@@ -1,8 +1,9 @@
 #include "LexerHandler.h"
+#include "SP/lexer/LexerData.h"
 
 namespace sp {
 class DoubleCharHandler : public LexerHandler {
- protected:
-  std::optional<Token> HandleInner(int& ptr, std::string& program) override;
+ public:
+  std::optional<Token> Handle(LexerData& program) override;
 };
 }  // namespace sp

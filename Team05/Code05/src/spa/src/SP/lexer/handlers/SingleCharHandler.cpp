@@ -3,9 +3,9 @@
 #include "models/AST/Token.h"
 
 namespace sp {
-std::optional<Token> SingleCharHandler::HandleInner(int& ptr,
-                                                    std::string& program) {
-  char c = program[ptr++];
+std::optional<Token> SingleCharHandler::Handle(LexerData& data) {
+  char c = data.get_current_char();
+  data.increment_pointer();
   switch (c) {
     case '{':
       return {Token::kTokOpenCurly};
@@ -36,7 +36,7 @@ std::optional<Token> SingleCharHandler::HandleInner(int& ptr,
     case '>':
       return {Token::kTokGreater};
     default:
-      ptr--;
+      data.decrement_pointer();
       return std::nullopt;
   }
 }

@@ -8,6 +8,6 @@
 namespace sp {
 class SingleCharHandler : public LexerHandler {
  protected:
-  std::optional<Token> HandleInner(int& ptr, std::string& program) override;
+  std::optional<Token> Handle(LexerData& program) override;
 };
 }  // namespace sp

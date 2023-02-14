@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <functional>
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"

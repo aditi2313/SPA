@@ -14,7 +14,8 @@
 namespace sp {
 class Lexer {
  public:
-  Lexer(std::string& program) : data_(program) {
+  Lexer(std::string& program)
+      : data_(program), current_token_(Token::kTokError) {
     // create the handlers
     auto white_handler = std::make_unique<WhiteSpaceHandler>();
     auto alpha_handler = std::make_unique<AlphaNumericHandler>();
@@ -29,6 +30,19 @@ class Lexer {
   }
 
   Token get_tok() { return current_token_; }
+
+  Token peek() {
+    auto temp_data = data_;
+    auto temp_curr = current_token_;
+
+    Increment();
+    auto res = get_tok();
+
+    data_ = temp_data;
+    current_token_ = temp_curr;
+
+    return res;
+  }
 
   void Increment();
 

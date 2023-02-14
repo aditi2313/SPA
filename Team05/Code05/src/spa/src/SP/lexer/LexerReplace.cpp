@@ -2,6 +2,8 @@
 
 #include <optional>
 
+#include "common/exceptions/SP.h"
+
 namespace sp {
 void Lexer::Increment() {
   std::optional<Token> token = std::nullopt;
@@ -12,7 +14,7 @@ void Lexer::Increment() {
     token = handler_ptr->Handle(data_);
   }
   if (!token) {
-    // throw lexer exception
+    throw LexerException("No valid token found");
   }
   current_token_ = token.value();
 }

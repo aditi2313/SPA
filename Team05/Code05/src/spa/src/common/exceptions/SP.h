@@ -3,6 +3,17 @@
 #include <string>
 // exception file for SP
 namespace sp {
+class LexerException : public std::exception {
+ public:
+  explicit LexerException(const std::string msg)
+      : message(kLexerExceptionMessage + msg) {}
+  const char* what() const throw() override { return message.c_str(); }
+
+ private:
+  const std::string message;
+  static const char kLexerExceptionMessage[];
+};
+
 class ParseException : public std::exception {
  public:
   explicit ParseException(const std::string msg) : message(msg) {}

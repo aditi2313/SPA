@@ -6,6 +6,8 @@ const std::string kLessEqual = "<=";
 const std::string kGreaterEqual = ">=";
 const std::string kEqualTo = "==";
 const std::string kNotEqual = "!=";
+const std::string kAnd = "&&";
+const std::string kOr = "||";
 
 namespace sp {
 std::optional<Token> DoubleCharHandler::Handle(LexerData& data) {
@@ -13,10 +15,13 @@ std::optional<Token> DoubleCharHandler::Handle(LexerData& data) {
   char c = data.get_current_char();
   data.increment_pointer();
 
-  if (data.is_end()) return std::nullopt;
+  if (data.is_end()) {
+    data = temp_data;
+    return std::nullopt;
+  }
   std::string word = std::string() + c + data.get_current_char();
   data.increment_pointer();
-  
+
   if (word == kLessEqual) {
     return {Token::kTokLessEqual};
   }
@@ -28,6 +33,12 @@ std::optional<Token> DoubleCharHandler::Handle(LexerData& data) {
   }
   if (word == kNotEqual) {
     return {Token::kTokNotEqual};
+  }
+  if (word == kAnd) {
+    return {Token::kTokAnd};
+  }
+  if (word == kOr) {
+    return {Token::kTokOr};
   }
   data = temp_data;
 

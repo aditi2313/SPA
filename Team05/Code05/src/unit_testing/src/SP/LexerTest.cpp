@@ -17,6 +17,19 @@ TEST_CASE("Testing lexer functionality") {
         {Token::kTokLess, Token::kTokEquiv, Token::kTokLessEqual,
          Token::kTokAnd, Token::kTokOr, Token::kTokNotEqual, Token::kTokNot});
   }
+
+  SECTION("Test ident functionality") {
+    TestLexerForToken(
+        "read procedure value",
+        {Token::kTokRead, Token::kTokProcedure, Token::kTokIdent});
+  }
+
+  SECTION("Test single char functionality") {
+    TestLexerForToken("{ } ! < > ()",
+                      {Token::kTokOpenCurly, Token::kTokCloseCurly,
+                       Token::kTokNot, Token::kTokLess, Token::kTokGreater,
+                       Token::kTokOpenBracket, Token::kTokCloseBracket});
+  }
 }
 
 void TestLexerForToken(std::string vals, std::vector<Token> tokens) {

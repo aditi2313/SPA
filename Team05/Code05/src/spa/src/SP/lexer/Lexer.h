@@ -29,6 +29,7 @@ class Lexer {
     handlers.push_back(std::move(double_handler));
     handlers.push_back(std::move(single_char_handler));
     handlers.push_back(std::move(error_handler));
+    Increment();
   }
 
   Token GetTokAndIncrement() {

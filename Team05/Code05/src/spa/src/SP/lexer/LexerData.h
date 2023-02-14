@@ -2,6 +2,9 @@
 
 #include <string>
 
+/// <summary>
+/// Class representing the data stored in the lexer.
+/// </summary>
 class LexerData {
  public:
   LexerData(std::string& program) : program_(program) {
@@ -28,16 +31,25 @@ class LexerData {
   }
 
   inline int GetStmtAndIncrment() { return current_stmt_++; }
+
   inline int get_int() { return current_int_; }
+
   inline std::string get_ident() { return word_; }
-  inline char get_current_char() { 
-    return program_[ptr_]; }
+  inline char get_current_char() { return program_[ptr_]; }
+
+  /// <summary>
+  /// Increments the pointer to the program.
+  /// </summary>
   inline void increment_pointer() { ptr_++; }
+
+  /// <summary>
+  /// Decrements the pointer to the program.
+  /// </summary>
   inline void decrement_pointer() { ptr_--; }
   inline bool is_end() { return ptr_ >= program_.length(); }
 
-  void set_word(std::string& word) { word_ = word; }
-  void set_int(int val) { current_int_ = val; }
+  inline void set_word(std::string& word) { word_ = word; }
+  inline void set_int(int val) { current_int_ = val; }
 
  private:
   std::string word_;

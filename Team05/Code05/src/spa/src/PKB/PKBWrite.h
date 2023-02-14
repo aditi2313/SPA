@@ -34,6 +34,14 @@ class PKBWrite {
   void AddAssignData(std::string variable, int line,
                      std::unique_ptr<ast::ExprNode> expression);
 
+  /// <summary>
+  /// Adds a uses row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="variable_names"></param>
+  void AddUsesData(int line, const std::vector<std::string>& variable_names);
+
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
   }

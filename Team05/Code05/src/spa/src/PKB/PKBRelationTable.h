@@ -60,6 +60,10 @@ class PKBRelationTable {
     assign_table_.add_row(line, std::make_shared<AssignData>(
                                     variable, line, std::move(expression)));
   }
-};
 
+  void add_uses_data(const int line,
+                         const std::vector<std::string>& variable_names) {
+      uses_table_.add_row(line, UsesData(line, variable_names));
+    }
+};
 }  // namespace pkb

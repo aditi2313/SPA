@@ -8,6 +8,7 @@
 
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ModifiesData.h"
+#include "PKB/data/UsesData.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
@@ -59,6 +60,7 @@ class IndexableTable {
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
+typedef IndexableTable<UsesData> UsesTable;
 
 template<typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

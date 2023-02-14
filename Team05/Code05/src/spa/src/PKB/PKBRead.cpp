@@ -24,4 +24,11 @@ std::unique_ptr<PKBResult<AssignTable>> PKBRead::Assigns(
       filter->FilterTable(relation_table_->assign_table_.copy());
   return create_result(std::move(result_table));
 }
+
+std::unique_ptr<PKBResult<UsesTable>> PKBRead::Uses(
+        IndexableFilterPtr<UsesData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(relation_table_->uses_table_.copy()));
+    return create_result(std::move(result_table));
+    }
 }  // namespace pkb

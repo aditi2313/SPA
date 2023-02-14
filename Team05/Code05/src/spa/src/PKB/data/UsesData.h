@@ -5,11 +5,15 @@
 namespace pkb {
 
 class UsesData {
-  UsesData(int line, std::vector<std::string> variable_names)
-      : line_(line), variable_names_(variable_names) {}
+public:
+    UsesData(int line, const std::vector<std::string>& variable_names);
 
- public:
-  int line_;
-  std::vector<std::string> variable_names_;
+    inline int get_line() { return line_; }
+
+    inline const std::vector<std::string>& get_variables() { return variable_names_; }
+
+ private:
+    int line_;
+    std::vector<std::string> variable_names_;
 };
 }  // namespace pkb

@@ -40,4 +40,5 @@ class PredicateFilter
 
 using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
 using AssignPredicateFilter = PredicateFilter<std::shared_ptr<pkb::AssignData>>;
+using UsesPredicateFilter = PredicateFilter<pkb::UsesData>;
 }  // namespace filter

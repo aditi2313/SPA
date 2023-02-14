@@ -37,7 +37,7 @@ TEST_CASE("Assign Filter test") {
     auto result = reader.Assigns(
         std::make_unique<filter::AssignPredicateFilter>(
         [&](auto data) {
-          return data->TestExpression(plus1);
+          return data.TestExpression(plus1);
         }));
   }
 }

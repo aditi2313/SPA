@@ -47,5 +47,9 @@ class DataVisitor : public PKBWritingVisitor {
   void VisitMod(ast::ModNode* mod_node) override;
 
   void VisitCall(ast::CallNode* call_node) override;
+
+  void VisitWhile(ast::WhileNode* assign_node) override;
+
+  void VisitIf(ast::IfNode* if_node) override;
 };
 }  // namespace sp

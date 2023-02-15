@@ -2,6 +2,14 @@
 
 #include <string>
 
+const char kProcedure[] = "procedure";
+const char kRead[] = "read";
+const char kPrint[] = "print";
+const char kWhile[] = "while";
+const char kCall[] = "call";
+const char kIf[] = "if";
+const char kElse[] = "else";
+
 namespace sp {
 std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
   char c = data.get_current_char();
@@ -17,23 +25,26 @@ std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
     data.increment_pointer();
   }
   data.set_word(word);
-  if (word == "procedure") {
+  if (word == kProcedure) {
     return {Token::kTokProcedure};
   }
-  if (word == "read") {
+  if (word == kRead) {
     return {Token::kTokRead};
   }
-  if (word == "print") {
+  if (word == kPrint) {
     return {Token::kTokPrint};
   }
-  if (word == "call") {
+  if (word == kCall) {
     return {Token::kTokCall};
   }
-  if (word == "while") {
+  if (word == kWhile) {
     return {Token::kTokWhile};
   }
-  if (word == "if") {
+  if (word == kIf) {
     return {Token::kTokIf};
+  }
+  if (word == kElse) {
+    return {Token::kTokElse};
   }
   return {Token::kTokIdent};
 }

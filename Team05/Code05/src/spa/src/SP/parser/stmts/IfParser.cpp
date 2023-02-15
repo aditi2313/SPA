@@ -21,6 +21,8 @@ std::unique_ptr<ast::IfNode> IfParser::parse(Lexer& lxr) {
 
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseBracket, ")");
 
+  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokThen, "then");
+
   auto list_1 = ParseCodeBlock(lxr);
 
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokElse, "else");

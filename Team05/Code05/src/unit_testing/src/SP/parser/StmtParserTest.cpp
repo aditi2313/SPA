@@ -27,7 +27,7 @@ TEST_CASE("Test parsing of print") {
 }
 
 TEST_CASE("Test parsing of if") {
-  Lexer lxr("if (a+x < a - x) {read a; print a;  } else { read a; }");
+  Lexer lxr("if (a+x < a - x) then {read a; print a;  } else { read a; }");
   IfParser parser;
   parser.parse(lxr);
 }

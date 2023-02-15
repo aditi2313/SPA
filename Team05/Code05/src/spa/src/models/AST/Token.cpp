@@ -5,7 +5,7 @@
 namespace sp {
 const std::vector<Token> kStmtTokens{Token::kTokRead, Token::kTokPrint,
                                      Token::kTokCall, Token::kTokWhile,
-                                     Token::kTokIf};
+                                     Token::kTokIf, Token::kTokIdent};
 bool IsStmtToken(Token input) {
   for (const auto& token : kStmtTokens) {
     if (token == input) {

@@ -57,39 +57,37 @@ TEST_CASE("Test SynonymCheck") {
     REQUIRE(Validator::SynonymCheck(query));
   }
 }
-//  TEST_CASE("Invalid synonym used") {
-//  SECTION("Undeclared synoym used");
-//  // One undeclared synonym used
-//  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
-//
-//  Query expected_query2 = BuildQuery({{"v", models::EntityStub()}}, {"v"});
-//  expected_query2.add_clause(
-//      std::make_unique<ModifiesClause>(Argument("6"), Argument("a")));
-//
-//  std::vector<std::unique_ptr<Clause>>& clauses2 =
-//      expected_query2.get_clauses();
-//  std::vector<std::string> synonym2 = expected_query2.get_selected_synonyms();
-//
-//  REQUIRE(!Validator::SynonymCheck(std::move(clauses2), synonym2));
-//}
-//
-// TEST_CASE("Semantically correct") {
-//    SelectClParser parser;
-//  SECTION("All is valid");
-//    std::string query_string =
-//        "variable v; select v such that modifies(v, 6)";
-//    std::unique_ptr<Query> query = parser.ParseQuery(query_string);
-//    std::unique_ptr<Query> result = Validator::validator(std::move(query));
-//    REQUIRE(result == query);
-//}
-//
-// TEST_CASE("Semantically incorrect") {
-//  SelectClParser parser;
-//  SECTION("Wrong semantics");
-//  std::string query_string =
-//      "variable v; select v such that modifies(v, 6)";
-//  std::unique_ptr<Query> query = parser.ParseQuery(query_string);
-//  REQUIRE_THROWS_AS(Validator::validator(std::move(query)),
-//      PqlSemanticErrorException);
-//}
+  TEST_CASE("Invalid synonym used") {
+  SECTION("Undeclared synoym used");
+  // One undeclared synonym used
+  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
+
+  std::unique_ptr<Query> expected_query2 = BuildQuery({{"v", PQL::kVariableEntityName}}, {"v"});
+  expected_query2->add_clause(
+      std::make_unique<ModifiesClause>(
+          expected_query2->CreateArgument("6"),
+          expected_query2->CreateArgument("a")));
+
+    REQUIRE(!Validator::SynonymCheck(expected_query2));
+}
+
+ TEST_CASE("Semantically correct") {
+    SelectClParser parser;
+  SECTION("All is valid");
+    std::string query_string =
+        "variable v; select v such that modifies(v, 6)";
+    std::unique_ptr<Query> query = parser.ParseQuery(query_string);
+    bool result = Validator::validate(std::move(query));
+    REQUIRE(result);
+}
+
+ TEST_CASE("Semantically incorrect") {
+  SelectClParser parser;
+  SECTION("Wrong semantics");
+  std::string query_string =
+      "variable v; select v such that modifies(v, 6)";
+  std::unique_ptr<Query> query = parser.ParseQuery(query_string);
+  REQUIRE_THROWS_AS(Validator::validate(std::move(query)),
+      PqlSemanticErrorException);
+}
 

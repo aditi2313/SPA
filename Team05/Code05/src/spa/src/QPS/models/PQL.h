@@ -37,6 +37,7 @@ class PQL {
   }
 
   inline static EntityName kModifiesRelId = "Modifies";
+  inline static EntityName kFollowsRelId = "Follows";
   inline static EntityName kPatternRelId = "pattern";
 
   inline static bool is_ident(std::string str) {

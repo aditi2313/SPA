@@ -4,8 +4,10 @@
 
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
+#include "models/AST/relations/CondExprNode.h"
 
 namespace ast {
+class StmtLstNode;
 class StmtNode : public TNode {
  public:
   explicit StmtNode(int line) : line_(line) {}
@@ -62,8 +64,6 @@ class PrintNode : public StmtNode {
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
-  // TODO(nhjryan): implement nodes for if-else and while loops
-
  private:
   std::unique_ptr<VarNode> var_;
 };
@@ -82,6 +82,43 @@ class CallNode : public StmtNode {
   std::unique_ptr<VarNode> var_;
 };
 
-class WhileNode : public StmtNode {};
-class IfNode : public StmtNode {};
+class WhileNode : public StmtNode {
+ public:
+  WhileNode(std::unique_ptr<CondExprNode> cond,
+            std::unique_ptr<StmtLstNode> stmts, int line)
+      : StmtNode(line) {
+    cond_ = std::move(cond);
+    stmts_ = std::move(stmts);
+  }
+
+  void AcceptVisitor(sp::TNodeVisitor*) override;
+
+  inline std::unique_ptr<CondExprNode>& get_cond() { return cond_; }
+  inline std::unique_ptr<StmtLstNode>& get_stmts() { return stmts_; }
+
+ private:
+  std::unique_ptr<CondExprNode> cond_;
+  std::unique_ptr<StmtLstNode> stmts_;
+};
+class IfNode : public StmtNode {
+ public:
+  IfNode(std::unique_ptr<CondExprNode> cond, std::unique_ptr<StmtLstNode> pos,
+         std::unique_ptr<StmtLstNode> neg, int line)
+      : StmtNode(line) {
+    cond_ = std::move(cond);
+    pos_ = std::move(pos);
+    neg_ = std::move(neg);
+  }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor);
+
+  inline std::unique_ptr<CondExprNode>& get_cond() { return cond_; }
+  inline std::unique_ptr<StmtLstNode>& get_pos() { return pos_; }
+  inline std::unique_ptr<StmtLstNode>& get_neg() { return neg_; }
+
+ private:
+  std::unique_ptr<CondExprNode> cond_;
+  std::unique_ptr<StmtLstNode> pos_;
+  std::unique_ptr<StmtLstNode> neg_;
+};
 }  // namespace ast

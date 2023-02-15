@@ -4,8 +4,32 @@
 #include <utility>
 
 #include "SP/parser/Parser.h"
+#include "SP/parser/relations/CondExprParser.h"
+#include "SP/parser/stmts/StatementListParser.h"
+#include "common/exceptions/SP.h"
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {
-class WhileParser : public Parser<ast::WhileNode>{};
+class WhileParser : public Parser<ast::WhileNode> {
+ public:
+  std::unique_ptr<ast::WhileNode> parse(Lexer& lxr) override {
+    StatementListParser stmt_list_parser;
+    CondExprParser cond_parser;
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokWhile, "while");
+
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenBracket, "(");
+
+    auto cond = cond_parser.parse(lxr);
+
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseBracket, ")");
+
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenCurly, "{");
+
+    auto stmts = stmt_list_parser.parse(lxr);
+
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseCurly, "}");
+    return std::make_unique<ast::WhileNode>(std::move(cond), std::move(stmts),
+                                            lxr.GetAndIncrementStmtCtr());
+  }
+};
 }  // namespace sp

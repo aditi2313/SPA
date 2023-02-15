@@ -32,6 +32,5 @@ std::unique_ptr<ast::IfNode> IfParser::parse(Lexer& lxr) {
   return std::make_unique<ast::IfNode>(std::move(cond_expr), std::move(list_1),
                                        std::move(list_2),
                                        lxr.GetAndIncrementStmtCtr());
-
-}  // namespace sp
+}
 }  // namespace sp

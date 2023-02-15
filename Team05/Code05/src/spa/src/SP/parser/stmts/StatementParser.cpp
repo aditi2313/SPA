@@ -14,17 +14,17 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
   auto tok = lxr.get_tok();
   lxr.Increment();
   switch (tok) {
-    case kTokRead:
+    case Token::kTokRead:
       return read_parser.parse(lxr);
-    case kTokPrint:
+    case Token::kTokPrint:
       return print_parser.parse(lxr);
-    case kTokCall:
+    case Token::kTokCall:
       return call_parser.parse(lxr);
-    case kTokWhile:
+    case Token::kTokWhile:
       return nullptr;
-    case kTokIf:
+    case Token::kTokIf:
       return nullptr;
-    case kTokIdent:
+    case Token::kTokIdent:
       return assign_parser.parse(lxr);
     default:
       // TODO(aizatazhar): use custom exception

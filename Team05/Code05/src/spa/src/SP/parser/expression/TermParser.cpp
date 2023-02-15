@@ -1,5 +1,8 @@
-#include <utility>
 #include "TermParser.h"
+
+#include <stdexcept>
+#include <utility>
+
 #include "FactorParser.h"
 
 namespace sp {
@@ -17,13 +20,13 @@ std::unique_ptr<ast::TermNode> TermParser::parse(Lexer &lxr) {
   auto op = lxr.GetTokAndIncrement();
   auto rhs = factor_parser.parse(lxr);
 
-  if (op == kTokTimes) {
+  if (op == Token::kTokTimes) {
     return std::make_unique<ast::TimesNode>(
         ast::TimesNode(std::move(lhs), std::move(rhs)));
-  } else if (op == kTokDiv) {
+  } else if (op == Token::kTokDiv) {
     return std::make_unique<ast::DivNode>(
         ast::DivNode(std::move(lhs), std::move(rhs)));
-  } else if (op == kTokMod) {
+  } else if (op == Token::kTokMod) {
     return std::make_unique<ast::ModNode>(
         ast::ModNode(std::move(lhs), std::move(rhs)));
   }

@@ -42,6 +42,15 @@ EntityPtrList ModifiesClause::Index(
   return result;
 }
 
+
+EntityPtrList FollowsClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+  return result;
+}
+
 // TODO(JL): This method is a bit messy because it calls the
 // PredicateFilter inside of a function meant for Indexing.
 // Pattern is kind of tricky, will move on to

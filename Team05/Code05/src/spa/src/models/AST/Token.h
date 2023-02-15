@@ -47,4 +47,6 @@ enum class Token {
     kTokError,
 };
 
+bool IsStmtToken(Token token);
+
 }  // namespace sp

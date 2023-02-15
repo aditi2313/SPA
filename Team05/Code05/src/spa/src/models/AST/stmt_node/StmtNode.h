@@ -106,19 +106,19 @@ class IfNode : public StmtNode {
          std::unique_ptr<StmtLstNode> neg, int line)
       : StmtNode(line) {
     cond_ = std::move(cond);
-    pos_ = std::move(pos);
-    neg_ = std::move(neg);
+    then_ = std::move(pos);
+    else_ = std::move(neg);
   }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor);
 
   inline std::unique_ptr<CondExprNode>& get_cond() { return cond_; }
-  inline std::unique_ptr<StmtLstNode>& get_pos() { return pos_; }
-  inline std::unique_ptr<StmtLstNode>& get_neg() { return neg_; }
+  inline std::unique_ptr<StmtLstNode>& get_then() { return then_; }
+  inline std::unique_ptr<StmtLstNode>& get_else() { return else_; }
 
  private:
   std::unique_ptr<CondExprNode> cond_;
-  std::unique_ptr<StmtLstNode> pos_;
-  std::unique_ptr<StmtLstNode> neg_;
+  std::unique_ptr<StmtLstNode> then_;
+  std::unique_ptr<StmtLstNode> else_;
 };
 }  // namespace ast

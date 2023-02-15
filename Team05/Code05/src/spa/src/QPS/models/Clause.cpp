@@ -18,6 +18,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsRelId) {
+    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 

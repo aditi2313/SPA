@@ -80,6 +80,23 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+  SECTION("Such that clause for Follows should parse correctly") {
+    std::vector<std::string> tokens{
+        "such", "that", "Follows", "(", "6", ",", "7", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    query = state.parse(tokens, itr, std::move(query));
+    auto expected_clause = FollowsClause(
+        query->CreateArgument("6"),
+        query->CreateArgument("7"));
+
+    Clause *actual_clause =
+        query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"such", "that", "MODIFIES", "(", "6", ",", "v", ")"});
   }

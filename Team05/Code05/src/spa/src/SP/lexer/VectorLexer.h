@@ -48,7 +48,7 @@ class VectorLexer {
   }
 
   Token get_tok() {
-    if (ptr_ < 0) {
+    if (IsEnd()) {
       return Token::kTokEof;
     }
     return tokens_[ptr_];

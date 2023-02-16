@@ -22,7 +22,7 @@ void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
   ExpressionVisitor exprVisitor;
   assign_node->get_expr()->AcceptVisitor(&exprVisitor);
   std::set<std::string> vars = exprVisitor.get_vars();
-  // pkb_ptr_->AddUseData(read_node->get_line(), vars);
+  pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
 }
 
 

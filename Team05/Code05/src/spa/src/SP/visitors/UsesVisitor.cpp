@@ -1,4 +1,4 @@
-#include <set>
+#include <unordered_set>
 
 #include "SP/visitors/ExpressionVisitor.h"
 #include "UsesVisitor.h"
@@ -23,7 +23,7 @@ void UsesVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
 void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
   ExpressionVisitor exprVisitor;
   assign_node->get_expr()->AcceptVisitor(&exprVisitor);
-  std::set<std::string> vars = exprVisitor.get_vars();
+  std::unordered_set<std::string> vars = exprVisitor.get_vars();
   pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
 }
 

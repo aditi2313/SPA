@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <set>
+#include <unordered_set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -23,9 +23,9 @@ class ExpressionVisitor : public TNodeVisitor {
 
   void VisitMod(ast::ModNode* mod_node) override;
 
-  std::set<std::string> get_vars() { return vars; }
+  std::unordered_set<std::string> get_vars() { return vars; }
 
  private:
-  std::set<std::string> vars;
+  std::unordered_set<std::string> vars;
 };
 }  // namespace sp

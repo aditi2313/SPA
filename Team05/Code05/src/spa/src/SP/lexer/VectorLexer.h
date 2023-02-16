@@ -1,12 +1,14 @@
 #pragma once
 
 #include <stack>
+#include <vector>
 
 #include "Lexer.h"
 namespace sp {
 /// <summary>
 /// ReverseLexer wraps around lexer
-/// to provide reverse navigation.
+/// to provide reverse navigation, within brackets
+/// as well as within semicolons.
 /// </summary>
 class VectorLexer {
  public:

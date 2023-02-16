@@ -93,6 +93,18 @@ class PatternClause : public Clause {
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
+class UsesClause : public Clause {
+public:
+    UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+        : Clause(std::move(arg1), std::move(arg2),
+            PQL::kStmtEntityName, PQL::kVariableEntityName) {}
+
+    EntityPtrList Index(
+        const EntityPtr& index,
+        const std::unique_ptr<MasterEntityFactory>& factory,
+        const std::unique_ptr<pkb::PKBRead>& pkb) override;
+};
+
 using ClausePtr = std::unique_ptr<Clause>;
 
 }  // namespace qps

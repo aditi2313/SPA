@@ -38,6 +38,8 @@ class PQL {
 
   inline static EntityName kModifiesRelId = "Modifies";
   inline static EntityName kPatternRelId = "pattern";
+  inline static EntityName kUsesRelId = "Uses";
+  inline static EntityName kParentlId = "Parent";
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;

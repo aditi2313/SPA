@@ -5,18 +5,25 @@ namespace qps {
 
 bool Validator::validate(std::unique_ptr<Query> &query) {
   std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
-  std::vector<std::string> synonyms = query->get_selected_synonyms();
+  std::vector<SynonymPtr> synonyms = query->get_declared_synonyms();
 
   return IsWildcard(clauses);
 }
 
 // TODO(Sarthak) check for the type of synonym
 // used to ensure that the design entity is correct
-// bool Validator::DesignEntitySynonyms(
-//    std::vector<std::unique_ptr<Clause>> clauses,
-//    std::vector<std::string> synonyms) {
-//  return true;
-// }
+ bool Validator::DesignEntitySynonyms(
+    std::vector<std::unique_ptr<Clause>> clauses,
+    std::vector<SynonymPtr> synonyms) {
+     for (auto & Clause : clauses) {
+         if (Clause == ModifiesClause) {
+
+         }
+     }
+
+
+  return true;
+ }
 
 // Returns false if the clauses have a wildcard
 // declared as arg1 in the Modifies/Uses relationship

@@ -18,6 +18,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kParentlId) {
+      return std::make_unique<Uses
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -65,6 +68,13 @@ EntityPtrList PatternClause::Index(
       expression += c;
     }
   }
+
+  EntityPtrList UsesClause::Index(
+      const EntityPtr & index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) {
+
+)
 
   sp::SourceProcessor source_processor;
   auto ASTNode = source_processor.ParseExpression(expression);

@@ -1,3 +1,5 @@
+#include <set>
+
 #include "SP/visitors/ExpressionVisitor.h"
 #include "UsesVisitor.h"
 

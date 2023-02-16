@@ -1,7 +1,7 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
+#include <unordered_set>
 #include <catch.hpp>
 
 #include "PKB/PKBRead.h"
@@ -20,7 +20,7 @@ TEST_CASE("PKB read and write test") {
     std::unique_ptr<PKBRelationTable> table =
         std::make_unique<PKBRelationTable>();
     PKBWrite pkb_write(std::move(table));
-    std::vector<std::string> variables = {"a", "b", "c"};
+    std::unordered_set<std::string> variables = {"a", "b", "c"};
     IndexableTable<ModifiesData> expected_table;
     expected_table.add_row(10, ModifiesData(10, variables));
 

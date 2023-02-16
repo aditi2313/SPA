@@ -1,6 +1,6 @@
 #include <memory>
 #include <string>
-#include <vector>
+#include <unordered_set>
 #include <list>
 #include <catch.hpp>
 
@@ -12,7 +12,7 @@
 using namespace pkb;  // NOLINT
 using namespace qps;  // NOLINT
 
-using modifies_data = std::pair<int, std::vector<std::string>>;
+using modifies_data = std::pair<int, std::unordered_set<std::string>>;
 
 // Helper method for testing
 std::unique_ptr<PKBRead> InitializePKB(

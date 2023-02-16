@@ -20,7 +20,7 @@ ast::ExprNodePtr ExpressionParser::parse(VectorLexer& lxr) {
     auto op = lxr.get_tok();
     lxr.Decrement();
     auto res = parse(lxr);
-    return std::make_unique<ast::OpNode>(op, std::move(term), std::move(res));
+    return std::make_unique<ast::OpNode>(op, std::move(res), std::move(term));
   }
   return std::move(term);
 }

@@ -6,10 +6,10 @@
 
 #include "../../spa/src/QPS/QPS.h"
 #include "../../spa/src/SP/SourceProcessor.h"
+#include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
-#include "SP/validators/ProgramValidator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -50,8 +50,8 @@ void TestWrapper::parse(std::string filename) {
   // Validate AST
   auto validator = sp::ProgramValidator(root);
   if (!validator.Validate()) {
-      // TODO(aizatazhar) use custom exception and at the validator level
-      throw std::runtime_error("Program is not semantically valid");
+    // TODO(aizatazhar) use custom exception and at the validator level
+    throw std::runtime_error("Program is not semantically valid");
   }
 
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));

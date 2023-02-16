@@ -91,10 +91,24 @@ class PKBWrite {
   /// </summary>
   /// <returns>The unique pointer for PKB Relation Table</returns>
   inline std::unique_ptr<PKBRelationTable> EndWrite() {
+    ProcessFollows();
+    ProcessParent();
     return std::move(pkb_relation_table_);
   }
 
  private:
+  /// <summary>
+  /// Processes the
+  /// current follows table
+  /// to obtain all the Follows* lines.
+  /// </summary>
+  void ProcessFollows();
+
+  /// <summary>
+  /// Processes the current
+  /// parent table to obtain all the Parent* lines.
+  /// </summary>
+  void ProcessParent();
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };
 }  // namespace pkb

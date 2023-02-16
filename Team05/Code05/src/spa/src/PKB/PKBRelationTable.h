@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
-#include <vector>
 
 #include "data/AssignData.h"
 #include "data/FollowsData.h"
@@ -42,7 +41,7 @@ class PKBRelationTable {
   std::unordered_set<std::string> procedures_;
 
   void add_modifies_data(const int line,
-                         const std::vector<std::string>& variables) {
+                         const std::unordered_set<std::string>& variables) {
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
 
@@ -54,7 +53,8 @@ class PKBRelationTable {
   }
 
   void add_uses_data(const int line,
-                         const std::vector<std::string>& variable_names) {
+                         const std::unordered_set<std::string>&
+                                 variable_names) {
       uses_table_.add_row(line, UsesData(line, variable_names));
   }
 

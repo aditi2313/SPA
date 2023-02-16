@@ -13,13 +13,13 @@ using std::string;
 using std::vector;
 
 std::unique_ptr<pkb::ModifiesTable> InitialiseModifiesTestTable(
-    vector<vector<string>> variables);
+    vector<std::unordered_set<string>> variables);
 
 TEST_CASE("Test Modifies by variable Filter") {
-  vector<vector<string>> variables = {
+  vector<std::unordered_set<string>> variables = {
       {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
-  vector<vector<string>> result_variables = {{"a", "b", "c"}, {"a", "b"}};
+  vector<std::unordered_set<string>> result_variables = {{"a", "b", "c"}, {"a", "b"}};
   auto table = InitialiseModifiesTestTable(variables);
   std::unordered_set < string > filtered = {"a"};
   filter::ModifiesPredicateFilter variable_filter(
@@ -37,10 +37,10 @@ TEST_CASE("Test Modifies by variable Filter") {
 }
 
 TEST_CASE("Test ModifiesFilterByLine") {
-  vector<vector<string>> variables = {
+  vector<std::unordered_set<string>> variables = {
       {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
-  vector<vector<string>> result_variables = {{"a", "b", "c"}};
+  vector<std::unordered_set<string>> result_variables = {{"a", "b", "c"}};
   auto table = InitialiseModifiesTestTable(variables);
   filter::ModifiesIndexFilter line_filter(0);
 
@@ -51,7 +51,7 @@ TEST_CASE("Test ModifiesFilterByLine") {
 }
 
 std::unique_ptr<pkb::ModifiesTable> InitialiseModifiesTestTable(
-    vector<vector<string>> variables) {
+    vector<std::unordered_set<string>> variables) {
   std::unique_ptr<pkb::ModifiesTable> result =
       std::make_unique<pkb::ModifiesTable>();
   for (int i = 0; i < variables.size(); ++i) {

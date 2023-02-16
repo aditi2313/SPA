@@ -42,6 +42,9 @@ class OpNode : public ExprNode {
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
+  ExprNodePtr& get_left() { return left_; }
+  ExprNodePtr& get_right() { return right_; }
+
  private:
   sp::Token operation_;
   ExprNodePtr left_;

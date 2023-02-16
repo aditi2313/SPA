@@ -1,13 +1,8 @@
 #pragma once
 
-#include <catch.hpp>
-#include <memory>
-#include <string>
-#include <utility>
-
+#include "SP/SPTesting.h"
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/expression/ExpressionParser.h"
-#include "SP/parser/relations/RelationTesting.h"
 
 using namespace sp;  // NOLINT
 

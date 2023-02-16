@@ -1,10 +1,5 @@
 #pragma once
-
-#include <catch.hpp>
-#include <memory>
-#include <string>
-#include <utility>
-
+#include "SP/SPTesting.h"
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/expression/TermParser.h"
 

@@ -1,10 +1,8 @@
 #pragma once
 
-#include <memory>
-#include <string>
-#include <catch.hpp>
-#include "SP/parser/expression/FactorParser.h"
+#include "SP/SPTesting.h"
 #include "SP/lexer/Lexer.h"
+#include "SP/parser/expression/FactorParser.h"
 
 // INTEGER : 0 | NZDIGIT ( DIGIT )*
 // NAME: LETTER (LETTER | DIGIT)*

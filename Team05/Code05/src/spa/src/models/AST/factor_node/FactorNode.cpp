@@ -11,29 +11,5 @@ void ConstNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitConst(this);
 }
 
-void BracketNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitBracket(this);
-}
-
-void PlusNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitPlus(this);
-}
-
-void MinusNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitMinus(this);
-}
-
-void TimesNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitTimes(this);
-}
-
-void DivNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitDiv(this);
-}
-
-void ModNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
-  visitor->VisitMod(this);
-}
-
 void OpNode::AcceptVisitor(sp::TNodeVisitor* visitor) {}
 }  // namespace ast

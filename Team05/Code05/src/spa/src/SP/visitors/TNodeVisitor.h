@@ -31,27 +31,11 @@ class TNodeVisitor {
 
   virtual void VisitCall(ast::CallNode* call_node) {}
 
-  virtual void VisitFactor(ast::FactorNode* factor_node) {}
-
   virtual void VisitExpr(ast::ExprNode* expr_node) {}
-
-  virtual void VisitTerm(ast::TermNode* term_node) {}
 
   virtual void VisitVar(ast::VarNode* var_node) {}
 
   virtual void VisitConst(ast::ConstNode* const_node) {}
-
-  virtual void VisitBracket(ast::BracketNode *) {}
-
-  virtual void VisitPlus(ast::PlusNode* plus_node) {}
-
-  virtual void VisitMinus(ast::MinusNode* minus_node) {}
-
-  virtual void VisitTimes(ast::TimesNode* times_node) {}
-
-  virtual void VisitDiv(ast::DivNode* div_node) {}
-
-  virtual void VisitMod(ast::ModNode* mod_node) {}
 
   // Relational nodes
 

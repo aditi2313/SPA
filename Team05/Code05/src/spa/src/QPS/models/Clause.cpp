@@ -18,6 +18,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsRelId) {
+    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -36,8 +39,29 @@ EntityPtrList ModifiesClause::Index(
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
     result.push_back(
-        factory->CreateInstance(PQL::kVariableEntityName, var));
+        factory->CreateInstance(RHS(), var));
   }
+
+  return result;
+}
+
+
+EntityPtrList FollowsClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line);
+  result.push_back(factory->CreateInstance(
+      RHS(), data.get_follows()));
 
   return result;
 }
@@ -70,7 +94,7 @@ EntityPtrList PatternClause::Index(
   auto ASTNode = source_processor.ParseExpression(expression);
   auto filter = std::make_unique<AssignPredicateFilter>(
       [&](auto data) {
-        return data->TestExpression(ASTNode);
+        return data.TestExpression(ASTNode);
       });
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();

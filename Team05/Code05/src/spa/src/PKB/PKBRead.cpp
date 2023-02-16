@@ -19,9 +19,32 @@ std::unique_ptr<PKBResult<ModifiesTable>> PKBRead::Modifies(
 }
 
 std::unique_ptr<PKBResult<AssignTable>> PKBRead::Assigns(
-    IndexableFilterPtr<std::shared_ptr<AssignData>> filter) {
+    IndexableFilterPtr<AssignData> filter) {
   auto result_table =
       filter->FilterTable(relation_table_->assign_table_.copy());
   return create_result(std::move(result_table));
+}
+
+std::unique_ptr<PKBResult<UsesTable>> PKBRead::Uses(
+        IndexableFilterPtr<UsesData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(relation_table_->uses_table_.copy()));
+    return create_result(std::move(result_table));
+}
+
+std::unique_ptr<PKBResult<FollowsTable>> PKBRead::Follows(
+        IndexableFilterPtr<FollowsData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(
+                    relation_table_->follows_table_.copy()));
+    return create_result(std::move(result_table));
+}
+
+std::unique_ptr<PKBResult<ParentTable>> PKBRead::Parent(
+        IndexableFilterPtr<ParentData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(
+                    relation_table_->parent_table_.copy()));
+    return create_result(std::move(result_table));
 }
 }  // namespace pkb

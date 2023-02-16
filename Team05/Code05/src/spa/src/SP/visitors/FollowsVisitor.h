@@ -9,9 +9,9 @@
 #include "SP/visitors/TNodeVisitor.h"
 
 namespace sp {
-class UseVisitor : public PKBWritingVisitor {
+class FollowsVisitor : public PKBWritingVisitor {
  public:
-  explicit UseVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
+  explicit FollowsVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
   void VisitProgram(ast::ProgramNode* program_node) override;
@@ -20,8 +20,6 @@ class UseVisitor : public PKBWritingVisitor {
 
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
 
-  void VisitAssign(ast::AssignNode* assign_node) override;
-
-  void VisitPrint(ast::PrintNode* assign_node) override;
+  // TODO(nhjryan): implement while and if-else visits for follows
 };
 }  // namespace sp

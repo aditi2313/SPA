@@ -23,3 +23,7 @@ std::unique_ptr<RelFactor> InitialiseSub() {
       std::make_unique<OpNode>(Token::kTokMinus, a->Copy(), b->Copy());
   return MakeFactor(std::move(minus_expr));
 }
+
+ExprNodePtr CreateOp(ExprNodePtr left, ExprNodePtr right, Token tok) {
+  return std::make_unique<OpNode>(tok, std::move(left), std::move(right));
+}

@@ -73,6 +73,20 @@ TEST_CASE("Expression parser parses large mix") {
   REQUIRE(expr_parser.parse(lxr)->DeepEquals(*test));
 }
 
+TEST_CASE("Expression parser parses large nested brackets") {
+  Lexer lxr("((((x+y)-z)+z)*y)-lemon");
+
+  auto add_x_y = CreateOp(x->Copy(), y->Copy(), Token::kTokPlus);
+  auto sub_x_z = CreateOp(std::move(add_x_y), z->Copy(), Token::kTokMinus);
+  auto add_z_z = CreateOp(std::move(sub_x_z), z->Copy(), Token::kTokPlus);
+  auto mult_z_y = CreateOp(std::move(add_z_z), y->Copy(), Token::kTokTimes);
+  auto sub_y_lemon =
+      CreateOp(std::move(mult_z_y), lemon->Copy(), Token::kTokMinus);
+
+  ExpressionParser expr_parser;
+  REQUIRE(expr_parser.parse(lxr)->DeepEquals(*sub_y_lemon));
+}
+
 ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,
                              ast::ExprNodePtr prev) {
   for (int i = 0; i < variables.size(); ++i) {

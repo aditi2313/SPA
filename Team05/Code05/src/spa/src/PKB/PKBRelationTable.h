@@ -3,7 +3,6 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
-#include <unordered_set>
 
 #include "data/AssignData.h"
 #include "data/FollowsData.h"

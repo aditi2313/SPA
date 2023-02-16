@@ -41,6 +41,8 @@ class TNodeVisitor {
 
   virtual void VisitConst(ast::ConstNode* const_node) {}
 
+  virtual void VisitBracket(ast::BracketNode *) {}
+
   virtual void VisitPlus(ast::PlusNode* plus_node) {}
 
   virtual void VisitMinus(ast::MinusNode* minus_node) {}

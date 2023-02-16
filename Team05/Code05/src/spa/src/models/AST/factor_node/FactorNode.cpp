@@ -11,6 +11,10 @@ void ConstNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitConst(this);
 }
 
+void BracketNode::AcceptVisitor(sp::TNodeVisitor *visitor) {
+  visitor->VisitBracket(this);
+}
+
 void PlusNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitPlus(this);
 }

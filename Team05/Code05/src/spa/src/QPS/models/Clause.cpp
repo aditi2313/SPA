@@ -18,9 +18,6 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
-  if (rel_ref_ident == PQL::kParentlId) {
-      return std::make_unique<Uses
-  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -51,30 +48,66 @@ EntityPtrList ModifiesClause::Index(
 // other relationships first, then rewrite/refactor
 // this method in a separate PR that also closes Issue 58.
 EntityPtrList PatternClause::Index(
-    const EntityPtr &index,
+    const EntityPtr& index,
+    const std::unique_ptr<MasterEntityFactory>& factory,
+    const std::unique_ptr<pkb::PKBRead>& pkb) {
+    EntityPtrList result;
+    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+    int line = line_arg->get_number();
+    // Preprocess expression string to insert whitespace
+    std::string expression = "";
+    ExpressionArg expression_arg = dynamic_cast<ExpressionArg&>(
+        *arg2_.get());
+    for (char c : expression_arg.get_expression()) {
+        if (c == '+' || c == '-') {
+            expression += " " + std::string(1, c) + " ";
+        }
+        else {
+            expression += c;
+        }
+    }
+} //thank you for finding the missing bracket
+
+EntityPtrList ParentClause::Index(
+    const EntityPtr & index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
-  EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
-  int line = line_arg->get_number();
-  // Preprocess expression string to insert whitespace
-  std::string expression = "";
-  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
-      *arg2_.get());
-  for (char c : expression_arg.get_expression()) {
-    if (c == '+' || c == '-') {
-      expression += " " + std::string(1, c) + " ";
-    } else {
-      expression += c;
-    }
-  }
 
-  EntityPtrList UsesClause::Index(
-      const EntityPtr & index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) {
+    EntityPtrList result;
+    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+    int line = line_arg->get_number();
+    auto filter = std::make_unique<ParentIndexFilter>(line);
+    auto pkb_res = pkb->Parent(std::move(filter))->get_result();
 
+    if (!pkb_res->exists(line)) return result;
+
+    auto data = pkb_res->get_row(line);
+    result.push_back(factory->CreateInstance(
+        RHS(), data.get_parent()));
+
+    return result;
+}
+
+EntityPtrList UsesClause::Index(
+    const EntityPtr& index,
+    const std::unique_ptr<MasterEntityFactory>& factory,
+    const std::unique_ptr<pkb::PKBRead>& pkb) {
+
+    EntityPtrList result;
+    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+    int line = line_arg->get_number();
+    auto filter = std::make_unique<UsesIndexFilter>(line);
+    auto pkb_res = pkb->Uses(std::move(filter))->get_result();
+
+    if (!pkb_res->exists(line)) return result;
+
+    auto data = pkb_res->get_row(line);
+    result.push_back(factory->CreateInstance(
+        RHS(), data.get_variables()));
+
+    return result;
 )
+   
 
   sp::SourceProcessor source_processor;
   auto ASTNode = source_processor.ParseExpression(expression);

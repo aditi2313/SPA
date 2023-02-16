@@ -13,6 +13,7 @@ enum class Token {
     kTokWhile,
     kTokIf,
     kTokElse,
+    kTokThen,
 
     kTokIdent,
     kTokInteger,

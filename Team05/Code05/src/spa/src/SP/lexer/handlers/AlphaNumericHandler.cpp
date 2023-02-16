@@ -9,6 +9,7 @@ const char kWhile[] = "while";
 const char kCall[] = "call";
 const char kIf[] = "if";
 const char kElse[] = "else";
+const char kThen[] = "then";
 
 namespace sp {
 std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
@@ -45,6 +46,9 @@ std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
   }
   if (word == kElse) {
     return {Token::kTokElse};
+  }
+  if (word == kThen) {
+    return {Token::kTokThen};
   }
   return {Token::kTokIdent};
 }

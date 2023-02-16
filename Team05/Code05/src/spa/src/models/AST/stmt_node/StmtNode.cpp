@@ -19,4 +19,12 @@ void PrintNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
 void CallNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitCall(this);
 }
+
+void WhileNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitWhile(this);
+}
+
+void IfNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitIf(this);
+}
 }  // namespace ast

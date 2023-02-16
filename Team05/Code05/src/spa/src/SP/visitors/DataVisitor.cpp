@@ -66,4 +66,19 @@ void DataVisitor::VisitMod(ast::ModNode* node) {
   node->get_term()->AcceptVisitor(this);
 }
 
+void DataVisitor::VisitWhile(ast::WhileNode* while_node) {
+  pkb_ptr_->add_while(while_node->get_line());
+  pkb_ptr_->add_stmt(while_node->get_line());
+  while_node->get_cond()->AcceptVisitor(this);
+  while_node->get_stmts()->AcceptVisitor(this);
+}
+
+void DataVisitor::VisitIf(ast::IfNode* if_node) {
+  pkb_ptr_->add_if(if_node->get_line());
+  pkb_ptr_->add_stmt(if_node->get_line());
+  if_node->get_cond()->AcceptVisitor(this);
+  if_node->get_else()->AcceptVisitor(this);
+  if_node->get_then()->AcceptVisitor(this);
+}
+
 }  // namespace sp

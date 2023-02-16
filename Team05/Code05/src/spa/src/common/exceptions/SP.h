@@ -1,8 +1,25 @@
 #pragma once
 #include <exception>
 #include <string>
+
+#include "models/AST/Token.h"
 // exception file for SP
 namespace sp {
+
+// TODO(Gab): Apply this function to the rest of the parser
+void AssertExpectedToken(Token to_test, Token expected, std::string token);
+
+class LexerException : public std::exception {
+ public:
+  explicit LexerException(const std::string msg)
+      : message(kLexerExceptionMessage + msg) {}
+  const char* what() const throw() override { return message.c_str(); }
+
+ private:
+  const std::string message;
+  static const char kLexerExceptionMessage[];
+};
+
 class ParseException : public std::exception {
  public:
   explicit ParseException(const std::string msg) : message(msg) {}
@@ -38,4 +55,5 @@ class ParseAssignSyntaxException : public ParseException {
   ParseAssignSyntaxException()
       : ParseException("Exception in parsing of assign") {}
 };
+
 }  // namespace sp

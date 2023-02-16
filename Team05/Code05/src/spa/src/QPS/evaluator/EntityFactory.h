@@ -7,6 +7,7 @@
 
 #include "models/EntityExport.h"
 #include "PKB/PKBRead.h"
+#include "common/Exceptions.h"
 
 using namespace models;  // NOLINT
 

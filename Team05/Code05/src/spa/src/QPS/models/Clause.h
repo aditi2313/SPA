@@ -81,6 +81,19 @@ class ModifiesClause : public Clause {
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
+// RS between statements
+class FollowsClause : public Clause {
+ public:
+  FollowsClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2),
+               PQL::kStmtEntityName, PQL::kStmtEntityName) {}
+
+  EntityPtrList Index(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+};
+
 class PatternClause : public Clause {
  public:
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)

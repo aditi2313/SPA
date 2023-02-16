@@ -5,9 +5,11 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <functional>
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
+#include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/Exceptions.h"
 
@@ -35,6 +37,12 @@ class PredicateFilter
     }
 
  private:
-    std::function<bool(T)> predicate_;
+  std::function<bool(T)> predicate_;
 };
+
+using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;
+using UsesPredicateFilter = PredicateFilter<pkb::UsesData>;
+using FollowsPredicateFilter = PredicateFilter<pkb::FollowsData>;
+using ParentPredicateFilter = PredicateFilter<pkb::ParentData>;
+using AssignPredicateFilter = PredicateFilter<pkb::AssignData>;
 }  // namespace filter

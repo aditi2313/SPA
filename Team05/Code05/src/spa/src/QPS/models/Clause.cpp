@@ -4,7 +4,8 @@
 #include "Clause.h"
 #include "QPS/models/PQL.h"
 #include "SP/SourceProcessor.h"
-#include "common/filter/filters/AssignFilter.h"
+#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/PredicateFilter.h"
 
 using namespace filter;  // NOLINT
 
@@ -17,6 +18,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsRelId) {
+    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -27,7 +31,7 @@ EntityPtrList ModifiesClause::Index(
   EntityPtrList result;
   IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
   int line = line_arg->get_number();
-  auto filter = std::make_unique<ModifiesFilterByLine>(line);
+  auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
 
   if (!pkb_res->exists(line)) return result;
@@ -35,12 +39,38 @@ EntityPtrList ModifiesClause::Index(
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
     result.push_back(
-        factory->CreateInstance(PQL::kVariableEntityName, var));
+        factory->CreateInstance(RHS(), var));
   }
 
   return result;
 }
 
+
+EntityPtrList FollowsClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line);
+  result.push_back(factory->CreateInstance(
+      RHS(), data.get_follows()));
+
+  return result;
+}
+
+// TODO(JL): This method is a bit messy because it calls the
+// PredicateFilter inside of a function meant for Indexing.
+// Pattern is kind of tricky, will move on to
+// other relationships first, then rewrite/refactor
+// this method in a separate PR that also closes Issue 58.
 EntityPtrList PatternClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
@@ -62,7 +92,10 @@ EntityPtrList PatternClause::Index(
 
   sp::SourceProcessor source_processor;
   auto ASTNode = source_processor.ParseExpression(expression);
-  auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
+  auto filter = std::make_unique<AssignPredicateFilter>(
+      [&](auto data) {
+        return data.TestExpression(ASTNode);
+      });
   auto pkb_res = pkb->Assigns(std::move(filter));
   auto data = pkb_res->get_result()->get_indexes();
   if (data.find(line) == data.end()) return result;

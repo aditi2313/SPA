@@ -28,11 +28,11 @@ std::unique_ptr<ast::CondExprNode> ParseDoubleCond(Lexer& lxr) {
   auto right = cond_expr_parser.parse(lxr);
   AssertCloseBracket(lxr);
 
-  if (mid == kTokAnd) {
+  if (mid == Token::kTokAnd) {
     return std::make_unique<ast::AndExprNode>(std::move(left),
                                               std::move(right));
   }
-  if (mid == kTokOr) {
+  if (mid == Token::kTokOr) {
     return std::make_unique<ast::OrExprNode>(std::move(left), std::move(right));
   }
   throw ParseRelationSyntaxException("Expected && or ||");

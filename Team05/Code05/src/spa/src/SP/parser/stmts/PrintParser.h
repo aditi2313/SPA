@@ -11,7 +11,7 @@ namespace sp {
 class PrintParser : Parser<ast::PrintNode> {
  public:
   std::unique_ptr<ast::PrintNode> parse(Lexer& lxr) override {
-    if (lxr.GetTokAndIncrement() != kTokIdent) {
+    if (lxr.GetTokAndIncrement() != Token::kTokIdent) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("print should be followed by a name");
     }
@@ -19,7 +19,7 @@ class PrintParser : Parser<ast::PrintNode> {
     std::string var_name = lxr.get_ident();
     std::cout << "print " + lxr.get_ident() << std::endl;
 
-    if (lxr.GetTokAndIncrement() != kTokSemicolon) {
+    if (lxr.GetTokAndIncrement() != Token::kTokSemicolon) {
       // TODO(aizatazhar): use custom exception
       throw std::runtime_error("expected end of a statement");
     }

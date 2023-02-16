@@ -29,4 +29,5 @@ void ModifiesVisitor::VisitRead(ast::ReadNode* read_node) {
   std::vector<std::string> vars = {read_node->get_var()->get_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
 }
+
 }  // namespace sp

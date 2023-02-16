@@ -54,7 +54,8 @@ class PKBRelationTable {
   }
 
   void add_uses_data(const int line,
-                         const std::unordered_set<std::string>& variable_names) {
+                         const std::unordered_set<std::string>&
+                                 variable_names) {
       uses_table_.add_row(line, UsesData(line, variable_names));
   }
 

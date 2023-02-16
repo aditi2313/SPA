@@ -19,7 +19,8 @@ TEST_CASE("Test Modifies by variable Filter") {
   vector<std::unordered_set<string>> variables = {
       {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
-  vector<std::unordered_set<string>> result_variables = {{"a", "b", "c"}, {"a", "b"}};
+  vector<std::unordered_set<string>> result_variables =
+          {{"a", "b", "c"}, {"a", "b"}};
   auto table = InitialiseModifiesTestTable(variables);
   std::unordered_set < string > filtered = {"a"};
   filter::ModifiesPredicateFilter variable_filter(

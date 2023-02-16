@@ -21,6 +21,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kFollowsRelId) {
     return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsTRelId) {
+    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -63,6 +66,14 @@ EntityPtrList FollowsClause::Index(
   result.push_back(factory->CreateInstance(
       RHS(), data.get_follows()));
 
+  return result;
+}
+
+EntityPtrList FollowsTClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
   return result;
 }
 

@@ -20,6 +20,8 @@ class FollowsVisitor : public PKBWritingVisitor {
 
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
 
-  // TODO(nhjryan): implement while and if-else visits for follows
+  void VisitIf(ast::IfNode* if_node) override;
+
+  void VisitWhile(ast::WhileNode* while_node) override;
 };
 }  // namespace sp

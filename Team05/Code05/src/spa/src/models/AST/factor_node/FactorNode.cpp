@@ -11,7 +11,7 @@ void ConstNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitConst(this);
 }
 
-void BracketNode::AcceptVisitor(sp::TNodeVisitor *visitor) {
+void BracketNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitBracket(this);
 }
 
@@ -34,4 +34,6 @@ void DivNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
 void ModNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitMod(this);
 }
+
+void OpNode::AcceptVisitor(sp::TNodeVisitor* visitor) {}
 }  // namespace ast

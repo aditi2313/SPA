@@ -4,7 +4,9 @@
 #include <typeinfo>
 #include <utility>
 
+#include "common/Utiity.h"
 #include "models/AST/TNode.h"
+#include "models/AST/Token.h"
 
 namespace ast {
 
@@ -12,6 +14,38 @@ class ExprNode : public TNode {
  public:
   virtual std::unique_ptr<ExprNode> Copy() = 0;
   virtual bool DeepEquals(const ExprNode&) = 0;
+};
+
+typedef std::unique_ptr<ExprNode> ExprNodePtr;
+class OpNode : public ExprNode {
+ public:
+  OpNode(sp::Token operation, ExprNodePtr left, ExprNodePtr right)
+      : operation_(operation) {
+    left_ = std::move(left);
+    right_ = std::move(right);
+  }
+
+  bool DeepEquals(const ExprNode& other) override {
+    if (util::InstanceOf<OpNode>(other)) {
+      const OpNode& o_v = dynamic_cast<const OpNode&>(other);
+      return operation_ == o_v.operation_ && o_v.left_->DeepEquals(*left_) &&
+             o_v.right_->DeepEquals(*right_);
+    }
+    return false;
+  }
+
+  ExprNodePtr Copy() override {
+    auto res =
+        std::make_unique<OpNode>(operation_, left_->Copy(), right_->Copy());
+    return std::move(res);
+  }
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
+ private:
+  sp::Token operation_;
+  ExprNodePtr left_;
+  ExprNodePtr right_;
 };
 
 class TermNode : public ExprNode {
@@ -44,9 +78,7 @@ class VarNode : public FactorNode {
     return std::make_unique<VarNode>(var_name_);
   }
 
-  inline std::unique_ptr<TermNode> CopyTerm() override {
-    return CopyFactor();
-  }
+  inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor(); }
 
   inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
 
@@ -85,7 +117,7 @@ class ConstNode : public FactorNode {
 class BracketNode : public FactorNode {
  public:
   explicit BracketNode(std::unique_ptr<ExprNode> expr)
-       : expr_(std::move(expr)) {}
+      : expr_(std::move(expr)) {}
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
@@ -96,11 +128,7 @@ class BracketNode : public FactorNode {
   }
 
   bool DeepEquals(ExprNode const& other) override {
-    if (dynamic_cast<const ConstNode*>(&other)) {
-      const auto& o_v = dynamic_cast<const BracketNode&>(other);
-      return o_v.expr_->DeepEquals(*expr_);
-    }
-    return false;
+    return expr_->DeepEquals(other);
   }
 
   inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor(); }

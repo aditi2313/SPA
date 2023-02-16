@@ -32,7 +32,7 @@ EntityPtrList ModifiesClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
@@ -48,14 +48,13 @@ EntityPtrList ModifiesClause::Index(
   return result;
 }
 
-
 EntityPtrList FollowsClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
 
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<FollowsIndexFilter>(line);
   auto pkb_res = pkb->Follows(std::move(filter))->get_result();
@@ -74,11 +73,25 @@ EntityPtrList FollowsTClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line).get_follows_list();
+  for (auto stmt : data) {
+    result.push_back(factory->CreateInstance(
+        PQL::kStmtEntityName, stmt));
+  }
+
   return result;
 }
 
 // TODO(JL): This method is a bit messy because it calls the
-// PredicateFilter inside of a function meant for Indexing.
+// PredicateFilter inside of a function meant for Indexing.eva
 // Pattern is kind of tricky, will move on to
 // other relationships first, then rewrite/refactor
 // this method in a separate PR that also closes Issue 58.
@@ -87,7 +100,7 @@ EntityPtrList PatternClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   // Preprocess expression string to insert whitespace
   std::string expression = "";

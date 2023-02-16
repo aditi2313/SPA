@@ -32,9 +32,6 @@ class IntEntity : public Entity {
   }
 
   inline bool operator!=(Entity &other) override {
-    const std::type_info &ti1 = typeid(*this);
-    const std::type_info &ti2 = typeid(other);
-
     return !(*this == other);
   }
 

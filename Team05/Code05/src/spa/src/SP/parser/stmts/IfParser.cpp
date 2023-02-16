@@ -4,8 +4,8 @@ namespace sp {
 
 std::unique_ptr<ast::StmtLstNode> ParseCodeBlock(Lexer& lxr) {
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenCurly, "{");
-  StatementListParser stmt_parser;
-  auto result = stmt_parser.parse(lxr);
+  StatementListParser stmt_list_parser;
+  auto result = stmt_list_parser.parse(lxr);
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseCurly, "}");
   return std::move(result);
 }

@@ -82,6 +82,35 @@ class ConstNode : public FactorNode {
   int val_;
 };
 
+class BracketNode : public FactorNode {
+ public:
+  explicit BracketNode(std::unique_ptr<ExprNode> expr)
+       : expr_(std::move(expr)) {}
+
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
+
+  inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
+
+  inline std::unique_ptr<FactorNode> CopyFactor() override {
+    return std::make_unique<BracketNode>(BracketNode(expr_->Copy()));
+  }
+
+  bool DeepEquals(ExprNode const& other) override {
+    if (dynamic_cast<const ConstNode*>(&other)) {
+      const auto& o_v = dynamic_cast<const BracketNode&>(other);
+      return o_v.expr_->DeepEquals(*expr_);
+    }
+    return false;
+  }
+
+  inline std::unique_ptr<TermNode> CopyTerm() override { return CopyFactor(); }
+
+  inline std::unique_ptr<ExprNode> Copy() override { return CopyFactor(); }
+
+ private:
+  std::unique_ptr<ExprNode> expr_;
+};
+
 class PlusNode : public ExprNode {
  public:
   explicit PlusNode(std::unique_ptr<ExprNode> expr,

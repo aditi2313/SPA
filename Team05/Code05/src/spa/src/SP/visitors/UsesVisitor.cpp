@@ -29,7 +29,7 @@ void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
 
 
 void UsesVisitor::VisitPrint(ast::PrintNode* print_node) {
-  std::vector<std::string> vars = {print_node->get_var()->get_name()};
+  std::unordered_set<std::string> vars = {print_node->get_var()->get_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 

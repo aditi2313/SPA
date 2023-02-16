@@ -1,15 +1,17 @@
 #pragma once
 
 #include <stack>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "Lexer.h"
 namespace sp {
 /// <summary>
-/// ReverseLexer wraps around lexer
-/// to provide reverse navigation, within brackets
-/// as well as within semicolons.
+/// VectorLexer wraps around lexer
+/// to provide reverse navigation, within brackets, semicolons and relations.
+/// For instance, (a + x < a - b), If the pointer is on the first bracket,
+/// we will take "(a + x" as the string that this lexer will provide, with the
+/// pointer pointing at the end of aforementioned string.
 /// </summary>
 class VectorLexer {
  public:
@@ -17,6 +19,7 @@ class VectorLexer {
   /// Consumes the tokens in the given lxr until
   /// the end of the lexer and constructs a
   /// reverse lexer for that particular
+  /// sequence of tokens.
   /// </summary>
   /// <param name="lxr"></param>
   explicit VectorLexer(Lexer& lxr) {
@@ -31,7 +34,13 @@ class VectorLexer {
         brackets.pop();
       }
       tokens_.push_back(lxr.get_tok());
-      idents_.push_back(lxr.get_ident());
+      if (!IsStmtToken(lxr.get_tok())) {
+        // reduce space used
+        idents_.push_back("");
+      } else {
+        idents_.push_back(lxr.get_ident());
+      }
+
       numbers_.push_back(lxr.get_integer());
       lxr.Increment();
     }

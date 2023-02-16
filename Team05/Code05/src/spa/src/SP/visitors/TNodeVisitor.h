@@ -25,6 +25,12 @@ class TNodeVisitor {
 
   virtual void VisitPrint(ast::PrintNode* print_node) {}
 
+  virtual void VisitIf(ast::IfNode*);
+
+  virtual void VisitWhile(ast::WhileNode*);
+
+  virtual void VisitCall(ast::CallNode* call_node) {}
+
   virtual void VisitFactor(ast::FactorNode* factor_node) {}
 
   virtual void VisitExpr(ast::ExprNode* expr_node) {}
@@ -44,12 +50,6 @@ class TNodeVisitor {
   virtual void VisitDiv(ast::DivNode* div_node) {}
 
   virtual void VisitMod(ast::ModNode* mod_node) {}
-
-  virtual void VisitCall(ast::CallNode* call_node) {}
-
-  virtual void VisitIf(ast::IfNode*);
-
-  virtual void VisitWhile(ast::WhileNode*);
 
   // Relational nodes
 

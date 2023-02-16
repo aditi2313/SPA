@@ -66,7 +66,7 @@ EntityPtrList PatternClause::Index(
             expression += c;
         }
     }
-} //thank you for finding the missing bracket
+}//thank you for finding the missing bracket
 
 EntityPtrList ParentClause::Index(
     const EntityPtr & index,
@@ -102,29 +102,31 @@ EntityPtrList UsesClause::Index(
     if (!pkb_res->exists(line)) return result;
 
     auto data = pkb_res->get_row(line);
-    result.push_back(factory->CreateInstance(
-        RHS(), data.get_variables()));
+    for (auto var : data.get_variables()) {
+        result.push_back(
+            factory->CreateInstance(PQL::kVariableEntityName, var));
+    }
 
     return result;
-)
+}
    
 
-  sp::SourceProcessor source_processor;
-  auto ASTNode = source_processor.ParseExpression(expression);
-  auto filter = std::make_unique<AssignPredicateFilter>(
-      [&](auto data) {
-        return data.TestExpression(ASTNode);
-      });
-  auto pkb_res = pkb->Assigns(std::move(filter));
-  auto data = pkb_res->get_result()->get_indexes();
-  if (data.find(line) == data.end()) return result;
+sp::SourceProcessor source_processor;
+auto ASTNode = source_processor.ParseExpression(expression);
+auto filter = std::make_unique<AssignPredicateFilter>(
+    [&](auto data) {
+    return data.TestExpression(ASTNode);
+    });
+auto pkb_res = pkb->Assigns(std::move(filter));
+auto data = pkb_res->get_result()->get_indexes();
+if (data.find(line) == data.end()) return result;
 
-  for (auto a : data) {
-    result.push_back(
-        factory->CreateInstance(PQL::kAssignEntityName, a));
-  }
+for (auto a : data) {
+result.push_back(
+    factory->CreateInstance(PQL::kAssignEntityName, a));
+}
 
-  return result;
+return result;
 }
 
 Clause::~Clause() = default;

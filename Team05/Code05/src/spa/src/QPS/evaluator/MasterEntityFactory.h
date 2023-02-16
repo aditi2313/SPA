@@ -45,10 +45,6 @@ class MasterEntityFactory {
     return entity_factories_.at(entity_name)->CreateInstance(ident);
   }
 
-  inline EntityPtr CreateInstance(EntityName entity_name, std::vector<std::string> variables) {
-      return entity_factories_.at(entity_name)->CreateInstance(variables);
-  }
-
   inline EntityPtrList GetAllFromPKB(EntityName entity_name, PKBPtr &pkb) {
     return entity_factories_.at(entity_name)->GetAllFromPKB(pkb);
   }

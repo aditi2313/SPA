@@ -92,7 +92,7 @@ class PatternClause : public Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
-
+// Relationship between a stmt and a variable or vector of variables
 class UsesClause : public Clause {
 public:
     UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
@@ -104,7 +104,7 @@ public:
         const std::unique_ptr<MasterEntityFactory>& factory,
         const std::unique_ptr<pkb::PKBRead>& pkb) override;
 };
-
+// Relationship between s stmt and another stmt. 
 class ParentClause : public Clause {
 public:
     ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)

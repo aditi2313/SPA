@@ -16,14 +16,33 @@ bool Validator::validate(std::unique_ptr<Query> &query) {
     std::vector<std::unique_ptr<Clause>> clauses,
     std::vector<SynonymPtr> synonyms) {
      for (auto & Clause : clauses) {
-         if (Clause == ModifiesClause) {
-
+         if (typeid(*Clause).name() == "class ModifiesClause") {
+             return true;
          }
-     }
+         else if (typeid(*Clause).name() == "class UsesClause") {
+             return true;
+         }
+         else if (typeid(*Clause).name() == "class FollowsClause") {
+             return true;
+         }
+         else if (typeid(*Clause).name() == "class ParentClause") {
+             return true;
+         }
+         else if (typeid(*Clause).name() == "class AssignClause") {
+             return true;
+         }
+         else {
+             return true;
+         }
 
 
   return true;
  }
+//Uses: line(int), variables the line uses(vector)
+//Follows : line(int), the line that this line follows / comes after(int)
+//Parent : line(int), the line that is the parent of this line(int)
+//Modifies : line(int), variables that are being modified in this line(vector)
+//Assign : line(int), the variable that is being assigned to in that line(string), expression(unique pointer to ast::ExprNode)
 
 // Returns false if the clauses have a wildcard
 // declared as arg1 in the Modifies/Uses relationship

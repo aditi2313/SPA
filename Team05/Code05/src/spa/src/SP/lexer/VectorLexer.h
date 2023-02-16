@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <vector>
+#include <string>
 
 #include "Lexer.h"
 namespace sp {
@@ -18,7 +19,7 @@ class VectorLexer {
   /// reverse lexer for that particular
   /// </summary>
   /// <param name="lxr"></param>
-  VectorLexer(Lexer& lxr) {
+  explicit VectorLexer(Lexer& lxr) {
     std::stack<int> brackets;
     while (lxr.get_tok() != Token::kTokSemicolon &&
            lxr.get_tok() != Token::kTokEof && !IsRelationToken(lxr.get_tok())) {

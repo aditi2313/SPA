@@ -51,12 +51,12 @@ class ParseFactorSyntaxException : public ParseException {
 };
 
 class ParseAssignSyntaxException : public ParseException {
-public:
+ public:
   explicit ParseAssignSyntaxException(std::string additional)
       : ParseException(kParseAssignSyntaxMessage + additional) {}
   ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
 
-private:
+ private:
   static const char kParseAssignSyntaxMessage[];
 };
 

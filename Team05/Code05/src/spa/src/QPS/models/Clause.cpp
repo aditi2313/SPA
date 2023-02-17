@@ -132,13 +132,14 @@ EntityPtrList PatternClause::Index(
   if (pkb_res->empty()) return result;
   result.push_back(
       factory->CreateInstance(PQL::kAssignEntityName, line));
-  
+
   return result;
 }
 
 std::unique_ptr<ast::ExprNode> PatternClause::CreateASTFromExpressionArg(
     ExpressionArg *arg) {
   std::string expr_string = "";
+  std::cout << arg->get_expression() << "\n";
   for (char c : arg->get_expression()) {
     if (c == '+' || c == '-') {
       expr_string += " " + std::string(1, c) + " ";

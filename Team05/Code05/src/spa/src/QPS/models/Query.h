@@ -97,8 +97,16 @@ class Query {
     if (PQL::is_integer(token)) {
       return std::make_unique<IntegerArg>(stoi(token));
     }
-
-    return std::make_unique<ExpressionArg>(token);
+    
+    // Expression Arg
+    if (PQL::is_pattern_wildcard(token)) {
+      // Remove first and last wildcard characters
+      token.pop_back();
+      token = token.substr(1);
+      return std::make_unique<ExpressionArg>(token, true);
+    } else {
+      return std::make_unique<ExpressionArg>(token, false);
+    }
   }
 
  private:

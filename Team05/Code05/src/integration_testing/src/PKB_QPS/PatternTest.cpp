@@ -51,9 +51,9 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> expected_results{"1", "2"};
     REQUIRE(actual_results == expected_results);
   }
-//
-//  SECTION("pattern a(_, \"x+y\") should return correct results") {
-//    std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
+
+//  SECTION("pattern a(_, _\"x\"_) should return correct results") {
+//    std::string query_string = "assign a; Select a pattern a(_, _\"x\"_)";
 //    std::list<std::string> actual_results;
 //    qps.evaluate(query_string, actual_results, pkb);
 //

@@ -1,4 +1,4 @@
-#include "RelationTesting.h"
+#include "SP/SPTesting.h"
 
 template <class TestedClass>
 void TestRelExprClass(std::string input, sp::RelExprParser& parser) {

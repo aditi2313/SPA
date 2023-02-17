@@ -4,30 +4,24 @@
 #include <stdexcept>
 #include <utility>
 
+#include "TermParser.h"
+
 namespace sp {
 
-std::unique_ptr<ast::ExprNode> ExpressionParser::parse(Lexer& lxr) {
-  // todo(Gab): Bring code for expression here
-  if (lxr.GetTokAndIncrement() != Token::kTokIdent) {
-    // TODO(aizatazhar): use custom exception
-    throw std::runtime_error("expected an expression");
+ast::ExprNodePtr ExpressionParser::parse(Lexer& lxr) {
+  VectorLexer v_lexer(lxr);
+  return parse(v_lexer);
+}
+
+ast::ExprNodePtr ExpressionParser::parse(VectorLexer& lxr) {
+  TermParser term_parser;
+  auto term = term_parser.parse(lxr);
+  if (lxr.get_tok() == Token::kTokPlus || lxr.get_tok() == Token::kTokMinus) {
+    auto op = lxr.get_tok();
+    lxr.Decrement();
+    auto res = parse(lxr);
+    return std::make_unique<ast::OpNode>(op, std::move(res), std::move(term));
   }
-
-  auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
-
-  Token op = lxr.GetTokAndIncrement();
-  auto rhs = std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
-
-  lxr.Increment();
-  if (op == Token::kTokPlus) {
-    return std::make_unique<ast::PlusNode>(
-        ast::PlusNode(std::move(lhs), std::move(rhs)));
-  } else if (op == Token::kTokMinus) {
-    return std::make_unique<ast::MinusNode>(
-        ast::MinusNode(std::move(lhs), std::move(rhs)));
-  } else {
-    // TODO(aizatazhar): use custom exception
-    throw std::runtime_error("unknown token");
-  }
+  return std::move(term);
 }
 }  // namespace sp

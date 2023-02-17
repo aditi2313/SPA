@@ -49,5 +49,7 @@ enum class Token {
 };
 
 bool IsStmtToken(Token token);
+bool IsKeyWordToken(Token token);
+bool IsRelationToken(Token token);
 
 }  // namespace sp

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <memory>
+#include <string>
 #include <utility>
 #include <catch.hpp>
 
@@ -22,3 +22,5 @@ std::unique_ptr<VarNode> MakeVar(std::string var_name);
 std::unique_ptr<RelFactor> InitialiseAdd();
 
 std::unique_ptr<RelFactor> InitialiseSub();
+
+ExprNodePtr CreateOp(ExprNodePtr left, ExprNodePtr right, Token tok);

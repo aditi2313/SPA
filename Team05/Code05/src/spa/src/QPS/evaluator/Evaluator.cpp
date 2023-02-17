@@ -52,7 +52,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   // Query PKB with LHS possible values
   for (auto &index : LHS) {
     EntityPtrList results;
-    if (arg2->IsWildcard() || arg2->IsExpression()) {
+    if (arg2->IsWildcard()) {
       // Just index and return all
       results = clause->Index(index, master_entity_factory_, pkb_);
     } else {

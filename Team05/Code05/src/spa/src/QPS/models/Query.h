@@ -75,7 +75,8 @@ class Query {
   inline bool operator==(const Query &other) const {
     if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
     if (!util::CompareVectorOfPointers(
-        synonym_declarations_, other.synonym_declarations_)) return false;
+        synonym_declarations_, other.synonym_declarations_))
+      return false;
 
     return selected_synonyms_ == other.selected_synonyms_;
   }

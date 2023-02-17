@@ -8,6 +8,7 @@
 #include "Argument.h"
 #include "PKB/PKBRead.h"
 #include "QPS/evaluator/MasterEntityFactory.h"
+#include "common/filter/filters/PredicateFilter.h"
 #include "QueryResult.h"
 
 namespace qps {
@@ -24,7 +25,7 @@ class Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
-  inline EntityPtrList Filter(
+  inline virtual EntityPtrList Filter(
       const EntityPtr &index,
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
@@ -117,6 +118,15 @@ class PatternClause : public Clause {
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  EntityPtrList Filter(
+      const EntityPtr &index,
+      const EntityPtrList &RHS_filter_values,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+ private:
+  std::unique_ptr<ast::ExprNode> CreateASTFromExpressionArg(ExpressionArg *arg);
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

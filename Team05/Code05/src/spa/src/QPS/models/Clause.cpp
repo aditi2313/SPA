@@ -102,12 +102,13 @@ EntityPtrList PatternClause::Filter(
 
   std::unique_ptr<AssignPredicateFilter> filter;
 
-  auto AST = CreateASTFromExpressionArg(
-      dynamic_cast<ExpressionArg *>(dynamic_cast<ExpressionArg *>(arg2_.get())));
+  auto expr_arg = dynamic_cast<ExpressionArg *>(arg2_.get());
+  auto AST = CreateASTFromExpressionArg(expr_arg);
 
   filter = std::make_unique<AssignPredicateFilter>(
       [&](pkb::AssignData data) {
-        return data.get_line() == line && data.TestExpression(AST);
+        return data.get_line() == line
+            && data.TestExpression(AST, expr_arg->is_exact());
       });
 
   auto pkb_res = pkb->Assigns(std::move(filter))->get_result();
@@ -139,7 +140,6 @@ EntityPtrList PatternClause::Index(
 std::unique_ptr<ast::ExprNode> PatternClause::CreateASTFromExpressionArg(
     ExpressionArg *arg) {
   std::string expr_string = "";
-  std::cout << arg->get_expression() << "\n";
   for (char c : arg->get_expression()) {
     if (c == '+' || c == '-') {
       expr_string += " " + std::string(1, c) + " ";

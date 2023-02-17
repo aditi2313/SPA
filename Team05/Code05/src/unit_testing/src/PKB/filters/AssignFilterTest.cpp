@@ -16,10 +16,10 @@ TEST_CASE("Assign Filter test") {
         std::make_unique<ast::ConstNode>(2);
     std::unique_ptr<ast::ConstNode> const3 =
         std::make_unique<ast::ConstNode>(3);
-    std::unique_ptr<ast::MinusNode> minus1 =
-        std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
-    std::unique_ptr<ast::ExprNode> plus1 =
-        std::make_unique<ast::PlusNode>(std::move(minus1), std::move(const1));
+    std::unique_ptr<ast::OpNode> minus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokMinus, std::move(const2), std::move(const3));
+    std::unique_ptr<ast::ExprNode> plus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokPlus, std::move(minus1), std::move(const1));
 
     auto plus2 = plus1->Copy();
     auto plus3 = plus2->Copy();
@@ -34,10 +34,8 @@ TEST_CASE("Assign Filter test") {
     table = writer.EndWrite();
 
     pkb::PKBRead reader(std::move(table));
-    auto result = reader.Assigns(
-        std::make_unique<filter::AssignPredicateFilter>(
-        [&](auto data) {
-          return data.TestExpression(plus1);
-        }));
+    auto result =
+        reader.Assigns(std::make_unique<filter::AssignPredicateFilter>(
+            [&](auto data) { return data.TestExpression(plus1); }));
   }
 }

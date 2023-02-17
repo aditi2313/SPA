@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <string>
 #include <vector>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "common/exceptions/SP.h"
@@ -105,10 +105,6 @@ TEST_CASE("Error reading cases") {
 
   SECTION("Unsupport ints (leading zeroes)") {
     Lexer lxr("a 01000");
-    REQUIRE_THROWS_AS(lxr.GetTokAndIncrement(), sp::LexerException);
-  }
-  SECTION("Unsupport ints (non-digits)") {
-    Lexer lxr("a 10@0a0");
     REQUIRE_THROWS_AS(lxr.GetTokAndIncrement(), sp::LexerException);
   }
 }

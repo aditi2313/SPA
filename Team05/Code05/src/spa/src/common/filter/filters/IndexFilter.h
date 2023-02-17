@@ -31,7 +31,7 @@ class IndexFilter
             result->add_row(row.get_line(), row);
         }
         return result;
-      }
+    }
 
  private:
     int line_;

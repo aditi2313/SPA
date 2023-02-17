@@ -28,9 +28,9 @@ class OpNode : public ExprNode {
 
   bool DeepEquals(const ExprNode& other) override {
     if (util::InstanceOf<OpNode>(other)) {
-      const OpNode& o_v = dynamic_cast<const OpNode& >(other);
+      const OpNode& o_v = dynamic_cast<const OpNode&>(other);
       return operation_ == o_v.operation_ && o_v.left_->DeepEquals(*left_) &&
-          o_v.right_->DeepEquals(*right_);
+              o_v.right_->DeepEquals(*right_);
     }
     return false;
   }

@@ -7,7 +7,6 @@
 using namespace qps; // NOLINT
 using namespace models;  // NOLINT
 
-// TODO(JL): replace with real unit tests after Entity is implemented
 TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 

@@ -4,7 +4,7 @@
 
 namespace models {
 using stmt = int;
-using EntityId = std::string;
-using Synonym = std::string;
+using EntityName = std::string;
+using SynonymName = std::string;
 using Ident = std::string;
 }

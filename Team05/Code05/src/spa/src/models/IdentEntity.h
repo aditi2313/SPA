@@ -18,7 +18,7 @@ class IdentEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return ident_ <
-        (reinterpret_cast<IdentEntity *>(&other))->ident_;
+        (dynamic_cast<IdentEntity *>(&other))->ident_;
   }
 
   inline bool operator==(Entity &other) override {
@@ -27,11 +27,11 @@ class IdentEntity : public Entity {
     if (ti1 != ti2) return false;
 
     return ident_ ==
-        (reinterpret_cast<IdentEntity *>(&other))->ident_;
+        (dynamic_cast<IdentEntity *>(&other))->ident_;
   }
 
-  inline EntityPtr Copy() override {
-    return std::make_unique<IdentEntity>(*this);
+  inline bool operator!=(Entity &other) override {
+    return !(*this == other);
   }
 
   operator std::string() override { return ident_; }
@@ -43,10 +43,18 @@ class IdentEntity : public Entity {
 class Procedure : public IdentEntity {
  public:
   explicit Procedure(std::string ident) : IdentEntity(ident) {}
+
+  inline EntityPtr Copy() override {
+    return std::make_unique<Procedure>(*this);
+  }
 };
 
 class Variable : public IdentEntity {
  public:
   explicit Variable(std::string ident) : IdentEntity(ident) {}
+
+  inline EntityPtr Copy() override {
+    return std::make_unique<Variable>(*this);
+  }
 };
 }  // namespace models

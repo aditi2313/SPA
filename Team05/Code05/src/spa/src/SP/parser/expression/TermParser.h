@@ -1,14 +1,16 @@
 #pragma once
 
 #include <memory>
-#include "../../../models/AST/factor_node/FactorNode.h"
-#include "../Parser.h"
+
+#include "SP/lexer/VectorLexer.h"
+#include "SP/parser/Parser.h"
+#include "models/AST/factor_node/FactorNode.h"
 
 namespace sp {
 
-class TermParser : Parser<ast::TermNode> {
+class TermParser {
  public:
-  std::unique_ptr<ast::TermNode> parse(Lexer& lxr) override;
+  ast::ExprNodePtr parse(VectorLexer& lxr);
 };
 
 }  // namespace sp

@@ -4,60 +4,109 @@
 #include "Clause.h"
 #include "QPS/models/PQL.h"
 #include "SP/SourceProcessor.h"
-#include "common/filter/filters/AssignFilter.h"
+#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/PredicateFilter.h"
 
 using namespace filter;  // NOLINT
 
 namespace qps {
 ClausePtr Clause::CreateClause(
-    EntityId rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
+    EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
   if (rel_ref_ident == PQL::kModifiesRelId) {
     return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
   }
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsRelId) {
+    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+  }
+  if (rel_ref_ident == PQL::kFollowsTRelId) {
+    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
-QueryResultPtr ModifiesClause::Evaluate(
+EntityPtrList ModifiesClause::Index(
+    const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
-  // TODO(Gab): setup arguement to evaluate the filter.
-
-  // CURRENTLY this only works for Modifies( statement number, variable )
-  // TODO(JL): generalize this to work for more types of
-  // Modifies clauses
-  QueryResultPtr query_result = std::make_unique<QueryResult>();
-
-  IntegerArg *line_arg = reinterpret_cast<IntegerArg *>(arg1.get());
+  EntityPtrList result;
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
-
-  auto filter = std::make_unique<ModifiesFilterByLine>(line);
+  auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
 
-  if (!pkb_res->exists(line)) return query_result;
+  if (!pkb_res->exists(line)) return result;
 
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
-    query_result->add_query_result(
-        factory->CreateInstance(PQL::kVariableEntityId, var));
+    result.push_back(
+        factory->CreateInstance(RHS(), var));
   }
 
-  return query_result;
+  return result;
 }
-QueryResultPtr PatternClause::Evaluate(
+
+EntityPtrList FollowsClause::Index(
+    const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
-  // TODO(JL): generalize this to work for more types of
-  // Pattern clauses
+  EntityPtrList result;
 
-  QueryResultPtr query_result = std::make_unique<QueryResult>();
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
 
-//   preprocess expression string to insert whitespace
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line);
+  result.push_back(factory->CreateInstance(
+      RHS(), data.get_follows()));
+
+  return result;
+}
+
+EntityPtrList FollowsTClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line).get_follows_list();
+  for (auto stmt : data) {
+    result.push_back(factory->CreateInstance(
+        PQL::kStmtEntityName, stmt));
+  }
+
+  return result;
+}
+
+// TODO(JL): This method is a bit messy because it calls the
+// PredicateFilter inside of a function meant for Indexing.eva
+// Pattern is kind of tricky, will move on to
+// other relationships first, then rewrite/refactor
+// this method in a separate PR that also closes Issue 58.
+EntityPtrList PatternClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  // Preprocess expression string to insert whitespace
   std::string expression = "";
-  ExpressionArg *expr_arg = reinterpret_cast<ExpressionArg *> (arg2.get());
-  for (char c : expr_arg->get_expression()) {
+  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
+      *arg2_.get());
+  for (char c : expression_arg.get_expression()) {
     if (c == '+' || c == '-') {
       expression += " " + std::string(1, c) + " ";
     } else {
@@ -67,17 +116,20 @@ QueryResultPtr PatternClause::Evaluate(
 
   sp::SourceProcessor source_processor;
   auto ASTNode = source_processor.ParseExpression(expression);
-  auto filter = std::make_unique<AssignFilterByExpression>(std::move(ASTNode));
-  auto result = pkb->Assigns(std::move(filter));
-
-  auto data = result->get_result()->get_indexes();
+  auto filter = std::make_unique<AssignPredicateFilter>(
+      [&](auto data) {
+        return data.TestExpression(ASTNode);
+      });
+  auto pkb_res = pkb->Assigns(std::move(filter));
+  auto data = pkb_res->get_result()->get_indexes();
+  if (data.find(line) == data.end()) return result;
 
   for (auto a : data) {
-    query_result->add_query_result(
-        factory->CreateInstance(PQL::kAssignEntityId, a));
+    result.push_back(
+        factory->CreateInstance(PQL::kAssignEntityName, a));
   }
 
-  return query_result;
+  return result;
 }
 
 Clause::~Clause() = default;

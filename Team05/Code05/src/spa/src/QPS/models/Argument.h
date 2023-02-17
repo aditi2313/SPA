@@ -4,8 +4,9 @@
 #include <memory>
 
 #include "models/types.h"
+#include "QPS/models/Synonym.h"
 
-using models::Synonym;
+using models::SynonymName;
 
 namespace qps {
 // An argument for a clause.
@@ -19,10 +20,9 @@ class Argument {
   virtual bool IsStmtRef() { return false; }
   // synonym | _ | "ident"
   virtual bool IsEntRef() { return false; }
-  // "ident" | INTEGER
-  virtual bool IsExact() { return false;  }
   virtual bool IsWildcard() { return false; }
   virtual bool IsSynonym() { return false; }
+  virtual bool IsExpression() { return false; }
 
   bool operator==(Argument const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -59,23 +59,20 @@ class Wildcard : public Argument {
 
 class SynonymArg : public Argument {
  public:
-  SynonymArg(Synonym syn, models::EntityId entity_id)
-      : Argument(), syn_(syn), entity_id_(entity_id) {}
+  explicit SynonymArg(SynonymName syn_name)
+      : Argument(), syn_name_(syn_name) {}
 
   inline bool IsSynonym() override { return true; }
 
-  inline Synonym get_syn() { return syn_; }
-  models::EntityId get_entity_id() { return entity_id_; }
-
+  inline SynonymName get_syn_name() { return syn_name_; }
 
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_ << "->" << entity_id_;
+    str << "Synonym: " << syn_name_;
     return str;
   }
 
  private:
-  Synonym syn_;
-  models::EntityId entity_id_;
+  SynonymName syn_name_;
 };
 
 class IdentArg : public Argument {
@@ -84,7 +81,6 @@ class IdentArg : public Argument {
       Argument(), ident_(ident) {}
 
   inline bool IsEntRef() override { return true; }
-  inline bool IsExact() override { return true; }
 
   inline std::string get_ident() { return ident_; }
 
@@ -102,7 +98,6 @@ class IntegerArg : public Argument {
       Argument(), number_(number) {}
 
   inline bool IsStmtRef() override { return true; }
-  inline bool IsExact() override { return true; }
 
   inline int get_number() { return number_; }
 
@@ -119,6 +114,7 @@ class ExpressionArg : public Argument {
   explicit ExpressionArg(std::string expr) :
       Argument(), expr_(expr) {}
 
+  inline bool IsExpression() override { return true; }
   inline std::string get_expression() { return expr_; }
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Expr Arg: " << expr_;

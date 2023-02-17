@@ -8,6 +8,9 @@
 
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ModifiesData.h"
+#include "PKB/data/UsesData.h"
+#include "PKB/data/FollowsData.h"
+#include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
@@ -16,7 +19,7 @@ namespace pkb {
 /// Class for table indexable by id.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-template<class T>
+template <class T>
 class IndexableTable {
  public:
   IndexableTable() = default;
@@ -25,7 +28,7 @@ class IndexableTable {
     id_map_[line] = rows_.size();
     rows_.push_back(std::move(row));
   }
-  inline T get_row(int num) { return rows_.at(id_map_.at(num)); }
+  inline T& get_row(int num) { return rows_.at(id_map_.at(num)); }
 
   inline std::set<int> get_indexes() {
     std::set<int> result;
@@ -35,9 +38,7 @@ class IndexableTable {
     return result;
   }
 
-  bool exists(int line) {
-    return id_map_.find(line) != id_map_.end();
-  }
+  bool exists(int line) { return id_map_.find(line) != id_map_.end(); }
 
   friend bool operator==(const IndexableTable<T> &LHS,
                          const IndexableTable<T> &RHS) {
@@ -58,8 +59,11 @@ class IndexableTable {
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;
-typedef IndexableTable<std::shared_ptr<AssignData>> AssignTable;
+typedef IndexableTable<UsesData> UsesTable;
+typedef IndexableTable<FollowsData> FollowsTable;
+typedef IndexableTable<ParentData> ParentTable;
+typedef IndexableTable<AssignData> AssignTable;
 
-template<typename T>
+template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;
 }  // namespace pkb

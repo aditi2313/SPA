@@ -36,10 +36,10 @@ TEST_CASE("1st Test") {
         std::make_unique<ast::ConstNode>(2);
     std::unique_ptr<ast::ConstNode> const3 =
         std::make_unique<ast::ConstNode>(3);
-    std::unique_ptr<ast::MinusNode> minus1 =
-        std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
-    std::unique_ptr<ast::PlusNode> plus1 =
-        std::make_unique<ast::PlusNode>(std::move(minus1), std::move(const1));
+    std::unique_ptr<ast::OpNode> minus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokMinus, std::move(const2), std::move(const3));
+    std::unique_ptr<ast::OpNode> plus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokPlus, std::move(minus1), std::move(const1));
     ast::AssignNode assign1 =
         ast::AssignNode(std::move(var1), std::move(plus1), 3);
     sp::AssignVisitor av(std::move(mv.EndVisit()));
@@ -56,10 +56,10 @@ TEST_CASE("1st Test") {
         std::make_unique<ast::ConstNode>(2);
     std::unique_ptr<ast::ConstNode> const3 =
         std::make_unique<ast::ConstNode>(3);
-    std::unique_ptr<ast::MinusNode> minus1 =
-        std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
-    std::unique_ptr<ast::PlusNode> plus1 =
-        std::make_unique<ast::PlusNode>(std::move(minus1), std::move(const1));
+    std::unique_ptr<ast::OpNode> minus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokMinus, std::move(const2), std::move(const3));
+    std::unique_ptr<ast::OpNode> plus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokPlus, std::move(minus1), std::move(const1));
     auto other = plus1->Copy();
     REQUIRE(other->DeepEquals(*plus1));
     std::unique_ptr<ast::ConstNode> c2 = std::make_unique<ast::ConstNode>(2);
@@ -86,14 +86,14 @@ TEST_CASE("1st Test") {
         std::make_unique<ast::ConstNode>(2);
     std::unique_ptr<ast::ConstNode> const3 =
         std::make_unique<ast::ConstNode>(3);
-    std::unique_ptr<ast::MinusNode> minus1 =
-        std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
+    std::unique_ptr<ast::OpNode> minus1 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokMinus, std::move(const2), std::move(const3));
     const2 = std::make_unique<ast::ConstNode>(2);
     const3 = std::make_unique<ast::ConstNode>(3);
     REQUIRE(!const2->DeepEquals(*minus1));
     REQUIRE(!const3->DeepEquals(*minus1));
-    std::unique_ptr<ast::MinusNode> m3 =
-        std::make_unique<ast::MinusNode>(std::move(const2), std::move(const3));
+    std::unique_ptr<ast::OpNode> m3 = std::make_unique<ast::OpNode>(
+        sp::Token::kTokMinus, std::move(const2), std::move(const3));
     REQUIRE(m3->DeepEquals(*minus1));
   }
 }

@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
+#include <unordered_set>
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
@@ -23,7 +23,8 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line, const std::vector<std::string>& variables);
+  void AddModifiesData(int line,
+                       const std::unordered_set<std::string>& variables);
 
   /// <summary>
   /// Adds assign data.
@@ -33,6 +34,31 @@ class PKBWrite {
   /// rhs</param>
   void AddAssignData(std::string variable, int line,
                      std::unique_ptr<ast::ExprNode> expression);
+
+  /// <summary>
+  /// Adds a uses row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="variable_names"></param>
+  void AddUsesData(int line,
+                   const std::unordered_set<std::string>& variable_names);
+
+  /// <summary>
+  /// Adds a follows row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="follows"></param>
+  void AddFollowsData(int line, const int follows);
+
+  /// <summary>
+  /// Adds a parent row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="parent_line"></param>
+  void AddParentData(int line, const int parent_line);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
@@ -67,10 +93,24 @@ class PKBWrite {
   /// </summary>
   /// <returns>The unique pointer for PKB Relation Table</returns>
   inline std::unique_ptr<PKBRelationTable> EndWrite() {
+    ProcessFollows();
+    ProcessParent();
     return std::move(pkb_relation_table_);
   }
 
  private:
+  /// <summary>
+  /// Processes the
+  /// current follows table
+  /// to obtain all the Follows* lines.
+  /// </summary>
+  void ProcessFollows();
+
+  /// <summary>
+  /// Processes the current
+  /// parent table to obtain all the Parent* lines.
+  /// </summary>
+  void ProcessParent();
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };
 }  // namespace pkb

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <stdexcept>
 #include <utility>
 
 #include "SP/parser/Parser.h"
@@ -13,13 +14,14 @@ namespace sp {
 class AssignParser : Parser<ast::AssignNode> {
  public:
   std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIdent, "variable");
+
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
     ExpressionParser expr_parser;
-    if (lxr.GetTokAndIncrement() != kTokEquals) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("expected '=' in assignment");
-    }
+
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokEquals, "=");
+
     auto expr = expr_parser.parse(lxr);
     if (lxr.GetTokAndIncrement() != Token::kTokSemicolon) {
       throw ParseAssignSyntaxException();

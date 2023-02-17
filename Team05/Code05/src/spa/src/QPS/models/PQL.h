@@ -8,36 +8,38 @@
 #include "common/Exceptions.h"
 #include "models/types.h"
 
-using models::EntityId;
+using models::EntityName;
 
 namespace qps {
 
 class PQL {
  public:
-  inline static EntityId kStmtEntityId = "stmt";
-  inline static EntityId kReadEntityId = "read";
-  inline static EntityId kPrintEntityId = "print";
-  inline static EntityId kCallEntityId = "call";
-  inline static EntityId kWhileEntityId = "while";
-  inline static EntityId kIfEntityId = "if";
-  inline static EntityId kAssignEntityId = "assign";
-  inline static EntityId kVariableEntityId = "variable";
-  inline static EntityId kConstantEntityId = "constant";
-  inline static EntityId kProcedureEntityId = "procedure";
+  inline static std::string kStmtEntityName = "stmt";
+  inline static std::string kReadEntityName = "read";
+  inline static std::string kPrintEntityName = "print";
+  inline static std::string kCallEntityName = "call";
+  inline static std::string kWhileEntityName = "while";
+  inline static std::string kIfEntityName = "if";
+  inline static std::string kAssignEntityName = "assign";
+  inline static std::string kVariableEntityName = "variable";
+  inline static std::string kConstantEntityName = "constant";
+  inline static std::string kProcedureEntityName = "procedure";
 
-  inline static std::vector<EntityId> kAllEntityIds{
-      kStmtEntityId, kReadEntityId, kPrintEntityId, kCallEntityId,
-      kWhileEntityId, kIfEntityId, kAssignEntityId,
-      kVariableEntityId, kConstantEntityId, kProcedureEntityId
+  inline static std::vector<std::string> kAllEntityName{
+      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
+      kWhileEntityName, kIfEntityName, kAssignEntityName,
+      kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
-  inline static bool const is_entity_id(EntityId const token) {
-    return find(kAllEntityIds.begin(), kAllEntityIds.end(), token)
-        != kAllEntityIds.end();
+  inline static bool const is_entity_name(std::string const token) {
+    return find(kAllEntityName.begin(), kAllEntityName.end(), token)
+        != kAllEntityName.end();
   }
 
-  inline static EntityId kModifiesRelId = "Modifies";
-  inline static EntityId kPatternRelId = "pattern";
+  inline static EntityName kModifiesRelId = "Modifies";
+  inline static EntityName kFollowsRelId = "Follows";
+  inline static EntityName kFollowsTRelId = "Follows*";
+  inline static EntityName kPatternRelId = "pattern";
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;
@@ -53,6 +55,10 @@ class PQL {
       if (!isdigit(c)) return false;
     }
     return true;
+  }
+
+  inline static bool is_wildcard(std::string str) {
+    return str == "_";
   }
 };
 }  // namespace qps

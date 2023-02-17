@@ -36,34 +36,27 @@ void DataVisitor::VisitCall(ast::CallNode* call_node) {
   pkb_ptr_->add_call(call_node->get_line());
   pkb_ptr_->add_stmt(call_node->get_line());
 }
-void DataVisitor::VisitFactor(ast::FactorNode* factor_node) {}
 void DataVisitor::VisitExpr(ast::ExprNode* expr_node) {}
-void DataVisitor::VisitTerm(ast::TermNode* term_node) {}
 void DataVisitor::VisitVar(ast::VarNode* var_node) {
   pkb_ptr_->add_variable(var_node->get_name());
 }
 void DataVisitor::VisitConst(ast::ConstNode* const_node) {
   pkb_ptr_->add_constant(const_node->get_val());
 }
-void DataVisitor::VisitPlus(ast::PlusNode* plus_node) {
-  plus_node->get_expr()->AcceptVisitor(this);
-  plus_node->get_term()->AcceptVisitor(this);
+
+void DataVisitor::VisitWhile(ast::WhileNode* while_node) {
+  pkb_ptr_->add_while(while_node->get_line());
+  pkb_ptr_->add_stmt(while_node->get_line());
+  while_node->get_cond()->AcceptVisitor(this);
+  while_node->get_stmts()->AcceptVisitor(this);
 }
-void DataVisitor::VisitMinus(ast::MinusNode* node) {
-  node->get_expr()->AcceptVisitor(this);
-  node->get_term()->AcceptVisitor(this);
-}
-void DataVisitor::VisitTimes(ast::TimesNode* node) {
-  node->get_factor()->AcceptVisitor(this);
-  node->get_term()->AcceptVisitor(this);
-}
-void DataVisitor::VisitDiv(ast::DivNode* node) {
-  node->get_factor()->AcceptVisitor(this);
-  node->get_term()->AcceptVisitor(this);
-}
-void DataVisitor::VisitMod(ast::ModNode* node) {
-  node->get_factor()->AcceptVisitor(this);
-  node->get_term()->AcceptVisitor(this);
+
+void DataVisitor::VisitIf(ast::IfNode* if_node) {
+  pkb_ptr_->add_if(if_node->get_line());
+  pkb_ptr_->add_stmt(if_node->get_line());
+  if_node->get_cond()->AcceptVisitor(this);
+  if_node->get_else()->AcceptVisitor(this);
+  if_node->get_then()->AcceptVisitor(this);
 }
 
 }  // namespace sp

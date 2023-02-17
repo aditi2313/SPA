@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 namespace models {
 
@@ -15,9 +16,16 @@ class Entity {
   virtual operator std::string() = 0;
   virtual ~Entity() = 0;
   virtual bool operator==(Entity &other) = 0;
+  virtual bool operator!=(Entity &other) = 0;
   virtual bool operator<(Entity &other) = 0;
   virtual std::unique_ptr<Entity> Copy() = 0;
 };
 
 using EntityPtr = std::unique_ptr<Entity>;
+using EntityPtrList = std::vector<EntityPtr>;
+
+auto const EntityPtrComparator =
+    [](EntityPtr const &LHS, EntityPtr const &RHS) {
+  return *LHS < *RHS;
+};
 }  // namespace models

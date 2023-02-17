@@ -39,7 +39,6 @@ TEST_CASE("Term % factor should return ModNode") {
   auto rhs = std::make_unique<ast::VarNode>(ast::VarNode("lover"));
   auto expected_result = std::make_unique<ast::OpNode>(
       sp::Token::kTokMod, std::move(lhs), std::move(rhs));
-  
   auto actual_result = term_parser.parse(v_lexer);
 
   REQUIRE(actual_result->DeepEquals(*expected_result));

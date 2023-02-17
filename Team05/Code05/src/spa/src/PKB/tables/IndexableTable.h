@@ -19,7 +19,7 @@ namespace pkb {
 /// Class for table indexable by id.
 /// </summary>
 /// <typeparam name="T"></typeparam>
-template<class T>
+template <class T>
 class IndexableTable {
  public:
   IndexableTable() = default;
@@ -28,7 +28,7 @@ class IndexableTable {
     id_map_[line] = rows_.size();
     rows_.push_back(std::move(row));
   }
-  inline T &get_row(int num) { return rows_.at(id_map_.at(num)); }
+  inline T& get_row(int num) { return rows_.at(id_map_.at(num)); }
 
   inline std::set<int> get_indexes() {
     std::set<int> result;
@@ -66,6 +66,6 @@ typedef IndexableTable<FollowsData> FollowsTable;
 typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 
-template<typename T>
+template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;
 }  // namespace pkb

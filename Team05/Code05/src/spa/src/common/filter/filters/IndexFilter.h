@@ -18,23 +18,23 @@ namespace filter {
 
 template<class T>
 class IndexFilter
-    : public IndexableFilter<T> {
+        : public IndexableFilter<T> {
  public:
-  explicit IndexFilter(int line) : line_(line) {}
+    explicit IndexFilter(int line) : line_(line) {}
 
-  inline pkb::IndexableTablePtr<T>
-  FilterTable(pkb::IndexableTablePtr<T> table) override {
-    pkb::IndexableTablePtr<T> result =
-        std::make_unique<pkb::IndexableTable<T>>();
-    if (table->exists(line_)) {
-      auto row = table->get_row(line_);
-      result->add_row(row.get_line(), row);
-    }
-    return result;
-  }
+    inline pkb::IndexableTablePtr<T>
+            FilterTable(pkb::IndexableTablePtr<T> table) override {
+        pkb::IndexableTablePtr<T> result =
+                std::make_unique<pkb::IndexableTable<T>>();
+        if (table->exists(line_)) {
+            auto row = table->get_row(line_);
+            result->add_row(row.get_line(), row);
+        }
+        return result;
+      }
 
  private:
-  int line_;
+    int line_;
 };
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;

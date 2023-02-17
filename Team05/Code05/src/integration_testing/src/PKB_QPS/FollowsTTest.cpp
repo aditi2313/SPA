@@ -119,4 +119,3 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     REQUIRE(actual_results == expected_results);
   }
 }
-

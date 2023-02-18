@@ -15,6 +15,8 @@ class IndexableFilter {
   /// </summary>
   /// <returns>The table with the filtered results</returns>
   virtual pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) = 0;
+
+  virtual ~IndexableFilter() = default;
 };
 
 template<class T>

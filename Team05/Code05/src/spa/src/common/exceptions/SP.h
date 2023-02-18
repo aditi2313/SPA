@@ -98,6 +98,15 @@ class ParseCallSyntaxException : public ParseException {
   static const char kParseCallSyntaxMessage[];
 };
 
+class ParseIfSyntaxException : public ParseException {
+ public:
+  explicit ParseIfSyntaxException(std::string additional)
+      : ParseException(kParseIfSyntaxMessage + additional) {}
+  ParseIfSyntaxException() : ParseException(kParseIfSyntaxMessage) {}
+
+  static const char kParseIfSyntaxMessage[];
+};
+
 class ParseRelationSyntaxException : public ParseException {
  public:
   explicit ParseRelationSyntaxException(std::string additional)

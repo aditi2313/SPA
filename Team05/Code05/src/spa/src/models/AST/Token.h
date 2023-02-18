@@ -49,7 +49,7 @@ enum class Token {
     kTokError,
 };
 
-bool IsStmtToken(Token input);
+bool IsStmtToken(Token token);
 bool IsKeyWordToken(Token token);
 bool IsRelationToken(Token token);
 

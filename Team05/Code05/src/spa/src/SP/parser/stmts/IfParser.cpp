@@ -3,29 +3,35 @@
 namespace sp {
 
 std::unique_ptr<ast::StmtLstNode> ParseCodeBlock(Lexer& lxr) {
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenCurly, "{");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokOpenCurly);
   StatementListParser stmt_list_parser;
   auto result = stmt_list_parser.parse(lxr);
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseCurly, "}");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokCloseCurly);
   return std::move(result);
 }
 
 std::unique_ptr<ast::IfNode> IfParser::parse(Lexer& lxr) {
   CondExprParser cond_parser;
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokIf);
 
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIf, "if");
-
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenBracket, "(");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokOpenBracket);
 
   auto cond_expr = cond_parser.parse(lxr);
 
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseBracket, ")");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokCloseBracket);
 
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokThen, "then");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokThen);
 
   auto list_1 = ParseCodeBlock(lxr);
 
-  AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokElse, "else");
+  AssertExpectedToken(ParseIfSyntaxException::kParseIfSyntaxMessage,
+                      lxr.GetTokAndIncrement(), Token::kTokElse);
 
   auto list_2 = ParseCodeBlock(lxr);
 

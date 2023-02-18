@@ -44,6 +44,9 @@ const char ParseReadSyntaxException::kParseReadSyntaxMessage[] =
 const char ParseCallSyntaxException::kParseCallSyntaxMessage[] =
     "Invalid syntax at parsing of call: ";
 
+const char ParseIfSyntaxException::kParseIfSyntaxMessage[] =
+    "Invalid syntax at parsing of if: ";
+
 const char ParseRelationSyntaxException::kParseRelationSyntaxMessage[] =
     "Invalid syntax at parsing of relation: ";
 

@@ -111,17 +111,19 @@ class IntegerArg : public Argument {
 
 class ExpressionArg : public Argument {
  public:
-  explicit ExpressionArg(std::string expr) :
-      Argument(), expr_(expr) {}
+  explicit ExpressionArg(std::string expr, bool is_exact) :
+      Argument(), expr_(expr), is_exact_(is_exact) {}
 
   inline bool IsExpression() override { return true; }
   inline std::string get_expression() { return expr_; }
+  inline bool is_exact() { return is_exact_; }
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Expr Arg: " << expr_;
     return str;
   }
  private:
   std::string expr_;  // Expression
+  bool is_exact_;
 };
 
 using ArgumentPtr = std::unique_ptr<Argument>;

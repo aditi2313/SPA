@@ -26,7 +26,7 @@ class Evaluator {
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg,
-      std::set<EntityPtr, decltype(EntityPtrComparator)> const &result);
+      EntityPtrHashset const &result);
   bool EvaluateClause(QueryPtr &query, ClausePtr &clause);
 
   std::unique_ptr<pkb::PKBRead> pkb_;

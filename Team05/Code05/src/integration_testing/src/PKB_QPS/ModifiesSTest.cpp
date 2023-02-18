@@ -29,6 +29,7 @@ std::unique_ptr<PKBRead> InitializePKB(
       pkb_write.add_variable(var);
     }
     pkb_write.add_stmt(line);
+    pkb_write.add_assign(line);
   }
 
   return std::make_unique<PKBRead>(pkb_write.EndWrite());
@@ -110,6 +111,16 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
 
   SECTION("Modifies(StmtSynonym, Wildcard) should return correct results") {
     std::string query_string = "stmt s; Select s such that Modifies(s, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "25", "30"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Modifies(StmtSynonym, Wildcard) should return correct results") {
+    std::string query_string = "assign a; Select a such that Modifies(a, _)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

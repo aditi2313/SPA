@@ -69,6 +69,7 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
       LHS_results.insert(index->Copy());
     }
   }
+  std::cout << "\n";
 
   // Update list of possible values for arg1 and/or arg2
   // if they are synonyms
@@ -128,7 +129,6 @@ void Evaluator::UpdateSynonymEntityList(
   for (auto &entity : result) {
     new_entity_ptr_list.push_back(entity->Copy());
   }
-  std::cout << "\n";
 
   synonym->set_possible_entities(new_entity_ptr_list);
 }

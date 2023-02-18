@@ -37,7 +37,7 @@ EntityPtrList ModifiesClause::Index(
   auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
 
-  if (!pkb_res->exists(line)) return result;
+  if (pkb_res->empty()) return result;
 
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
@@ -137,7 +137,6 @@ EntityPtrList PatternClause::Index(
 
   return result;
 }
-
 
 Clause::~Clause() = default;
 }  // namespace qps

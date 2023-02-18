@@ -15,10 +15,10 @@ class ParseState {
 
   explicit ParseState(std::string transition) :
       kTransitionKeyword(transition) {}
-  virtual std::unique_ptr<Query> parse(
+  virtual void parse(
       const std::vector<std::string> &tokens,
       parse_position &itr,
-      std::unique_ptr<Query> query) = 0;
+      QueryPtr &query) = 0;
   virtual ~ParseState() = 0;
  protected:
   const char *kExceptionMessage;
@@ -34,9 +34,9 @@ class DeclarationParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens,
+             parse_position &itr,
+             QueryPtr &query) override;
 };
 
 // synonym (',' synonym)*
@@ -46,9 +46,9 @@ class SynonymParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens,
+             parse_position &itr,
+             QueryPtr &query) override;
 };
 
 // 'such' 'that' relRef
@@ -58,9 +58,9 @@ class SuchThatParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens,
+             parse_position &itr,
+             QueryPtr &query) override;
 };
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
@@ -70,8 +70,8 @@ class PatternParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens,
+             parse_position &itr,
+             QueryPtr &query) override;
 };
 }  // namespace qps

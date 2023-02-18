@@ -9,10 +9,10 @@
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
-std::unique_ptr<Query> DeclarationParseState::parse(
+void DeclarationParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
-    std::unique_ptr<Query> query) {
+    QueryPtr &query) {
   if (itr == tokens.end() || !PQL::is_entity_name(*itr)) ThrowException();
 
   EntityName entity_name = *itr;
@@ -32,14 +32,13 @@ std::unique_ptr<Query> DeclarationParseState::parse(
   if (!has_set_one_synonym) ThrowException();
   if (itr == tokens.end()) ThrowException();
   itr++;
-  return query;
 }
 
 // synonym (',' synonym)*
-std::unique_ptr<Query> SynonymParseState::parse(
+void SynonymParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
-    std::unique_ptr<Query> query) {
+    QueryPtr &query) {
   // TODO(JL): Support multiple synonyms selection after
   // requirement is introduced
   if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
@@ -47,15 +46,14 @@ std::unique_ptr<Query> SynonymParseState::parse(
   if (!PQL::is_ident(*itr)) ThrowException();
   query->add_selected_synonym(*itr);
   itr++;
-  return query;
 }
 
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
-std::unique_ptr<Query> SuchThatParseState::parse(
+void SuchThatParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
-    std::unique_ptr<Query> query) {
+    QueryPtr &query) {
   if (itr == tokens.end()) ThrowException();
   if (*itr++ != "such") ThrowException();
   if (*itr++ != "that") ThrowException();
@@ -71,27 +69,28 @@ std::unique_ptr<Query> SuchThatParseState::parse(
       rel_ident, std::move(arg1), std::move(arg2)));
 
   itr++;
-  return query;
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-std::unique_ptr<Query> PatternParseState::parse(
+void PatternParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
-    std::unique_ptr<Query> query) {
+    QueryPtr &query) {
   if (itr == tokens.end()) ThrowException();
-  if (*itr++ != "pattern") ThrowException();
-  ArgumentPtr arg1 = query->CreateArgument(*itr++);
+  if (*itr++ != PQL::kPatternRelId) ThrowException();
+  ArgumentPtr arg1 = query->CreateArgument(*itr);
+  ArgumentPtr arg1_copy = query->CreateArgument(*itr++);
   if (*itr++ != "(") ThrowException();
-  if (!PQL::is_wildcard(*itr++)) ThrowException();
-  if (*itr++ != ",") ThrowException();
   ArgumentPtr arg2 = query->CreateArgument(*itr++);
+  if (*itr++ != ",") ThrowException();
+  ArgumentPtr arg3 = query->CreateArgument(*itr++);
   if (*itr != ")") ThrowException();
 
   query->add_clause(Clause::CreateClause(
-      "pattern", std::move(arg1), std::move(arg2)));
+      PQL::kModifiesRelId, std::move(arg1_copy), std::move(arg2)));
+  query->add_clause(Clause::CreateClause(
+      PQL::kPatternRelId, std::move(arg1), std::move(arg3)));
   itr++;
-  return query;
 }
 
 ParseState::~ParseState() = default;

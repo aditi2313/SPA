@@ -41,10 +41,10 @@ TEST_CASE("Test SelectClParser methods") {
   }
 
   SECTION("Test state transitions") {
-    REQUIRE(parser.ShouldGoToNextState(0, "Select") == true);
-    REQUIRE(parser.ShouldGoToNextState(1, "such") == true);
-    REQUIRE(parser.ShouldGoToNextState(1, "pattern") == true);
-    REQUIRE(parser.ShouldGoToNextState(2, "pattern") == true);
+    REQUIRE(parser.NextState(0, "Select") == 1);
+    REQUIRE(parser.NextState(1, "such") == 2);
+    REQUIRE(parser.NextState(2, "pattern") == 3);
+    REQUIRE(parser.NextState(1, "pattern") == 3);
   };
 }
 

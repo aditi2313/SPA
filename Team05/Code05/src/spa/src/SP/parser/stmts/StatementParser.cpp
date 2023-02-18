@@ -17,6 +17,9 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
   WhileParser while_parser;
 
   auto tok = lxr.get_tok();
+  if (lxr.Peek() == Token::kTokEquals) {
+    return assign_parser.parse(lxr);
+  }
   switch (tok) {
     case Token::kTokRead:
       return read_parser.parse(lxr);

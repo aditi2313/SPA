@@ -38,7 +38,7 @@ void DeclarationParseState::parse(
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// synonym
+// synonym | tuple | BOOLEAN
 void SelectParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,

@@ -18,6 +18,12 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsRelId) {
+    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+  }
+  if (rel_ref_ident == PQL::kFollowsTRelId) {
+    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
+  }
   if (rel_ref_ident == PQL::kParentRelId) {
     return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
   }
@@ -35,7 +41,7 @@ EntityPtrList ModifiesClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
@@ -45,37 +51,77 @@ EntityPtrList ModifiesClause::Index(
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
     result.push_back(
-        factory->CreateInstance(PQL::kVariableEntityName, var));
+        factory->CreateInstance(RHS(), var));
+  }
+
+  return result;
+}
+
+EntityPtrList FollowsClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line);
+  result.push_back(factory->CreateInstance(
+      RHS(), data.get_follows()));
+
+  return result;
+}
+
+EntityPtrList FollowsTClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line).get_follows_list();
+  for (auto stmt : data) {
+    result.push_back(factory->CreateInstance(
+        PQL::kStmtEntityName, stmt));
   }
 
   return result;
 }
 
 // TODO(JL): This method is a bit messy because it calls the
-// PredicateFilter inside of a function meant for Indexing.
+// PredicateFilter inside of a function meant for Indexing.eva
 // Pattern is kind of tricky, will move on to
 // other relationships first, then rewrite/refactor
 // this method in a separate PR that also closes Issue 58.
 EntityPtrList PatternClause::Index(
-    const EntityPtr& index,
-    const std::unique_ptr<MasterEntityFactory>& factory,
-    const std::unique_ptr<pkb::PKBRead>& pkb) {
-    EntityPtrList result;
-    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
-    int line = line_arg->get_number();
-    // Preprocess expression string to insert whitespace
-    std::string expression = "";
-    ExpressionArg expression_arg = dynamic_cast<ExpressionArg&>(
-        *arg2_.get());
-    for (char c : expression_arg.get_expression()) {
-        if (c == '+' || c == '-') {
-            expression += " " + std::string(1, c) + " ";
-        }
-        else {
-            expression += c;
-        }
-    }//thank you for finding the missing bracket
-   
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  // Preprocess expression string to insert whitespace
+  std::string expression = "";
+  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
+      *arg2_.get());
+  for (char c : expression_arg.get_expression()) {
+    if (c == '+' || c == '-') {
+      expression += " " + std::string(1, c) + " ";
+    } else {
+      expression += c;
+    }
+  }
 
     sp::SourceProcessor source_processor;
     auto ASTNode = source_processor.ParseExpression(expression);

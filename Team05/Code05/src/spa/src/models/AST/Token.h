@@ -3,7 +3,7 @@
 
 namespace sp {
 
-enum Token {
+enum class Token {
     kTokEof,
 
     kTokProcedure,
@@ -12,6 +12,8 @@ enum Token {
     kTokCall,
     kTokWhile,
     kTokIf,
+    kTokElse,
+    kTokThen,
 
     kTokIdent,
     kTokInteger,
@@ -45,5 +47,9 @@ enum Token {
     // error
     kTokError,
 };
+
+bool IsStmtToken(Token token);
+bool IsKeyWordToken(Token token);
+bool IsRelationToken(Token token);
 
 }  // namespace sp

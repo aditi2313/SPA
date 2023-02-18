@@ -22,4 +22,5 @@ void AssignVisitor::VisitAssign(ast::AssignNode* assign_node) {
                           assign_node->get_line(),
                           assign_node->get_expr()->Copy());
 }
+
 }  // namespace sp

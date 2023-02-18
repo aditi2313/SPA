@@ -37,6 +37,8 @@ class PQL {
   }
 
   inline static EntityName kModifiesRelId = "Modifies";
+  inline static EntityName kFollowsRelId = "Follows";
+  inline static EntityName kFollowsTRelId = "Follows*";
   inline static EntityName kPatternRelId = "pattern";
   inline static EntityName kUsesRelId = "Uses";
   inline static EntityName kParentRelId = "Parent";

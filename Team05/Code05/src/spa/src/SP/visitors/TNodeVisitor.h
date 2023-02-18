@@ -25,27 +25,22 @@ class TNodeVisitor {
 
   virtual void VisitPrint(ast::PrintNode* print_node) {}
 
-  virtual void VisitFactor(ast::FactorNode* factor_node) {}
+  virtual void VisitIf(ast::IfNode*);
+
+  virtual void VisitWhile(ast::WhileNode*);
+
+  virtual void VisitCall(ast::CallNode* call_node) {}
 
   virtual void VisitExpr(ast::ExprNode* expr_node) {}
-
-  virtual void VisitTerm(ast::TermNode* term_node) {}
 
   virtual void VisitVar(ast::VarNode* var_node) {}
 
   virtual void VisitConst(ast::ConstNode* const_node) {}
 
-  virtual void VisitPlus(ast::PlusNode* plus_node) {}
-
-  virtual void VisitMinus(ast::MinusNode* minus_node) {}
-
-  virtual void VisitTimes(ast::TimesNode* times_node) {}
-
-  virtual void VisitDiv(ast::DivNode* div_node) {}
-
-  virtual void VisitMod(ast::ModNode* mod_node) {}
-
-  virtual void VisitCall(ast::CallNode* call_node) {}
+  virtual void VisitOpNode(ast::OpNode* op_node) {
+    op_node->get_left()->AcceptVisitor(this);
+    op_node->get_right()->AcceptVisitor(this);
+  }
 
   // Relational nodes
 

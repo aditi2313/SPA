@@ -2,8 +2,10 @@
 
 #include "AssignParser.h"
 #include "CallParser.h"
+#include "IfParser.h"
 #include "PrintParser.h"
 #include "ReadParser.h"
+#include "WhileParser.h"
 
 namespace sp {
 std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
@@ -11,20 +13,22 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
   PrintParser print_parser;
   CallParser call_parser;
   AssignParser assign_parser;
+  IfParser if_parser;
+  WhileParser while_parser;
+
   auto tok = lxr.get_tok();
-  lxr.Increment();
   switch (tok) {
-    case kTokRead:
+    case Token::kTokRead:
       return read_parser.parse(lxr);
-    case kTokPrint:
+    case Token::kTokPrint:
       return print_parser.parse(lxr);
-    case kTokCall:
+    case Token::kTokCall:
       return call_parser.parse(lxr);
-    case kTokWhile:
-      return nullptr;
-    case kTokIf:
-      return nullptr;
-    case kTokIdent:
+    case Token::kTokWhile:
+      return while_parser.parse(lxr);
+    case Token::kTokIf:
+      return if_parser.parse(lxr);
+    case Token::kTokIdent:
       return assign_parser.parse(lxr);
     default:
       // TODO(aizatazhar): use custom exception

@@ -3,7 +3,7 @@
 #include <memory>
 #include <string>
 #include <utility>
-#include <vector>
+#include <unordered_set>
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
@@ -23,7 +23,8 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line, const std::vector<std::string>& variables);
+  void AddModifiesData(int line,
+                       const std::unordered_set<std::string>& variables);
 
   /// <summary>
   /// Adds assign data.
@@ -40,7 +41,8 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
-  void AddUsesData(int line, const std::vector<std::string>& variable_names);
+  void AddUsesData(int line,
+                   const std::unordered_set<std::string>& variable_names);
 
   /// <summary>
   /// Adds a follows row.
@@ -91,10 +93,24 @@ class PKBWrite {
   /// </summary>
   /// <returns>The unique pointer for PKB Relation Table</returns>
   inline std::unique_ptr<PKBRelationTable> EndWrite() {
+    ProcessFollows();
+    ProcessParent();
     return std::move(pkb_relation_table_);
   }
 
  private:
+  /// <summary>
+  /// Processes the
+  /// current follows table
+  /// to obtain all the Follows* lines.
+  /// </summary>
+  void ProcessFollows();
+
+  /// <summary>
+  /// Processes the current
+  /// parent table to obtain all the Parent* lines.
+  /// </summary>
+  void ProcessParent();
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };
 }  // namespace pkb

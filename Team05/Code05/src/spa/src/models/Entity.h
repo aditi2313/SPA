@@ -23,4 +23,9 @@ class Entity {
 
 using EntityPtr = std::unique_ptr<Entity>;
 using EntityPtrList = std::vector<EntityPtr>;
+
+auto const EntityPtrComparator =
+    [](EntityPtr const &LHS, EntityPtr const &RHS) {
+  return *LHS < *RHS;
+};
 }  // namespace models

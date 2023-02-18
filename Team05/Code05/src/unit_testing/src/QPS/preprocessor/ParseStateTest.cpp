@@ -130,7 +130,7 @@ TEST_CASE("Test SuchThatParseState") {
   };
 
   SECTION("Such that clause for ParentT should parse correctly") { 
-     std::vector<std::string> tokens{"such", "that", "ParentT", "(",
+     std::vector<std::string> tokens{"such", "that", "Parent*", "(",
                                     "6",    ",",    "7",      ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();

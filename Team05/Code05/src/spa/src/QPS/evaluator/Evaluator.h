@@ -9,11 +9,6 @@
 #include "QPS/models/QueryResult.h"
 
 namespace qps {
-using EntityPtrHashset =
-    std::unordered_set<EntityPtr,
-                       decltype(EntityPtrHash),
-                       decltype(EntityPtrEqual)>;
-
 class Evaluator {
  public:
   explicit Evaluator(std::unique_ptr<pkb::PKBRead> &pkb) {

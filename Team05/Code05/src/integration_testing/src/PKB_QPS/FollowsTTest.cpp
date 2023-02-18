@@ -28,45 +28,45 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
           {12, 13}
       });
 
-//  SECTION("FollowsT(IntArg, IntArg) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(10, 11)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12", "13"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(Wildcard, IntArg) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(_, 11)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12", "13"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(synonym, IntArg) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(s, 13)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(IntArg, synonym) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(10, s)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"11", "12", "13"};
-//    REQUIRE(actual_results == expected_results);
-//  }
+  SECTION("FollowsT(IntArg, IntArg) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(10, 11)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12", "13"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(Wildcard, IntArg) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(_, 11)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12", "13"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(synonym, IntArg) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(s, 13)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(IntArg, synonym) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(10, s)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"11", "12", "13"};
+    REQUIRE(actual_results == expected_results);
+  }
 
   SECTION("FollowsT(Wildcard, synonym) should return correct results") {
     std::string query_string = "stmt s; Select s such that Follows*(_, s)";
@@ -78,44 +78,44 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     REQUIRE(actual_results == expected_results);
   }
 
-//  SECTION("FollowsT(synonym, synonym) should return correct results") {
-//    std::string query_string = "stmt s1, s2; "
-//                               "Select s1 such that Follows*(s1, s2)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(IntArg, Wildcard) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(10, _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12", "13"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(Wildcard, Wildcard) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(_, _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12", "13"};
-//    REQUIRE(actual_results == expected_results);
-//  }
-//
-//  SECTION("FollowsT(synonym, Wildcard) should return correct results") {
-//    std::string query_string = "stmt s; Select s such that Follows*(s, _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"10", "11", "12"};
-//    REQUIRE(actual_results == expected_results);
-//  }
+  SECTION("FollowsT(synonym, synonym) should return correct results") {
+    std::string query_string = "stmt s1, s2; "
+                               "Select s1 such that Follows*(s1, s2)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(IntArg, Wildcard) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(10, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12", "13"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(Wildcard, Wildcard) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(_, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12", "13"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("FollowsT(synonym, Wildcard) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows*(s, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"10", "11", "12"};
+    REQUIRE(actual_results == expected_results);
+  }
 }

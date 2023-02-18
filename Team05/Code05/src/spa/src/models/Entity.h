@@ -3,7 +3,6 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <iostream>
 #include <typeindex>
 
 namespace models {
@@ -36,4 +35,8 @@ auto const EntityPtrHash = [](const EntityPtr &entity) {
   return entity->hash();
 };
 
+using EntityPtrHashset =
+    std::unordered_set<EntityPtr,
+                       decltype(EntityPtrHash),
+                       decltype(EntityPtrEqual)>;
 }  // namespace models

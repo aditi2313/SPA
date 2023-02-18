@@ -16,7 +16,7 @@ class ModifiesVisitor : public PKBWritingVisitor {
 
   void PerformWork(ast::AssignNode* assign_node) override;
 
-  void VisitRead(ast::ReadNode* read_node) override;
+  void PerformWork(ast::ReadNode* read_node) override;
 
   // TODO(Gab) Go into call node and get the information #41
   void VisitCall(ast::CallNode* call_node) override {}

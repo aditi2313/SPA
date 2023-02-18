@@ -11,7 +11,7 @@ void ModifiesVisitor::PerformWork(ast::AssignNode* assign_node) {
   pkb_ptr_->AddModifiesData(assign_node->get_line(), vars);
 }
 
-void ModifiesVisitor::VisitRead(ast::ReadNode* read_node) {
+void ModifiesVisitor::PerformWork(ast::ReadNode* read_node) {
   std::unordered_set<std::string> vars = {read_node->get_var()->get_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
 }

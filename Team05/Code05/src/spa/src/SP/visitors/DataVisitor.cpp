@@ -10,7 +10,7 @@ void DataVisitor::PerformWork(ast::AssignNode* assign_node) {
   pkb_ptr_->add_stmt(assign_node->get_line());
   pkb_ptr_->add_assign(assign_node->get_line());
 }
-void DataVisitor::VisitRead(ast::ReadNode* read_node) {
+void DataVisitor::PerformWork(ast::ReadNode* read_node) {
   pkb_ptr_->add_variable(read_node->get_var()->get_name());
   pkb_ptr_->add_read(read_node->get_line());
   pkb_ptr_->add_stmt(read_node->get_line());

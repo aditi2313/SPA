@@ -71,7 +71,7 @@ void UsesVisitor::AddVariablesFromStmtList(
     pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
     std::unordered_set<std::string>& vars) {
   for (auto& child : node.get_children()) {
-    auto& result =
+    auto result =
         pkb_read
             .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()))
             ->get_result();

@@ -14,8 +14,6 @@ class FollowsVisitor : public PKBWritingVisitor {
   explicit FollowsVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitProc(ast::ProcNode* proc_node) override;
-
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
 
   void VisitIf(ast::IfNode* if_node) override;

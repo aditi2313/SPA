@@ -2,10 +2,6 @@
 
 namespace sp {
 
-void ParentVisitor::VisitProc(ast::ProcNode *proc_node) {
-  proc_node->get_children()->AcceptVisitor(this);
-}
-
 void ParentVisitor::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
   for (auto &stmt_node : stmtlst_node->get_children()) {
     stmt_node->AcceptVisitor(this);

@@ -20,7 +20,7 @@ class ProgramValidator : public Validator, ValidatorVisitor {
 
   bool Validate() override;
 
-  void VisitProc(ast::ProcNode* proc_node) override;
+  void PerformWork(ast::ProcNode* proc_node) override;
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
   void VisitCall(ast::CallNode* call_node) override;
 

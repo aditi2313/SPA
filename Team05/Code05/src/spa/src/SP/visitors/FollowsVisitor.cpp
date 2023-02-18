@@ -2,10 +2,6 @@
 
 namespace sp {
 
-void FollowsVisitor::VisitProc(ast::ProcNode* proc_node) {
-  proc_node->get_children()->AcceptVisitor(this);
-}
-
 void FollowsVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
   std::vector<std::unique_ptr<ast::StmtNode>>& stmts =
       stmtlst_node->get_children();

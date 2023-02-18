@@ -14,8 +14,6 @@ class AssignVisitor : public PKBWritingVisitor {
   explicit AssignVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitProc(ast::ProcNode* proc_node) override;
-
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
 
   void VisitAssign(ast::AssignNode* assign_node) override;

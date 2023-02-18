@@ -9,6 +9,11 @@ void TNodeVisitor::VisitProgram(ast::ProgramNode* program_node) {
   }
 }
 
+void TNodeVisitor::VisitProc(ast::ProcNode* proc_node) {
+  PerformWork(proc_node);
+  proc_node->get_children()->AcceptVisitor(this);
+}
+
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   if_node->get_cond()->AcceptVisitor(this);
   if_node->get_then()->AcceptVisitor(this);

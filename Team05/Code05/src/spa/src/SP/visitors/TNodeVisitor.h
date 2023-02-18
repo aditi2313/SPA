@@ -16,14 +16,15 @@ namespace sp {
  since it is common for all subclasses.
 
  If required, subclasses can override the respective PerformWork(TNode) method
- which will be called after visiting the children.
+ which will be called before visiting the children.
  */
 class TNodeVisitor {
  public:
   void VisitProgram(ast::ProgramNode* program_node);
   virtual void PerformWork(ast::ProgramNode* program_node) {};
 
-  virtual void VisitProc(ast::ProcNode* proc_node) {}
+  void VisitProc(ast::ProcNode* proc_node);
+  virtual void PerformWork(ast::ProcNode* proc_node) {};
 
   virtual void VisitStmtLst(ast::StmtLstNode* stmtlst_node) {}
 

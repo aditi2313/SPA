@@ -10,7 +10,7 @@
 namespace sp {
 class RelExprParser : public Parser<ast::RelExprNode> {
  public:
-  std::unique_ptr<ast::RelExprNode> parse(Lexer &) override;
+  std::unique_ptr<ast::RelExprNode> parse(Lexer&) override;
 
  private:
   RelFactorParser rel_parser_;

@@ -57,4 +57,27 @@ void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
   op_node->get_left()->AcceptVisitor(this);
   op_node->get_right()->AcceptVisitor(this);
 }
+
+void TNodeVisitor::VisitNot(ast::NotExprNode* not_expr_node) {
+  PerformWork(not_expr_node);
+  not_expr_node->get_cond()->AcceptVisitor(this);
+}
+
+void TNodeVisitor::VisitDoubleCond(ast::DoubleCondExprNode* double_cond_expr_node) {
+  PerformWork(double_cond_expr_node);
+  double_cond_expr_node->get_left_cond()->AcceptVisitor(this);
+  double_cond_expr_node->get_right_cond()->AcceptVisitor(this);
+}
+
+void TNodeVisitor::VisitRelExpr(ast::RelExprNode* rel_expr_node) {
+  PerformWork(rel_expr_node);
+  rel_expr_node->get_left_factor()->AcceptVisitor(this);
+  rel_expr_node->get_right_factor()->AcceptVisitor(this);
+}
+
+void TNodeVisitor::VisitRelFactor(ast::RelFactor* rel_factor) {
+  PerformWork(rel_factor);
+  rel_factor->get_expr()->AcceptVisitor(this);
+  rel_factor->get_ref()->AcceptVisitor(this);
+}
 }  // namespace sp

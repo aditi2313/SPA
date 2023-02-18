@@ -57,12 +57,16 @@ class TNodeVisitor {
 
   // Relational nodes
 
-  virtual void VisitNot(ast::NotExprNode*) {}
+  void VisitNot(ast::NotExprNode*);
+  virtual void PerformWork(ast::NotExprNode*) {}
 
-  virtual void VisitDoubleCond(ast::DoubleCondExprNode*) {}
+  void VisitDoubleCond(ast::DoubleCondExprNode*);
+  virtual void PerformWork(ast::DoubleCondExprNode*) {}
 
-  virtual void VisitRelExpr(ast::RelExprNode*) {}
+  void VisitRelExpr(ast::RelExprNode*);
+  virtual void PerformWork(ast::RelExprNode*) {}
 
-  virtual void VisitRelFactor(ast::RelFactor*) {}
+  void VisitRelFactor(ast::RelFactor*);
+  virtual void PerformWork(ast::RelFactor*) {}
 };
 }  // namespace sp

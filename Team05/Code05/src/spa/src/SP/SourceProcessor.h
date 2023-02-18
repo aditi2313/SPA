@@ -23,7 +23,7 @@ class SourceProcessor {
     return exp_parser.parse(lxr);
   }
 
-  std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
+  static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
     sp::Lexer lxr(std::move(program));
     sp::ProgramParser program_parser;
     return program_parser.parse(lxr);

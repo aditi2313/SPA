@@ -35,10 +35,10 @@ class SelectClParser {
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);
-  int NextState(int current_state_index, std::string token);
   std::unique_ptr<Query> ParseQuery(std::string query_string);
 
  private:
+  int NextState(int current_state_index, std::string token);
   std::vector<std::unique_ptr<ParseState>> states_{};
   std::vector<std::vector<int>> transition_table_;
 };

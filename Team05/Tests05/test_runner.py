@@ -1,19 +1,21 @@
 import os
 import platform
 import subprocess
+from pathlib import Path
 
+test_dir = Path(__file__).resolve().parent
 source_file_suffix = "_source.txt"
 queries_file_suffix = "_queries.txt"
 output_file_suffix = "_out.xml"
-output_dir = "out"
+output_dir = os.path.join(test_dir, "out")
 
 autotester_path_mac = \
         "../Code05/cmake-build-debug/src/autotester/autotester"
 autotester_path_windows = \
         "../Code05/out/build/x64-Debug/src/autotester/autotester.exe"
-autotester_path =  autotester_path_windows \
+autotester_path =  os.path.join(test_dir, autotester_path_windows) \
             if platform.system() == "Windows" \
-            else autotester_path_mac
+            else os.path.join(test_dir, autotester_path_mac)
 
 def run_testcase(testname):
     print(f'Running testcase {testname}')

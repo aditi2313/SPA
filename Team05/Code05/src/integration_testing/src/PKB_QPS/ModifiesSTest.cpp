@@ -31,7 +31,7 @@ std::unique_ptr<PKBRead> InitializePKBForModifies(
     pkb_write.add_stmt(line);
   }
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 // Note: First argument for ModifiesS clause cannot be wildcard

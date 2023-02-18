@@ -17,7 +17,7 @@ TEST_CASE("Test processing of multiple parents line") {
   writer.AddParentData(4, 5);
   writer.AddParentData(5, 6);
   writer.AddParentData(7, 8);
-  table = writer.EndWrite();
+  table = writer.ProcessTableAndEndWrite();
   PKBRead reader(std::move(table));
 
   SECTION("Test slightly long list") {

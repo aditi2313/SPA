@@ -32,7 +32,7 @@ std::unique_ptr<PKBRead> InitializePKB(
     pkb_write.add_stmt(line);
   }
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 TEST_CASE("Test PKB and QPS integration for Pattern clause") {

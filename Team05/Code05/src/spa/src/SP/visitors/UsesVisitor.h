@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -27,5 +28,9 @@ class UsesVisitor : public PKBWritingVisitor {
   void VisitIf(ast::IfNode* if_node) override;
 
   void VisitWhile(ast::WhileNode* while_node) override;
+
+ private:
+  void AddVariablesFromStmtList(pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
+                                std::unordered_set<std::string>&);
 };
 }  // namespace sp

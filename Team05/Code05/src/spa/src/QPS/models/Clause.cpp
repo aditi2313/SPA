@@ -18,6 +18,12 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kPatternRelId) {
+    return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
+  }
+  if (rel_ref_ident == PQL::kUsesRelId) {
+    return std::make_unique<UsesClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -68,64 +74,59 @@ EntityPtrList PatternClause::Index(
     }
 }//thank you for finding the missing bracket
 
-EntityPtrList ParentClause::Index(
-    const EntityPtr & index,
-    const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+//EntityPtrList ParentClause::Index(
+//    const EntityPtr & index,
+//    const std::unique_ptr<MasterEntityFactory> &factory,
+//    const std::unique_ptr<pkb::PKBRead> &pkb) {
+//
+//    EntityPtrList result;
+//    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+//    int line = line_arg->get_number();
+//    auto filter = std::make_unique<ParentIndexFilter>(line);
+//    auto pkb_res = pkb->Parent(std::move(filter))->get_result();
+//
+//    if (!pkb_res->exists(line)) return result;
+//
+//    auto data = pkb_res->get_row(line);
+//    result.push_back(factory->CreateInstance(
+//        RHS(), data.get_parent()));
+//
+//    return result;
+//}
 
-    EntityPtrList result;
-    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
-    int line = line_arg->get_number();
-    auto filter = std::make_unique<ParentIndexFilter>(line);
-    auto pkb_res = pkb->Parent(std::move(filter))->get_result();
-
-    if (!pkb_res->exists(line)) return result;
-
-    auto data = pkb_res->get_row(line);
-    result.push_back(factory->CreateInstance(
-        RHS(), data.get_parent()));
-
-    return result;
-}
-
-EntityPtrList UsesClause::Index(
-    const EntityPtr& index,
-    const std::unique_ptr<MasterEntityFactory>& factory,
-    const std::unique_ptr<pkb::PKBRead>& pkb) {
-
-    EntityPtrList result;
-    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
-    int line = line_arg->get_number();
-    auto filter = std::make_unique<UsesIndexFilter>(line);
-    auto pkb_res = pkb->Uses(std::move(filter))->get_result();
-
-    if (!pkb_res->exists(line)) return result;
-
-    auto data = pkb_res->get_row(line);
-    for (auto var : data.get_variables()) {
-        result.push_back(
-            factory->CreateInstance(PQL::kVariableEntityName, var));
-    }
-
-    return result;
-}
+//EntityPtrList UsesClause::Index(
+//    const EntityPtr& index,
+//    const std::unique_ptr<MasterEntityFactory>& factory,
+//    const std::unique_ptr<pkb::PKBRead>& pkb) {
+//
+//    EntityPtrList result;
+//    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+//    int line = line_arg->get_number();
+//    auto filter = std::make_unique<UsesIndexFilter>(line);
+//    auto pkb_res = pkb->Uses(std::move(filter))->get_result();
+//
+//    if (!pkb_res->exists(line)) return result;
+//
+//    auto data = pkb_res->get_row(line);
+//    for (auto var : data.get_variables()) {
+//        result.push_back(
+//            factory->CreateInstance(PQL::kVariableEntityName, var));
+//    }
+//
+//    return result;
+//}
    
 
 sp::SourceProcessor source_processor;
 auto ASTNode = source_processor.ParseExpression(expression);
 auto filter = std::make_unique<AssignPredicateFilter>(
-    [&](auto data) {
-    return data.TestExpression(ASTNode);
-    });
-auto pkb_res = pkb->Assigns(std::move(filter));
-auto data = pkb_res->get_result()->get_indexes();
+    [&](auto data) { return data.TestExpression(ASTNode); });
+auto pkb_res = pkb -> Assigns(std::move(filter));
+auto data = pkb_res -> get_result() -> get_indexes();
 if (data.find(line) == data.end()) return result;
-
 for (auto a : data) {
-result.push_back(
-    factory->CreateInstance(PQL::kAssignEntityName, a));
+  result.push_back(factory->CreateInstance(PQL::kAssignEntityName, a));
 }
-
 return result;
 }
 

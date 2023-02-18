@@ -1,6 +1,3 @@
-// Add testcases for
-// Parent(_, _)
-
 #include <memory>
 #include <string>
 #include <vector>
@@ -17,9 +14,8 @@ using namespace qps;  // NOLINT
 
 using parent_data = std::pair<int, int>;
 
-
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePPKB(std::vector<parent_data> data) {
+std::unique_ptr<PKBRead> InitializePKBForParent(std::vector<parent_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -36,13 +32,14 @@ std::unique_ptr<PKBRead> InitializePPKB(std::vector<parent_data> data) {
 
 TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePPKB({
-      {1, 2},
-      {3, 4},
-      {5, 6},
-      {2, 3},
-      {4, 5},
-  });
+  std::unique_ptr<PKBRead> pkb = InitializePKBForParent(
+      {
+          {1, 2},
+          {2, 3},
+          {3, 4},
+          {4, 5},
+          {5, 6}
+      });
 
   SECTION("Parent(IntArg, IntArg) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent(1,2)";
@@ -97,6 +94,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
     REQUIRE(actual_results == expected_results);
   }
+
   SECTION("Parent(synoym, synonym) should return correct results") {
     std::string query_string = "stmt s1, s2; Select s2 such that Parent(s1,s2)";
     std::list<std::string> actual_results;
@@ -114,6 +112,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
     REQUIRE(actual_results == expected_results);
   }
+
   SECTION("Parent(synoym, WILDCARD) should return correct results") {
     std::string query_string = "stmt s1; Select s1 such that Parent(s1,_)";
     std::list<std::string> actual_results;
@@ -122,6 +121,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
     REQUIRE(actual_results == expected_results);
   }
+
   SECTION("Parent(WILDCARD, WILDCARD) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent(_,_)";
     std::list<std::string> actual_results;
@@ -134,21 +134,11 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
 
 TEST_CASE("Test PKB and QPS integration for Invalid Parent clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePPKB({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePKBForParent({{1, 2}, {2, 3}});
   SECTION(
       "Parent(IntArg, IntArg) where one arg is not in the pkb should "
-      "return correct results") {
-    std::string query_string = "stmt s; Select s such that Parent(1,3)";
-    std::list<std::string> actual_results;
-
-    qps.evaluate(query_string, actual_results, pkb);
-    std::list<std::string> expected_results{};
-    REQUIRE(actual_results == expected_results);
-  }
-  SECTION(
-      "Parent(IntArg, IntArg) where they are not bounded by Parent should "
-      "return correct results") {
-    std::string query_string = "stmt s; Select s such that Parent(1,3)";
+      "be empty") {
+    std::string query_string = "stmt s; Select s such that Parent(1,1024)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -158,7 +148,18 @@ TEST_CASE("Test PKB and QPS integration for Invalid Parent clause") {
 
   SECTION(
       "Parent(IntArg, IntArg) where they are not bounded by Parent should "
-      "return correct results") {
+      "be empty") {
+    std::string query_string = "stmt s; Select s such that Parent(1,3)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+    std::list<std::string> expected_results{};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION(
+      "Parent(IntArg, IntArg) where they are not bounded by Parent should "
+      "be empty") {
     std::string query_string = "stmt s; Select s such that Parent(2,1)";
     std::list<std::string> actual_results;
 

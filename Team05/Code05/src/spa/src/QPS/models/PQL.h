@@ -36,11 +36,6 @@ class PQL {
         != kAllEntityNames.end();
   }
 
-  inline static EntityName kRelRefGrammar = "relRef";
-  inline static EntityName kArgumentGrammar = "arg";
-  inline static EntityName kSynGrammar = "syn";
-  inline static EntityName kExprGrammar = "exp";
-
   inline static EntityName kModifiesRelId = "Modifies";
   inline static EntityName kFollowsRelId = "Follows";
   inline static EntityName kFollowsTRelId = "Follows*";
@@ -84,14 +79,24 @@ class PQL {
     return str.front() == '_' && str.back() == '_';
   }
 
-  inline static bool CheckGrammar(std::string const token, std::string const grammar) {
+  inline static std::string kRelRefGrammar = "relRef";
+  inline static std::string kArgumentGrammar = "arg";
+  inline static std::string kSynGrammar = "syn";
+  inline static std::string kExprGrammar = "exp";
+  inline static std::string kDesignEntityGrammar = "designEntity";
+  inline static std::string kRecurseGrammar = "*";
+
+  inline static bool CheckGrammar(
+      std::string const token, std::string const grammar) {
     if (grammar == kArgumentGrammar) {
       return is_argument(token);
     } else if (grammar == kRelRefGrammar) {
       return is_rel_ref(token);
     } else if (grammar == kSynGrammar) {
       return is_ident(token);
-    } else if (grammar == kExprGrammar) {
+    } else if (grammar == kDesignEntityGrammar) {
+      return is_entity_name(token);
+    } else if (grammar == kExprGrammar || grammar == kRecurseGrammar) {
       return true;
     } else {
       return token == grammar;

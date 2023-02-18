@@ -14,7 +14,6 @@ void TestErrorCase(ParseState &state, std::vector<std::string> tokens) {
       state.parse(tokens, itr, query), PqlSyntaxErrorException);
 }
 
-// TODO(jl): Replace Entity
 TEST_CASE("Test DeclarationParseState") {
   DeclarationParseState state;
 
@@ -28,6 +27,23 @@ TEST_CASE("Test DeclarationParseState") {
         Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
+
+  SECTION("Multiple declarations should parse correctly") {
+    std::vector<std::string> tokens{
+        "variable", "v1", ",", "v2", ",", "v3", ";"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.parse(tokens, itr, query);
+
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v1", PQL::kVariableEntityName)));
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v2", PQL::kVariableEntityName)));
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v3", PQL::kVariableEntityName)));
+    REQUIRE(itr == tokens.end());
+  };
+
 
   SECTION("Invalid design entity identifier should "
           "throw PqlSyntaxErrorException") {

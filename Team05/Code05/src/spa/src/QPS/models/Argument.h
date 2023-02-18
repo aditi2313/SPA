@@ -140,7 +140,6 @@ class ExpressionArg : public Argument {
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<ExpressionArg>(*this);
   }
-  
  private:
   std::string expr_;  // Expression
   bool is_exact_;

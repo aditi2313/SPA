@@ -28,20 +28,44 @@ class ParseState {
   void ThrowException() {
     throw PqlSyntaxErrorException(kExceptionMessage);
   }
-
+  inline virtual bool IsComplete(parse_position grammar_itr) {
+    return grammar_itr == grammar_.end();
+  }
   std::vector<std::string> grammar_;
 };
 
-// design-entity synonym (',' synonym)* ';'
-class DeclarationParseState : public ParseState {
+class RecursiveParseState : public ParseState {
  public:
-  DeclarationParseState() : ParseState("", {}) {
+  RecursiveParseState(
+      std::string transition,
+      std::vector<std::string> grammar,
+      std::string kRecurseDelimiter)
+      : ParseState(transition, grammar), kRecurseDelimiter(kRecurseDelimiter) {}
+
+ protected:
+  std::string kRecurseDelimiter;
+  virtual parse_position recurse() = 0;
+  inline bool CheckRecurseDelimiter(std::string token) {
+    return token == kRecurseDelimiter;
+  }
+};
+
+// design-entity synonym (',' synonym)* ';'
+class DeclarationParseState : public RecursiveParseState {
+ public:
+  DeclarationParseState() : RecursiveParseState("", {
+      PQL::kDesignEntityGrammar, PQL::kSynGrammar, PQL::kRecurseGrammar, ";"
+  }, ",") {
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 
   void parse(const std::vector<std::string> &tokens,
              parse_position &itr,
              QueryPtr &query) override;
+ private:
+  parse_position recurse() override {
+    return grammar_.begin();
+  }
 };
 
 // synonym | tuple | BOOLEAN

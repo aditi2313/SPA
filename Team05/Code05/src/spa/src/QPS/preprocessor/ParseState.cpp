@@ -4,7 +4,6 @@
 #include "ParseState.h"
 
 #include "QPS/models/PQL.h"
-#include "common/Exceptions.h"
 #include "models/Entity.h"
 
 namespace qps {
@@ -13,25 +12,30 @@ void DeclarationParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     QueryPtr &query) {
-  if (itr == tokens.end() || !PQL::is_entity_name(*itr)) ThrowException();
-
-  EntityName entity_name = *itr;
-  bool has_set_one_synonym = false;
-  itr++;
-  while (itr != tokens.end() && *itr != ";") {
-    if (!PQL::is_ident(*itr)) ThrowException();
-
-    query->declare_synonym(*itr, entity_name);
-    has_set_one_synonym = true;
-    itr++;
-    if (itr != tokens.end() && *itr == ",") {
-      itr++;  // read in next synonym
+  auto grammar_itr = grammar_.begin();
+  EntityName entity_name;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
     }
+    if (*grammar_itr == PQL::kDesignEntityGrammar) {
+      entity_name = *itr;
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->declare_synonym(*itr, entity_name);
+    }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      if (CheckRecurseDelimiter(*itr)) {
+        grammar_itr = recurse();
+      } else {
+        itr--;
+      }
+    }
+    itr++;
+    grammar_itr++;
   }
 
-  if (!has_set_one_synonym) ThrowException();
-  if (itr == tokens.end()) ThrowException();
-  itr++;
+  if (!IsComplete(grammar_itr)) ThrowException();
 }
 
 // synonym
@@ -51,7 +55,7 @@ void SelectParseState::parse(
     grammar_itr++;
   }
 
-  if (grammar_itr != grammar_.end()) ThrowException();
+  if (!IsComplete(grammar_itr)) ThrowException();
 }
 
 // 'such' 'that' relRef
@@ -77,7 +81,7 @@ void SuchThatParseState::parse(
     grammar_itr++;
   }
 
-  if (grammar_itr != grammar_.end()) ThrowException();
+  if (!IsComplete(grammar_itr)) ThrowException();
 
   query->add_clause(Clause::CreateClause(
       rel_ident,
@@ -104,7 +108,7 @@ void PatternParseState::parse(
     grammar_itr++;
   }
 
-  if (grammar_itr != grammar_.end()) ThrowException();
+  if (!IsComplete(grammar_itr)) ThrowException();
 
   query->add_clause(Clause::CreateClause(
       PQL::kModifiesRelId,

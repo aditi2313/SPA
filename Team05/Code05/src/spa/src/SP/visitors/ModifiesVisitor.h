@@ -14,8 +14,6 @@ class ModifiesVisitor : public PKBWritingVisitor {
   explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
-
   void VisitAssign(ast::AssignNode* assign_node) override;
 
   void VisitRead(ast::ReadNode* read_node) override;

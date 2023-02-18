@@ -2,12 +2,6 @@
 
 namespace sp {
 
-void AssignVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
-  for (auto& child : stmtlst_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
-}
-
 void AssignVisitor::VisitAssign(ast::AssignNode* assign_node) {
   pkb_ptr_->AddAssignData(assign_node->get_var()->get_name(),
                           assign_node->get_line(),

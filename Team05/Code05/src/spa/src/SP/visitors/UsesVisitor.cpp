@@ -6,12 +6,6 @@
 
 namespace sp {
 
-void UsesVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
-  for (auto& child : stmtlst_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
-}
-
 void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
   VarCollector varCollector;
   assign_node->get_expr()->AcceptVisitor(&varCollector);

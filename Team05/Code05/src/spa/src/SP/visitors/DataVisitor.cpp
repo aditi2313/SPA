@@ -4,12 +4,6 @@ namespace sp {
 
 void DataVisitor::PerformWork(ast::ProcNode* proc_node) {
   pkb_ptr_->add_procedure(proc_node->get_name());
-};
-
-void DataVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
-  for (auto& child : stmtlst_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
 }
 
 void DataVisitor::VisitAssign(ast::AssignNode* assign_node) {

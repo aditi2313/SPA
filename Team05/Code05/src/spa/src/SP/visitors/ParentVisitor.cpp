@@ -2,12 +2,6 @@
 
 namespace sp {
 
-void ParentVisitor::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
-  for (auto &stmt_node : stmtlst_node->get_children()) {
-    stmt_node->AcceptVisitor(this);
-  }
-}
-
 void ParentVisitor::VisitIf(ast::IfNode *if_node) {
   auto parent_line = if_node->get_line();
   for (auto &stmt_node : if_node->get_then()->get_children()) {

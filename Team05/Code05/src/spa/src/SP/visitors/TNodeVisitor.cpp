@@ -14,6 +14,13 @@ void TNodeVisitor::VisitProc(ast::ProcNode* proc_node) {
   proc_node->get_children()->AcceptVisitor(this);
 }
 
+void TNodeVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
+  PerformWork(stmtlst_node);
+  for (auto& child : stmtlst_node->get_children()) {
+    child->AcceptVisitor(this);
+  }
+}
+
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   if_node->get_cond()->AcceptVisitor(this);
   if_node->get_then()->AcceptVisitor(this);

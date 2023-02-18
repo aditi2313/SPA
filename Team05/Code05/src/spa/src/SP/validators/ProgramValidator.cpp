@@ -14,12 +14,6 @@ void ProgramValidator::PerformWork(ast::ProcNode *proc_node) {
   call_validator_.Accept(*proc_node);
 }
 
-void ProgramValidator::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
-  for (auto &stmt_node : stmtlst_node->get_children()) {
-    stmt_node->AcceptVisitor(this);
-  }
-}
-
 void ProgramValidator::VisitCall(ast::CallNode *call_node) {
   call_validator_.Accept(*call_node);
 }

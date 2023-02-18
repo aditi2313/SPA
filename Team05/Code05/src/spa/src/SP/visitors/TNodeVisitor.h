@@ -21,12 +21,13 @@ namespace sp {
 class TNodeVisitor {
  public:
   void VisitProgram(ast::ProgramNode* program_node);
-  virtual void PerformWork(ast::ProgramNode* program_node) {};
+  virtual void PerformWork(ast::ProgramNode* program_node) {}
 
   void VisitProc(ast::ProcNode* proc_node);
-  virtual void PerformWork(ast::ProcNode* proc_node) {};
+  virtual void PerformWork(ast::ProcNode* proc_node) {}
 
-  virtual void VisitStmtLst(ast::StmtLstNode* stmtlst_node) {}
+  void VisitStmtLst(ast::StmtLstNode* stmtlst_node);
+  virtual void PerformWork(ast::StmtLstNode* stmtlst_node) {}
 
   virtual void VisitAssign(ast::AssignNode* assign_node) {}
 

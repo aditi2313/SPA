@@ -12,7 +12,7 @@ autotester_path_mac = \
 autotester_path_windows = \
         "../Code05/out/build/x64-Debug/src/autotester/autotester.exe"
 autotester_path =  autotester_path_windows \
-            if platform.system == "Windows" \
+            if platform.system() == "Windows" \
             else autotester_path_mac
 
 def run_testcase(testname):

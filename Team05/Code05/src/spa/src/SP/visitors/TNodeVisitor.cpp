@@ -19,6 +19,9 @@ void TNodeVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
   for (auto& child : stmtlst_node->get_children()) {
     child->AcceptVisitor(this);
   }
+
+}void TNodeVisitor::VisitAssign(ast::AssignNode* assign_node) {
+  PerformWork(assign_node);
 }
 
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {

@@ -6,7 +6,7 @@ void DataVisitor::PerformWork(ast::ProcNode* proc_node) {
   pkb_ptr_->add_procedure(proc_node->get_name());
 }
 
-void DataVisitor::VisitAssign(ast::AssignNode* assign_node) {
+void DataVisitor::PerformWork(ast::AssignNode* assign_node) {
   pkb_ptr_->add_stmt(assign_node->get_line());
   pkb_ptr_->add_assign(assign_node->get_line());
 }

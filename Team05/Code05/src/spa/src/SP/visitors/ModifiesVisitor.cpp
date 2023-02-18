@@ -6,7 +6,7 @@
 
 namespace sp {
 
-void ModifiesVisitor::VisitAssign(ast::AssignNode* assign_node) {
+void ModifiesVisitor::PerformWork(ast::AssignNode* assign_node) {
   std::unordered_set<std::string> vars = {assign_node->get_var()->get_name()};
   pkb_ptr_->AddModifiesData(assign_node->get_line(), vars);
 }

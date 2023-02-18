@@ -16,8 +16,7 @@ class DataVisitor : public PKBWritingVisitor {
 
   void PerformWork(ast::ProcNode* proc_node) override;
 
-  void VisitAssign(ast::AssignNode* assign_node) override;
-
+  void PerformWork(ast::AssignNode* assign_node) override;
   void VisitRead(ast::ReadNode* read_node) override;
 
   void VisitPrint(ast::PrintNode* print_node) override;

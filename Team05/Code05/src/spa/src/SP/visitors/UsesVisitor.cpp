@@ -6,7 +6,7 @@
 
 namespace sp {
 
-void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
+void UsesVisitor::PerformWork(ast::AssignNode* assign_node) {
   VarCollector varCollector;
   assign_node->get_expr()->AcceptVisitor(&varCollector);
   std::unordered_set<std::string> vars = varCollector.get_vars();

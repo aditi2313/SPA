@@ -71,63 +71,62 @@ EntityPtrList PatternClause::Index(
         else {
             expression += c;
         }
-    }
-}//thank you for finding the missing bracket
-
-//EntityPtrList ParentClause::Index(
-//    const EntityPtr & index,
-//    const std::unique_ptr<MasterEntityFactory> &factory,
-//    const std::unique_ptr<pkb::PKBRead> &pkb) {
-//
-//    EntityPtrList result;
-//    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
-//    int line = line_arg->get_number();
-//    auto filter = std::make_unique<ParentIndexFilter>(line);
-//    auto pkb_res = pkb->Parent(std::move(filter))->get_result();
-//
-//    if (!pkb_res->exists(line)) return result;
-//
-//    auto data = pkb_res->get_row(line);
-//    result.push_back(factory->CreateInstance(
-//        RHS(), data.get_parent()));
-//
-//    return result;
-//}
-
-//EntityPtrList UsesClause::Index(
-//    const EntityPtr& index,
-//    const std::unique_ptr<MasterEntityFactory>& factory,
-//    const std::unique_ptr<pkb::PKBRead>& pkb) {
-//
-//    EntityPtrList result;
-//    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
-//    int line = line_arg->get_number();
-//    auto filter = std::make_unique<UsesIndexFilter>(line);
-//    auto pkb_res = pkb->Uses(std::move(filter))->get_result();
-//
-//    if (!pkb_res->exists(line)) return result;
-//
-//    auto data = pkb_res->get_row(line);
-//    for (auto var : data.get_variables()) {
-//        result.push_back(
-//            factory->CreateInstance(PQL::kVariableEntityName, var));
-//    }
-//
-//    return result;
-//}
+    }//thank you for finding the missing bracket
    
 
-sp::SourceProcessor source_processor;
-auto ASTNode = source_processor.ParseExpression(expression);
-auto filter = std::make_unique<AssignPredicateFilter>(
-    [&](auto data) { return data.TestExpression(ASTNode); });
-auto pkb_res = pkb -> Assigns(std::move(filter));
-auto data = pkb_res -> get_result() -> get_indexes();
-if (data.find(line) == data.end()) return result;
-for (auto a : data) {
-  result.push_back(factory->CreateInstance(PQL::kAssignEntityName, a));
+    sp::SourceProcessor source_processor;
+    auto ASTNode = source_processor.ParseExpression(expression);
+    auto filter = std::make_unique<AssignPredicateFilter>(
+        [&](auto data) { return data.TestExpression(ASTNode); });
+    auto pkb_res = pkb -> Assigns(std::move(filter));
+    auto data = pkb_res -> get_result() -> get_indexes();
+    if (data.find(line) == data.end()) return result;
+    for (auto a : data) {
+      result.push_back(factory->CreateInstance(PQL::kAssignEntityName, a));
+    }
+    return result;
 }
-return result;
+
+ EntityPtrList ParentClause::Index(
+    const EntityPtr & index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+
+    EntityPtrList result;
+    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+    int line = line_arg->get_number();
+    auto filter = std::make_unique<ParentIndexFilter>(line);
+    auto pkb_res = pkb->Parent(std::move(filter))->get_result();
+
+    if (!pkb_res->exists(line)) return result;
+
+    auto data = pkb_res->get_row(line);
+    result.push_back(factory->CreateInstance(
+        RHS(), data.get_parent()));
+
+    return result;
+}
+
+ EntityPtrList UsesClause::Index(
+    const EntityPtr& index,
+    const std::unique_ptr<MasterEntityFactory>& factory,
+    const std::unique_ptr<pkb::PKBRead>& pkb) {
+
+    EntityPtrList result;
+    IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+    int line = line_arg->get_number();
+    auto filter = std::make_unique<UsesIndexFilter>(line);
+    auto pkb_res = pkb->Uses(std::move(filter))->get_result();
+
+    if (!pkb_res->exists(line)) return result;
+
+    auto data = pkb_res->get_row(line);
+    for (auto var : data.get_variables()) {
+        result.push_back(
+            factory->CreateInstance(PQL::kVariableEntityName, var));
+    }
+
+    return result;
 }
 
 Clause::~Clause() = default;

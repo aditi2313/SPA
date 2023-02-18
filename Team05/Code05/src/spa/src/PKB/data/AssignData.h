@@ -15,8 +15,11 @@ class AssignData {
 
   AssignData(const AssignData& other);
 
-  bool TestExpression(const std::unique_ptr<ast::ExprNode>& other_node) {
-    return other_node->DeepEquals(*expression_);
+  bool TestExpression(
+      const std::unique_ptr<ast::ExprNode>& other_node, bool is_exact) {
+    return is_exact
+           ? expression_->DeepEquals(*other_node)
+           : expression_->PartialMatch(*other_node);
   }
 
   inline int get_line() { return line_; }

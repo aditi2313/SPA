@@ -60,5 +60,10 @@ class PQL {
   inline static bool is_wildcard(std::string str) {
     return str == "_";
   }
+
+  inline static bool is_pattern_wildcard(std::string str) {
+    if (str.size() < 2) return false;
+    return str.front() == '_' && str.back() == '_';
+  }
 };
 }  // namespace qps

@@ -62,7 +62,7 @@ TEST_CASE("Test SynonymCheck") {
 //  // One undeclared synonym used
 //  std::string query_string2 = "variable v; Select v such that Modifies(6, a)";
 //
-//  std::unique_ptr<Query> expected_query2 = 
+//  std::unique_ptr<Query> expected_query2 =
 //  BuildQuery({{"v", PQL::kVariableEntityName}}, {"v"});
 //  expected_query2->add_clause(
 //      std::make_unique<ModifiesClause>(

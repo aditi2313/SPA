@@ -145,7 +145,7 @@ TEST_CASE("Test SuchThatParseState") {
   };
 
   SECTION("Such that clause for Uses should parse correctly") {
-    std::vector<std::string> tokens{"such", "that", "Uses", 
+    std::vector<std::string> tokens{"such", "that", "Uses",
         "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();

@@ -133,7 +133,6 @@ class ParseFactorSyntaxException : public ParseException {
       : ParseException(kParseFactorSyntaxMessage + additional) {}
   ParseFactorSyntaxException() : ParseException(kParseFactorSyntaxMessage) {}
 
- private:
   static const char kParseFactorSyntaxMessage[];
 };
 

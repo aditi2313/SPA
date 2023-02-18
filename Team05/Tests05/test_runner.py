@@ -26,8 +26,6 @@ def run_testcase(testname):
         print(result.stderr)
     else:
         print(f'{testname} successfully ran')
-        
-    print("")
     
 
 def find_all_testcases():
@@ -44,5 +42,7 @@ def find_all_testcases():
 
 if __name__ == "__main__":
     testcases = find_all_testcases()
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
     for tc in testcases:
         run_testcase(tc)

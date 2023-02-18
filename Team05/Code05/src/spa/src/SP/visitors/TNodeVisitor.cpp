@@ -18,4 +18,9 @@ void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
   while_node->get_cond()->AcceptVisitor(this);
   while_node->get_stmts()->AcceptVisitor(this);
 }
+
+void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
+  op_node->get_left()->AcceptVisitor(this);
+  op_node->get_right()->AcceptVisitor(this);
+}
 }  // namespace sp

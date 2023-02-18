@@ -37,10 +37,7 @@ class TNodeVisitor {
 
   virtual void VisitConst(ast::ConstNode* const_node) {}
 
-  virtual void VisitOpNode(ast::OpNode* op_node) {
-    op_node->get_left()->AcceptVisitor(this);
-    op_node->get_right()->AcceptVisitor(this);
-  }
+  virtual void VisitOpNode(ast::OpNode* op_node);
 
   // Relational nodes
 

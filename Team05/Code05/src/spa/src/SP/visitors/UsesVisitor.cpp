@@ -4,7 +4,7 @@
 
 #include "PKB/PKBRead.h"
 #include "SP/visitors/VarCollector.h"
-#include "common/filter/filters/IndexableFilter.h"
+#include "common/filter/filters/IndexFilter.h"
 
 namespace sp {
 void UsesVisitor::VisitProgram(ast::ProgramNode* program_node) {
@@ -73,8 +73,7 @@ void UsesVisitor::AddVariablesFromStmtList(
   for (auto& child : node.get_children()) {
     auto& result =
         pkb_read
-            .Uses(std::make_unique<filter::IndexableFilter<pkb::UsesData>>(
-                child->get_line()))
+            .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()))
             ->get_result();
     auto variables = result->get_row(0).get_variables();
     for (auto& var : variables) {

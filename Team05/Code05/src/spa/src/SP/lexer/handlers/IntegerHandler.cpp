@@ -10,13 +10,6 @@ void ValidateInteger(std::string number_string) {
   if (number_string[0] == '0' && number_string.length() > 1) {
     throw LexerException("Integer cannot have leading zeroes");
   }
-
-  // todo(Gab) consider if this is still needed
-  /*for (int i = 0; i < number_string.length(); i++) {
-    if (!isdigit(number_string[i])) {
-      throw LexerException("Integer cannot have non-digits");
-    }
-  }*/
 }
 std::optional<Token> IntegerHandler::Handle(LexerData& data) {
   std::string result_int;

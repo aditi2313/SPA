@@ -18,7 +18,7 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kPatternRelId) {
     return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
   }
-  if (rel_ref_ident == PQL::kPatternRelId) {
+  if (rel_ref_ident == PQL::kParentRelId) {
     return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
   }
   if (rel_ref_ident == PQL::kUsesRelId) {

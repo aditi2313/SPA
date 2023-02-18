@@ -5,39 +5,34 @@ namespace qps {
 
 bool Validator::validate(std::unique_ptr<Query> &query) {
   std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
-  std::vector<SynonymPtr> synonyms = query->get_declared_synonyms();
+  //std::vector<SynonymPtr> synonyms = query->get_declared_synonyms();
 
   return IsWildcard(clauses);
 }
 
 // TODO(Sarthak) check for the type of synonym
 // used to ensure that the design entity is correct
- bool Validator::DesignEntitySynonyms(
+bool Validator::DesignEntitySynonyms(
     std::vector<std::unique_ptr<Clause>> clauses,
     std::vector<SynonymPtr> synonyms) {
-     for (auto & Clause : clauses) {
-         if (typeid(*Clause).name() == "class ModifiesClause") {
-             return true;
-         }
-         else if (typeid(*Clause).name() == "class UsesClause") {
-             return true;
-         }
-         else if (typeid(*Clause).name() == "class FollowsClause") {
-             return true;
-         }
-         else if (typeid(*Clause).name() == "class ParentClause") {
-             return true;
-         }
-         else if (typeid(*Clause).name() == "class AssignClause") {
-             return true;
-         }
-         else {
-             return true;
-         }
+  for (auto &Clause : clauses) {
+    if (typeid(*Clause).name() == "class ModifiesClause") {
+      return true;
+    } else if (typeid(*Clause).name() == "class UsesClause") {
+      return true;
+    } else if (typeid(*Clause).name() == "class FollowsClause") {
+      return true;
+    } else if (typeid(*Clause).name() == "class ParentClause") {
+      return true;
+    } else if (typeid(*Clause).name() == "class AssignClause") {
+      return true;
+    } else {
+      return true;
+    }
 
-
-  return true;
- }
+    return true;
+  }
+}
 //Uses: line(int), variables the line uses(vector)
 //Follows : line(int), the line that this line follows / comes after(int)
 //Parent : line(int), the line that is the parent of this line(int)

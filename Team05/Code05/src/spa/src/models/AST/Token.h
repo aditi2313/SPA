@@ -52,6 +52,8 @@ enum class Token {
 bool IsStmtToken(Token token);
 bool IsKeyWordToken(Token token);
 bool IsRelationToken(Token token);
+bool IsTokenString(std::string str);
 
 std::string TokenToString(Token token);
+Token StringToToken(std::string str);
 }  // namespace sp

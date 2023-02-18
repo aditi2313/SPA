@@ -131,7 +131,7 @@ EntityPtrList ParentTClause::Index(
     result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }
 
-  return result;  
+  return result;
 }
 
 EntityPtrList UsesClause::Index(

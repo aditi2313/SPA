@@ -90,7 +90,8 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     REQUIRE(actual_results == expected_results);
   }
 
-    SECTION("Uses(StmtSynonym, VarSynonym) should return correct results when select v") {
+    SECTION("Uses(StmtSynonym, VarSynonym) should return correct "
+        "results when select v") {
     std::string query_string =
         "variable v; stmt s; "
         "Select v such that Uses(s, v)";
@@ -102,7 +103,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Modifies(StmtSynonym, VarSynonym) should return " 
+  SECTION("Modifies(StmtSynonym, VarSynonym) should return "
       "correct results when select s") {
     std::string query_string =
         "variable v; stmt s; "
@@ -115,7 +116,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     REQUIRE(actual_results == expected_results);
   }
 
-    SECTION("Uses(IntArg, VarSynonym) should return " 
+    SECTION("Uses(IntArg, VarSynonym) should return "
         "correct results when select v") {
     std::string query_string =
         "variable v; stmt s; "

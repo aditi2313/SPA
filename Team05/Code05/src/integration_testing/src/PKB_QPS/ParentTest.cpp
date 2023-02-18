@@ -79,7 +79,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     std::list<std::string> expected_results{"5"};
     REQUIRE(actual_results == expected_results);
   }
-  
+
   SECTION("Parent(Intarg, synonym) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent(1,s)";
     std::list<std::string> actual_results;

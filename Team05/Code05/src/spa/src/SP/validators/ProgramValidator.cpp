@@ -14,7 +14,7 @@ void ProgramValidator::PerformWork(ast::ProcNode *proc_node) {
   call_validator_.Accept(*proc_node);
 }
 
-void ProgramValidator::VisitCall(ast::CallNode *call_node) {
+void ProgramValidator::PerformWork(ast::CallNode *call_node) {
   call_validator_.Accept(*call_node);
 }
 

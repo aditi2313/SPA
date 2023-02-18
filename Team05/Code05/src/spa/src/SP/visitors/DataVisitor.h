@@ -26,7 +26,7 @@ class DataVisitor : public PKBWritingVisitor {
 
   void VisitConst(ast::ConstNode* const_node) override;
 
-  void VisitCall(ast::CallNode* call_node) override;
+  void PerformWork(ast::CallNode* call_node) override;
 
   void VisitWhile(ast::WhileNode* assign_node) override;
 

@@ -21,7 +21,7 @@ class ProgramValidator : public Validator, ValidatorVisitor {
   bool Validate() override;
 
   void PerformWork(ast::ProcNode* proc_node) override;
-  void VisitCall(ast::CallNode* call_node) override;
+  void PerformWork(ast::CallNode* call_node) override;
 
  private:
   std::unique_ptr<ast::ProgramNode>& root_;

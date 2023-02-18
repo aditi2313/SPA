@@ -42,7 +42,8 @@ class TNodeVisitor {
 
   virtual void VisitWhile(ast::WhileNode*);
 
-  virtual void VisitCall(ast::CallNode* call_node) {}
+  void VisitCall(ast::CallNode* call_node);
+  virtual void PerformWork(ast::CallNode* call_node) {}
 
   virtual void VisitExpr(ast::ExprNode* expr_node) {}
 
@@ -51,6 +52,7 @@ class TNodeVisitor {
   virtual void VisitConst(ast::ConstNode* const_node) {}
 
   virtual void VisitOpNode(ast::OpNode* op_node);
+  virtual void PerformWork(ast::OpNode* op_node);
 
   // Relational nodes
 

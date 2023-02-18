@@ -44,6 +44,10 @@ void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
   while_node->get_stmts()->AcceptVisitor(this);
 }
 
+void TNodeVisitor::VisitCall(ast::CallNode* call_node) {
+  PerformWork(call_node);
+}
+
 void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
   op_node->get_left()->AcceptVisitor(this);
   op_node->get_right()->AcceptVisitor(this);

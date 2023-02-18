@@ -20,7 +20,8 @@ class UsesData {
     }
 
     friend bool operator==(const UsesData& LHS, const UsesData& RHS) {
-        return LHS.line_ == RHS.line_ && LHS.variable_names_ == RHS.variable_names_;
+        return LHS.line_ == RHS.line_ &&
+        LHS.variable_names_ == RHS.variable_names_;
     }
 
     inline int get_line() { return line_; }

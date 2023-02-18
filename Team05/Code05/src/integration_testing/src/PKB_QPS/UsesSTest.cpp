@@ -1,7 +1,7 @@
-// NOTE: first argument for Uses cannot be wildcard
-// Add testcases for
-// UsesS (s, _)
-
+//// NOTE: first argument for Uses cannot be wildcard
+//// Add testcases for
+//// UsesS (s, _)
+//
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,7 +16,7 @@
 using namespace pkb;  // NOLINT
 using namespace qps;  // NOLINT
 
-using uses_data = std::pair<int, std::vector<std::string>>;
+using uses_data = std::pair<int, std::unordered_set<std::string>>;
 // Helper method for testing
 std::unique_ptr<PKBRead> InitializeUPKB(std::vector<uses_data> data) {
   std::unique_ptr<PKBRelationTable> table =

@@ -19,7 +19,7 @@ using parent_data = std::pair<int, int>;
 
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB(std::vector<parent_data> data) {
+std::unique_ptr<PKBRead> InitializePPKB(std::vector<parent_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -36,7 +36,7 @@ std::unique_ptr<PKBRead> InitializePKB(std::vector<parent_data> data) {
 
 TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB({
+  std::unique_ptr<PKBRead> pkb = InitializePPKB({
       {1, 2},
       {3, 4},
       {5, 6},
@@ -134,7 +134,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
 
 TEST_CASE("Test PKB and QPS integration for Invalid Parent clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePPKB({{1, 2}, {2, 3}});
   SECTION(
       "Parent(IntArg, IntArg) where one arg is not in the pkb should "
       "return correct results") {

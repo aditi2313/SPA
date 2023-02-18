@@ -3,6 +3,7 @@
 namespace sp {
 
 void TNodeVisitor::VisitProgram(ast::ProgramNode* program_node) {
+  PerformWork(program_node);
   for (auto& child : program_node->get_children()) {
     child->AcceptVisitor(this);
   }

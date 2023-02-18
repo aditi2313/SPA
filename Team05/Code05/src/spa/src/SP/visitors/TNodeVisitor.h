@@ -11,9 +11,17 @@
 #include "models/AST/relations/RelExprNode.h"
 
 namespace sp {
+/*
+ Implements a template for visiting of all children for every type of TNode
+ since it is common for all subclasses.
+
+ If required, subclasses can override the respective PerformWork(TNode) method
+ which will be called after visiting the children.
+ */
 class TNodeVisitor {
  public:
-  virtual void VisitProgram(ast::ProgramNode* program_node);
+  void VisitProgram(ast::ProgramNode* program_node);
+  virtual void PerformWork(ast::ProgramNode* program_node) {};
 
   virtual void VisitProc(ast::ProcNode* proc_node) {}
 

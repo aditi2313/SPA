@@ -39,11 +39,19 @@ void SelectParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     QueryPtr &query) {
-  if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
-  itr++;
-  if (!PQL::is_ident(*itr)) ThrowException();
-  query->add_selected_synonym(*itr);
-  itr++;
+  auto grammar_itr = grammar_.begin();
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->add_selected_synonym(*itr);
+    }
+    itr++;
+    grammar_itr++;
+  }
+
+  if (grammar_itr != grammar_.end()) ThrowException();
 }
 
 // 'such' 'that' relRef

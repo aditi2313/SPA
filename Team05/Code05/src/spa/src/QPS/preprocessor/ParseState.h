@@ -47,7 +47,9 @@ class DeclarationParseState : public ParseState {
 // synonym | tuple | BOOLEAN
 class SelectParseState : public ParseState {
  public:
-  SelectParseState() : ParseState("Select", {}) {
+  SelectParseState() : ParseState("Select", {
+      "Select", PQL::kSynGrammar
+  }) {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 

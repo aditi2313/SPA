@@ -97,14 +97,14 @@ TEST_CASE("Test ParseQuery") {
       "Query with multiple declarations, multiple synonyms "
       "and multiple such-that and pattern clauses should parse correctly") {
     std::string query_string = "variable v; procedure p; "
-                               "Select v, p such that Modifies(6, v) "
+                               "Select v such that Modifies(6, v) "
                                "such that Modifies(3, v) "
                                "pattern a(_, \"x + y\") "
                                "pattern a(\"variable\", \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
-        {"v", "p"});
+        {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("6"),
@@ -138,13 +138,13 @@ TEST_CASE("Test ParseQuery") {
       "and multiple such-that and pattern clauses and many random whitespaces "
       "should parse correctly") {
     std::string query_string = "variable    v;    procedure    p; "
-                               "Select v, p  such  that  Modifies(  6, v) "
+                               "Select v such  that  Modifies(  6, v) "
                                "  such      that    Modifies(3, v) "
                                "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
-        {"v", "p"});
+        {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("6"),

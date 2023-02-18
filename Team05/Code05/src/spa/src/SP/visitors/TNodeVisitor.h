@@ -51,8 +51,8 @@ class TNodeVisitor {
 
   virtual void VisitConst(ast::ConstNode* const_node) {}
 
-  virtual void VisitOpNode(ast::OpNode* op_node);
-  virtual void PerformWork(ast::OpNode* op_node);
+  void VisitOpNode(ast::OpNode* op_node);
+  virtual void PerformWork(ast::OpNode* op_node) {}
 
   // Relational nodes
 

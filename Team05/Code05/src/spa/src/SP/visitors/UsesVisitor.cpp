@@ -1,7 +1,8 @@
+#include "UsesVisitor.h"
+
 #include <unordered_set>
 
-#include "SP/visitors/ExpressionVisitor.h"
-#include "UsesVisitor.h"
+#include "SP/visitors/VarCollector.h"
 
 namespace sp {
 void UsesVisitor::VisitProgram(ast::ProgramNode* program_node) {
@@ -21,12 +22,11 @@ void UsesVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
 }
 
 void UsesVisitor::VisitAssign(ast::AssignNode* assign_node) {
-  ExpressionVisitor exprVisitor;
-  assign_node->get_expr()->AcceptVisitor(&exprVisitor);
-  std::unordered_set<std::string> vars = exprVisitor.get_vars();
+  VarCollector varCollector;
+  assign_node->get_expr()->AcceptVisitor(&varCollector);
+  std::unordered_set<std::string> vars = varCollector.get_vars();
   pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
 }
-
 
 void UsesVisitor::VisitPrint(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var()->get_name()};
@@ -34,11 +34,20 @@ void UsesVisitor::VisitPrint(ast::PrintNode* print_node) {
 }
 
 void UsesVisitor::VisitIf(ast::IfNode* if_node) {
-
+  if_node->get_else()->AcceptVisitor(this);
+  if_node->get_then()->AcceptVisitor(this);
+  VarCollector varCollector;
+  if_node->get_cond()->AcceptVisitor(&varCollector);
+  std::unordered_set<std::string> vars = varCollector.get_vars();
+  pkb_ptr_->AddUsesData(if_node->get_line(), vars);
 }
 
 void UsesVisitor::VisitWhile(ast::WhileNode* while_node) {
-
+  while_node->get_stmts()->AcceptVisitor(this);
+  VarCollector varCollector;
+  while_node->get_cond()->AcceptVisitor(&varCollector);
+  std::unordered_set<std::string> vars = varCollector.get_vars();
+  pkb_ptr_->AddUsesData(while_node->get_line(), vars);
 }
 
 }  // namespace sp

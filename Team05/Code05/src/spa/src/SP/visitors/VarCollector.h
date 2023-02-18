@@ -9,7 +9,7 @@
 #include "SP/visitors/TNodeVisitor.h"
 
 namespace sp {
-class ExpressionVisitor : public TNodeVisitor {
+class VarCollector : public TNodeVisitor {
  public:
   void VisitVar(ast::VarNode* var_node) override;
 

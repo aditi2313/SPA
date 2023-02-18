@@ -8,7 +8,7 @@
 /// </summary>
 class LexerData {
  public:
-  explicit LexerData(std::string program) : program_(program) {
+  explicit LexerData(std::string& program) : program_(program) {
     ptr_ = 0;
     current_stmt_ = 1;
     current_int_ = -1;
@@ -62,6 +62,6 @@ class LexerData {
   sp::Token current_token_;
   int current_int_;
   int current_stmt_;
-  std::string program_;
+  std::string& program_;
   int ptr_;
 };

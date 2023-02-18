@@ -1,5 +1,6 @@
 #pragma once
 #include <unordered_map>
+#include <string>
 
 namespace sp {
 
@@ -48,8 +49,9 @@ enum class Token {
     kTokError,
 };
 
-bool IsStmtToken(Token token);
+bool IsStmtToken(Token input);
 bool IsKeyWordToken(Token token);
 bool IsRelationToken(Token token);
 
+std::string TokenToString(Token token);
 }  // namespace sp

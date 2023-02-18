@@ -129,7 +129,7 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
-  SECTION("Such that clause for ParentT should parse correctly") { 
+  SECTION("Such that clause for ParentT should parse correctly") {
      std::vector<std::string> tokens{"such", "that", "Parent*", "(",
                                     "6",    ",",    "7",      ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
@@ -145,7 +145,8 @@ TEST_CASE("Test SuchThatParseState") {
   };
 
   SECTION("Such that clause for Uses should parse correctly") {
-    std::vector<std::string> tokens{"such", "that", "Uses", "(", "6", ",", "v", ")"};
+    std::vector<std::string> tokens{"such", "that", "Uses", 
+        "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));

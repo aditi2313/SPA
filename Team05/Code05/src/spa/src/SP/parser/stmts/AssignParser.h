@@ -14,7 +14,7 @@ namespace sp {
 class AssignParser : Parser<ast::AssignNode> {
  public:
   std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
-    lxr.Increment(); // eat the lhs variable
+    lxr.Increment();  // eat the lhs variable
 
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));

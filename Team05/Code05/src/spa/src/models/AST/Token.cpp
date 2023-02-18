@@ -2,7 +2,6 @@
 
 #include <unordered_set>
 #include <vector>
-#include <unordered_set>
 
 namespace sp {
 const std::vector<Token> kStmtTokens{Token::kTokRead, Token::kTokPrint,

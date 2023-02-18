@@ -1,12 +1,13 @@
-procedure example {
-	read x;
-	read y;
-	print x;
-	call example2;
-	x = a + b;
+procedure then {
+    read read;
+    print print;
+    call call;
+    read = print + call + if + then + while + else + procedure + x;
+
+if (read + read < read - read) then {read print; print call; } else { read call; }
+while (procedure+ else >print - then) { read read; print while; }
 }
 
-procedure example2 {
-	read y;
-	y = a - b;
-} 
+procedure call {
+	read call;
+}

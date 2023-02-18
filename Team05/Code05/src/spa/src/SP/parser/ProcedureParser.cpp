@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <utility>
+#include <string>
 
 #include "stmts/StatementListParser.h"
 #include "models/AST/Token.h"

@@ -58,7 +58,9 @@ void SuchThatParseState::parse(
   std::string rel_ident;
   std::vector<ArgumentPtr> arguments;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
-    AssertGrammar(*itr, *grammar_itr);
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
     if (*grammar_itr == PQL::kRelRefGrammar) {
       rel_ident = *itr;
     }
@@ -81,21 +83,31 @@ void PatternParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     QueryPtr &query) {
-  if (itr == tokens.end()) ThrowException();
-  if (*itr++ != PQL::kPatternRelId) ThrowException();
-  ArgumentPtr arg1 = query->CreateArgument(*itr);
-  ArgumentPtr arg1_copy = query->CreateArgument(*itr++);
-  if (*itr++ != "(") ThrowException();
-  ArgumentPtr arg2 = query->CreateArgument(*itr++);
-  if (*itr++ != ",") ThrowException();
-  ArgumentPtr arg3 = query->CreateArgument(*itr++);
-  if (*itr != ")") ThrowException();
+  auto grammar_itr = grammar_.begin();
+  std::vector<ArgumentPtr> arguments;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar
+        || *grammar_itr == PQL::kArgumentGrammar
+        || *grammar_itr == PQL::kExprGrammar) {
+      arguments.push_back(query->CreateArgument(*itr));
+    }
+    itr++;
+    grammar_itr++;
+  }
+
+  if (grammar_itr != grammar_.end()) ThrowException();
 
   query->add_clause(Clause::CreateClause(
-      PQL::kModifiesRelId, std::move(arg1_copy), std::move(arg2)));
+      PQL::kModifiesRelId,
+      std::move(arguments.at(0)->Copy()),
+      std::move(arguments.at(1))));
   query->add_clause(Clause::CreateClause(
-      PQL::kPatternRelId, std::move(arg1), std::move(arg3)));
-  itr++;
+      PQL::kPatternRelId,
+      std::move(arguments.at(0)),
+      std::move(arguments.at(2))));
 }
 
 ParseState::~ParseState() = default;

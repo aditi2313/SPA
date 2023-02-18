@@ -28,17 +28,6 @@ class ParseState {
   void ThrowException() {
     throw PqlSyntaxErrorException(kExceptionMessage);
   }
-  inline void AssertGrammar(std::string token, std::string grammar) {
-    bool is_valid_syntax;
-    if (grammar == PQL::kArgumentGrammar) {
-      is_valid_syntax = PQL::is_argument(token);
-    } else if (grammar == PQL::kRelRefGrammar) {
-      is_valid_syntax = PQL::is_rel_ref(token);
-    } else {
-      is_valid_syntax = token == grammar;
-    }
-    if (!is_valid_syntax) ThrowException();
-  }
 
   std::vector<std::string> grammar_;
 };
@@ -85,7 +74,10 @@ class SuchThatParseState : public ParseState {
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 class PatternParseState : public ParseState {
  public:
-  PatternParseState() : ParseState("pattern", {}) {
+  PatternParseState() : ParseState("pattern", {
+      "pattern", PQL::kSynGrammar,
+      "(", PQL::kArgumentGrammar, ",", PQL::kExprGrammar, ")"
+  }) {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
   }
 

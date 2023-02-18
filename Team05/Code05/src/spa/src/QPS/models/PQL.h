@@ -38,6 +38,8 @@ class PQL {
 
   inline static EntityName kRelRefGrammar = "relRef";
   inline static EntityName kArgumentGrammar = "arg";
+  inline static EntityName kSynGrammar = "syn";
+  inline static EntityName kExprGrammar = "exp";
 
   inline static EntityName kModifiesRelId = "Modifies";
   inline static EntityName kFollowsRelId = "Follows";
@@ -80,6 +82,20 @@ class PQL {
   inline static bool is_pattern_wildcard(std::string str) {
     if (str.size() < 2) return false;
     return str.front() == '_' && str.back() == '_';
+  }
+
+  inline static bool CheckGrammar(std::string const token, std::string const grammar) {
+    if (grammar == kArgumentGrammar) {
+      return is_argument(token);
+    } else if (grammar == kRelRefGrammar) {
+      return is_rel_ref(token);
+    } else if (grammar == kSynGrammar) {
+      return is_ident(token);
+    } else if (grammar == kExprGrammar) {
+      return true;
+    } else {
+      return token == grammar;
+    }
   }
 };
 }  // namespace qps

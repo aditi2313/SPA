@@ -47,8 +47,8 @@ TEST_CASE("Test DeclarationParseState") {
   }
 }
 
-TEST_CASE("Test SynonymParseState") {
-  SynonymParseState state;
+TEST_CASE("Test SelectParseState") {
+  SelectParseState state;
   SECTION("Select synonym should parse correctly") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();

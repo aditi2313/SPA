@@ -34,13 +34,11 @@ void DeclarationParseState::parse(
   itr++;
 }
 
-// synonym (',' synonym)*
-void SynonymParseState::parse(
+// synonym
+void SelectParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     QueryPtr &query) {
-  // TODO(JL): Support multiple synonyms selection after
-  // requirement is introduced
   if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
   itr++;
   if (!PQL::is_ident(*itr)) ThrowException();

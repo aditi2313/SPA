@@ -44,10 +44,10 @@ class DeclarationParseState : public ParseState {
              QueryPtr &query) override;
 };
 
-// synonym (',' synonym)*
-class SynonymParseState : public ParseState {
+// synonym | tuple | BOOLEAN
+class SelectParseState : public ParseState {
  public:
-  SynonymParseState() : ParseState("Select", {}) {
+  SelectParseState() : ParseState("Select", {}) {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 

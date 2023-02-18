@@ -21,7 +21,7 @@ class SelectClParser {
     // State Order is defined as
     // Declaration -> Synonym -> Such-That -> Pattern
     states_.emplace_back(std::make_unique<DeclarationParseState>());
-    states_.emplace_back(std::make_unique<SynonymParseState>());
+    states_.emplace_back(std::make_unique<SelectParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
     states_.emplace_back(std::make_unique<PatternParseState>());
   }

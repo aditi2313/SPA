@@ -71,6 +71,15 @@ public:
   static const char kParseAssignSyntaxMessage[];
 };
 
+class ParsePrintSyntaxException : public ParseException {
+public:
+  explicit ParsePrintSyntaxException(std::string additional)
+      : ParseException(kParsePrintSyntaxMessage + additional) {}
+  ParsePrintSyntaxException() : ParseException(kParsePrintSyntaxMessage) {}
+
+  static const char kParsePrintSyntaxMessage[];
+};
+
 class ParseCallSyntaxException : public ParseException {
 public:
   explicit ParseCallSyntaxException(std::string additional)

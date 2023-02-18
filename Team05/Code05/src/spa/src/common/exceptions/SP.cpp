@@ -35,6 +35,9 @@ const char ParseStmtSyntaxException::kParseStmtSyntaxMessage[] =
 const char ParseAssignSyntaxException::kParseAssignSyntaxMessage[] =
     "Invalid syntax at parsing of assignment: ";
 
+const char ParsePrintSyntaxException::kParsePrintSyntaxMessage[] =
+    "Invalid syntax at parsing of print: ";
+
 const char ParseCallSyntaxException::kParseCallSyntaxMessage[] =
     "Invalid syntax at parsing of call: ";
 

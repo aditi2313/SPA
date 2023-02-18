@@ -78,7 +78,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"1" , "4"};
+    std::list<std::string> expected_results{"1", "4"};
     REQUIRE(actual_results == expected_results);
   }
 
@@ -128,7 +128,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"4"};  // Shouldn't match with 3
+    std::list<std::string> expected_results{"4"};
     REQUIRE(actual_results == expected_results);
   }
 }

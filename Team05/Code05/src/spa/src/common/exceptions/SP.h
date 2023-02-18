@@ -42,6 +42,16 @@ class ParseProcedureSyntaxException : public ParseException {
   static const char kParseProcedureSyntaxMessage[];
 };
 
+class ParseStmtLstSyntaxException : public ParseException {
+ public:
+  explicit ParseStmtLstSyntaxException(std::string additional)
+      : ParseException(kParseStmtLstSyntaxMessage + additional) {}
+  ParseStmtLstSyntaxException()
+      : ParseException(kParseStmtLstSyntaxMessage) {}
+
+  static const char kParseStmtLstSyntaxMessage[];
+};
+
 class ParseRelationSyntaxException : public ParseException {
  public:
   explicit ParseRelationSyntaxException(std::string additional)

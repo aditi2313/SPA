@@ -26,6 +26,9 @@ const char LexerException::kLexerExceptionMessage[] =
 const char ParseProcedureSyntaxException::kParseProcedureSyntaxMessage[] =
     "Invalid syntax at parsing of procedure: ";
 
+const char ParseStmtLstSyntaxException::kParseStmtLstSyntaxMessage[] =
+    "Invalid syntax at parsing of statement list: ";
+
 const char ParseAssignSyntaxException::kParseAssignSyntaxMessage[] =
     "Invalid syntax at parsing of assignment: ";
 

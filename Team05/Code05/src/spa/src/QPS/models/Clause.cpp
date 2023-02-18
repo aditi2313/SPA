@@ -21,6 +21,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kParentRelId) {
     return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kParentTRelId) {
+    return std::make_unique<ParentTClause>(std::move(arg1), std::move(arg2));
+  }
   if (rel_ref_ident == PQL::kUsesRelId) {
     return std::make_unique<UsesClause>(std::move(arg1), std::move(arg2));
   }
@@ -105,6 +108,25 @@ EntityPtrList PatternClause::Index(
         RHS(), data.get_parent()));
 
     return result;
+}
+
+  EntityPtrList ParentTClause::Index(
+    const EntityPtr& index, const std::unique_ptr<MasterEntityFactory>& factory,
+    const std::unique_ptr<pkb::PKBRead>& pkb) {
+  EntityPtrList result;
+  IntEntity* line_arg = dynamic_cast<IntEntity*>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<ParentIndexFilter>(line);
+  auto pkb_res = pkb->Parent(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line).get_parents_list();
+  for (auto stmt : data) {
+    result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
+  }
+
+  return result;
 }
 
  EntityPtrList UsesClause::Index(

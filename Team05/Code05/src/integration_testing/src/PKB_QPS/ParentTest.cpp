@@ -155,4 +155,15 @@ TEST_CASE("Test PKB and QPS integration for Invalid Parent clause") {
     std::list<std::string> expected_results{};
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION(
+      "Parent(IntArg, IntArg) where they are not bounded by Parent should "
+      "return correct results") {
+    std::string query_string = "stmt s; Select s such that Parent(2,1)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+    std::list<std::string> expected_results{};
+    REQUIRE(actual_results == expected_results);
+  }
 }

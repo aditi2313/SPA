@@ -13,7 +13,7 @@
 namespace sp {
 class TNodeVisitor {
  public:
-  virtual void VisitProgram(ast::ProgramNode* program_node) {}
+  virtual void VisitProgram(ast::ProgramNode* program_node);
 
   virtual void VisitProc(ast::ProcNode* proc_node) {}
 

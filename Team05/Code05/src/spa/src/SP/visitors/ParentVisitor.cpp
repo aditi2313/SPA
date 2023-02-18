@@ -1,11 +1,6 @@
 #include "ParentVisitor.h"
 
 namespace sp {
-void ParentVisitor::VisitProgram(ast::ProgramNode *program_node) {
-  for (auto &procedure_node : program_node->get_children()) {
-    procedure_node->AcceptVisitor(this);
-  }
-}
 
 void ParentVisitor::VisitProc(ast::ProcNode *proc_node) {
   proc_node->get_children()->AcceptVisitor(this);

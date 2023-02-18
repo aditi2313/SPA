@@ -2,11 +2,6 @@
 
 namespace sp {
 
-void DataVisitor::VisitProgram(ast::ProgramNode* program_node) {
-  for (auto& child : program_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
-}
 void DataVisitor::VisitProc(ast::ProcNode* proc_node) {
   pkb_ptr_->add_procedure(proc_node->get_name());
   proc_node->get_children()->AcceptVisitor(this);

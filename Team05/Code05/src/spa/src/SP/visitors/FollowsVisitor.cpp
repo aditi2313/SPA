@@ -1,11 +1,6 @@
 #include "FollowsVisitor.h"
 
 namespace sp {
-void FollowsVisitor::VisitProgram(ast::ProgramNode* program_node) {
-  for (auto& child : program_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
-}
 
 void FollowsVisitor::VisitProc(ast::ProcNode* proc_node) {
   proc_node->get_children()->AcceptVisitor(this);

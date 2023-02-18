@@ -5,11 +5,6 @@
 #include <unordered_set>
 
 namespace sp {
-void ModifiesVisitor::VisitProgram(ast::ProgramNode* program_node) {
-  for (auto& child : program_node->get_children()) {
-    child->AcceptVisitor(this);
-  }
-}
 
 void ModifiesVisitor::VisitProc(ast::ProcNode* proc_node) {
   proc_node->get_children()->AcceptVisitor(this);

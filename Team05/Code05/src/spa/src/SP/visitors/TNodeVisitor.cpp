@@ -1,6 +1,13 @@
 #include "SP/visitors/TNodeVisitor.h"
 
 namespace sp {
+
+void TNodeVisitor::VisitProgram(ast::ProgramNode* program_node) {
+  for (auto& child : program_node->get_children()) {
+    child->AcceptVisitor(this);
+  }
+}
+
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   if_node->get_cond()->AcceptVisitor(this);
   if_node->get_then()->AcceptVisitor(this);

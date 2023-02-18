@@ -9,12 +9,6 @@ bool ProgramValidator::Validate() {
   return procedure_validator_.Validate() && call_validator_.Validate();
 }
 
-void ProgramValidator::VisitProgram(ast::ProgramNode *program_node) {
-  for (auto &proc_node : program_node->get_children()) {
-    proc_node->AcceptVisitor(this);
-  }
-}
-
 void ProgramValidator::VisitProc(ast::ProcNode *proc_node) {
   procedure_validator_.Accept(*proc_node);
   call_validator_.Accept(*proc_node);

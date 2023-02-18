@@ -5,7 +5,7 @@ namespace qps {
 
 bool Validator::validate(std::unique_ptr<Query> &query) {
   std::vector<std::unique_ptr<Clause>> &clauses = query->get_clauses();
-  //std::vector<SynonymPtr> synonyms = query->get_declared_synonyms();
+  // std::vector<SynonymPtr> synonyms = query->get_declared_synonyms();
 
   return IsWildcard(clauses);
 }
@@ -33,11 +33,12 @@ bool Validator::DesignEntitySynonyms(
     return true;
   }
 }
-//Uses: line(int), variables the line uses(vector)
-//Follows : line(int), the line that this line follows / comes after(int)
-//Parent : line(int), the line that is the parent of this line(int)
-//Modifies : line(int), variables that are being modified in this line(vector)
-//Assign : line(int), the variable that is being assigned to in that line(string), expression(unique pointer to ast::ExprNode)
+// Uses: line(int), variables the line uses(vector)
+// Follows : line(int), the line that this line follows / comes after(int)
+// Parent : line(int), the line that is the parent of this line(int)
+// Modifies : line(int), variables that are being modified in this line(vector)
+// Assign : line(int), the variable that is being assigned to in that
+// line(string), expression(unique pointer to ast::ExprNode)
 
 // Returns false if the clauses have a wildcard
 // declared as arg1 in the Modifies/Uses relationship

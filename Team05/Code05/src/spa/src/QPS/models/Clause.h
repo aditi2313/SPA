@@ -127,27 +127,25 @@ class PatternClause : public Clause {
 };
 // Relationship between a stmt and a variable or vector of variables
 class UsesClause : public Clause {
-public:
-    UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
-        : Clause(std::move(arg1), std::move(arg2),
-            PQL::kStmtEntityName, PQL::kVariableEntityName) {}
+ public:
+  UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
+               PQL::kVariableEntityName) {}
 
-    EntityPtrList Index(
-        const EntityPtr& index,
-        const std::unique_ptr<MasterEntityFactory>& factory,
-        const std::unique_ptr<pkb::PKBRead>& pkb) override;
+  EntityPtrList Index(const EntityPtr &index,
+                      const std::unique_ptr<MasterEntityFactory> &factory,
+                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
-// Relationship between s stmt and another stmt. 
+// Relationship between s stmt and another stmt.
 class ParentClause : public Clause {
-public:
-    ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)
-        : Clause(std::move(arg1), std::move(arg2),
-            PQL::kStmtEntityName, PQL::kStmtEntityName) {}
+ public:
+  ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
+               PQL::kStmtEntityName) {}
 
-    EntityPtrList Index(
-        const EntityPtr& index,
-        const std::unique_ptr<MasterEntityFactory>& factory,
-        const std::unique_ptr<pkb::PKBRead>& pkb) override;
+  EntityPtrList Index(const EntityPtr &index,
+                      const std::unique_ptr<MasterEntityFactory> &factory,
+                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 class ParentTClause : public Clause {

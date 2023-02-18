@@ -1,25 +1,13 @@
-// Add testcases for
-// ParentT(1, 2)
-// ParentT(_, 2)
-// ParentT(s1, 2)
-// ParentT(1, s2)
-// ParentT(_, s2)
-// ParentT(s1, s2)
-// ParentT(1, _)
-// ParentT(_, _)
-// ParentT(s1, _)
+#include "PKB/PKBRead.h"
+#include "PKB/PKBRelationTable.h"
+#include "PKB/PKBWrite.h"
+#include "QPS/QPS.h"
 
 #include <catch.hpp>
 #include <list>
 #include <memory>
 #include <string>
 #include <vector>
-
-#include "PKB/PKBRead.h"
-#include "PKB/PKBRelationTable.h"
-#include "PKB/PKBWrite.h"
-#include "QPS/QPS.h"
-
 using namespace pkb;  // NOLINT
 using namespace qps;  // NOLINT
 
@@ -83,7 +71,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
-    std::list<std::string> expected_results{"1","2", "3", "4", "5"};
+    std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
     REQUIRE(actual_results == expected_results);
   }
 
@@ -97,7 +85,8 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
   }
 
   SECTION("ParentT(synoym, synonym) should return correct results") {
-    std::string query_string = "stmt s1, s2; Select s1 such that Parent*(s1,s2)";
+    std::string query_string = "stmt s1, s2;"
+        "Select s1 such that Parent*(s1,s2)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -105,7 +94,8 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
     REQUIRE(actual_results == expected_results);
   }
   SECTION("ParentT(synoym, synonym) should return correct results") {
-    std::string query_string = "stmt s1, s2; Select s2 such that Parent*(s1,s2)";
+    std::string query_string = "stmt s1, s2;"
+        "Select s2 such that Parent*(s1,s2)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

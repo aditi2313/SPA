@@ -102,7 +102,7 @@ TEST_CASE("Test SuchThatParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
     auto expected_clause =
-        ParentClause(query->CreateArgument("6"), query->CreateArgument("7"));
+        ParentTClause(query->CreateArgument("6"), query->CreateArgument("7"));
 
     Clause *actual_clause = query->get_clauses().at(0).get();
 
@@ -116,7 +116,7 @@ TEST_CASE("Test SuchThatParseState") {
     auto itr = tokens.begin();
     query = state.parse(tokens, itr, std::move(query));
     auto expected_clause =
-        ParentClause(query->CreateArgument("6"), query->CreateArgument("v"));
+        UsesClause(query->CreateArgument("6"), query->CreateArgument("v"));
 
     Clause *actual_clause = query->get_clauses().at(0).get();
 

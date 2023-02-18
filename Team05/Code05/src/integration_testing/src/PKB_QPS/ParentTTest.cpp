@@ -26,7 +26,7 @@ using namespace qps;  // NOLINT
 using parentT_data = std::pair<int, int>;
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB(std::vector<parentT_data> data) {
+std::unique_ptr<PKBRead> InitializePKB1(std::vector<parentT_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -41,9 +41,9 @@ std::unique_ptr<PKBRead> InitializePKB(std::vector<parentT_data> data) {
   return std::make_unique<PKBRead>(pkb_write.EndWrite());
 }
 
-TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
+TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB({
+  std::unique_ptr<PKBRead> pkb = InitializePKB1({
       {1, 2},
       {3, 4},
       {5, 6},
@@ -87,7 +87,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("ParentT(Intarg, synonym) should return correct results") {
+  SECTION("ParentT(IntArg, synonym) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent*(1,s)";
     std::list<std::string> actual_results;
 
@@ -109,7 +109,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
-    std::list<std::string> expected_results{"1","2", "3", "4", "5", "6"};
+    std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
     REQUIRE(actual_results == expected_results);
   }
 
@@ -141,7 +141,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
 
 TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePKB1({{1, 2}, {2, 3}});
   SECTION(
       "ParentT(IntArg, IntArg) where one arg is not in the pkb should "
       "return correct results") {
@@ -166,7 +166,7 @@ TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
 
 TEST_CASE("Test PKB and QPS integration for Valid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePKB1({{1, 2}, {2, 3}});
   SECTION(
       "Parent(IntArg, IntArg) where one arg is not in the pkb should "
       "return correct results") {
@@ -177,3 +177,4 @@ TEST_CASE("Test PKB and QPS integration for Valid ParentT clause") {
     std::list<std::string> expected_results{};
     REQUIRE(actual_results == expected_results);
   }
+}

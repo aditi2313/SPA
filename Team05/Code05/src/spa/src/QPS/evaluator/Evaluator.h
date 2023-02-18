@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <utility>
-#include <unordered_set>
 #include <set>
 
 #include "../models/Query.h"

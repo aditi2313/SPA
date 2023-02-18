@@ -63,7 +63,7 @@ class ParseStmtSyntaxException : public ParseException {
 };
 
 class ParseAssignSyntaxException : public ParseException {
-public:
+ public:
   explicit ParseAssignSyntaxException(std::string additional)
       : ParseException(kParseAssignSyntaxMessage + additional) {}
   ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
@@ -72,12 +72,21 @@ public:
 };
 
 class ParsePrintSyntaxException : public ParseException {
-public:
+ public:
   explicit ParsePrintSyntaxException(std::string additional)
       : ParseException(kParsePrintSyntaxMessage + additional) {}
   ParsePrintSyntaxException() : ParseException(kParsePrintSyntaxMessage) {}
 
   static const char kParsePrintSyntaxMessage[];
+};
+
+class ParseReadSyntaxException : public ParseException {
+ public:
+  explicit ParseReadSyntaxException(std::string additional)
+      : ParseException(kParseReadSyntaxMessage + additional) {}
+  ParseReadSyntaxException() : ParseException(kParseReadSyntaxMessage) {}
+
+  static const char kParseReadSyntaxMessage[];
 };
 
 class ParseCallSyntaxException : public ParseException {

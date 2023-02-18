@@ -13,7 +13,10 @@ class ReadParser : Parser<ast::ReadNode> {
  public:
   std::unique_ptr<ast::ReadNode> parse(Lexer& lxr) override {
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokRead, "read");
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIdent, "variable");
+    if (!IsKeyWordToken(lxr.GetTokAndIncrement())) {
+      // TODO(aizatazhar): use custom exception
+      throw std::runtime_error("read should be followed by a name");
+    }
 
     std::string var_name = lxr.get_ident();
     std::cout << "read " + lxr.get_ident() << std::endl;

@@ -3,11 +3,14 @@
 #include <string>
 
 #include "models/AST/Token.h"
+
 // exception file for SP
 namespace sp {
 
 // TODO(Gab): Apply this function to the rest of the parser
 void AssertExpectedToken(Token to_test, Token expected, std::string token);
+void AssertExpectedToken(std::string prefix, Token to_test, Token expected);
+void AssertExpectedToken(Token to_test, Token expected);
 
 class LexerException : public std::exception {
  public:
@@ -29,6 +32,16 @@ class ParseException : public std::exception {
   const std::string message;
 };
 
+class ParseProcedureSyntaxException : public ParseException {
+ public:
+  explicit ParseProcedureSyntaxException(std::string additional)
+      : ParseException(kParseProcedureSyntaxMessage + additional) {}
+  ParseProcedureSyntaxException()
+      : ParseException(kParseProcedureSyntaxMessage) {}
+
+  static const char kParseProcedureSyntaxMessage[];
+};
+
 class ParseRelationSyntaxException : public ParseException {
  public:
   explicit ParseRelationSyntaxException(std::string additional)
@@ -39,6 +52,17 @@ class ParseRelationSyntaxException : public ParseException {
  private:
   static const char kParseRelationSyntaxMessage[];
 };
+
+//class ParseSyntaxException : public ParseException {
+// public:
+//  explicit ParseRelationSyntaxException(std::string additional)
+//      : ParseException(kParseRelationSyntaxMessage + additional) {}
+//  ParseRelationSyntaxException()
+//      : ParseException(kParseRelationSyntaxMessage) {}
+//
+// private:
+//  static const char kParseRelationSyntaxMessage[];
+//};
 
 class ParseFactorSyntaxException : public ParseException {
  public:

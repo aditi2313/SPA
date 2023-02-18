@@ -6,7 +6,6 @@ void DataVisitor::VisitProgram(ast::ProgramNode* program_node) {
   for (auto& child : program_node->get_children()) {
     child->AcceptVisitor(this);
   }
-  int n;
 }
 void DataVisitor::VisitProc(ast::ProcNode* proc_node) {
   pkb_ptr_->add_procedure(proc_node->get_name());
@@ -36,7 +35,6 @@ void DataVisitor::VisitCall(ast::CallNode* call_node) {
   pkb_ptr_->add_call(call_node->get_line());
   pkb_ptr_->add_stmt(call_node->get_line());
 }
-void DataVisitor::VisitExpr(ast::ExprNode* expr_node) {}
 void DataVisitor::VisitVar(ast::VarNode* var_node) {
   pkb_ptr_->add_variable(var_node->get_name());
 }

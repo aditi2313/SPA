@@ -44,13 +44,15 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
 
   // Takes care of duplicates
-  std::set<EntityPtr> RHS_results;
-  std::set<EntityPtr> LHS_results;
+  std::set<EntityPtr, decltype(EntityPtrComparator)> RHS_results(
+      EntityPtrComparator);
+  std::set<EntityPtr, decltype(EntityPtrComparator)> LHS_results(
+      EntityPtrComparator);
 
   // Query PKB with LHS possible values
   for (auto &index : LHS) {
     EntityPtrList results;
-    if (arg2->IsWildcard() || arg2->IsExpression()) {
+    if (arg2->IsWildcard()) {
       // Just index and return all
       results = clause->Index(index, master_entity_factory_, pkb_);
     } else {
@@ -115,7 +117,8 @@ void Evaluator::InitializeEntitiesFromArgument(
 }
 
 void Evaluator::UpdateSynonymEntityList(
-    QueryPtr &query, ArgumentPtr &arg, std::set<EntityPtr> &result) {
+    QueryPtr &query, ArgumentPtr &arg,
+    std::set<EntityPtr, decltype(EntityPtrComparator)> const &result) {
   if (!arg->IsSynonym()) return;  // Not a synonym
 
   SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
@@ -125,6 +128,7 @@ void Evaluator::UpdateSynonymEntityList(
   for (auto &entity : result) {
     new_entity_ptr_list.push_back(entity->Copy());
   }
+  std::cout << "\n";
 
   synonym->set_possible_entities(new_entity_ptr_list);
 }

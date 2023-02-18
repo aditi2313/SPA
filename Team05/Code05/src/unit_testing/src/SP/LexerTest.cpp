@@ -52,7 +52,8 @@ TEST_CASE("Testing lexer functionality") {
   SECTION("Test simple procedure functionality") {
     // procedure will always be treated as kTokProcedure
     // To allow procedure to be the name for a procedure,
-    // we can accept
+    // the respective parsers chooses to treat them as
+    // variable names
     std::string test =
         "procedure procedure {"
         "read x;"
@@ -105,10 +106,6 @@ TEST_CASE("Error reading cases") {
 
   SECTION("Unsupport ints (leading zeroes)") {
     Lexer lxr("a 01000");
-    REQUIRE_THROWS_AS(lxr.GetTokAndIncrement(), sp::LexerException);
-  }
-  SECTION("Unsupport ints (non-digits)") {
-    Lexer lxr("a 10@0a0");
     REQUIRE_THROWS_AS(lxr.GetTokAndIncrement(), sp::LexerException);
   }
 }

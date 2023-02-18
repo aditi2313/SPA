@@ -8,6 +8,7 @@
 #include "Argument.h"
 #include "PKB/PKBRead.h"
 #include "QPS/evaluator/MasterEntityFactory.h"
+#include "common/filter/filters/PredicateFilter.h"
 #include "QueryResult.h"
 
 namespace qps {
@@ -24,7 +25,7 @@ class Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
-  inline EntityPtrList Filter(
+  inline virtual EntityPtrList Filter(
       const EntityPtr &index,
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
@@ -94,6 +95,19 @@ class FollowsClause : public Clause {
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
+// RS between statements (transitive)
+class FollowsTClause : public Clause {
+ public:
+  FollowsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2),
+               PQL::kStmtEntityName, PQL::kStmtEntityName) {}
+
+  EntityPtrList Index(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+};
+
 class PatternClause : public Clause {
  public:
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
@@ -102,6 +116,12 @@ class PatternClause : public Clause {
 
   EntityPtrList Index(
       const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  EntityPtrList Filter(
+      const EntityPtr &index,
+      const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };

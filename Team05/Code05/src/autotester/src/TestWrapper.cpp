@@ -48,8 +48,7 @@ void TestWrapper::parse(std::string filename) {
   file.close();
 
   // Parse and generate AST
-  sp::SourceProcessor source_processor;
-  auto root = source_processor.ParseProgram(program);
+  auto root = sp::SourceProcessor::ParseProgram(program);
 
   // Validate AST
   auto validator = sp::ProgramValidator(root);

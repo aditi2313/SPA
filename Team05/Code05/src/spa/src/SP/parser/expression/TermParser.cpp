@@ -6,31 +6,17 @@
 #include "FactorParser.h"
 
 namespace sp {
-std::unique_ptr<ast::TermNode> TermParser::parse(Lexer &lxr) {
-  sp::FactorParser factor_parser;
-
-  // Reached end of statement - don't eat the current token
-  // so that FactorParser can parse correctly
-  if (lxr.Peek() == Token::kTokSemicolon) {
-    return factor_parser.parse(lxr);
+ast::ExprNodePtr TermParser::parse(VectorLexer &lxr) {
+  FactorParser factor_parser;
+  auto factor = factor_parser.parse(lxr);
+  if (lxr.get_tok() == Token::kTokTimes || lxr.get_tok() == Token::kTokDiv ||
+      lxr.get_tok() == Token::kTokMod) {
+    auto op = lxr.get_tok();
+    lxr.Decrement();
+    auto term = parse(lxr);
+    return std::make_unique<ast::OpNode>(op, std::move(term),
+                                         std::move(factor));
   }
-
-  auto lhs = std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
-  lxr.Increment();  // eat ident
-  auto op = lxr.GetTokAndIncrement();
-  auto rhs = factor_parser.parse(lxr);
-
-  if (op == Token::kTokTimes) {
-    return std::make_unique<ast::TimesNode>(
-        ast::TimesNode(std::move(lhs), std::move(rhs)));
-  } else if (op == Token::kTokDiv) {
-    return std::make_unique<ast::DivNode>(
-        ast::DivNode(std::move(lhs), std::move(rhs)));
-  } else if (op == Token::kTokMod) {
-    return std::make_unique<ast::ModNode>(
-        ast::ModNode(std::move(lhs), std::move(rhs)));
-  }
-
-  throw std::runtime_error("TermParser unknown token");
+  return std::move(factor);
 }
 }  // namespace sp

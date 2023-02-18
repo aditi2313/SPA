@@ -21,6 +21,9 @@ ClausePtr Clause::CreateClause(
   if (rel_ref_ident == PQL::kFollowsRelId) {
     return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
   }
+  if (rel_ref_ident == PQL::kFollowsTRelId) {
+    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
+  }
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
@@ -29,7 +32,7 @@ EntityPtrList ModifiesClause::Index(
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<ModifiesIndexFilter>(line);
   auto pkb_res = pkb->Modifies(std::move(filter))->get_result();
@@ -45,14 +48,13 @@ EntityPtrList ModifiesClause::Index(
   return result;
 }
 
-
 EntityPtrList FollowsClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
 
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
   auto filter = std::make_unique<FollowsIndexFilter>(line);
   auto pkb_res = pkb->Follows(std::move(filter))->get_result();
@@ -66,47 +68,76 @@ EntityPtrList FollowsClause::Index(
   return result;
 }
 
-// TODO(JL): This method is a bit messy because it calls the
-// PredicateFilter inside of a function meant for Indexing.
-// Pattern is kind of tricky, will move on to
-// other relationships first, then rewrite/refactor
-// this method in a separate PR that also closes Issue 58.
+EntityPtrList FollowsTClause::Index(
+    const EntityPtr &index,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+  auto filter = std::make_unique<FollowsIndexFilter>(line);
+  auto pkb_res = pkb->Follows(std::move(filter))->get_result();
+
+  if (!pkb_res->exists(line)) return result;
+
+  auto data = pkb_res->get_row(line).get_follows_list();
+  for (auto stmt : data) {
+    result.push_back(factory->CreateInstance(
+        PQL::kStmtEntityName, stmt));
+  }
+
+  return result;
+}
+
+EntityPtrList PatternClause::Filter(
+    const EntityPtr &index,
+    const EntityPtrList &RHS_filter_values,
+    const std::unique_ptr<MasterEntityFactory> &factory,
+    const std::unique_ptr<pkb::PKBRead> &pkb) {
+  EntityPtrList result;
+
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
+  int line = line_arg->get_number();
+
+  std::unique_ptr<AssignPredicateFilter> filter;
+
+  auto expr_arg = dynamic_cast<ExpressionArg *>(arg2_.get());
+  auto AST =
+      sp::SourceProcessor::ParseExpression(expr_arg->get_expression());
+
+  filter = std::make_unique<AssignPredicateFilter>(
+      [&](pkb::AssignData data) {
+        return data.get_line() == line
+            && data.TestExpression(AST, expr_arg->is_exact());
+      });
+
+  auto pkb_res = pkb->Assigns(std::move(filter))->get_result();
+  if (pkb_res->empty()) return result;
+
+  result.push_back(
+      factory->CreateInstance(PQL::kAssignEntityName, line));
+
+  return result;
+}
+
 EntityPtrList PatternClause::Index(
     const EntityPtr &index,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
-  IntEntity *line_arg = dynamic_cast<IntEntity*>(index.get());
+  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
-  // Preprocess expression string to insert whitespace
-  std::string expression = "";
-  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
-      *arg2_.get());
-  for (char c : expression_arg.get_expression()) {
-    if (c == '+' || c == '-') {
-      expression += " " + std::string(1, c) + " ";
-    } else {
-      expression += c;
-    }
-  }
 
-  sp::SourceProcessor source_processor;
-  auto ASTNode = source_processor.ParseExpression(expression);
-  auto filter = std::make_unique<AssignPredicateFilter>(
-      [&](auto data) {
-        return data.TestExpression(ASTNode);
-      });
-  auto pkb_res = pkb->Assigns(std::move(filter));
-  auto data = pkb_res->get_result()->get_indexes();
-  if (data.find(line) == data.end()) return result;
-
-  for (auto a : data) {
-    result.push_back(
-        factory->CreateInstance(PQL::kAssignEntityName, a));
-  }
+  auto filter = std::make_unique<AssignIndexFilter>(line);
+  auto pkb_res = pkb->Assigns(std::move(filter))->get_result();
+  if (pkb_res->empty()) return result;
+  result.push_back(
+      factory->CreateInstance(PQL::kAssignEntityName, line));
 
   return result;
 }
+
 
 Clause::~Clause() = default;
 }  // namespace qps

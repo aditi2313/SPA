@@ -35,6 +35,11 @@ class IdentEntity : public Entity {
   }
 
   operator std::string() override { return ident_; }
+  inline size_t hash() override {
+    std::string str = typeid(*this).name()
+        + ident_;
+    return std::hash<std::string>{}(str);
+  }
 
  private:
   std::string ident_;

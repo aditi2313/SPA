@@ -2,12 +2,18 @@
 
 #include <memory>
 #include <utility>
+#include <unordered_set>
 #include <set>
 
 #include "../models/Query.h"
 #include "QPS/models/QueryResult.h"
 
 namespace qps {
+using EntityPtrHashset =
+    std::unordered_set<EntityPtr,
+                       decltype(EntityPtrHash),
+                       decltype(EntityPtrEqual)>;
+
 class Evaluator {
  public:
   explicit Evaluator(std::unique_ptr<pkb::PKBRead> &pkb) {
@@ -26,7 +32,7 @@ class Evaluator {
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg,
-      std::set<EntityPtr, decltype(EntityPtrComparator)> const &result);
+      EntityPtrHashset const &result);
   bool EvaluateClause(QueryPtr &query, ClausePtr &clause);
 
   std::unique_ptr<pkb::PKBRead> pkb_;

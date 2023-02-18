@@ -77,11 +77,11 @@ void TestWrapper::parse(std::string filename) {
 
   sp::UsesVisitor uv(std::move(writer));
   root->AcceptVisitor(&uv);
-  writer = pv.EndVisit();
+  writer = uv.EndVisit();
 
   sp::FollowsVisitor fv(std::move(writer));
   root->AcceptVisitor(&fv);
-  writer = pv.EndVisit();
+  writer = fv.EndVisit();
 
   pkb_relation_ = writer->EndWrite();
 }

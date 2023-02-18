@@ -23,5 +23,9 @@ class UsesVisitor : public PKBWritingVisitor {
   void VisitAssign(ast::AssignNode* assign_node) override;
 
   void VisitPrint(ast::PrintNode* assign_node) override;
+
+  void VisitIf(ast::IfNode* if_node) override;
+
+  void VisitWhile(ast::WhileNode* while_node) override;
 };
 }  // namespace sp

@@ -33,5 +33,12 @@ void UsesVisitor::VisitPrint(ast::PrintNode* print_node) {
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 
+void UsesVisitor::VisitIf(ast::IfNode* if_node) {
+
+}
+
+void UsesVisitor::VisitWhile(ast::WhileNode* while_node) {
+
+}
 
 }  // namespace sp

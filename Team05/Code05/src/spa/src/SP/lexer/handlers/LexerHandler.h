@@ -23,5 +23,7 @@ class LexerHandler {
   /// <param name="data">The object representing the data contained within the
   /// lexer.</param> <returns></returns>
   virtual std::optional<Token> Handle(LexerData&) = 0;
+
+  virtual ~LexerHandler() = default;
 };
 }  // namespace sp

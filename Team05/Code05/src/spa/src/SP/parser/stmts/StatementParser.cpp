@@ -35,10 +35,8 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
     case Token::kTokIdent:
       return assign_parser.parse(lxr);
     default:
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error(
-          "expected a stmt (read | print | call "
-          "| while | if | assign)");
+      throw ParseStmtSyntaxException("expected a stmt (read | print | call "
+                                   "| while | if | assign)");
   }
 }
 }  // namespace sp

@@ -29,6 +29,9 @@ const char ParseProcedureSyntaxException::kParseProcedureSyntaxMessage[] =
 const char ParseStmtLstSyntaxException::kParseStmtLstSyntaxMessage[] =
     "Invalid syntax at parsing of statement list: ";
 
+const char ParseStmtSyntaxException::kParseStmtSyntaxMessage[] =
+    "Invalid syntax at parsing of statement: ";
+
 const char ParseAssignSyntaxException::kParseAssignSyntaxMessage[] =
     "Invalid syntax at parsing of assignment: ";
 

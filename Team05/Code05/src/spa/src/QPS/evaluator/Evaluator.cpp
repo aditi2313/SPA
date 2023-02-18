@@ -69,7 +69,6 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
       LHS_results.insert(index->Copy());
     }
   }
-  std::cout << "\n";
 
   // Update list of possible values for arg1 and/or arg2
   // if they are synonyms

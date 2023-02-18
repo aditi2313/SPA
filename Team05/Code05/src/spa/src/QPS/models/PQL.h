@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <unordered_set>
 #include <memory>
 #include <utility>
 
@@ -25,7 +25,7 @@ class PQL {
   inline static std::string kConstantEntityName = "constant";
   inline static std::string kProcedureEntityName = "procedure";
 
-  inline static std::vector<std::string> kAllEntityNames{
+  inline static std::unordered_set<std::string> kAllEntityNames{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
       kWhileEntityName, kIfEntityName, kAssignEntityName,
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
@@ -41,7 +41,7 @@ class PQL {
   inline static EntityName kFollowsTRelId = "Follows*";
   inline static EntityName kPatternRelId = "pattern";
 
-  inline static std::vector<std::string> kAllRelIds{
+  inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kPatternRelId
   };
 

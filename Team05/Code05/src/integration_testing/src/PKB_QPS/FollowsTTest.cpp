@@ -15,13 +15,13 @@ using namespace qps;  // NOLINT
 using follows_data = std::pair<int, int>;
 
 // Helper method for testing (Forward Declaration)
-std::unique_ptr<PKBRead> InitializePKB(
+std::unique_ptr<PKBRead> InitializePKBForFollows(
     std::vector<follows_data> data
 );
 
 TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB(
+  std::unique_ptr<PKBRead> pkb = InitializePKBForFollows(
       {
           {10, 11},
           {11, 12},

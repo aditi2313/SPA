@@ -15,7 +15,7 @@ using namespace qps;  // NOLINT
 using modifies_data = std::pair<int, std::unordered_set<std::string>>;
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB(
+std::unique_ptr<PKBRead> InitializePKBForModifies(
     std::vector<modifies_data> data
 ) {
   std::unique_ptr<PKBRelationTable> table =
@@ -37,7 +37,7 @@ std::unique_ptr<PKBRead> InitializePKB(
 // Note: First argument for ModifiesS clause cannot be wildcard
 TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB(
+  std::unique_ptr<PKBRead> pkb = InitializePKBForModifies(
       {
           {10, {"a", "b", "c"}},
           {25, {"d", "e"}},

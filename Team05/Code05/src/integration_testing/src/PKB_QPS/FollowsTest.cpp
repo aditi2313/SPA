@@ -15,7 +15,7 @@ using namespace qps;  // NOLINT
 using follows_data = std::pair<int, int>;
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB(
+std::unique_ptr<PKBRead> InitializePKBForFollows(
     std::vector<follows_data> data
 ) {
   std::unique_ptr<PKBRelationTable> table =
@@ -34,7 +34,7 @@ std::unique_ptr<PKBRead> InitializePKB(
 
 TEST_CASE("Test PKB and QPS integration for Follows clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB(
+  std::unique_ptr<PKBRead> pkb = InitializePKBForFollows(
       {
           {10, 11},
           {11, 12},

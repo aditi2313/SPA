@@ -48,6 +48,10 @@ void TNodeVisitor::VisitCall(ast::CallNode* call_node) {
   PerformWork(call_node);
 }
 
+void TNodeVisitor::VisitExpr(ast::ExprNode* expr_node) {
+  PerformWork(expr_node);
+}
+
 void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
   PerformWork(op_node);
   op_node->get_left()->AcceptVisitor(this);

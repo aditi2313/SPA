@@ -45,7 +45,8 @@ class TNodeVisitor {
   void VisitCall(ast::CallNode* call_node);
   virtual void PerformWork(ast::CallNode* call_node) {}
 
-  virtual void VisitExpr(ast::ExprNode* expr_node) {}
+  void VisitExpr(ast::ExprNode* expr_node);
+  virtual void PerformWork(ast::ExprNode* expr_node) {}
 
   virtual void VisitVar(ast::VarNode* var_node) {}
 

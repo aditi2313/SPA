@@ -1,6 +1,6 @@
 #include <string>
 #include <unordered_set>
-#include <catch.hpp>
+#include "catch.hpp"
 
 #include "PKB/data/ModifiesData.h"
 #include "PKB/tables/IndexableTable.h"

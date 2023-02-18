@@ -167,7 +167,7 @@ EntityPtrList PatternClause::Index(
 
   if (!pkb_res->exists(line)) return result;
 
-  auto data = pkb_res->get_row(line).get_parents_list();
+  auto data = pkb_res->get_row(line).get_parent_set();
   for (auto stmt : data) {
     result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }

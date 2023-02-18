@@ -26,7 +26,7 @@ using namespace qps;  // NOLINT
 using parentT_data = std::pair<int, int>;
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB1(std::vector<parentT_data> data) {
+std::unique_ptr<PKBRead> InitializePTPKB(std::vector<parentT_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -43,7 +43,7 @@ std::unique_ptr<PKBRead> InitializePKB1(std::vector<parentT_data> data) {
 
 TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB1({
+  std::unique_ptr<PKBRead> pkb = InitializePTPKB({
       {1, 2},
       {3, 4},
       {5, 6},
@@ -141,7 +141,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
 TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB1({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePTPKB({{1, 2}, {2, 3}});
   SECTION(
       "ParentT(IntArg, IntArg) where one arg is not in the pkb should "
       "return correct results") {
@@ -166,7 +166,7 @@ TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
 
 TEST_CASE("Test PKB and QPS integration for Valid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB1({{1, 2}, {2, 3}});
+  std::unique_ptr<PKBRead> pkb = InitializePTPKB({{1, 2}, {2, 3}});
   SECTION(
       "Parent(IntArg, IntArg) where one arg is not in the pkb should "
       "return correct results") {

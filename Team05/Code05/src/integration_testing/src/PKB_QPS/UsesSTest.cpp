@@ -18,7 +18,7 @@ using namespace qps;  // NOLINT
 
 using uses_data = std::pair<int, std::vector<std::string>>;
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKB2(std::vector<uses_data> data) {
+std::unique_ptr<PKBRead> InitializeUPKB(std::vector<uses_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -37,7 +37,7 @@ std::unique_ptr<PKBRead> InitializePKB2(std::vector<uses_data> data) {
 
 TEST_CASE("Test PKB and QPS integration for UsesS clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKB2({
+  std::unique_ptr<PKBRead> pkb = InitializeUPKB({
       {10, {"a", "b", "c"}},
       {20, {"d", "e"}},
       {30, {"f"}},

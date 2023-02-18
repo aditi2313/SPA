@@ -1,0 +1,31 @@
+1 - Uses on statement ref
+stmt s;
+Select s such that Uses(s, "i")
+7, 9, 11, 16, 18, 19, 20
+5000
+2 - Uses on variable ref
+variable v;
+Select v such that Uses(7, v)
+know, rules, so, do, i
+5000
+3 - Uses on variable ref
+variable var123;
+Select var123 such that Uses(10, var123)
+k
+5000
+4 - All used variables
+variable legend27; stmt mobileGame;
+Select legend27 such that Uses(mobileGame, legend27)
+you, x, y, are, no, strangers, love, know , rules, so, do, k, full, commitment, what, i, thinking, of, wouldnt, get, this, from, any, other, guy, a, m, n, just, wanna, how, feeling, gonna, up, test, down
+5000
+5 - Testing for constant as well as parsing of different entities
+constant c; procedure p; while w; if f; assign aa; variable v; read r; stmt s;
+Select c such that Uses(15, c)
+100, 1000
+5000
+5 - Testing for constant
+constant c;
+Select c such that Uses(10, c)
+10
+5000
+

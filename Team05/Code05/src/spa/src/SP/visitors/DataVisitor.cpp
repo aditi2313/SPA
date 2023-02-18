@@ -21,6 +21,8 @@ void DataVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
 void DataVisitor::VisitAssign(ast::AssignNode* assign_node) {
   pkb_ptr_->add_stmt(assign_node->get_line());
   pkb_ptr_->add_assign(assign_node->get_line());
+  assign_node->get_expr()->AcceptVisitor(this);
+  assign_node->get_var()->AcceptVisitor(this);
 }
 void DataVisitor::VisitRead(ast::ReadNode* read_node) {
   pkb_ptr_->add_variable(read_node->get_var()->get_name());
@@ -36,7 +38,6 @@ void DataVisitor::VisitCall(ast::CallNode* call_node) {
   pkb_ptr_->add_call(call_node->get_line());
   pkb_ptr_->add_stmt(call_node->get_line());
 }
-void DataVisitor::VisitExpr(ast::ExprNode* expr_node) {}
 void DataVisitor::VisitVar(ast::VarNode* var_node) {
   pkb_ptr_->add_variable(var_node->get_name());
 }

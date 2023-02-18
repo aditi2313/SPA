@@ -26,8 +26,6 @@ class DataVisitor : public PKBWritingVisitor {
 
   void VisitPrint(ast::PrintNode* print_node) override;
 
-  void VisitExpr(ast::ExprNode* expr_node) override;
-
   void VisitVar(ast::VarNode* var_node) override;
 
   void VisitConst(ast::ConstNode* const_node) override;

@@ -75,7 +75,8 @@ void UsesVisitor::AddVariablesFromStmtList(
         pkb_read
             .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()))
             ->get_result();
-    auto variables = result->get_row(0).get_variables();
+    if (result->empty()) continue;
+    auto variables = result->get_row(child->get_line()).get_variables();
     for (auto& var : variables) {
       vars.insert(var);
     }

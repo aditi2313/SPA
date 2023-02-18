@@ -44,12 +44,22 @@ class TNodeVisitor {
 
   // Relational nodes
 
-  virtual void VisitNot(ast::NotExprNode*) {}
+  virtual void VisitNot(ast::NotExprNode* not_node) {
+    not_node->get_cond()->AcceptVisitor(this);
+  }
 
-  virtual void VisitDoubleCond(ast::DoubleCondExprNode*) {}
+  virtual void VisitDoubleCond(ast::DoubleCondExprNode* double_node) {
+    double_node->get_left_cond()->AcceptVisitor(this);
+    double_node->get_right_cond()->AcceptVisitor(this);
+  }
 
-  virtual void VisitRelExpr(ast::RelExprNode*) {}
+  virtual void VisitRelExpr(ast::RelExprNode* rel_node) {
+    rel_node->get_left_factor()->AcceptVisitor(this);
+    rel_node->get_right_factor()->AcceptVisitor(this);
+  }
 
-  virtual void VisitRelFactor(ast::RelFactor*) {}
+  virtual void VisitRelFactor(ast::RelFactor* rel_factor) {
+    rel_factor->get_expr()->AcceptVisitor(this);
+  }
 };
 }  // namespace sp

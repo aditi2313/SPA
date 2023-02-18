@@ -11,5 +11,7 @@ void ConstNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
   visitor->VisitConst(this);
 }
 
-void OpNode::AcceptVisitor(sp::TNodeVisitor* visitor) {}
+void OpNode::AcceptVisitor(sp::TNodeVisitor* visitor) {
+  visitor->VisitOpNode(this);
+}
 }  // namespace ast

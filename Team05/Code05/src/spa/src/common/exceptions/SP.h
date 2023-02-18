@@ -62,6 +62,15 @@ class ParseStmtSyntaxException : public ParseException {
   static const char kParseStmtSyntaxMessage[];
 };
 
+class ParseAssignSyntaxException : public ParseException {
+public:
+  explicit ParseAssignSyntaxException(std::string additional)
+      : ParseException(kParseAssignSyntaxMessage + additional) {}
+  ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
+
+  static const char kParseAssignSyntaxMessage[];
+};
+
 class ParseRelationSyntaxException : public ParseException {
  public:
   explicit ParseRelationSyntaxException(std::string additional)
@@ -73,17 +82,6 @@ class ParseRelationSyntaxException : public ParseException {
   static const char kParseRelationSyntaxMessage[];
 };
 
-//class ParseSyntaxException : public ParseException {
-// public:
-//  explicit ParseRelationSyntaxException(std::string additional)
-//      : ParseException(kParseRelationSyntaxMessage + additional) {}
-//  ParseRelationSyntaxException()
-//      : ParseException(kParseRelationSyntaxMessage) {}
-//
-// private:
-//  static const char kParseRelationSyntaxMessage[];
-//};
-
 class ParseFactorSyntaxException : public ParseException {
  public:
   explicit ParseFactorSyntaxException(std::string additional)
@@ -92,16 +90,6 @@ class ParseFactorSyntaxException : public ParseException {
 
  private:
   static const char kParseFactorSyntaxMessage[];
-};
-
-class ParseAssignSyntaxException : public ParseException {
- public:
-  explicit ParseAssignSyntaxException(std::string additional)
-      : ParseException(kParseAssignSyntaxMessage + additional) {}
-  ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
-
- private:
-  static const char kParseAssignSyntaxMessage[];
 };
 
 }  // namespace sp

@@ -52,7 +52,7 @@ void TestWrapper::parse(std::string filename) {
   // Validate AST
   auto validator = sp::ProgramValidator(root);
   if (!validator.Validate()) {
-    // TODO(aizatazhar) use custom exception and at the validator level
+    // Errors are thrown at validator level but this is an extra guard
     throw std::runtime_error("Program is not semantically valid");
   }
 

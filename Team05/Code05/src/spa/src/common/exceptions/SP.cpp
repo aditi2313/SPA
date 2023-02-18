@@ -13,6 +13,14 @@ void AssertExpectedToken(std::string prefix, Token to_test, Token expected) {
 const char LexerException::kLexerExceptionMessage[] =
     "Exception occurred at Lexer: ";
 
+
+const char CallSemanticsException::kCallSemanticsExceptionMessage[] =
+    "Call is not semantically valid: ";
+
+const char ProcedureSemanticsException::kProcedureSemanticsExceptionMessage[] =
+    "Procedure is not semantically valid: ";
+
+
 const char ParseProcedureSyntaxException::kParseProcedureSyntaxMessage[] =
     "Invalid syntax at parsing of procedure: ";
 
@@ -39,6 +47,7 @@ const char ParseIfSyntaxException::kParseIfSyntaxMessage[] =
 
 const char ParseWhileSyntaxException::kParseWhileSyntaxMessage[] =
     "Invalid syntax at parsing of while: ";
+
 
 const char ParseRelationSyntaxException::kParseRelationSyntaxMessage[] =
     "Invalid syntax at parsing of relation: ";

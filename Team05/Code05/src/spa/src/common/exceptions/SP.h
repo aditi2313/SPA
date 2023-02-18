@@ -29,6 +29,28 @@ class ParseException : public std::exception {
   const std::string message;
 };
 
+
+class CallSemanticsException : public ParseException {
+ public:
+  explicit CallSemanticsException(std::string additional)
+      : ParseException(kCallSemanticsExceptionMessage + additional) {}
+  CallSemanticsException()
+      : ParseException(kCallSemanticsExceptionMessage) {}
+
+  static const char kCallSemanticsExceptionMessage[];
+};
+
+class ProcedureSemanticsException : public ParseException {
+ public:
+  explicit ProcedureSemanticsException(std::string additional)
+      : ParseException(kProcedureSemanticsExceptionMessage + additional) {}
+  ProcedureSemanticsException()
+      : ParseException(kProcedureSemanticsExceptionMessage) {}
+
+  static const char kProcedureSemanticsExceptionMessage[];
+};
+
+
 class ParseProcedureSyntaxException : public ParseException {
  public:
   explicit ParseProcedureSyntaxException(std::string additional)
@@ -112,6 +134,7 @@ class ParseWhileSyntaxException : public ParseException {
 
   static const char kParseWhileSyntaxMessage[];
 };
+
 
 class ParseRelationSyntaxException : public ParseException {
  public:

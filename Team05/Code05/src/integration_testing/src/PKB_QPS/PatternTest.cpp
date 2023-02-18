@@ -40,10 +40,21 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
   std::unique_ptr<PKBRead> pkb = InitializePKB(
       {
           {"v", 1, "x + y"},
-          {"v", 2, "abra + cadabra"}
+          {"v", 2, "abra + cadabra"},
+          {"v", 3, "1 + 2 + 3"},
+          {"v", 4, "x + 1 + 3"}
       });
 
-  SECTION("pattern a(_, \"x+y\") should return correct results") {
+  SECTION("pattern a(_, _) should return correct results") {
+    std::string query_string = "assign a; Select a pattern a(_, _)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"1", "2", "3", "4"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, \"x + y\") should return correct results") {
     std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
@@ -54,11 +65,70 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
 
   SECTION("pattern a(_, \"abra + cadabra\") should return correct results") {
     std::string query_string = "assign a; Select a "
-                               "pattern a(_, \"abra + cadabra\")";
+                               "pattern a(_, _\"abra+cadabra\"_)";
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"2"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"x\"_) should return correct results") {
+    std::string query_string = "assign a; Select a pattern a(_, _\"x\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"1", "4"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"cadabra\"_) should return correct results") {
+    std::string query_string = "assign b; Select b "
+                               "pattern b(_, _\"cadabra\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"2"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"2\"_) should return correct results") {
+    std::string query_string = "assign c; Select c "
+                               "pattern c(_, _\"2\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"3"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"1 + 2\"_) should return correct results") {
+    std::string query_string = "assign c; Select c "
+                               "pattern c(_, _\"1 + 2\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"3"};
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"2 + 3\"_) should return correct results") {
+    std::string query_string = "assign c; Select c "
+                               "pattern c(_, _\"2 + 3\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{};  // Shouldn't match with 3
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("pattern a(_, _\"x + 1\"_) should return correct results") {
+    std::string query_string = "assign c; Select c "
+                               "pattern c(_, _\"x + 1\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"4"};
     REQUIRE(actual_results == expected_results);
   }
 }

@@ -14,6 +14,7 @@ class ExprNode : public TNode {
  public:
   virtual std::unique_ptr<ExprNode> Copy() = 0;
   virtual bool DeepEquals(const ExprNode&) = 0;
+  virtual bool PartialMatch(const ExprNode&) = 0;
 };
 
 typedef std::unique_ptr<ExprNode> ExprNodePtr;
@@ -29,9 +30,14 @@ class OpNode : public ExprNode {
     if (util::InstanceOf<OpNode>(other)) {
       const OpNode& o_v = dynamic_cast<const OpNode&>(other);
       return operation_ == o_v.operation_ && o_v.left_->DeepEquals(*left_) &&
-             o_v.right_->DeepEquals(*right_);
+              o_v.right_->DeepEquals(*right_);
     }
     return false;
+  }
+
+  bool PartialMatch(const ExprNode& other) override {
+    if (DeepEquals(other)) return true;
+    return left_->PartialMatch(other) || right_->PartialMatch(other);
   }
 
   ExprNodePtr Copy() override {
@@ -65,6 +71,10 @@ class VarNode : public ExprNode {
     return false;
   }
 
+  bool PartialMatch(ExprNode const& other) override {
+    return DeepEquals(other);
+  }
+
   inline std::string get_name() { return var_name_; }
 
   inline std::unique_ptr<ExprNode> Copy() override {
@@ -89,6 +99,10 @@ class ConstNode : public ExprNode {
       return o_v.val_ == val_;
     }
     return false;
+  }
+
+  bool PartialMatch(const ExprNode& other) override {
+    return DeepEquals(other);
   }
 
   inline std::unique_ptr<ExprNode> Copy() override {

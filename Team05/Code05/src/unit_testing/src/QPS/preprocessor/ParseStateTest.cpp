@@ -149,6 +149,38 @@ TEST_CASE("Test PatternParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+  SECTION("Pattern wildcard clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "a", "(", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    query = state.parse(tokens, itr, std::move(query));
+    auto expected_clause = PatternClause(
+        query->CreateArgument("a"),
+        query->CreateArgument("_"));
+
+    Clause *actual_clause = query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern wildcard clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "a", "(", "_", ",", "_\"x\"_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    query = state.parse(tokens, itr, std::move(query));
+    auto expected_clause = PatternClause(
+        query->CreateArgument("a"),
+        query->CreateArgument("_\"x\"_"));
+
+    Clause *actual_clause = query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"PATTERN", "a", "(", "_", ",", "x + y", ")"});
   };

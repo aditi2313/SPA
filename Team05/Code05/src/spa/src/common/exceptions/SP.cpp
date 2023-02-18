@@ -47,6 +47,9 @@ const char ParseCallSyntaxException::kParseCallSyntaxMessage[] =
 const char ParseIfSyntaxException::kParseIfSyntaxMessage[] =
     "Invalid syntax at parsing of if: ";
 
+const char ParseWhileSyntaxException::kParseWhileSyntaxMessage[] =
+    "Invalid syntax at parsing of while: ";
+
 const char ParseRelationSyntaxException::kParseRelationSyntaxMessage[] =
     "Invalid syntax at parsing of relation: ";
 

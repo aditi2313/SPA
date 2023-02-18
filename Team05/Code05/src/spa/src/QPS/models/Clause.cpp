@@ -103,7 +103,8 @@ EntityPtrList PatternClause::Filter(
   std::unique_ptr<AssignPredicateFilter> filter;
 
   auto expr_arg = dynamic_cast<ExpressionArg *>(arg2_.get());
-  auto AST = CreateASTFromExpressionArg(expr_arg);
+  auto AST =
+      sp::SourceProcessor::ParseExpression(expr_arg->get_expression());
 
   filter = std::make_unique<AssignPredicateFilter>(
       [&](pkb::AssignData data) {
@@ -137,19 +138,6 @@ EntityPtrList PatternClause::Index(
   return result;
 }
 
-std::unique_ptr<ast::ExprNode> PatternClause::CreateASTFromExpressionArg(
-    ExpressionArg *arg) {
-  std::string expr_string = "";
-  for (char c : arg->get_expression()) {
-    if (c == '+' || c == '-') {
-      expr_string += " " + std::string(1, c) + " ";
-    } else {
-      expr_string += c;
-    }
-  }
-
-  return sp::SourceProcessor::ParseExpression(expr_string);
-}
 
 Clause::~Clause() = default;
 }  // namespace qps

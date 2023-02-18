@@ -124,9 +124,6 @@ class PatternClause : public Clause {
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
- private:
-  std::unique_ptr<ast::ExprNode> CreateASTFromExpressionArg(ExpressionArg *arg);
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

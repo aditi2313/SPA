@@ -35,11 +35,12 @@ std::unique_ptr<PKBRead> InitializePKBForUses(std::vector<uses_data> data) {
 // NOTE: first argument for Uses cannot be wildcard
 TEST_CASE("Test PKB and QPS integration for UsesS clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKBForUses({
-                                                          {10, {"a", "b", "c"}},
-                                                          {20, {"d", "e"}},
-                                                          {30, {"f"}},
-                                                      });
+  std::unique_ptr<PKBRead> pkb = InitializePKBForUses(
+      {
+          {10, {"a", "b", "c"}},
+          {20, {"d", "e"}},
+          {30, {"f"}},
+      });
 
   SECTION("Uses(IntArg, VarSynonym) should return correct results") {
     std::string query_string = "variable v; Select v such that Uses(10, v)";

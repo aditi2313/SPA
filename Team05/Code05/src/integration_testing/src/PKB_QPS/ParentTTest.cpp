@@ -18,13 +18,14 @@ std::unique_ptr<PKBRead> InitializePKBForParent(std::vector<parent_data> data);
 
 TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKBForParent({
-                                                            {1, 2},
-                                                            {2, 3},
-                                                            {3, 4},
-                                                            {4, 5},
-                                                            {5, 6},
-                                                        });
+  std::unique_ptr<PKBRead> pkb = InitializePKBForParent(
+      {
+          {1, 2},
+          {2, 3},
+          {3, 4},
+          {4, 5},
+          {5, 6},
+      });
 
   SECTION("ParentT(IntArg, IntArg) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent*(1,2)";

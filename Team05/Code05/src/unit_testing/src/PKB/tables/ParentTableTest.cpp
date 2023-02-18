@@ -1,5 +1,5 @@
 #include <string>
-#include "catch.hpp"
+#include <catch.hpp>
 
 #include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"

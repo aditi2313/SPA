@@ -54,21 +54,26 @@ void SuchThatParseState::parse(
     const std::vector<std::string> &tokens,
     parse_position &itr,
     QueryPtr &query) {
-  if (itr == tokens.end()) ThrowException();
-  if (*itr++ != "such") ThrowException();
-  if (*itr++ != "that") ThrowException();
+  auto grammar_itr = grammar_.begin();
+  std::string rel_ident;
+  std::vector<ArgumentPtr> arguments;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    AssertGrammar(*itr, *grammar_itr);
+    if (*grammar_itr == PQL::kRelRefGrammar) {
+      rel_ident = *itr;
+    }
+    if (*grammar_itr == PQL::kArgumentGrammar) {
+      arguments.push_back(query->CreateArgument(*itr));
+    }
+    itr++;
+    grammar_itr++;
+  }
 
-  std::string rel_ident = *itr++;
-  if (*itr++ != "(") ThrowException();
-  ArgumentPtr arg1 = query->CreateArgument(*itr++);
-  if (*itr++ != ",") ThrowException();
-  ArgumentPtr arg2 = query->CreateArgument(*itr++);
-  if (*itr != ")") ThrowException();
+  if (grammar_itr != grammar_.end()) ThrowException();
 
   query->add_clause(Clause::CreateClause(
-      rel_ident, std::move(arg1), std::move(arg2)));
-
-  itr++;
+      rel_ident,
+      std::move(arguments.at(0)), std::move(arguments.at(1))));
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'

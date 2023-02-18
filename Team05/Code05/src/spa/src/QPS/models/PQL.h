@@ -25,21 +25,37 @@ class PQL {
   inline static std::string kConstantEntityName = "constant";
   inline static std::string kProcedureEntityName = "procedure";
 
-  inline static std::vector<std::string> kAllEntityName{
+  inline static std::vector<std::string> kAllEntityNames{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
       kWhileEntityName, kIfEntityName, kAssignEntityName,
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
   inline static bool const is_entity_name(std::string const token) {
-    return find(kAllEntityName.begin(), kAllEntityName.end(), token)
-        != kAllEntityName.end();
+    return find(kAllEntityNames.begin(), kAllEntityNames.end(), token)
+        != kAllEntityNames.end();
   }
+
+  inline static EntityName kRelRefGrammar = "relRef";
+  inline static EntityName kArgumentGrammar = "arg";
 
   inline static EntityName kModifiesRelId = "Modifies";
   inline static EntityName kFollowsRelId = "Follows";
   inline static EntityName kFollowsTRelId = "Follows*";
   inline static EntityName kPatternRelId = "pattern";
+
+  inline static std::vector<std::string> kAllRelIds{
+      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kPatternRelId
+  };
+
+  inline static bool is_rel_ref(std::string const token) {
+    return find(kAllRelIds.begin(), kAllRelIds.end(), token)
+        != kAllRelIds.end();
+  }
+
+  inline static bool is_argument(std::string const token) {
+    return is_ident(token) || is_integer(token) || is_wildcard(token);
+  }
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;

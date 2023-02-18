@@ -99,29 +99,15 @@ EntityPtrList FollowsTClause::Index(
   return result;
 }
 
-// TODO(JL): This method is a bit messy because it calls the
-// PredicateFilter inside of a function meant for Indexing.eva
-// Pattern is kind of tricky, will move on to
-// other relationships first, then rewrite/refactor
-// this method in a separate PR that also closes Issue 58.
-EntityPtrList PatternClause::Index(
+EntityPtrList PatternClause::Filter(
     const EntityPtr &index,
+    const EntityPtrList &RHS_filter_values,
     const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
+
   IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
   int line = line_arg->get_number();
-  // Preprocess expression string to insert whitespace
-  std::string expression = "";
-  ExpressionArg expression_arg = dynamic_cast<ExpressionArg &>(
-      *arg2_.get());
-  for (char c : expression_arg.get_expression()) {
-    if (c == '+' || c == '-') {
-      expression += " " + std::string(1, c) + " ";
-    } else {
-      expression += c;
-    }
-  }
 
     sp::SourceProcessor source_processor;
     auto ASTNode = source_processor.ParseExpression(expression);
@@ -194,8 +180,9 @@ EntityPtrList PatternClause::Index(
             factory->CreateInstance(PQL::kVariableEntityName, var));
     }
 
-    return result;
+  return result;
 }
+
 
 Clause::~Clause() = default;
 }  // namespace qps

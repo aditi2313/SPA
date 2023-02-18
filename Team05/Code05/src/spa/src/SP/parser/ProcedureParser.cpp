@@ -1,16 +1,16 @@
 #include "ProcedureParser.h"
 
 #include <iostream>
-#include <string>
 #include <utility>
+#include <string>
 
-#include "ProgramParser.h"
 #include "stmts/StatementListParser.h"
+#include "models/AST/Token.h"
 
 namespace sp {
 std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {
   StatementListParser stmt_list_parser;
-  if (lxr.get_tok() != Token::kTokIdent) {
+  if (!IsKeyWordToken(lxr.get_tok())) {
     // TODO(aizatazhar): use custom exception
     throw std::runtime_error("procedure should be followed by a name");
   }

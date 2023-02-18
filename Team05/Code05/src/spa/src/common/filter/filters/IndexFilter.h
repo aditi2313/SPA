@@ -38,6 +38,7 @@ class IndexFilter
 };
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;
+using AssignIndexFilter = IndexFilter<pkb::AssignData>;
 using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 using ParentIndexFilter = IndexFilter<pkb::ParentData>;

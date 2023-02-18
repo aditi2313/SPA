@@ -90,7 +90,7 @@ class ParseReadSyntaxException : public ParseException {
 };
 
 class ParseCallSyntaxException : public ParseException {
-public:
+ public:
   explicit ParseCallSyntaxException(std::string additional)
       : ParseException(kParseCallSyntaxMessage + additional) {}
   ParseCallSyntaxException() : ParseException(kParseCallSyntaxMessage) {}

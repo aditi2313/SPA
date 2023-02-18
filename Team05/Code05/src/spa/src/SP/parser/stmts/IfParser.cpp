@@ -12,7 +12,7 @@ std::unique_ptr<ast::StmtLstNode> ParseCodeBlock(Lexer& lxr) {
 
 std::unique_ptr<ast::IfNode> IfParser::parse(Lexer& lxr) {
   CondExprParser cond_parser;
-
+  int stmt = lxr.GetAndIncrementStmtCtr();
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIf, "if");
 
   AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenBracket, "(");
@@ -31,6 +31,6 @@ std::unique_ptr<ast::IfNode> IfParser::parse(Lexer& lxr) {
 
   return std::make_unique<ast::IfNode>(std::move(cond_expr), std::move(list_1),
                                        std::move(list_2),
-                                       lxr.GetAndIncrementStmtCtr());
+                                       stmt);
 }
 }  // namespace sp

@@ -15,6 +15,7 @@ class WhileParser : public Parser<ast::WhileNode> {
   std::unique_ptr<ast::WhileNode> parse(Lexer& lxr) override {
     StatementListParser stmt_list_parser;
     CondExprParser cond_parser;
+    int stmt = lxr.GetAndIncrementStmtCtr();
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokWhile, "while");
 
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenBracket, "(");
@@ -29,7 +30,7 @@ class WhileParser : public Parser<ast::WhileNode> {
 
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseCurly, "}");
     return std::make_unique<ast::WhileNode>(std::move(cond), std::move(stmts),
-                                            lxr.GetAndIncrementStmtCtr());
+                                            stmt);
   }
 };
 }  // namespace sp

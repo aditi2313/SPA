@@ -13,7 +13,7 @@ void UsesVisitor::PerformWork(ast::AssignNode* assign_node) {
   pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
 }
 
-void UsesVisitor::VisitPrint(ast::PrintNode* print_node) {
+void UsesVisitor::PerformWork(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var()->get_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }

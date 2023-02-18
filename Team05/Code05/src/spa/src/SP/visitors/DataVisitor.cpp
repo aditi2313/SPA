@@ -15,7 +15,7 @@ void DataVisitor::PerformWork(ast::ReadNode* read_node) {
   pkb_ptr_->add_read(read_node->get_line());
   pkb_ptr_->add_stmt(read_node->get_line());
 }
-void DataVisitor::VisitPrint(ast::PrintNode* print_node) {
+void DataVisitor::PerformWork(ast::PrintNode* print_node) {
   pkb_ptr_->add_stmt(print_node->get_line());
   pkb_ptr_->add_print(print_node->get_line());
 }

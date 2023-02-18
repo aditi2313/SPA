@@ -35,7 +35,8 @@ class TNodeVisitor {
   void VisitRead(ast::ReadNode* read_node);
   virtual void PerformWork(ast::ReadNode* read_node) {}
 
-  virtual void VisitPrint(ast::PrintNode* print_node) {}
+  void VisitPrint(ast::PrintNode* print_node);
+  virtual void PerformWork(ast::PrintNode* print_node) {}
 
   virtual void VisitIf(ast::IfNode*);
 

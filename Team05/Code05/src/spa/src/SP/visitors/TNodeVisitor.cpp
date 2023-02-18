@@ -29,6 +29,10 @@ void TNodeVisitor::VisitRead(ast::ReadNode* read_node) {
   PerformWork(read_node);
 }
 
+void TNodeVisitor::VisitPrint(ast::PrintNode* print_node) {
+  PerformWork(print_node);
+}
+
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   if_node->get_cond()->AcceptVisitor(this);
   if_node->get_then()->AcceptVisitor(this);

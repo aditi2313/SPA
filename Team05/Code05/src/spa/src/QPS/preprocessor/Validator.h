@@ -11,7 +11,7 @@ class Validator {
  public:
   static bool validate(std::unique_ptr<Query> &query);
   bool DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
-                            std::vector<std::string> synonyms);
+                            std::vector<SynonymPtr> synonyms);
   static bool IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses);
   static bool SynonymCheck(QueryPtr &query);
  private:

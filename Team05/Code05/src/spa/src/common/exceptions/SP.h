@@ -7,10 +7,7 @@
 // exception file for SP
 namespace sp {
 
-// TODO(Gab): Apply this function to the rest of the parser
-void AssertExpectedToken(Token to_test, Token expected, std::string token);
 void AssertExpectedToken(std::string prefix, Token to_test, Token expected);
-void AssertExpectedToken(Token to_test, Token expected);
 
 class LexerException : public std::exception {
  public:

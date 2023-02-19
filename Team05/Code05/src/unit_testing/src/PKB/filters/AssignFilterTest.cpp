@@ -3,7 +3,6 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "PKB/tables/IndexableTable.h"
 #include "common/filter/filters/PredicateFilter.h"
 #include "models/AST/factor_node/FactorNode.h"
 
@@ -31,7 +30,7 @@ TEST_CASE("Assign Filter test") {
     writer.AddAssignData("v", 3, std::move(plus2));
     writer.AddAssignData("v", 5, std::move(plus3));
     writer.AddAssignData("v", 7, std::move(plus4));
-    table = writer.EndWrite();
+    table = writer.ProcessTableAndEndWrite();
 
     pkb::PKBRead reader(std::move(table));
     auto result =

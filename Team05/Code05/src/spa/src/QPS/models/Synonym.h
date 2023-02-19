@@ -17,7 +17,7 @@ class Synonym {
   Synonym(SynonymName syn_id, EntityName entity_name) :
       syn_id_(syn_id), entity_name_(entity_name) {}
 
-  inline SynonymName get_syn_id() const {
+  inline SynonymName get_syn_name() const {
     return syn_id_;
   }
 

@@ -16,19 +16,19 @@ procedure uses {
     read a;
     print a;
   }
-  while (m < 100 || n > 1000) {
+  while ((m < 100) || (n > 1000)) {
     i = just + wanna;
     tell = you - how;
     i = feeling;
     read i;
     print i;
   }
-  if (m < 100 || n > 1000) then {
+  if ((m < 100) || (n > 1000)) then {
     never = gonna;
   } else {
     give = you - up;
   }
-  if (other >= 1000 && test <= 200) then {
+  if ((other >= 1000) && (test <= 200)) then {
     never = gonna;
   } else {
     let = you * down;

@@ -31,8 +31,21 @@ class PQL {
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
+  inline static std::unordered_set<std::string> kAllStmtEntityNames{
+      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
+      kWhileEntityName, kIfEntityName, kAssignEntityName
+  };
+
   inline static bool const is_entity_name(std::string const token) {
     return kAllEntityNames.count(token) == 1;
+  }
+
+  inline static EntityName const get_base_entity_name(
+      EntityName const entity_name) {
+    if (kAllStmtEntityNames.count(entity_name)) {
+      return kStmtEntityName;
+    }
+    return entity_name;
   }
 
   inline static EntityName kModifiesRelId = "Modifies";

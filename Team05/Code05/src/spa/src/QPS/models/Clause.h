@@ -64,6 +64,20 @@ class Clause {
     return result;
   }
 
+  inline virtual EntityPtrList SymmetricFilter(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) {
+    EntityPtrList result;
+    for (auto &entity : Index(index, factory, pkb)) {
+      if (entity->WeakEqual(*index)) {
+        result.push_back(entity->Copy());
+      }
+    }
+
+    return result;
+  }
+
   bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);
     const std::type_info &ti2 = typeid(other);

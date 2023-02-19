@@ -149,6 +149,8 @@ class PatternClause : public Clause {
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  inline bool IsExactType() override { return true; };
 };
 
 // Relationship between a stmt and a variable or vector of variables
@@ -175,8 +177,6 @@ class ParentClause : public Clause {
   EntityPtrList Index(const EntityPtr &index,
                       const std::unique_ptr<MasterEntityFactory> &factory,
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  inline bool IsExactType() override { return true; };
 };
 
 class ParentTClause : public Clause {

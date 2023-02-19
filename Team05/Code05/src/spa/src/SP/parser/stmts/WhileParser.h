@@ -15,7 +15,7 @@ class WhileParser : public Parser<ast::WhileNode> {
   std::unique_ptr<ast::WhileNode> parse(Lexer& lxr) override {
     StatementListParser stmt_list_parser;
     CondExprParser cond_parser;
-    int stmt = lxr.GetAndIncrementStmtCtr();    
+    int stmt = lxr.GetAndIncrementStmtCtr();
     AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
                         lxr.GetTokAndIncrement(), Token::kTokWhile);
 

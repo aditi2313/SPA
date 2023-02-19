@@ -1,6 +1,7 @@
 #include "PKBWrite.h"
 
 #include <functional>
+#include <stack>
 #include <string>
 #include <unordered_set>
 
@@ -9,23 +10,30 @@
 namespace pkb {
 
 template <class Data>
-void ProcessIndexableTable(IndexableTable<Data>& table,
-                           std::function<void(Data&, int)> adding_function,
-                           std::function<int(Data&)> getter) {
+void ProcessIndexableTable(
+    IndexableTable<Data>& table,
+    std::function<void(Data&, int)> adding_function,
+    std::function<std::unordered_set<int>(Data&)> get_children) {
   for (int id : table.get_indexes()) {
-    Data& mod_data = table.get_row(id);
-    Data current = mod_data;
-    while (table.exists(getter(current))) {
-      adding_function(mod_data, getter(current));
-      current = table.get_row(getter(current));
+    Data& data_to_update = table.get_row(id);
+    // use dfs to add all possible children
+    std::stack<Data> frontier;
+    frontier.push(data_to_update);
+    while (!frontier.empty()) {
+      auto v = frontier.top();
+      frontier.pop();
+      for (auto& child : get_children(v)) {
+        adding_function(data_to_update, child);
+        if (table.exists(child)) {
+          frontier.push(table.get_row(child));
+        }
+      }
     }
-    adding_function(mod_data, getter(current));
   }
 }
 
-void PKBWrite::AddModifiesData(const int line,
-                               const std::unordered_set<std::string>&
-                                       variables) {
+void PKBWrite::AddModifiesData(
+    const int line, const std::unordered_set<std::string>& variables) {
   pkb_relation_table_->add_modifies_data(line, variables);
 }
 
@@ -34,9 +42,8 @@ void PKBWrite::AddAssignData(std::string variable, int line,
   pkb_relation_table_->add_assign_data(variable, line, std::move(expression));
 }
 
-void PKBWrite::AddUsesData(const int line,
-                           const std::unordered_set<std::string>&
-                                   variable_names) {
+void PKBWrite::AddUsesData(
+    const int line, const std::unordered_set<std::string>& variable_names) {
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
@@ -44,22 +51,24 @@ void PKBWrite::AddFollowsData(const int line, const int follows) {
   pkb_relation_table_->add_follows_data(line, follows);
 }
 
-void PKBWrite::AddParentData(const int line, const int parent_line) {
-  pkb_relation_table_->add_parent_data(line, parent_line);
+void PKBWrite::AddParentData(const int parent, const int child_line) {
+  pkb_relation_table_->add_parent_data(parent, child_line);
 }
 
 void PKBWrite::ProcessFollows() {
   ProcessIndexableTable<FollowsData>(
       pkb_relation_table_->follows_table_,
       [](FollowsData& data, int v) { data.add_to_list(v); },
-      [](FollowsData& data) { return data.get_follows(); });
+      [](FollowsData& data) {
+        return std::unordered_set<int>{data.get_follows()};
+      });
 }
 
 void PKBWrite::ProcessParent() {
   ProcessIndexableTable<ParentData>(
       pkb_relation_table_->parent_table_,
-      [](ParentData& data, int v) { data.add_children(v); },
-      [](ParentData& data) { return data.get_child(); });
+      [](ParentData& data, int v) { data.add_to_all_children(v); },
+      [](ParentData& data) { return data.get_direct_children(); });
 }
 
 }  // namespace pkb

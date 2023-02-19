@@ -25,7 +25,7 @@ TEST_CASE("PKB read and write test") {
     expected_table.add_row(10, ModifiesData(10, variables));
 
     pkb_write.AddModifiesData(10, variables);
-    table = pkb_write.EndWrite();
+    table = pkb_write.ProcessTableAndEndWrite();
 
     PKBRead pkb_read(std::move(table));
     std::unique_ptr<ModifiesTable> result =

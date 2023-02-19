@@ -11,7 +11,10 @@ TEST_CASE("Test ModifiesData") {
     ModifiesData modifies_data(10, variables);
 
     SECTION("Retrieving ModifiesData attributes") {
-        REQUIRE(((modifies_data.get_line() == 10)
-            && modifies_data.get_variables().count("a")));
+        REQUIRE(modifies_data.get_variables().count("a"));
+    };
+
+    SECTION("Retrieving ModifiesData line") {
+        REQUIRE(modifies_data.get_line() == 10);
     };
 }

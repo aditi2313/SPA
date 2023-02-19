@@ -2,9 +2,11 @@
 
 #include <memory>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
+#include "PKB/PKBRead.h"
 #include "PKBWritingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
 
@@ -21,5 +23,9 @@ class UsesVisitor : public PKBWritingVisitor {
   void Process(ast::IfNode* if_node) override;
 
   void Process(ast::WhileNode* while_node) override;
+
+ private:
+  void AddVariablesFromStmtList(pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
+                                std::unordered_set<std::string>& vars);
 };
 }  // namespace sp

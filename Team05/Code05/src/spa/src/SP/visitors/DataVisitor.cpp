@@ -9,6 +9,8 @@ void DataVisitor::Process(ast::ProcNode* proc_node) {
 void DataVisitor::Process(ast::AssignNode* assign_node) {
   pkb_ptr_->add_stmt(assign_node->get_line());
   pkb_ptr_->add_assign(assign_node->get_line());
+  assign_node->get_expr()->AcceptVisitor(this);
+  assign_node->get_var()->AcceptVisitor(this);
 }
 void DataVisitor::Process(ast::ReadNode* read_node) {
   pkb_ptr_->add_variable(read_node->get_var()->get_name());

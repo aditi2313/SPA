@@ -17,7 +17,7 @@ TEST_CASE("Test processing of multiple follows line") {
   writer.AddFollowsData(4, 5);
   writer.AddFollowsData(5, 6);
   writer.AddFollowsData(7, 8);
-  table = writer.EndWrite();
+  table = writer.ProcessTableAndEndWrite();
   PKBRead reader(std::move(table));
   SECTION("Test slightly long list") {
     std::unordered_set<int> expected{3, 4, 5, 6};

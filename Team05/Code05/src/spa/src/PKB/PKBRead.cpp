@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace pkb {
 

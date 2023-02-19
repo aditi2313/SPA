@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 #include "models/types.h"
 
 using models::EntityName;

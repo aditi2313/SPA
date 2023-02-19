@@ -8,7 +8,7 @@
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"
 #include "SP/parser/relations/RelExprParser.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
 #include "models/AST/relations/RelExprNode.h"

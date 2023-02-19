@@ -36,7 +36,7 @@ def create_generators():
 
 declarations = "variable v; stmt s; assign a;"
 
-def CreateSingleSuchtThatQueries():
+def CreateSingleSuchThatQueries():
   entities = ["s", "v", "r", "random", "none"]
   generators = create_generators()
   ctr = 1
@@ -56,7 +56,7 @@ def CreateSingleSuchtThatQueries():
 
 
 if __name__ == "__main__":
-  CreateSingleSuchtThatQueries()
+  CreateSingleSuchThatQueries()
   
 
 

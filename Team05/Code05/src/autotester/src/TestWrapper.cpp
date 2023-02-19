@@ -46,34 +46,7 @@ void TestWrapper::parse(std::string filename) {
   file.close();
 
   auto root = sp::SourceProcessor::ParseProgram(program);
-
-  auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
-
-  sp::AssignVisitor av(std::move(writer));
-  root->AcceptVisitor(&av);
-  writer = av.EndVisit();
-
-  sp::DataVisitor dv(std::move(writer));
-  root->AcceptVisitor(&dv);
-  writer = dv.EndVisit();
-
-  sp::ModifiesVisitor mv(std::move(writer));
-  root->AcceptVisitor(&mv);
-  writer = mv.EndVisit();
-
-  sp::ParentVisitor pv(std::move(writer));
-  root->AcceptVisitor(&pv);
-  writer = pv.EndVisit();
-
-  sp::UsesVisitor uv(std::move(writer));
-  root->AcceptVisitor(&uv);
-  writer = uv.EndVisit();
-
-  sp::FollowsVisitor fv(std::move(writer));
-  root->AcceptVisitor(&fv);
-  writer = fv.EndVisit();
-
-  pkb_relation_ = writer->ProcessTableAndEndWrite();
+  sp::SourceProcessor::ExtractRelationships(root, pkb_relation_);
 }
 
 // method to evaluating a query

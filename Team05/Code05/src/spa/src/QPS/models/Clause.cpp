@@ -1,7 +1,6 @@
+#include "Clause.h"
 #include <string>
 #include <utility>
-
-#include "Clause.h"
 #include "QPS/models/PQL.h"
 #include <QPS/models/Query.h>
 #include "SP/SourceProcessor.h"

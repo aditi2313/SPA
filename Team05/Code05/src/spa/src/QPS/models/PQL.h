@@ -11,9 +11,10 @@
 using models::EntityName;
 
 namespace qps {
-
 class PQL {
  public:
+  using RelName = std::string;
+
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
   inline static std::string kPrintEntityName = "print";
@@ -48,13 +49,13 @@ class PQL {
     return entity_name;
   }
 
-  inline static EntityName kModifiesRelId = "Modifies";
-  inline static EntityName kFollowsRelId = "Follows";
-  inline static EntityName kFollowsTRelId = "Follows*";
-  inline static EntityName kPatternRelId = "pattern";
-  inline static EntityName kUsesRelId = "Uses";
-  inline static EntityName kParentRelId = "Parent";
-  inline static EntityName kParentTRelId = "Parent*";
+  inline static RelName kModifiesRelId = "Modifies";
+  inline static RelName kFollowsRelId = "Follows";
+  inline static RelName kFollowsTRelId = "Follows*";
+  inline static RelName kPatternRelId = "pattern";
+  inline static RelName kUsesRelId = "Uses";
+  inline static RelName kParentRelId = "Parent";
+  inline static RelName kParentTRelId = "Parent*";
 
   inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
@@ -106,7 +107,9 @@ class PQL {
 
   inline static bool is_pattern_wildcard(std::string str) {
     if (str.size() < 2) return false;
-    return str.front() == '_' && str.back() == '_';
+    return str.front() == '_'
+      && str.back() == '_'
+      && is_pattern_exact(str.substr(1, str.size() - 2));
   }
 
   inline static std::string kRelRefGrammar = "relRef";

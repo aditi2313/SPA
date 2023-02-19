@@ -13,7 +13,7 @@ class ParentData {
 
   inline std::unordered_set<int>& get_children_set() { return children_; }
 
-  inline void add_children(int parent) { children_.insert(parent); }
+  inline void add_children(int child) { children_.insert(child); }
 
  private:
   int line_;

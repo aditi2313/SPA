@@ -5,22 +5,27 @@
 namespace pkb {
 class ParentData {
  public:
-  ParentData(int parent, int child);
+  explicit ParentData(int parent);
 
   inline int get_line() { return line_; }
 
-  inline int get_child() { return child_line_; }
+  inline std::unordered_set<int> get_direct_children() {
+    return direct_children_;
+  }
 
-  inline std::unordered_set<int>& get_children_set() { return children_; }
+  // all the children
+  inline std::unordered_set<int>& get_all_children() { return total_children_; }
 
-  inline void add_children(int child) { children_.insert(child); }
+  inline void add_to_all_children(int child) { total_children_.insert(child); }
+
+  inline void add_direct_child(int child) { direct_children_.insert(child); }
 
  private:
   int line_;
-  // the immediate parent
-  int child_line_;
+  // the immediate children
+  std::unordered_set<int> direct_children_;
 
-  // set of all parents
-  std::unordered_set<int> children_;
+  // the set of all children
+  std::unordered_set<int> total_children_;
 };
 }  // namespace pkb

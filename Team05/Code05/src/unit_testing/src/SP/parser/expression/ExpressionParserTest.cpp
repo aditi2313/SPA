@@ -113,7 +113,6 @@ TEST_CASE("Invalid expressions throw exception") {
   Lexer lxr("lemon orange s + b");
   ExpressionParser expr_parser;
   REQUIRE_THROWS_AS(expr_parser.parse(lxr), ParseException);
-
 }
 
 ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,

@@ -3,6 +3,6 @@
 namespace sp {
 class Validator {
  public:
-  virtual bool Validate() = 0;
+  virtual void Validate() = 0;
 };
 }  // namespace sp

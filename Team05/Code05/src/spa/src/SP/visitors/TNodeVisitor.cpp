@@ -41,6 +41,7 @@ void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
 }
 
 void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
+  PerformWork(while_node);
   while_node->get_cond()->AcceptVisitor(this);
   while_node->get_stmts()->AcceptVisitor(this);
 }

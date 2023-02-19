@@ -9,8 +9,4 @@ void FollowsVisitor::PerformWork(ast::StmtLstNode* stmtlst_node) {
     pkb_ptr_->AddFollowsData(stmts[i]->get_line(), stmts[i + 1]->get_line());
   }
 }
-
-void FollowsVisitor::VisitWhile(ast::WhileNode* while_node) {
-  while_node->get_stmts()->AcceptVisitor(this);
-}
 }  // namespace sp

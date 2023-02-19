@@ -41,7 +41,8 @@ class TNodeVisitor {
   void VisitIf(ast::IfNode*);
   virtual void PerformWork(ast::IfNode*) {}
 
-  virtual void VisitWhile(ast::WhileNode*);
+  void VisitWhile(ast::WhileNode*);
+  virtual void PerformWork(ast::WhileNode*) {}
 
   void VisitCall(ast::CallNode* call_node);
   virtual void PerformWork(ast::CallNode* call_node) {}

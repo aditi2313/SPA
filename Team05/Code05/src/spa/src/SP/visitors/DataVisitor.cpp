@@ -31,11 +31,9 @@ void DataVisitor::PerformWork(ast::ConstNode* const_node) {
   pkb_ptr_->add_constant(const_node->get_val());
 }
 
-void DataVisitor::VisitWhile(ast::WhileNode* while_node) {
+void DataVisitor::PerformWork(ast::WhileNode* while_node) {
   pkb_ptr_->add_while(while_node->get_line());
   pkb_ptr_->add_stmt(while_node->get_line());
-  while_node->get_cond()->AcceptVisitor(this);
-  while_node->get_stmts()->AcceptVisitor(this);
 }
 
 void DataVisitor::PerformWork(ast::IfNode* if_node) {

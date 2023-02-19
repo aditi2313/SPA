@@ -17,6 +17,6 @@ class ParentVisitor  : public PKBWritingVisitor {
 
   void PerformWork(ast::IfNode* if_node) override;
 
-  void VisitWhile(ast::WhileNode* while_node) override;
+  void PerformWork(ast::WhileNode* while_node) override;
 };
 }  // namespace sp

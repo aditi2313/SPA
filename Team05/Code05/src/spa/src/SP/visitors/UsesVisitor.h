@@ -16,7 +16,7 @@ class UsesVisitor : public PKBWritingVisitor {
 
   void Process(ast::AssignNode* assign_node) override;
 
-  void Process(ast::PrintNode* assign_node) override;
+  void Process(ast::PrintNode* print_node) override;
 
   void Process(ast::IfNode* if_node) override;
 

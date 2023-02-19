@@ -43,6 +43,8 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   InitializeEntitiesFromArgument(query, arg1, clause->LHS(), LHS);
   InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
 
+  bool is_symmetric = arg1->IsSynonym() && (*arg1 == *arg2);
+
   // Takes care of duplicates
   EntityPtrHashset RHS_results(0, EntityPtrHash, EntityPtrEqual);
   EntityPtrHashset LHS_results(0, EntityPtrHash, EntityPtrEqual);
@@ -55,7 +57,9 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
       results = clause->Index(index, master_entity_factory_, pkb_);
     } else {
       // Is synonym or exact (int or ident), need filter
-      results = clause->Filter(index, RHS, master_entity_factory_, pkb_);
+      results = is_symmetric
+          ? clause->SymmetricFilter(index, master_entity_factory_, pkb_)
+          : clause->Filter(index, RHS, master_entity_factory_, pkb_);
     }
 
     for (auto &entity : results) {

@@ -9,11 +9,10 @@
 #include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
+#include "SP/visitors/FollowsVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
 #include "SP/visitors/UsesVisitor.h"
-#include "SP/visitors/FollowsVisitor.h"
-#include "SP/validators/ProgramValidator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -83,7 +82,7 @@ void TestWrapper::parse(std::string filename) {
   root->AcceptVisitor(&fv);
   writer = fv.EndVisit();
 
-  pkb_relation_ = writer->EndWrite();
+  pkb_relation_ = writer->ProcessTableAndEndWrite();
 }
 
 // method to evaluating a query

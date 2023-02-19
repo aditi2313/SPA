@@ -29,7 +29,7 @@ std::unique_ptr<PKBRead> InitializePKBForUses(std::vector<uses_data> data) {
     pkb_write.add_stmt(line);
   }
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 // NOTE: first argument for Uses cannot be wildcard
@@ -68,12 +68,12 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
       "Uses(StmtSynonym, VarSynonym) should return correct results when "
       "select s with only one var") {
     std::string query_string =
-        "stmt s; variable v; Select s such that Uses(s, a)";
+        "stmt s; variable v; Select s such that Uses(s, v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"10"};
+    std::list<std::string> expected_results{"10", "20", "30"};
     REQUIRE(actual_results == expected_results);
   }
 

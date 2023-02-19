@@ -2,8 +2,8 @@
 
 #include <memory>
 #include <string>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
@@ -93,6 +93,10 @@ class PKBWrite {
   /// </summary>
   /// <returns>The unique pointer for PKB Relation Table</returns>
   inline std::unique_ptr<PKBRelationTable> EndWrite() {
+    return std::move(pkb_relation_table_);
+  }
+
+  inline std::unique_ptr<PKBRelationTable> ProcessTableAndEndWrite() {
     ProcessFollows();
     ProcessParent();
     return std::move(pkb_relation_table_);
@@ -111,6 +115,7 @@ class PKBWrite {
   /// parent table to obtain all the Parent* lines.
   /// </summary>
   void ProcessParent();
+
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };
 }  // namespace pkb

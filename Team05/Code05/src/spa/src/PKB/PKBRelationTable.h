@@ -53,17 +53,21 @@ class PKBRelationTable {
   }
 
   void add_uses_data(const int line,
-                         const std::unordered_set<std::string>&
-                                 variable_names) {
-      uses_table_.add_row(line, UsesData(line, variable_names));
+                     const std::unordered_set<std::string>& variable_names) {
+    uses_table_.add_row(line, UsesData(line, variable_names));
   }
 
   void add_follows_data(const int line, const int follows) {
-      follows_table_.add_row(line, FollowsData(line, follows));
+    follows_table_.add_row(line, FollowsData(line, follows));
   }
 
-  void add_parent_data(const int line, const int parent_line) {
-      parent_table_.add_row(line, ParentData(line, parent_line));
+  void add_parent_data(const int line, const int child_line) {
+    if (parent_table_.exists(line)) {
+      parent_table_.get_row(line).add_direct_child(child_line);
+      return;
+    }
+    parent_table_.add_row(line, ParentData(line));
+    parent_table_.get_row(line).add_children(child_line);
   }
 };
 }  // namespace pkb

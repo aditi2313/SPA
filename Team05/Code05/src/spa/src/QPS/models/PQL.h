@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <vector>
+#include <unordered_set>
 #include <memory>
 #include <utility>
 
@@ -25,15 +25,14 @@ class PQL {
   inline static std::string kConstantEntityName = "constant";
   inline static std::string kProcedureEntityName = "procedure";
 
-  inline static std::vector<std::string> kAllEntityName{
+  inline static std::unordered_set<std::string> kAllEntityNames{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
       kWhileEntityName, kIfEntityName, kAssignEntityName,
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
   inline static bool const is_entity_name(std::string const token) {
-    return find(kAllEntityName.begin(), kAllEntityName.end(), token)
-        != kAllEntityName.end();
+    return kAllEntityNames.find(token) != kAllRelIds.end();
   }
 
   inline static EntityName kModifiesRelId = "Modifies";
@@ -43,6 +42,19 @@ class PQL {
   inline static EntityName kUsesRelId = "Uses";
   inline static EntityName kParentRelId = "Parent";
   inline static EntityName kParentTRelId = "Parent*";
+
+  inline static std::unordered_set<std::string> kAllRelIds{
+      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
+      kParentTRelId, kUsesRelId, kPatternRelId
+  };
+
+  inline static bool is_rel_ref(std::string const token) {
+    return kAllRelIds.find(token) != kAllRelIds.end();
+  }
+
+  inline static bool is_argument(std::string const token) {
+    return is_ident(token) || is_integer(token) || is_wildcard(token);
+  }
 
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str[0])) return false;
@@ -67,6 +79,30 @@ class PQL {
   inline static bool is_pattern_wildcard(std::string str) {
     if (str.size() < 2) return false;
     return str.front() == '_' && str.back() == '_';
+  }
+
+  inline static std::string kRelRefGrammar = "relRef";
+  inline static std::string kArgumentGrammar = "arg";
+  inline static std::string kSynGrammar = "syn";
+  inline static std::string kExprGrammar = "exp";
+  inline static std::string kDesignEntityGrammar = "designEntity";
+  inline static std::string kRecurseGrammar = "*";
+
+  inline static bool CheckGrammar(
+      std::string const token, std::string const grammar) {
+    if (grammar == kArgumentGrammar) {
+      return is_argument(token);
+    } else if (grammar == kRelRefGrammar) {
+      return is_rel_ref(token);
+    } else if (grammar == kSynGrammar) {
+      return is_ident(token);
+    } else if (grammar == kDesignEntityGrammar) {
+      return is_entity_name(token);
+    } else if (grammar == kExprGrammar || grammar == kRecurseGrammar) {
+      return true;
+    } else {
+      return token == grammar;
+    }
   }
 };
 }  // namespace qps

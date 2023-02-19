@@ -14,17 +14,24 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
     std::string query,
     std::list<std::string> &results,
     std::unique_ptr<pkb::PKBRead> &pkb) {
-  SelectClParser parser;
-  std::unique_ptr<Query> query_object = parser.ParseQuery(query);
+  try {
+    SelectClParser parser;
+    std::unique_ptr<Query> query_object = parser.ParseQuery(query);
+    Validator validator;
+    // TODO(Sarthak): something like validator.validate(query_object) here
 
-  Validator validator;
-  // TODO(Sarthak): something like validator.validate(query_object) here
+    Evaluator evaluator(pkb);
+    QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
-  Evaluator evaluator(pkb);
-  QueryResultPtr result = evaluator.EvaluateQuery(query_object);
-
-  Formatter formatter;
-  results = formatter.FormatQuery(result);
-  return evaluator.retrieve_pkb();
+    Formatter formatter;
+    results = formatter.FormatQuery(result);
+    return evaluator.retrieve_pkb();
+  } catch (PqlSyntaxErrorException e) {
+    results = {"SyntaxError"};
+    return std::move(pkb);
+  } catch (PqlSemanticErrorException e) {
+    results = {"SemanticError"};
+    return std::move(pkb);
+  }
 }
 }  // namespace qps

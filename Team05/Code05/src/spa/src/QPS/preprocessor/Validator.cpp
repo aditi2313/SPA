@@ -1,11 +1,11 @@
 #include <utility>
+#include <unordered_set>
 #include "Validator.h"
 #include "common/Exceptions.h"
 
 namespace qps {
 
 QueryPtr Validator::validate(std::unique_ptr<Query> &query) {
-
   if (IsWildcard(query) && SynonymCheck(query) && DesignEntitySynonyms(query) &&
       isDeclaredOnce(query)) {
     return std::move(query);

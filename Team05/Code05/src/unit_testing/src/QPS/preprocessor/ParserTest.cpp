@@ -76,11 +76,15 @@ TEST_CASE("Test ParseQuery") {
   }
 
   SECTION("Query with one pattern clauses should parse correctly") {
-    std::string query_string = "assign a; Select a pattern a(_, \"x + y\")";
+    std::string query_string = "assign a; Select a pattern a(v, \"x + y\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"a", PQL::kAssignEntityName}},
         {"a"});
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("v")));
     expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
@@ -93,13 +97,14 @@ TEST_CASE("Test ParseQuery") {
       "Query with multiple declarations, multiple synonyms "
       "and multiple such-that and pattern clauses should parse correctly") {
     std::string query_string = "variable v; procedure p; "
-                               "Select v, p such that Modifies(6, v) "
+                               "Select v such that Modifies(6, v) "
                                "such that Modifies(3, v) "
-                               "pattern a(_, \"x + y\") pattern a(_, \"x\")";
+                               "pattern a(_, \"x + y\") "
+                               "pattern a(\"variable\", \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
-        {"v", "p"});
+        {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("6"),
@@ -109,9 +114,17 @@ TEST_CASE("Test ParseQuery") {
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("_")));
+    expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("x+y")));
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("variable")));
     expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
@@ -125,13 +138,13 @@ TEST_CASE("Test ParseQuery") {
       "and multiple such-that and pattern clauses and many random whitespaces "
       "should parse correctly") {
     std::string query_string = "variable    v;    procedure    p; "
-                               "Select v, p  such  that  Modifies(  6, v) "
+                               "Select v such  that  Modifies(  6, v) "
                                "  such      that    Modifies(3, v) "
                                "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
-        {"v", "p"});
+        {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("6"),
@@ -141,9 +154,17 @@ TEST_CASE("Test ParseQuery") {
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("_")));
+    expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("x+y")));
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("_")));
     expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),

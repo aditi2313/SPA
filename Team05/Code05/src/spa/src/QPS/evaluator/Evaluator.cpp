@@ -15,8 +15,18 @@ void Evaluator::InitializeSynonyms(QueryPtr &query) {
 QueryResultPtr Evaluator::EvaluateQuery(QueryPtr &query) {
   InitializeSynonyms(query);
 
-  for (std::unique_ptr<Clause> &clause : query->get_clauses()) {
-    bool clause_result = EvaluateClause(query, clause);
+  auto &clauses = query->get_clauses();
+  int num_clauses = clauses.size();
+  for (int i = num_clauses - 1; i >= 0; i--) {
+    bool clause_result = EvaluateClause(query, clauses.at(i));
+
+    if (!clause_result) {
+      // Clause is false, can immediately return empty result.
+      return std::make_unique<QueryResult>();
+    }
+  }
+  for (int i = 0; i < num_clauses; i++) {
+    bool clause_result = EvaluateClause(query, clauses.at(i));
 
     if (!clause_result) {
       // Clause is false, can immediately return empty result.
@@ -58,8 +68,8 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
     } else {
       // Is synonym or exact (int or ident), need filter
       results = is_symmetric
-          ? clause->SymmetricFilter(index, master_entity_factory_, pkb_)
-          : clause->Filter(index, RHS, master_entity_factory_, pkb_);
+                ? clause->SymmetricFilter(index, master_entity_factory_, pkb_)
+                : clause->Filter(index, RHS, master_entity_factory_, pkb_);
     }
 
     for (auto &entity : results) {

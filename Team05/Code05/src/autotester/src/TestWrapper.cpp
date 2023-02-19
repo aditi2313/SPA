@@ -6,7 +6,6 @@
 
 #include "../../spa/src/QPS/QPS.h"
 #include "../../spa/src/SP/SourceProcessor.h"
-#include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/FollowsVisitor.h"
@@ -46,15 +45,7 @@ void TestWrapper::parse(std::string filename) {
   std::string program = buffer.str();
   file.close();
 
-  // Parse and generate AST
   auto root = sp::SourceProcessor::ParseProgram(program);
-
-  // Validate AST
-  auto validator = sp::ProgramValidator(root);
-  if (!validator.Validate()) {
-    // Errors are thrown at validator level but this is an extra guard
-    throw std::runtime_error("Program is not semantically valid");
-  }
 
   auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation_));
 

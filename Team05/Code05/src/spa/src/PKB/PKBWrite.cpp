@@ -13,19 +13,19 @@ template <class Data>
 void ProcessIndexableTable(
     IndexableTable<Data>& table,
     std::function<void(Data&, int)> adding_function,
-    std::function<std::unordered_set<int>(Data&)> getter) {
+    std::function<std::unordered_set<int>(Data&)> get_children) {
   for (int id : table.get_indexes()) {
-    Data& mod_data = table.get_row(id);
+    Data& data_to_update = table.get_row(id);
     // use dfs to add all possible children
-    std::stack<Data> current;
-    current.push(mod_data);
-    while (!current.empty()) {
-      auto v = current.top();
-      current.pop();
-      for (auto& child : getter(v)) {
-        adding_function(mod_data, child);
+    std::stack<Data> frontier;
+    frontier.push(data_to_update);
+    while (!frontier.empty()) {
+      auto v = frontier.top();
+      frontier.pop();
+      for (auto& child : get_children(v)) {
+        adding_function(data_to_update, child);
         if (table.exists(child)) {
-          current.push(table.get_row(child));
+          frontier.push(table.get_row(child));
         }
       }
     }

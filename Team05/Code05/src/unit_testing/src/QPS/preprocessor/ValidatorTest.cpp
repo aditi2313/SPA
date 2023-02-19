@@ -4,7 +4,7 @@
 #include "QPS/models/PQL.h"
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/preprocessor/Validator.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 using namespace qps;  // NOLINT
 

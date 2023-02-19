@@ -9,7 +9,7 @@
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
 #include "PKB/tables/IndexableTable.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 #include "PKB/data/UsesData.h"
 #include "PKB/data/FollowsData.h"
 #include "PKB/data/ParentData.h"

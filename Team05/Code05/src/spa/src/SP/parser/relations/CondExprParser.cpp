@@ -55,13 +55,13 @@ std::unique_ptr<ast::CondExprNode> CondExprParser::parse(Lexer& lxr) {
   if (lxr.get_tok() == Token::kTokNot) {
     return ParseNot(lxr);
   }
+  if (!lxr.IsDoubleCond()) {
+    RelExprParser rel_expr_parser;
+    // deal with case without bracket
+    return rel_expr_parser.parse(lxr);
+  }
 
   // deal with case with bracket
-  if (lxr.get_tok() == Token::kTokOpenBracket) {
-    return ParseDoubleCond(lxr);
-  }
-  RelExprParser rel_expr_parser;
-  // deal with case without bracket
-  return rel_expr_parser.parse(lxr);
+  return ParseDoubleCond(lxr);
 }
 }  // namespace sp

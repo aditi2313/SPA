@@ -34,6 +34,12 @@ TEST_CASE("NOT expression parses") {
   TestCondExpr(lxr, *not_expr);
 }
 
+TEST_CASE("(x) >= 0") {
+  Lexer lxr("(x) >= 0)");
+  CondExprParser parser;
+  parser.parse(lxr);
+}
+
 // testing parsing with error
 TEST_CASE("Invalid expression throws error") {
   SECTION("Invalid token") {

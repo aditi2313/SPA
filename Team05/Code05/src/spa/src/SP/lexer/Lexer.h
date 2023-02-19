@@ -15,7 +15,7 @@
 namespace sp {
 class Lexer {
  public:
-  explicit Lexer(std::string program) : data_(program) {
+  explicit Lexer(std::string program) : program_(program), data_(program_) {
     // create the handlers
     auto white_handler = std::make_unique<WhiteSpaceHandler>();
     auto alpha_handler = std::make_unique<AlphaNumericHandler>();
@@ -53,11 +53,18 @@ class Lexer {
 
   void Increment();
 
+  // Checks if the current scope is a double condition
+  bool IsDoubleCond();
+
   std::string get_ident() { return data_.get_ident(); }
   int get_integer() { return data_.get_int(); }
 
  private:
   LexerData data_;
+
+  // storing program in here to improve effeciency
+  // of peek
+  std::string program_;
   std::list<std::unique_ptr<LexerHandler>> handlers;
 };
 }  // namespace sp

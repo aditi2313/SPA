@@ -1,7 +1,7 @@
 #include "ProcedureParser.h"
 
-#include <utility>
 #include <string>
+#include <utility>
 
 #include "common/exceptions/SP.h"
 #include "models/AST/Token.h"
@@ -9,6 +9,9 @@
 
 namespace sp {
 std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {
+  AssertExpectedToken(
+      ParseProcedureSyntaxException::kParseProcedureSyntaxMessage,
+      lxr.GetTokAndIncrement(), Token::kTokProcedure);
   if (!IsKeyWordToken(lxr.get_tok())) {
     throw ParseProcedureSyntaxException("expected procedure name");
   }

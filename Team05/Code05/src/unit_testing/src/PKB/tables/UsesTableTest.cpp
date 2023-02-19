@@ -34,4 +34,5 @@ TEST_CASE("Test UsesTable") {
     SECTION("Testing UsesTable equality") {
         REQUIRE(!(uses_table1 == uses_table2));
     };
+
 }

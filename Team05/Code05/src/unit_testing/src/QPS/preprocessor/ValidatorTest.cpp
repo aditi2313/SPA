@@ -1,5 +1,6 @@
+#include <exception>
 #include <catch.hpp>
-#include <utility>
+
 
 #include "QPS/models/PQL.h"
 #include "QPS/preprocessor/SelectClParser.h"

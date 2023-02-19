@@ -34,7 +34,7 @@ class VectorLexer {
         level--;
       }
       tokens_.push_back(lxr.get_tok());
-      if (!IsStmtToken(lxr.get_tok())) {
+      if (!IsKeyWordToken(lxr.get_tok())) {
         // reduce space used
         idents_.push_back("");
       } else {

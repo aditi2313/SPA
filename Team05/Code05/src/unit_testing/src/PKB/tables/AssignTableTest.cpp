@@ -34,7 +34,8 @@ TEST_CASE("Test AssignTable") {
 
     SECTION("Retrieving AssignTable row") {
         AssignData retrieved_assign_data = assign_table.get_row(5);
-        REQUIRE((retrieved_assign_data.get_line() == 3 &&
-        retrieved_assign_data.get_variable() == "v"));
+        bool line_check = retrieved_assign_data.get_line() == 3;
+        bool variable_check = retrieved_assign_data.get_variable() == "v";
+        REQUIRE((line_check && variable_check));
     };
 }

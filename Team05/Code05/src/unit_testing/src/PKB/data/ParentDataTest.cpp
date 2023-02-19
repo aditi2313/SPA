@@ -7,7 +7,6 @@ using namespace pkb; // NOLINT
 
 TEST_CASE("Test ParentData") {
     ParentData parent_data(10, 11);
-    std::unordered_set<int> children_list = {11, 12};
 
     SECTION("Retrieving ParentData parent line") {
         REQUIRE(parent_data.get_child() == 11);
@@ -18,7 +17,8 @@ TEST_CASE("Test ParentData") {
     };
 
     SECTION("Adding and Retrieving ParentData list") {
+        std::unordered_set<int> expected_result = {11, 12};
         parent_data.add_children(12);
-        REQUIRE(parent_data.get_children_set() == children_list);
+        REQUIRE(parent_data.get_children_set() == expected_result);
     };
 }

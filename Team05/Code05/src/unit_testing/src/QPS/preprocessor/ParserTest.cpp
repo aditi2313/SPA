@@ -39,13 +39,6 @@ TEST_CASE("Test SelectClParser methods") {
                    "that Modifies(6, v) \n pattern a(_, \"x+y\")";
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
   }
-
-  SECTION("Test state transitions") {
-    REQUIRE(parser.ShouldGoToNextState(0, "Select") == true);
-    REQUIRE(parser.ShouldGoToNextState(1, "such") == true);
-    REQUIRE(parser.ShouldGoToNextState(1, "pattern") == true);
-    REQUIRE(parser.ShouldGoToNextState(2, "pattern") == true);
-  };
 }
 
 TEST_CASE("Test ParseQuery") {

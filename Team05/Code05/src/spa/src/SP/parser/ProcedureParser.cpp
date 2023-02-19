@@ -2,7 +2,6 @@
 
 #include <utility>
 #include <string>
-#include <utility>
 
 #include "common/exceptions/SP.h"
 #include "models/AST/Token.h"

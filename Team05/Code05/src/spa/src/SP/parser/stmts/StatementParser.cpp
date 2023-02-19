@@ -16,6 +16,10 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
   IfParser if_parser;
   WhileParser while_parser;
 
+  if (lxr.Peek() == Token::kTokEquals) {
+    return assign_parser.parse(lxr);
+  }
+
   auto tok = lxr.get_tok();
   switch (tok) {
     case Token::kTokRead:
@@ -32,7 +36,7 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
       return assign_parser.parse(lxr);
     default:
       throw ParseStmtSyntaxException("expected a stmt (read | print | call "
-                                   "| while | if | assign)");
+                                     "| while | if | assign)");
   }
 }
 }  // namespace sp

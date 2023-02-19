@@ -134,8 +134,7 @@ const std::unordered_map<std::string, Token> kStringToTokenMap{
 
 bool IsStmtToken(Token input) { return kStmtTokens.count(input); }
 
-// Todo(Gab) replace with functionality from #80
-bool IsKeyWordToken(Token token) { return token == Token::kTokIdent; }
+bool IsKeyWordToken(Token token) { return kKeyWordTokens.count(token) == 1; }
 
 bool IsRelationToken(Token token) { return kRelationTokens.count(token) == 1; }
 

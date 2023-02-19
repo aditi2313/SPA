@@ -16,7 +16,7 @@ class ParentData {
   // all the children
   inline std::unordered_set<int>& get_all_children() { return total_children_; }
 
-  inline void add_children(int child) { total_children_.insert(child); }
+  inline void add_to_all_children(int child) { total_children_.insert(child); }
 
   inline void add_direct_child(int child) { direct_children_.insert(child); }
 

@@ -67,7 +67,7 @@ void PKBWrite::ProcessFollows() {
 void PKBWrite::ProcessParent() {
   ProcessIndexableTable<ParentData>(
       pkb_relation_table_->parent_table_,
-      [](ParentData& data, int v) { data.add_children(v); },
+      [](ParentData& data, int v) { data.add_to_all_children(v); },
       [](ParentData& data) { return data.get_direct_children(); });
 }
 

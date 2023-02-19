@@ -7,7 +7,8 @@ class ParentData {
  public:
   explicit ParentData(int parent);
   friend bool operator==(const ParentData& LHS, const ParentData& RHS) {
-      return LHS.line_ == RHS.line_ && LHS.direct_children_ == RHS.direct_children_ &&
+      return LHS.line_ == RHS.line_ &&
+      LHS.direct_children_ == RHS.direct_children_ &&
       LHS.total_children_ == RHS.total_children_;
   }
 

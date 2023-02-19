@@ -1,7 +1,6 @@
 #include "ParentData.h"
 
 namespace pkb {
-pkb::ParentData::ParentData(int line, int parent_line)
-    : line_(line), parent_line_(parent_line) {
-}
+pkb::ParentData::ParentData(int parent, int child)
+    : line_(parent), child_line_(child) {}
 }  // namespace pkb

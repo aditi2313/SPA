@@ -7,10 +7,10 @@
 using namespace pkb;  // NOLINT
 
 TEST_CASE("Test ParentTable") {
-    ParentData parent_data1(11, 10);
-    ParentData parent_data2(3, 2);
-    parent_data1.add_parent(9);
-    parent_data2.add_parent(1);
+    ParentData parent_data1(10, 11);
+    ParentData parent_data2(2, 3);
+    parent_data1.add_children(12);
+    parent_data2.add_children(4);
 
     ParentTable parent_table1, parent_table2;
     parent_table1.add_row(5, parent_data1);

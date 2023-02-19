@@ -5,11 +5,11 @@
 #include "common/exceptions/SP.h"
 
 namespace sp {
-bool ProcedureValidator::Validate() {
+void ProcedureValidator::Validate() {
   return ValidateNoDuplicateProcedureNames();
 }
 
-bool ProcedureValidator::ValidateNoDuplicateProcedureNames() {
+void ProcedureValidator::ValidateNoDuplicateProcedureNames() {
   std::unordered_set<std::string> proc_names_set;
   for (const auto &proc_name : proc_names_) {
     if (proc_names_set.count(proc_name)) {
@@ -18,7 +18,6 @@ bool ProcedureValidator::ValidateNoDuplicateProcedureNames() {
     }
     proc_names_set.insert(proc_name);
   }
-  return true;
 }
 
 void ProcedureValidator::Accept(ast::ProcNode &proc_node) {

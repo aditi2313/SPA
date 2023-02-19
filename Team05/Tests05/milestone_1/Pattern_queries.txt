@@ -1,7 +1,7 @@
 1 - test exact match
 assign a; variable v;
 Select a such that pattern a(v, "x + y * z")
-4
+SyntaxError
 5000
 2 - test different assign text
 assign assign; variable v;
@@ -21,7 +21,7 @@ none
 5 - Test wildcard assign pattern
 assign assign;
 Select assign pattern assign(_, "x + y"_)
-3
+SyntaxError
 5000
 6 - Test double ended wildcards
 assign assgn;

@@ -45,7 +45,8 @@ class PQL {
   inline static EntityName kParentTRelId = "Parent*";
 
   inline static std::unordered_set<std::string> kAllRelIds{
-      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kPatternRelId
+      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
+      kParentTRelId, kUsesRelId, kPatternRelId
   };
 
   inline static bool is_rel_ref(std::string const token) {

@@ -10,11 +10,6 @@ void FollowsVisitor::PerformWork(ast::StmtLstNode* stmtlst_node) {
   }
 }
 
-void FollowsVisitor::VisitIf(ast::IfNode* if_node) {
-  if_node->get_then()->AcceptVisitor(this);
-  if_node->get_else()->AcceptVisitor(this);
-}
-
 void FollowsVisitor::VisitWhile(ast::WhileNode* while_node) {
   while_node->get_stmts()->AcceptVisitor(this);
 }

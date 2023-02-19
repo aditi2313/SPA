@@ -2,14 +2,12 @@
 
 namespace sp {
 
-void ParentVisitor::VisitIf(ast::IfNode *if_node) {
+void ParentVisitor::PerformWork(ast::IfNode *if_node) {
   auto parent_line = if_node->get_line();
   for (auto &stmt_node : if_node->get_then()->get_children()) {
-    stmt_node->AcceptVisitor(this);
     pkb_ptr_->AddParentData(stmt_node->get_line(), parent_line);
   }
   for (auto &stmt_node : if_node->get_else()->get_children()) {
-    stmt_node->AcceptVisitor(this);
     pkb_ptr_->AddParentData(stmt_node->get_line(), parent_line);
   }
 }

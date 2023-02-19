@@ -18,9 +18,7 @@ void UsesVisitor::PerformWork(ast::PrintNode* print_node) {
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 
-void UsesVisitor::VisitIf(ast::IfNode* if_node) {
-  if_node->get_else()->AcceptVisitor(this);
-  if_node->get_then()->AcceptVisitor(this);
+void UsesVisitor::PerformWork(ast::IfNode* if_node) {
   VarCollector varCollector;
   if_node->get_cond()->AcceptVisitor(&varCollector);
   std::unordered_set<std::string> vars = varCollector.get_vars();

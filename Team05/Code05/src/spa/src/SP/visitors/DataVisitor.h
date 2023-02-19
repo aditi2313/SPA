@@ -30,6 +30,6 @@ class DataVisitor : public PKBWritingVisitor {
 
   void VisitWhile(ast::WhileNode* assign_node) override;
 
-  void VisitIf(ast::IfNode* if_node) override;
+  void PerformWork(ast::IfNode* if_node) override;
 };
 }  // namespace sp

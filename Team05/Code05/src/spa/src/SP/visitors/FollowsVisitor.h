@@ -15,7 +15,6 @@ class FollowsVisitor : public PKBWritingVisitor {
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
   void PerformWork(ast::StmtLstNode* stmtlst_node) override;
-  void VisitIf(ast::IfNode* if_node) override;
 
   void VisitWhile(ast::WhileNode* while_node) override;
 };

@@ -18,7 +18,7 @@ class UsesVisitor : public PKBWritingVisitor {
 
   void PerformWork(ast::PrintNode* assign_node) override;
 
-  void VisitIf(ast::IfNode* if_node) override;
+  void PerformWork(ast::IfNode* if_node) override;
 
   void VisitWhile(ast::WhileNode* while_node) override;
 };

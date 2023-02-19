@@ -38,12 +38,9 @@ void DataVisitor::VisitWhile(ast::WhileNode* while_node) {
   while_node->get_stmts()->AcceptVisitor(this);
 }
 
-void DataVisitor::VisitIf(ast::IfNode* if_node) {
+void DataVisitor::PerformWork(ast::IfNode* if_node) {
   pkb_ptr_->add_if(if_node->get_line());
   pkb_ptr_->add_stmt(if_node->get_line());
-  if_node->get_cond()->AcceptVisitor(this);
-  if_node->get_else()->AcceptVisitor(this);
-  if_node->get_then()->AcceptVisitor(this);
 }
 
 }  // namespace sp

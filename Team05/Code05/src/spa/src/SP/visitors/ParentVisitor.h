@@ -15,7 +15,7 @@ class ParentVisitor  : public PKBWritingVisitor {
   explicit ParentVisitor(std::unique_ptr<pkb::PKBWrite> &&pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitIf(ast::IfNode* if_node) override;
+  void PerformWork(ast::IfNode* if_node) override;
 
   void VisitWhile(ast::WhileNode* while_node) override;
 };

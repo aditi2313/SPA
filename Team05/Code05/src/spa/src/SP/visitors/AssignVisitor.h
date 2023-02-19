@@ -14,6 +14,6 @@ class AssignVisitor : public PKBWritingVisitor {
   explicit AssignVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void PerformWork(ast::AssignNode* assign_node) override;
+  void Process(ast::AssignNode* assign_node) override;
 };
 }  // namespace sp

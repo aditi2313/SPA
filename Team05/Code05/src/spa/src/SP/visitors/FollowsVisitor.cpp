@@ -2,7 +2,7 @@
 
 namespace sp {
 
-void FollowsVisitor::PerformWork(ast::StmtLstNode* stmtlst_node) {
+void FollowsVisitor::Process(ast::StmtLstNode* stmtlst_node) {
   std::vector<std::unique_ptr<ast::StmtNode>>& stmts =
       stmtlst_node->get_children();
   for (int i = 0; i < stmts.size() - 1; i++) {

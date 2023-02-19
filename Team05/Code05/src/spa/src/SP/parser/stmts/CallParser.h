@@ -13,16 +13,17 @@ namespace sp {
 class CallParser : Parser<ast::CallNode> {
  public:
   std::unique_ptr<ast::CallNode> parse(Lexer& lxr) override {
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCall, "call");
+    AssertExpectedToken(ParseCallSyntaxException::kParseCallSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokCall);
+
     if (!IsKeyWordToken(lxr.GetTokAndIncrement())) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("call should be followed by a name");
+      throw ParseCallSyntaxException("call should be followed by a name");
     }
 
     std::string var_name = lxr.get_ident();
-    std::cout << "call " + lxr.get_ident() << std::endl;
 
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokSemicolon, ";");
+    AssertExpectedToken(ParseCallSyntaxException::kParseCallSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokSemicolon);
 
     auto var_node = std::make_unique<ast::VarNode>(ast::VarNode(var_name));
     return std::make_unique<ast::CallNode>(std::move(var_node),

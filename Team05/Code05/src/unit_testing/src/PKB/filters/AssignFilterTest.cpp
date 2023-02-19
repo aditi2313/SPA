@@ -36,6 +36,6 @@ TEST_CASE("Assign Filter test") {
     pkb::PKBRead reader(std::move(table));
     auto result =
         reader.Assigns(std::make_unique<filter::AssignPredicateFilter>(
-            [&](auto data) { return data.TestExpression(plus1); }));
+            [&](auto data) { return data.TestExpression(plus1, true); }));
   }
 }

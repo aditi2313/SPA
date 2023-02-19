@@ -24,3 +24,5 @@ std::unique_ptr<RelFactor> InitialiseAdd();
 std::unique_ptr<RelFactor> InitialiseSub();
 
 ExprNodePtr CreateOp(ExprNodePtr left, ExprNodePtr right, Token tok);
+
+ExprNodePtr MakeConst(int);

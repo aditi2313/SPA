@@ -75,7 +75,8 @@ class Query {
   inline bool operator==(const Query &other) const {
     if (!util::CompareVectorOfPointers(clauses_, other.clauses_)) return false;
     if (!util::CompareVectorOfPointers(
-        synonym_declarations_, other.synonym_declarations_)) return false;
+        synonym_declarations_, other.synonym_declarations_))
+      return false;
 
     return selected_synonyms_ == other.selected_synonyms_;
   }
@@ -97,7 +98,15 @@ class Query {
       return std::make_unique<IntegerArg>(stoi(token));
     }
 
-    return std::make_unique<ExpressionArg>(token);
+    // Expression Arg
+    if (PQL::is_pattern_wildcard(token)) {
+      // Remove first and last wildcard characters
+      token.pop_back();
+      token = token.substr(1);
+      return std::make_unique<ExpressionArg>(token, false);
+    } else {
+      return std::make_unique<ExpressionArg>(token, true);
+    }
   }
 
  private:

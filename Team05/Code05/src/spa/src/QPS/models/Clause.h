@@ -8,6 +8,7 @@
 #include "Argument.h"
 #include "PKB/PKBRead.h"
 #include "QPS/evaluator/MasterEntityFactory.h"
+#include "common/filter/filters/PredicateFilter.h"
 #include "QueryResult.h"
 
 namespace qps {
@@ -24,7 +25,7 @@ class Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
-  inline EntityPtrList Filter(
+  inline virtual EntityPtrList Filter(
       const EntityPtr &index,
       const EntityPtrList &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
@@ -117,6 +118,45 @@ class PatternClause : public Clause {
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  EntityPtrList Filter(
+      const EntityPtr &index,
+      const EntityPtrList &RHS_filter_values,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+};
+// Relationship between a stmt and a variable or vector of variables
+class UsesClause : public Clause {
+ public:
+  UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
+               PQL::kVariableEntityName) {}
+
+  EntityPtrList Index(const EntityPtr &index,
+                      const std::unique_ptr<MasterEntityFactory> &factory,
+                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+};
+// Relationship between a stmt and another stmt.
+class ParentClause : public Clause {
+ public:
+  ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
+               PQL::kStmtEntityName) {}
+
+  EntityPtrList Index(const EntityPtr &index,
+                      const std::unique_ptr<MasterEntityFactory> &factory,
+                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+};
+
+class ParentTClause : public Clause {
+ public:
+  ParentTClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
+               PQL::kStmtEntityName) {}
+
+  EntityPtrList Index(const EntityPtr &index,
+                      const std::unique_ptr<MasterEntityFactory> &factory,
+                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

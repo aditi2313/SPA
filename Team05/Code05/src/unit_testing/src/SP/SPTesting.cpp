@@ -27,3 +27,7 @@ std::unique_ptr<RelFactor> InitialiseSub() {
 ExprNodePtr CreateOp(ExprNodePtr left, ExprNodePtr right, Token tok) {
   return std::make_unique<OpNode>(tok, std::move(left), std::move(right));
 }
+
+ExprNodePtr MakeConst(int v) {
+  return std::make_unique<ConstNode>(ConstNode(v));
+}

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "SP/SPTesting.h"
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/expression/ExpressionParser.h"
@@ -85,6 +83,30 @@ TEST_CASE("Expression parser parses large nested brackets") {
 
   ExpressionParser expr_parser;
   REQUIRE(expr_parser.parse(lxr)->DeepEquals(*sub_y_lemon));
+}
+
+TEST_CASE("Expression parser const nodes") {
+  Lexer lxr("1+2");
+  auto one = MakeConst(1);
+  auto two = MakeConst(2);
+  auto res = CreateOp(one->Copy(), two->Copy(), Token::kTokPlus);
+  ExpressionParser expr_parser;
+  REQUIRE(expr_parser.parse(lxr)->DeepEquals(*res));
+}
+
+TEST_CASE("Complex const nodes expression") {
+  Lexer lxr("(1+x)-2 + y-3");
+  auto one = MakeConst(1);
+  auto two = MakeConst(2);
+  auto three = MakeConst(3);
+  auto inner_add = CreateOp(one->Copy(), x->Copy(), Token::kTokPlus);
+  auto outer_sub = CreateOp(inner_add->Copy(), two->Copy(), Token::kTokMinus);
+  auto outer_add = CreateOp(outer_sub->Copy(), y->Copy(), Token::kTokPlus);
+  auto test = CreateOp(outer_add->Copy(), three->Copy(), Token::kTokMinus);
+
+  ExpressionParser expr_parser;
+
+  REQUIRE(expr_parser.parse(lxr)->DeepEquals(*test));
 }
 
 ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,

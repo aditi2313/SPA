@@ -15,6 +15,10 @@ TEST_CASE("Test PQL") {
     REQUIRE(PQL::is_integer("1234567890") == true);
     REQUIRE(PQL::is_integer("0") == false);
     REQUIRE(PQL::is_integer("01") == false);
+
+    REQUIRE(PQL::is_pattern_wildcard("_\"x\"_") == true);
+    REQUIRE(PQL::is_pattern_wildcard("\"x\"_") == false);
+    REQUIRE(PQL::is_pattern_wildcard("_\"x\"") == false);
   };
 }
 

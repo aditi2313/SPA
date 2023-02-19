@@ -17,9 +17,7 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
   SelectClParser parser;
   std::unique_ptr<Query> query_object = parser.ParseQuery(query);
 
-  Validator validator;
-  // TODO(Sarthak): something like validator.validate(query_object) here
-  QueryPtr semantic_result = validator.validate(query_object);
+  Validator::Validate(query_object);
 
   Evaluator evaluator(pkb);
   QueryResultPtr result = evaluator.EvaluateQuery(query_object);

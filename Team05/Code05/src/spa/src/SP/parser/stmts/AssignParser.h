@@ -14,15 +14,10 @@ namespace sp {
 class AssignParser : Parser<ast::AssignNode> {
  public:
   std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
-    if (!IsKeyWordToken(lxr.get_tok())) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("expected a variable name");
-    }
-    auto ident = lxr.get_ident();
-    lxr.Increment();
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIdent, "variable");
 
     auto var_node =
-        std::make_unique<ast::VarNode>(ast::VarNode(ident));
+        std::make_unique<ast::VarNode>(ast::VarNode(lxr.get_ident()));
     ExpressionParser expr_parser;
 
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokEquals, "=");

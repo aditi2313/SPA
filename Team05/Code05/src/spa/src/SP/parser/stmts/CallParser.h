@@ -14,10 +14,7 @@ class CallParser : Parser<ast::CallNode> {
  public:
   std::unique_ptr<ast::CallNode> parse(Lexer& lxr) override {
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCall, "call");
-    if (!IsKeyWordToken(lxr.GetTokAndIncrement())) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("call should be followed by a name");
-    }
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIdent, "variable");
 
     std::string var_name = lxr.get_ident();
     std::cout << "call " + lxr.get_ident() << std::endl;

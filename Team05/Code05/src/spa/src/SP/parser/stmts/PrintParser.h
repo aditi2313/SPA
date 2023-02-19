@@ -12,10 +12,8 @@ class PrintParser : Parser<ast::PrintNode> {
  public:
   std::unique_ptr<ast::PrintNode> parse(Lexer& lxr) override {
     AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokPrint, "print");
-    if (!IsKeyWordToken(lxr.GetTokAndIncrement())) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("print should be followed by a name");
-    }
+    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokIdent, "variable");
+
     std::string var_name = lxr.get_ident();
     std::cout << "print " + lxr.get_ident() << std::endl;
 

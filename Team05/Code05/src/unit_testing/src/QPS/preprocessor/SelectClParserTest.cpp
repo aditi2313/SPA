@@ -121,6 +121,10 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("a"),
+            expected_query->CreateArgument("_")));
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"variable\"")));
     expected_query->add_clause(
         std::make_unique<PatternClause>(

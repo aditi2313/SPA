@@ -25,6 +25,23 @@ class Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
+    bool ValidateSynonymTypes() {
+    if (arg1_->IsSynonym()) {
+      SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg1_.get());
+      if (synonym_arg->get_entity_name() != LHS_) {
+        return false;
+      }
+    }
+    if (arg2_->IsSynonym()) {
+      SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg2_.get());
+      if (synonym_arg->get_entity_name() != RHS_) {
+        return false;
+      }
+    }
+    return true;
+  }
+    virtual bool isModifies_Uses() { return false; }
+
   inline virtual EntityPtrList Filter(
       const EntityPtr &index,
       const EntityPtrList &RHS_filter_values,
@@ -80,6 +97,8 @@ class ModifiesClause : public Clause {
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  bool isModifies_Uses() override { return true; }
 };
 
 // RS between statements
@@ -135,6 +154,8 @@ class UsesClause : public Clause {
   EntityPtrList Index(const EntityPtr &index,
                       const std::unique_ptr<MasterEntityFactory> &factory,
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
+
+  bool isModifies_Uses() override { return true; }
 };
 // Relationship between a stmt and another stmt.
 class ParentClause : public Clause {

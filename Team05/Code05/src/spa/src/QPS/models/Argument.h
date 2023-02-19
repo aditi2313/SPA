@@ -23,6 +23,7 @@ class Argument {
   virtual bool IsWildcard() { return false; }
   virtual bool IsSynonym() { return false; }
   virtual bool IsExpression() { return false; }
+  virtual bool IsIdent() { return false; }
 
   bool operator==(Argument const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -59,12 +60,13 @@ class Wildcard : public Argument {
 
 class SynonymArg : public Argument {
  public:
-  explicit SynonymArg(SynonymName syn_name)
-      : Argument(), syn_name_(syn_name) {}
+  explicit SynonymArg(SynonymName syn_name, EntityName entity_name)
+      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {}
 
   inline bool IsSynonym() override { return true; }
 
   inline SynonymName get_syn_name() { return syn_name_; }
+  inline SynonymName get_entity_name() { return entity_name_; }
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Synonym: " << syn_name_;
@@ -73,6 +75,7 @@ class SynonymArg : public Argument {
 
  private:
   SynonymName syn_name_;
+  EntityName entity_name_;
 };
 
 class IdentArg : public Argument {
@@ -83,6 +86,8 @@ class IdentArg : public Argument {
   inline bool IsEntRef() override { return true; }
 
   inline std::string get_ident() { return ident_; }
+
+  inline bool IsIdent() override { return true; }
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Ident Arg: " << ident_;

@@ -83,7 +83,8 @@ class Query {
 
   inline ArgumentPtr CreateArgument(std::string token) {
     if (is_declared_synonym_name(token)) {
-      return std::make_unique<SynonymArg>(token);
+      return std::make_unique<SynonymArg>(
+          token, get_synonym(token)->get_entity_name());
     }
 
     if (PQL::is_wildcard(token)) {

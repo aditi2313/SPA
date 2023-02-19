@@ -93,7 +93,7 @@ std::unique_ptr<PKBRead> InitializePKB(
       [](PKBWrite &pkb_write, int c) ->
           void { pkb_write.add_constant(c); });
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 // Helper method

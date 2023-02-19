@@ -29,7 +29,7 @@ std::unique_ptr<PKBRead> InitializePKBForUses(std::vector<uses_data> data) {
     pkb_write.add_stmt(line);
   }
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 // NOTE: first argument for Uses cannot be wildcard

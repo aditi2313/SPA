@@ -12,7 +12,7 @@ namespace sp {
 
 class CallValidator : public Validator {
  public:
-  bool Validate() override;
+  void Validate() override;
 
   void Accept(ast::ProcNode &proc_node);
   void Accept(ast::CallNode &call_node);
@@ -21,7 +21,7 @@ class CallValidator : public Validator {
   std::unordered_set<std::string> procedure_names_set_;
   std::unordered_set<std::string> call_names_set;
 
-  bool ValidateProcedureNameExists();
+  void ValidateProcedureNameExists();
 };
 
 }  // namespace sp

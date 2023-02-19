@@ -9,11 +9,11 @@ TEST_CASE("Test Clause") {
   SECTION("Modifies clause should compare equal") {
     QueryPtr query = std::make_unique<Query>();
     auto clause_1 = ModifiesClause(
-        query->CreateArgument("abc"),
-        query->CreateArgument("def"));
+        query->CreateArgument("\"abc\""),
+        query->CreateArgument("\"def\""));
     auto clause_2 = ModifiesClause(
-        query->CreateArgument("abc"),
-        query->CreateArgument("def"));
+        query->CreateArgument("\"abc\""),
+        query->CreateArgument("\"def\""));
 
     REQUIRE(clause_1 == clause_2);
   };

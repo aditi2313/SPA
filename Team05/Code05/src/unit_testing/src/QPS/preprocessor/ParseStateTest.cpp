@@ -2,7 +2,7 @@
 
 #include "QPS/preprocessor/ParseState.h"
 #include "QPS/models/PQL.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 using namespace qps; // NOLINT
 
@@ -121,7 +121,7 @@ TEST_CASE("Test SuchThatParseState") {
     state.parse(tokens, itr, query);
     auto expected_clause = FollowsTClause(
         query->CreateArgument("6"),
-        query->CreateArgument("7"));
+        query->CreateArgument("10"));
 
     Clause *actual_clause =
         query->get_clauses().at(0).get();

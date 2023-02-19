@@ -3,10 +3,12 @@
 #include "ProcedureValidator.h"
 
 namespace sp {
-bool ProgramValidator::Validate() {
+void ProgramValidator::Validate() {
   // Traverse tree to get required info
   root_->AcceptVisitor(this);
-  return procedure_validator_.Validate() && call_validator_.Validate();
+
+  procedure_validator_.Validate();
+  call_validator_.Validate();
 }
 
 void ProgramValidator::Process(ast::ProcNode *proc_node) {

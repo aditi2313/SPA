@@ -81,34 +81,7 @@ class Query {
     return selected_synonyms_ == other.selected_synonyms_;
   }
 
-  inline ArgumentPtr CreateArgument(std::string token) {
-    if (is_declared_synonym_name(token)) {
-      return std::make_unique<SynonymArg>(
-          token, get_synonym(token)->get_entity_name());
-    }
-
-    if (PQL::is_wildcard(token)) {
-      return std::make_unique<Wildcard>();
-    }
-
-    if (PQL::is_ident(token)) {
-      return std::make_unique<IdentArg>(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return std::make_unique<IntegerArg>(stoi(token));
-    }
-
-    // Expression Arg
-    if (PQL::is_pattern_wildcard(token)) {
-      // Remove first and last wildcard characters
-      token.pop_back();
-      token = token.substr(1);
-      return std::make_unique<ExpressionArg>(token, false);
-    } else {
-      return std::make_unique<ExpressionArg>(token, true);
-    }
-  }
+  ArgumentPtr CreateArgument(std::string token);
 
  private:
   std::vector<SynonymPtr> synonym_declarations_;

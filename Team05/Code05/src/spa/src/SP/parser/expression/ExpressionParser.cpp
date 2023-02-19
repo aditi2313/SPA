@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "TermParser.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 
 namespace sp {
 

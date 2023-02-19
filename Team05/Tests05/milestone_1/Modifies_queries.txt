@@ -6,7 +6,7 @@ x, z, k
 2 - Queries specifically for single line
 variable v;
 Select v such that Modifies(2, v)
-x
+none
 5000
 3 - Queries for single line
 variable v;
@@ -16,7 +16,7 @@ none
 4 - Queries for single line
 variable v;
 Select v such that Modifies(5, v)
-z
+k
 5000
 5 - Queries for the statement numbers
 stmt s;

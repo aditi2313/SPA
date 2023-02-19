@@ -202,7 +202,7 @@ class UsesClause : public Clause {
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
   inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef() && !arg1_->IsWildcard();;
+    return arg1_->IsStmtRef() && arg2_->IsEntRef() && !arg1_->IsWildcard();;
   }
 };
 // Relationship between a stmt and another stmt.

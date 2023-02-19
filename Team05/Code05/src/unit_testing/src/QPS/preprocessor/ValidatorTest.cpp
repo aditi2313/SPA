@@ -42,7 +42,7 @@ TEST_CASE("Test IsWildcard") {
     expected_query->add_clause(std::make_unique<qps::ModifiesClause>(
         expected_query->CreateArgument("_"),
         expected_query->CreateArgument("s")));
-    REQUIRE(!Validator::IsWildcard(expected_query));
+    REQUIRE_THROWS_AS(!Validator::IsWildcard(expected_query), PqlSemanticErrorException);
   }
 
   SECTION("Wildcard used for Uses") {
@@ -52,7 +52,8 @@ TEST_CASE("Test IsWildcard") {
     expected_query->add_clause(
         std::make_unique<qps::UsesClause>(expected_query->CreateArgument("_"),
                                           expected_query->CreateArgument("s")));
-    REQUIRE(!Validator::IsWildcard(expected_query));
+    REQUIRE_THROWS_AS(!Validator::IsWildcard(expected_query),
+                      PqlSemanticErrorException);
   }
 
   SECTION("Wildcard used for Follows") {
@@ -87,7 +88,7 @@ TEST_CASE("Test SynonymCheck") {
         std::make_unique<ModifiesClause>(expected_query2->CreateArgument("6"),
                                          expected_query2->CreateArgument("a")));
 
-    REQUIRE(!Validator::SynonymCheck(expected_query2));
+    REQUIRE_THROWS_AS(!Validator::SynonymCheck(expected_query2), PqlSemanticErrorException);
   }
   
 }
@@ -102,7 +103,7 @@ TEST_CASE("DesignEntitySynonym checker") {
         std::make_unique<ModifiesClause>(expected_query->CreateArgument("v"),
                                          expected_query->CreateArgument("2")));
 
-    REQUIRE(!Validator::isDeclaredOnce(expected_query));
+    REQUIRE_THROWS_AS(!Validator::isDeclaredOnce(expected_query), PqlSemanticErrorException);
   }
 
   SECTION("Valid synonym for Modifies Clause") {
@@ -131,7 +132,8 @@ TEST_CASE("DesignEntitySynonym checker") {
     expected_query_wrong_synonym->add_clause(std::make_unique<ModifiesClause>(
         expected_query_wrong_synonym->CreateArgument("v"),
         expected_query_wrong_synonym->CreateArgument("2")));
-    REQUIRE(!Validator::DesignEntitySynonyms(expected_query_wrong_synonym));
+    REQUIRE_THROWS_AS(!Validator::DesignEntitySynonyms(expected_query_wrong_synonym),
+        PqlSemanticErrorException);
   }
   SECTION("Synonym of the wrong type for Follows") {
     std::string wrong_synonym = "variable v; Select v such that Follows(v, 2)";
@@ -140,7 +142,9 @@ TEST_CASE("DesignEntitySynonym checker") {
     expected_query_wrong_synonym->add_clause(std::make_unique<FollowsClause>(
         expected_query_wrong_synonym->CreateArgument("v"),
         expected_query_wrong_synonym->CreateArgument("2")));
-    REQUIRE(!Validator::DesignEntitySynonyms(expected_query_wrong_synonym));
+    REQUIRE_THROWS_AS(
+        !Validator::DesignEntitySynonyms(expected_query_wrong_synonym),
+        PqlSemanticErrorException);
   }
 }
 
@@ -156,4 +160,15 @@ TEST_CASE("Overall Validation") {
     REQUIRE_THROWS_AS(Validator::validate(expected_query),
                       PqlSemanticErrorException);
   }
+  SECTION("Semantically valid") {
+    std::string query = "variable v; Select v such that Modifies(2, v)";
+    std::unique_ptr<Query> expected_query =
+        BuildQuery({{"v", PQL::kVariableEntityName}}, {"v"});
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(expected_query->CreateArgument("2"),
+                                         expected_query->CreateArgument("v")));
+
+    REQUIRE(Validator::validate(expected_query));
+  }
+  
 }

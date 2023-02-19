@@ -1,0 +1,78 @@
+procedure parent {
+    read x;
+    read y;
+    if (x < 5) then {
+        while (y != x) {
+            print y;
+        }
+    } else {
+        if (x > 3 && x < 5) {
+            print z;
+        }
+    }
+}
+procedure follows {
+    read x;
+    read y;
+    if (x < 5) then {
+        if (y > 3) then {
+            print x;
+            read read;
+            print print;            
+        } else {
+            print y;
+        }
+    } else {
+        x = y;
+    }
+
+    while (x > 2) {
+        print x;
+    }
+}
+procedure uses {
+    read x;
+    read y;
+    x = 5;
+    x = y;
+    x = x;
+    x = x + 5;
+    x = read;
+    y = z;
+    x = y + z;
+    x = y + 3 * 5;
+    v = x + y
+    
+    while (x > 3) {
+        y = z + 3;
+    }
+}
+procedure modifies {
+    read x;
+    read y;
+
+    x = 5;
+    z = x;
+    y = x + y;
+
+    while (i < 3) {
+        y = 3;
+    }
+
+    if (j > 2 && x < 5) then {
+        read = 1;
+        print v;
+    }
+}
+procedure pattern {
+    x = y + z;
+    x = 5 + 5 - 3;
+    x = ((5));
+    y = (5 + 3) * (3 + 7);
+    z = 3 * 3 + 3 * 5;
+    x = z / 3 + 5 % 2;
+    y = x + 3 + 2 - 2 + 3 - 2 - 2 - 2;
+}
+procedure empty {
+    
+}

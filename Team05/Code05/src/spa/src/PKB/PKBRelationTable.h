@@ -67,7 +67,7 @@ class PKBRelationTable {
       return;
     }
     parent_table_.add_row(line, ParentData(line));
-    parent_table_.get_row(line).add_children(child_line);
+    parent_table_.get_row(line).add_direct_child(child_line);
   }
 };
 }  // namespace pkb

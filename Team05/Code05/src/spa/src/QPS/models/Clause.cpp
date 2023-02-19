@@ -123,7 +123,7 @@ EntityPtrList ParentTClause::Index(
 
   if (!pkb_res->exists(line)) return result;
 
-  auto data = pkb_res->get_row(line).get_children_set();
+  auto data = pkb_res->get_row(line).get_all_children();
   for (auto stmt : data) {
     result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }

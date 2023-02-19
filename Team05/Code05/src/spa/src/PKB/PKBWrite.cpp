@@ -24,7 +24,9 @@ void ProcessIndexableTable(
       current.pop();
       for (auto& child : getter(v)) {
         adding_function(mod_data, child);
-        current.push(table.get_row(child));
+        if (table.exists(child)) {
+          current.push(table.get_row(child));
+        }
       }
     }
   }

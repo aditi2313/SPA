@@ -6,6 +6,10 @@ namespace pkb {
 class ParentData {
  public:
   ParentData(int line, int parent_line);
+  friend bool operator==(const ParentData& LHS, const ParentData& RHS) {
+      return LHS.line_ == RHS.line_ && LHS.parent_line_ == RHS.parent_line_ &&
+      LHS.parents_ == RHS.parents_;
+  }
 
   inline int get_line() { return line_; }
 

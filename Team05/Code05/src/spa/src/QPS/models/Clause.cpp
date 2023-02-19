@@ -109,7 +109,7 @@ EntityPtrList ParentClause::Index(
   if (!pkb_res->exists(line)) return result;
 
   auto data = pkb_res->get_row(line);
-  result.push_back(factory->CreateInstance(RHS(), data.get_parent()));
+  result.push_back(factory->CreateInstance(RHS(), data.get_child()));
 
   return result;
 }
@@ -125,7 +125,7 @@ EntityPtrList ParentTClause::Index(
 
   if (!pkb_res->exists(line)) return result;
 
-  auto data = pkb_res->get_row(line).get_parent_set();
+  auto data = pkb_res->get_row(line).get_children_set();
   for (auto stmt : data) {
     result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }

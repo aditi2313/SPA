@@ -5,7 +5,7 @@
 class InvalidPqlException : public std::exception {
  public:
   explicit InvalidPqlException(const char *msg) : message(msg) {}
-  const char *what() { return message; }
+  const char *what() const throw() override { return message; }
 
  private:
   const char *message;

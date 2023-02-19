@@ -1,7 +1,7 @@
 #include <utility>
 #include <unordered_set>
 #include "Validator.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 

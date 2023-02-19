@@ -1,5 +1,5 @@
 #include "CallValidator.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 
 namespace sp {
 void CallValidator::Validate() {

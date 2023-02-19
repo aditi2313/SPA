@@ -7,7 +7,7 @@
 
 #include "models/EntityExport.h"
 #include "PKB/PKBRead.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 using namespace models;  // NOLINT
 

@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "QPS/models/PQL.h"
+#include "QPS/preprocessor/ClauseValidator.h"
 #include "SP/SourceProcessor.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/PredicateFilter.h"
@@ -12,6 +13,7 @@ using namespace filter;  // NOLINT
 namespace qps {
 ClausePtr Clause::CreateClause(EntityName rel_ref_ident, ArgumentPtr arg1,
                                ArgumentPtr arg2) {
+  ClauseValidator::ValidateClauseArgumentTypes(rel_ref_ident, arg1, arg2);
   if (rel_ref_ident == PQL::kModifiesRelId) {
     return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
   }
@@ -36,12 +38,12 @@ ClausePtr Clause::CreateClause(EntityName rel_ref_ident, ArgumentPtr arg1,
   throw PqlSyntaxErrorException("Unknown relationship in PQL query");
 }
 
-template <class Data>
+template<class Data>
 EntityPtrList Clause::Index(
     IntEntity *index,
     std::function
         <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
-    std::function<void(EntityPtrList&, Data)> add_function
+    std::function<void(EntityPtrList &, Data)> add_function
 ) {
   EntityPtrList result;
   int line = index->get_number();
@@ -56,16 +58,16 @@ EntityPtrList ModifiesClause::Index(
     const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::ModifiesData>(
-    dynamic_cast<IntEntity *>(index.get()),
-    [&](int line) {
-      auto filter = std::make_unique<ModifiesIndexFilter>(line);
-      return std::move(pkb->Modifies(std::move(filter))->get_result());
+      dynamic_cast<IntEntity *>(index.get()),
+      [&](int line) {
+        auto filter = std::make_unique<ModifiesIndexFilter>(line);
+        return std::move(pkb->Modifies(std::move(filter))->get_result());
       },
-    [&](EntityPtrList &result, pkb::ModifiesData data) {
-      for (auto var : data.get_variables()) {
-        result.push_back(factory->CreateInstance(RHS(), var));
-      }
-    });
+      [&](EntityPtrList &result, pkb::ModifiesData data) {
+        for (auto var : data.get_variables()) {
+          result.push_back(factory->CreateInstance(RHS(), var));
+        }
+      });
 }
 
 EntityPtrList FollowsClause::Index(

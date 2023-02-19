@@ -24,7 +24,7 @@ TEST_CASE("Test Wildcard as first argument in Clauses") {
 
   SECTION("First argument for Uses is not a wildcard is valid") {
     // No wildcard
-    std::string query_str = "stmt s; Select s such that Uses(s, 2)";
+    std::string query_str = "stmt s; Select s such that Uses(s, \"var\")";
     auto query = parser.ParseQuery(query_str);
 
     REQUIRE_NOTHROW(Validator::Validate(query));
@@ -37,8 +37,8 @@ TEST_CASE("Test Wildcard as first argument in Clauses") {
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
   }
 
-  SECTION("First argument for Modifies is a wildcard should throw error") {
-    std::string query_str = "stmt s; Select s such that Uses(_, 2)";
+  SECTION("First argument for Uses is a wildcard should throw error") {
+    std::string query_str = "stmt s; Select s such that Uses(_, \"var\")";
     auto query = parser.ParseQuery(query_str);
 
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
@@ -136,12 +136,6 @@ TEST_CASE("Test synonym types for each clause are valid") {
 
 TEST_CASE("Overall Validation") {
   SelectClParser parser;
-  SECTION("Semantically invalid") {
-    std::string query_str = "variable v; Select v such that Modifies(v, 2)";
-    QueryPtr query = parser.ParseQuery(query_str);
-    REQUIRE_THROWS_AS(Validator::Validate(query),
-                      PqlSemanticErrorException);
-  }
 
   SECTION("Semantically valid") {
     std::string query_str = "variable v; Select v such that Modifies(2, v)";

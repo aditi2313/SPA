@@ -6,7 +6,7 @@
 #include "SP/parser/Parser.h"
 #include "SP/parser/relations/CondExprParser.h"
 #include "SP/parser/stmts/StatementListParser.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 #include "models/AST/stmt_node/StmtNode.h"
 
 namespace sp {

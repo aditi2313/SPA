@@ -4,7 +4,7 @@
 #include "QPS/models/PQL.h"
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/preprocessor/Validator.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 using namespace qps;  // NOLINT
 
@@ -22,12 +22,12 @@ TEST_CASE("Test Wildcard as first argument in Clauses") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
-  SECTION("First argument for Uses is not a wildcard is valid") {
+  SECTION("Second argument cannot be int") {
     // No wildcard
     std::string query_str = "stmt s; Select s such that Uses(s, 2)";
     auto query = parser.ParseQuery(query_str);
 
-    REQUIRE_NOTHROW(Validator::Validate(query));
+    REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
   }
 
   SECTION("First argument for Modifies is a wildcard should throw error") {

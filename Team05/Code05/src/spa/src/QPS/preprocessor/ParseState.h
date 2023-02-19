@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "../models/Query.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class ParseState {

@@ -63,13 +63,19 @@ class ConditionGenerator:
   def generate(self, depth):
     cond = ""
     expr_gen = ExpressionGenerator()
+    cond += "("
     cond += expr_gen.generate(depth)
+    
     cond += "<"
     cond += expr_gen.generate(depth)
+    cond += ")"
     cond += grab_rand(conditions)
+    cond += "("
     cond += expr_gen.generate(depth)
+    
     cond += ">="
     cond += expr_gen.generate(depth)
+    cond += ")"
     return cond
 
 class IfBlockGenerator:

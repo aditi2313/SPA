@@ -10,7 +10,7 @@
 #include "ParseState.h"
 #include "models/Entity.h"
 #include "models/Stmt.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class SelectClParser {

@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_set>
 
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace pkb {
 

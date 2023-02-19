@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "ExpressionParser.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 
 namespace sp {
 ast::ExprNodePtr FactorParser::parse(VectorLexer &lxr) {

@@ -22,7 +22,7 @@ TEST_CASE("Test queries that throw SyntaxError") {
 
   SECTION("Query with semi-colon after Select"
           "throw PqlSyntaxErrorException") {
-    // Pattern should not be before such-that
+    // Select v should not end with a semi-clon
     std::string query_string = "variable v; Select v;";
 
     std::list<std::string> results;
@@ -33,7 +33,7 @@ TEST_CASE("Test queries that throw SyntaxError") {
 
   SECTION("Query with wrong casing in select "
           "throw PqlSyntaxErrorException") {
-    // Pattern should not be before such-that
+    // select should be Select
     std::string query_string = "variable v; select v";
 
     std::list<std::string> results;

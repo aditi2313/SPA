@@ -75,7 +75,7 @@ TEST_CASE("Test that all synonyms used are declared") {
     QueryPtr query = parser.ParseQuery(query_str);
 
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
-  }*/
+  }
 }
 
 TEST_CASE("Test that synonyms are declared exactly once") {

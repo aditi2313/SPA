@@ -6,9 +6,9 @@
 namespace qps {
 
 void Validator::Validate(std::unique_ptr<Query> &query) {
-  ValidateClauseArguments(query);
   ValidateSynonymsDeclaredExactlyOnce(query);
   ValidateSynonymsUsedAreDeclared(query);
+  ValidateClauseArguments(query);
 }
 
 // Used to ensure that the design entity for synonyms is correct
@@ -45,6 +45,20 @@ void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
     if (!query->is_declared_synonym_name(syn_name)) {
       throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
     }
+  }
+
+  for (auto &clause : query->get_clauses()) {
+    ValidateArgumentSynonym(query, clause->get_arg1());
+    ValidateArgumentSynonym(query, clause->get_arg2());
+  }
+}
+
+// If argument is a synonym, check if it has been declared
+void Validator::ValidateArgumentSynonym(QueryPtr &query, ArgumentPtr &arg) {
+  if (!arg->IsSynonym()) return;
+  SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
+  if (!query->is_declared_synonym_name(synonym_arg->get_syn_name())) {
+    throw PqlSemanticErrorException("Undeclared synonym argument in clause");
   }
 }
 }  // namespace qps

@@ -17,7 +17,6 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
   try {
     SelectClParser parser;
     std::unique_ptr<Query> query_object = parser.ParseQuery(query);
-    Validator validator;
     Validator::Validate(query_object);
 
     Evaluator evaluator(pkb);

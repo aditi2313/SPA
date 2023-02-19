@@ -1,6 +1,6 @@
+#include <catch.hpp>
 #include <string>
 #include <vector>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "common/exceptions/SP.h"
@@ -107,6 +107,30 @@ TEST_CASE("Error reading cases") {
   SECTION("Unsupport ints (leading zeroes)") {
     Lexer lxr("a 01000");
     REQUIRE_THROWS_AS(lxr.GetTokAndIncrement(), sp::LexerException);
+  }
+}
+
+TEST_CASE("Lexer checking for double condition") {
+  SECTION("Basic checking") {
+    Lexer lxr("(a + c) || (a - b)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+  SECTION("Single cond") {
+    Lexer lxr("((x) >= b)");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+  SECTION("Nested conditions") {
+    Lexer lxr("(((a - c + d))) || (((x - 123)) < (102))");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+
+  SECTION("Long conditions") {
+    Lexer lxr("(a + b - c * (d + l) > 1000) && (100 / 1000 < 203)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+  SECTION("Nested cond") {
+    Lexer lxr("((a > 100) && (b < 100)) || (!(a < 100))");
+    REQUIRE(lxr.IsDoubleCond());
   }
 }
 

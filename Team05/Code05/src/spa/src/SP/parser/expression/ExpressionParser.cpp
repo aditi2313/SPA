@@ -4,19 +4,16 @@
 #include <stdexcept>
 #include <utility>
 
-#include "common/exceptions/SP.h"
 #include "TermParser.h"
+#include "common/exceptions/SP.h"
 
 namespace sp {
 
 ast::ExprNodePtr ExpressionParser::parse(Lexer& lxr) {
   VectorLexer v_lexer(lxr);
-  // if the start of the vector lexer has a bracket
-  // the end should have one as well
-  bool end_bracket = v_lexer.get_tok() == Token::kTokCloseBracket;
   auto result = parse(v_lexer);
-  if (v_lexer.get_tok() == Token::kTokOpenBracket && !end_bracket) {
-    throw ParseException("Missing bracket at end of expression");
+  if (v_lexer.get_tok() != Token::kTokEof) {
+    throw ParseException("Extra token at the front of expression");
   }
   return std::move(result);
 }

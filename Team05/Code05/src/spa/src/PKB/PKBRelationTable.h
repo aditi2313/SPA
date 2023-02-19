@@ -62,11 +62,9 @@ class PKBRelationTable {
   }
 
   void add_parent_data(const int line, const int child_line) {
-    if (parent_table_.exists(line)) {
-      parent_table_.get_row(line).add_direct_child(child_line);
-      return;
+    if (!parent_table_.exists(line)) {
+      parent_table_.add_row(line, ParentData(line));
     }
-    parent_table_.add_row(line, ParentData(line));
     parent_table_.get_row(line).add_direct_child(child_line);
   }
 };

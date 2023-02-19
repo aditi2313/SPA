@@ -32,7 +32,7 @@ class PQL {
   };
 
   inline static bool const is_entity_name(std::string const token) {
-    return kAllEntityNames.find(token) != kAllRelIds.end();
+    return kAllEntityNames.count(token) == 1;
   }
 
   inline static EntityName kModifiesRelId = "Modifies";

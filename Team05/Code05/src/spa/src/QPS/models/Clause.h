@@ -165,7 +165,7 @@ class PatternClause : public Clause {
   }
 
   inline bool ValidateArgumentTypes() override {
-    return arg1_->IsSynonym();
+    return arg1_->IsEntRef();
   }
 };
 // Relationship between a stmt and a variable or vector of variables

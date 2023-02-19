@@ -36,7 +36,7 @@ std::unique_ptr<ast::StmtNode> StatementParser::parse(Lexer& lxr) {
       return assign_parser.parse(lxr);
     default:
       throw ParseStmtSyntaxException("expected a stmt (read | print | call "
-                                   "| while | if | assign)");
+                                     "| while | if | assign)");
   }
 }
 }  // namespace sp

@@ -1,7 +1,8 @@
+#include "Clause.h"
+
 #include <string>
 #include <utility>
 
-#include "Clause.h"
 #include "QPS/models/PQL.h"
 #include "SP/SourceProcessor.h"
 #include "common/filter/filters/IndexFilter.h"
@@ -10,8 +11,8 @@
 using namespace filter;  // NOLINT
 
 namespace qps {
-ClausePtr Clause::CreateClause(
-    EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2) {
+ClausePtr Clause::CreateClause(EntityName rel_ref_ident, ArgumentPtr arg1,
+                               ArgumentPtr arg2) {
   if (rel_ref_ident == PQL::kModifiesRelId) {
     return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
   }
@@ -37,8 +38,7 @@ ClausePtr Clause::CreateClause(
 }
 
 EntityPtrList ModifiesClause::Index(
-    const EntityPtr &index,
-    const std::unique_ptr<MasterEntityFactory> &factory,
+    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
   IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
@@ -50,16 +50,14 @@ EntityPtrList ModifiesClause::Index(
 
   auto data = pkb_res->get_row(line);
   for (auto var : data.get_variables()) {
-    result.push_back(
-        factory->CreateInstance(RHS(), var));
+    result.push_back(factory->CreateInstance(RHS(), var));
   }
 
   return result;
 }
 
 EntityPtrList FollowsClause::Index(
-    const EntityPtr &index,
-    const std::unique_ptr<MasterEntityFactory> &factory,
+    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
 
@@ -71,15 +69,13 @@ EntityPtrList FollowsClause::Index(
   if (!pkb_res->exists(line)) return result;
 
   auto data = pkb_res->get_row(line);
-  result.push_back(factory->CreateInstance(
-      RHS(), data.get_follows()));
+  result.push_back(factory->CreateInstance(RHS(), data.get_follows()));
 
   return result;
 }
 
 EntityPtrList FollowsTClause::Index(
-    const EntityPtr &index,
-    const std::unique_ptr<MasterEntityFactory> &factory,
+    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   EntityPtrList result;
 
@@ -92,8 +88,7 @@ EntityPtrList FollowsTClause::Index(
 
   auto data = pkb_res->get_row(line).get_follows_list();
   for (auto stmt : data) {
-    result.push_back(factory->CreateInstance(
-        PQL::kStmtEntityName, stmt));
+    result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }
 
   return result;
@@ -110,7 +105,9 @@ EntityPtrList ParentClause::Index(
   if (!pkb_res->exists(line)) return result;
 
   auto data = pkb_res->get_row(line);
-  result.push_back(factory->CreateInstance(RHS(), data.get_child()));
+  for (auto child : data.get_direct_children()) {
+    result.push_back(factory->CreateInstance(RHS(), child));
+  }
 
   return result;
 }
@@ -126,7 +123,7 @@ EntityPtrList ParentTClause::Index(
 
   if (!pkb_res->exists(line)) return result;
 
-  auto data = pkb_res->get_row(line).get_children_set();
+  auto data = pkb_res->get_row(line).get_all_children();
   for (auto stmt : data) {
     result.push_back(factory->CreateInstance(PQL::kStmtEntityName, stmt));
   }

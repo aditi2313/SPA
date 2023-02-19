@@ -1,8 +1,8 @@
 #include "ModifiesVisitor.h"
 
 #include <memory>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 
 namespace sp {
 
@@ -21,7 +21,6 @@ void ModifiesVisitor::Process(ast::IfNode* if_node) {
   AddVariablesFromStmtList(*(if_node->get_else()), variables);
   AddVariablesFromStmtList(*(if_node->get_then()), variables);
   pkb_ptr_->AddModifiesData(if_node->get_line(), variables);
-  
 }
 
 void ModifiesVisitor::Process(ast::WhileNode* while_node) {

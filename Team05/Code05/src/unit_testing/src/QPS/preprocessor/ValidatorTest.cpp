@@ -149,6 +149,7 @@ TEST_CASE("DesignEntitySynonym checker") {
 }
 
 TEST_CASE("Overall Validation") {
+  SelectClParser parser;
   SECTION("Semantically invalid") {
     std::string query = "variable v; Select v such that Modifies(v, 2)";
     std::unique_ptr<Query> expected_query =
@@ -162,13 +163,14 @@ TEST_CASE("Overall Validation") {
   }
   SECTION("Semantically valid") {
     std::string query = "variable v; Select v such that Modifies(2, v)";
-    std::unique_ptr<Query> expected_query =
+    QueryPtr parsed_query = parser.ParseQuery(query);
+    QueryPtr expected_query =
         BuildQuery({{"v", PQL::kVariableEntityName}}, {"v"});
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(expected_query->CreateArgument("2"),
                                          expected_query->CreateArgument("v")));
 
-    REQUIRE(Validator::validate(expected_query));
+    REQUIRE(*Validator::validate(expected_query) == *parsed_query);
   }
   
 }

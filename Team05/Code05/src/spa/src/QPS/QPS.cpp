@@ -19,6 +19,7 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
 
   Validator validator;
   // TODO(Sarthak): something like validator.validate(query_object) here
+  QueryPtr semantic_result = validator.validate(query_object);
 
   Evaluator evaluator(pkb);
   QueryResultPtr result = evaluator.EvaluateQuery(query_object);

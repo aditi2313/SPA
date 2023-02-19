@@ -4,11 +4,11 @@
 
 namespace qps {
 
-bool Validator::validate(std::unique_ptr<Query> &query) {
+QueryPtr Validator::validate(std::unique_ptr<Query> &query) {
 
   if (IsWildcard(query) && SynonymCheck(query) && DesignEntitySynonyms(query) &&
       isDeclaredOnce(query)) {
-    return true;
+    return std::move(query);
   }
   throw PqlSemanticErrorException("Semantic error");
 }

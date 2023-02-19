@@ -11,7 +11,7 @@
 namespace sp {
 class VarCollector : public TNodeVisitor {
  public:
-  void VisitVar(ast::VarNode* var_node) override;
+  void Process(ast::VarNode* var_node) override;
 
   std::unordered_set<std::string> get_vars() { return vars; }
 

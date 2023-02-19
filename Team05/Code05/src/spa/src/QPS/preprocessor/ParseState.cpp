@@ -1,97 +1,108 @@
+#include "ParseState.h"
+
 #include <memory>
 #include <utility>
 
-#include "ParseState.h"
-
 #include "QPS/models/PQL.h"
-#include "common/Exceptions.h"
 #include "models/Entity.h"
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
-std::unique_ptr<Query> DeclarationParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position &itr,
-    std::unique_ptr<Query> query) {
-  if (itr == tokens.end() || !PQL::is_entity_name(*itr)) ThrowException();
-
-  EntityName entity_name = *itr;
-  bool has_set_one_synonym = false;
-  itr++;
-  while (itr != tokens.end() && *itr != ";") {
-    if (!PQL::is_ident(*itr)) ThrowException();
-
-    query->declare_synonym(*itr, entity_name);
-    has_set_one_synonym = true;
-    itr++;
-    if (itr != tokens.end() && *itr == ",") {
-      itr++;  // read in next synonym
+void DeclarationParseState::parse(const std::vector<std::string> &tokens,
+                                  parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  EntityName entity_name;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
     }
+    if (*grammar_itr == PQL::kDesignEntityGrammar) {
+      entity_name = *itr;
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->declare_synonym(*itr, entity_name);
+    }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      recurse(itr, grammar_itr);
+    }
+    itr++;
+    grammar_itr++;
   }
 
-  if (!has_set_one_synonym) ThrowException();
-  if (itr == tokens.end()) ThrowException();
-  itr++;
-  return query;
+  if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// synonym (',' synonym)*
-std::unique_ptr<Query> SynonymParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position &itr,
-    std::unique_ptr<Query> query) {
-  // TODO(JL): Support multiple synonyms selection after
-  // requirement is introduced
-  if (itr == tokens.end() || *itr != "Select" && *itr != ",") ThrowException();
-  itr++;
-  if (!PQL::is_ident(*itr)) ThrowException();
-  query->add_selected_synonym(*itr);
-  itr++;
-  return query;
+// synonym | tuple | BOOLEAN
+void SelectParseState::parse(const std::vector<std::string> &tokens,
+                             parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->add_selected_synonym(*itr);
+    }
+    itr++;
+    grammar_itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
 }
 
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
-std::unique_ptr<Query> SuchThatParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position &itr,
-    std::unique_ptr<Query> query) {
-  if (itr == tokens.end()) ThrowException();
-  if (*itr++ != "such") ThrowException();
-  if (*itr++ != "that") ThrowException();
+void SuchThatParseState::parse(const std::vector<std::string> &tokens,
+                               parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  std::string rel_ident;
+  std::vector<ArgumentPtr> arguments;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kRelRefGrammar) {
+      rel_ident = *itr;
+    }
+    if (*grammar_itr == PQL::kArgumentGrammar) {
+      arguments.push_back(query->CreateArgument(*itr));
+    }
+    itr++;
+    grammar_itr++;
+  }
 
-  std::string rel_ident = *itr++;
-  if (*itr++ != "(") ThrowException();
-  ArgumentPtr arg1 = query->CreateArgument(*itr++);
-  if (*itr++ != ",") ThrowException();
-  ArgumentPtr arg2 = query->CreateArgument(*itr++);
-  if (*itr != ")") ThrowException();
+  if (!IsComplete(grammar_itr)) ThrowException();
 
-  query->add_clause(Clause::CreateClause(
-      rel_ident, std::move(arg1), std::move(arg2)));
-
-  itr++;
-  return query;
+  query->add_clause(Clause::CreateClause(rel_ident, std::move(arguments.at(0)),
+                                         std::move(arguments.at(1))));
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-std::unique_ptr<Query> PatternParseState::parse(
-    const std::vector<std::string> &tokens,
-    parse_position &itr,
-    std::unique_ptr<Query> query) {
-  if (itr == tokens.end()) ThrowException();
-  if (*itr++ != "pattern") ThrowException();
-  ArgumentPtr arg1 = query->CreateArgument(*itr++);
-  if (*itr++ != "(") ThrowException();
-  if (!PQL::is_wildcard(*itr++)) ThrowException();
-  if (*itr++ != ",") ThrowException();
-  ArgumentPtr arg2 = query->CreateArgument(*itr++);
-  if (*itr != ")") ThrowException();
+void PatternParseState::parse(const std::vector<std::string> &tokens,
+                              parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  std::vector<ArgumentPtr> arguments;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar ||
+        *grammar_itr == PQL::kArgumentGrammar ||
+        *grammar_itr == PQL::kExprGrammar) {
+      arguments.push_back(query->CreateArgument(*itr));
+    }
+    itr++;
+    grammar_itr++;
+  }
 
-  query->add_clause(Clause::CreateClause(
-      "pattern", std::move(arg1), std::move(arg2)));
-  itr++;
-  return query;
+  if (!IsComplete(grammar_itr)) ThrowException();
+
+  query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
+                                         std::move(arguments.at(0)->Copy()),
+                                         std::move(arguments.at(1))));
+  query->add_clause(Clause::CreateClause(PQL::kPatternRelId,
+                                         std::move(arguments.at(0)),
+                                         std::move(arguments.at(2))));
 }
 
 ParseState::~ParseState() = default;

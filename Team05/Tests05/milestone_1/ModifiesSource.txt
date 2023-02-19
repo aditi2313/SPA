@@ -1,0 +1,10 @@
+procedure modifies {
+  read x;
+  print y;
+  if (x > y) then {
+    read z;
+  } else {
+    k = 10;
+  }
+  read x;
+}

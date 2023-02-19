@@ -1,38 +1,20 @@
 #include "ParentVisitor.h"
 
 namespace sp {
-void ParentVisitor::VisitProgram(ast::ProgramNode *program_node) {
-  for (auto &procedure_node : program_node->get_children()) {
-    procedure_node->AcceptVisitor(this);
-  }
-}
 
-void ParentVisitor::VisitProc(ast::ProcNode *proc_node) {
-  proc_node->get_children()->AcceptVisitor(this);
-}
-
-void ParentVisitor::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
-  for (auto &stmt_node : stmtlst_node->get_children()) {
-    stmt_node->AcceptVisitor(this);
-  }
-}
-
-void ParentVisitor::VisitIf(ast::IfNode *if_node) {
+void ParentVisitor::Process(ast::IfNode *if_node) {
   auto parent_line = if_node->get_line();
   for (auto &stmt_node : if_node->get_then()->get_children()) {
-    stmt_node->AcceptVisitor(this);
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
   for (auto &stmt_node : if_node->get_else()->get_children()) {
-    stmt_node->AcceptVisitor(this);
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
 }
 
-void ParentVisitor::VisitWhile(ast::WhileNode *while_node) {
+void ParentVisitor::Process(ast::WhileNode *while_node) {
   auto parent_line = while_node->get_line();
   for (auto &stmt_node : while_node->get_stmts()->get_children()) {
-    stmt_node->AcceptVisitor(this);
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
 }

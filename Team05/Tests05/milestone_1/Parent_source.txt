@@ -59,8 +59,7 @@ procedure parent {
       x = 100;
       while (x > 5) {
         read some;
-        print some;
-        x = 100;
+        print some;        
       }
     }
   }  

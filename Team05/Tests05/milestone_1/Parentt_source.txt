@@ -1,0 +1,21 @@
+procedure parentt {
+  if ((x < 100) || (y< 120)) then {
+    while (x < 200) {
+      if (m < 10) then {
+        print m;
+        if (m < 30) then {
+          print m;
+        } else {
+          while (m < 10) {
+            print k;
+          }
+        }
+      } else {
+        read y;
+      }
+    }
+  }else{
+    read y;
+  }
+
+}

@@ -142,7 +142,7 @@ TEST_CASE("Overall Validation") {
     REQUIRE_THROWS_AS(Validator::Validate(query),
                       PqlSemanticErrorException);
   }
-  
+
   SECTION("Semantically valid") {
     std::string query_str = "variable v; Select v such that Modifies(2, v)";
     QueryPtr query = parser.ParseQuery(query_str);

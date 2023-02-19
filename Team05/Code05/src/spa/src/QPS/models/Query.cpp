@@ -3,6 +3,7 @@
 namespace qps {
 ArgumentPtr Query::CreateArgument(std::string token) {
   if (PQL::is_ident_arg(token)) {
+    // Remove first and last quotation marks
     token = token.substr(1, token.size() - 2);
     return std::make_unique<IdentArg>(token);
   }
@@ -17,12 +18,13 @@ ArgumentPtr Query::CreateArgument(std::string token) {
 
   // Expression Arg
   if (PQL::is_pattern_exact(token)) {
+    // Remove first and last quotation marks
     token = token.substr(1, token.size() - 2);
     return std::make_unique<ExpressionArg>(token, true);
   }
 
   if (PQL::is_pattern_wildcard(token)) {
-    // Remove first and last wildcard characters
+    // Remove first and last wildcard + quotation mark characters
     token = token.substr(2, token.size() - 4);
     return std::make_unique<ExpressionArg>(token, false);
   }

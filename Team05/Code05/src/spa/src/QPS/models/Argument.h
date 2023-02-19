@@ -90,13 +90,9 @@ class SynonymArg : public Argument {
   }
 
  private:
-  void ThrowUninitializedException() {
-    throw PqlEvaluationException("Synonym Arg has not been initialized");
-  }
   SynonymName syn_name_;
   EntityName entity_name_;
   EntityName base_entity_name_;
-  bool initialized = false;
 };
 
 class IdentArg : public Argument {

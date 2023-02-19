@@ -25,7 +25,8 @@ void TNodeVisitor::VisitAssign(ast::AssignNode* assign_node) {
   Process(assign_node);
 }
 
-void TNodeVisitor::VisitRead(ast::ReadNode* read_node) { Process(read_node);
+void TNodeVisitor::VisitRead(ast::ReadNode* read_node) {
+  Process(read_node);
 }
 
 void TNodeVisitor::VisitPrint(ast::PrintNode* print_node) {
@@ -45,10 +46,12 @@ void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
   while_node->get_stmts()->AcceptVisitor(this);
 }
 
-void TNodeVisitor::VisitCall(ast::CallNode* call_node) { Process(call_node);
+void TNodeVisitor::VisitCall(ast::CallNode* call_node) {
+  Process(call_node);
 }
 
-void TNodeVisitor::VisitExpr(ast::ExprNode* expr_node) { Process(expr_node);
+void TNodeVisitor::VisitExpr(ast::ExprNode* expr_node) {
+  Process(expr_node);
 }
 
 void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
@@ -62,7 +65,8 @@ void TNodeVisitor::VisitNot(ast::NotExprNode* not_expr_node) {
   not_expr_node->get_cond()->AcceptVisitor(this);
 }
 
-void TNodeVisitor::VisitVar(ast::VarNode* var_node) { Process(var_node);
+void TNodeVisitor::VisitVar(ast::VarNode* var_node) {
+  Process(var_node);
 }
 
 void TNodeVisitor::VisitConst(ast::ConstNode* const_node) {

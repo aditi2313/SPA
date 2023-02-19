@@ -28,7 +28,7 @@ class DataVisitor : public PKBWritingVisitor {
 
   void Process(ast::CallNode* call_node) override;
 
-  void Process(ast::WhileNode* assign_node) override;
+  void Process(ast::WhileNode* while_node) override;
 
   void Process(ast::IfNode* if_node) override;
 };

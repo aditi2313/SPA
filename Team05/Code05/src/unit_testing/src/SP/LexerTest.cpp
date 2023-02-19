@@ -115,7 +115,7 @@ void TestLexerForToken(std::string vals, std::vector<Token> tokens) {
   Token tok;
   auto curr = tokens.begin();
   while ((tok = lxr.GetTokAndIncrement()) != Token::kTokEof &&
-          curr != tokens.end()) {
+         curr != tokens.end()) {
     REQUIRE(*curr == tok);
     curr++;
   }

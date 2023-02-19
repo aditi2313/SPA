@@ -2,18 +2,16 @@
 #include "common/exceptions/SPExceptions.h"
 
 namespace sp {
-bool CallValidator::Validate() {
-  return ValidateProcedureNameExists();
+void CallValidator::Validate() {
+  ValidateProcedureNameExists();
 }
 
-bool CallValidator::ValidateProcedureNameExists() {
+void CallValidator::ValidateProcedureNameExists() {
   for (auto &call_name : call_names_set) {
     if (!procedure_names_set_.count(call_name)) {
       throw CallSemanticsException("procedure does not exist: " + call_name);
     }
   }
-
-  return true;
 }
 
 void CallValidator::Accept(ast::ProcNode &proc_node) {

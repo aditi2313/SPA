@@ -10,6 +10,10 @@ class Stmt : public IntEntity {
  public:
   explicit Stmt(int number) : IntEntity(number) {}
 
+  inline bool WeakEqual(Entity &other) override {
+    return number_ == (dynamic_cast<Stmt *>(&other))->number_;
+  }
+
   inline EntityPtr Copy() override {
     return std::make_unique<Stmt>(*this);
   }

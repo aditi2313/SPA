@@ -28,17 +28,18 @@ bool Lexer::IsDoubleCond() {
   if (get_tok() != Token::kTokOpenBracket) {
     return false;
   }
+  int level = 0;
   while (!data_.is_end() && get_tok() != Token::kTokSemicolon) {
     if (get_tok() == Token::kTokOpenBracket) {
-      brackets.push(1);
+      level++;
     }
     if (get_tok() == Token::kTokCloseBracket) {
-      if (brackets.empty()) {
+      if (level == 0) {
         // end of scope
         data_ = t_data;
         return result;
       }
-      brackets.pop();
+      level--;
     }
     if (get_tok() == Token::kTokAnd || get_tok() == Token::kTokOr) {
       if (brackets.empty()) {

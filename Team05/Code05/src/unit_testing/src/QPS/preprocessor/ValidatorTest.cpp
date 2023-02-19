@@ -70,12 +70,12 @@ TEST_CASE("Test that all synonyms used are declared") {
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
   }
 
-  /*SECTION("Undeclared synonym used in a Clause") {
+  SECTION("Undeclared synonym used in a Clause") {
     std::string query_str = "stmt s; Select s such that Modifies(v, \"var\")";
     QueryPtr query = parser.ParseQuery(query_str);
 
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
-  }*/
+  }
 }
 
 TEST_CASE("Test that synonyms are declared exactly once") {

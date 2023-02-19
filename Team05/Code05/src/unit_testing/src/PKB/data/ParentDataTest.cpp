@@ -6,19 +6,22 @@
 using namespace pkb; // NOLINT
 
 TEST_CASE("Test ParentData") {
-    ParentData parent_data(10, 11);
+    ParentData parent_data(10);
+    parent_data.add_direct_child(11);
+    parent_data.add_to_all_children(13);
 
-    SECTION("Retrieving ParentData parent line") {
-        REQUIRE(parent_data.get_child() == 11);
+    std::unordered_set<int> expected_direct_children{11};
+    std::unordered_set<int> expected_total_children{13};
+
+    SECTION("Retrieving ParentData direct children") {
+        REQUIRE(parent_data.get_direct_children() == expected_direct_children);
+    };
+
+    SECTION("Retrieving ParentData all children") {
+        REQUIRE(parent_data.get_all_children() == expected_total_children);
     };
 
     SECTION("Retrieving ParentData line") {
         REQUIRE(parent_data.get_line() == 10);
-    };
-
-    SECTION("Adding and Retrieving ParentData list") {
-        std::unordered_set<int> expected_result = {11, 12};
-        parent_data.add_children(12);
-        REQUIRE(parent_data.get_children_set() == expected_result);
     };
 }

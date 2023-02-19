@@ -5,6 +5,7 @@
 
 #include "models/types.h"
 #include "QPS/models/Synonym.h"
+#include "QPS/models/PQL.h"
 
 using models::SynonymName;
 
@@ -66,12 +67,17 @@ class Wildcard : public Argument {
 class SynonymArg : public Argument {
  public:
   explicit SynonymArg(SynonymName syn_name, EntityName entity_name)
-      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {}
+      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {
+    base_entity_name_ = PQL::get_base_entity_name(entity_name);
+  }
 
   inline bool IsSynonym() override { return true; }
+  inline bool IsEntRef() override { return true; }
+  inline bool IsStmtRef() override { return true; }
 
   inline SynonymName get_syn_name() { return syn_name_; }
   inline SynonymName get_entity_name() { return entity_name_; }
+  inline SynonymName get_base_entity_name() { return base_entity_name_; }
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Synonym: " << syn_name_;
@@ -84,6 +90,7 @@ class SynonymArg : public Argument {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
+  EntityName base_entity_name_;
 };
 
 class IdentArg : public Argument {

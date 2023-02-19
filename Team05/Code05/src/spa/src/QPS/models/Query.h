@@ -28,7 +28,7 @@ class Query {
   // Returns true if `token` is a synonym that has been declared
   inline bool is_declared_synonym_name(std::string token) {
     for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_id() == token) return true;
+      if (syn->get_syn_name() == token) return true;
     }
     return false;
   }
@@ -43,7 +43,7 @@ class Query {
 
   inline SynonymPtr &get_synonym(std::string token) {
     for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_id() == token) return syn;
+      if (syn->get_syn_name() == token) return syn;
     }
     throw std::runtime_error("Synonym has not been declared");
   }

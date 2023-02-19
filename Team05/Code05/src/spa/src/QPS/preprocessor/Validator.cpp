@@ -5,64 +5,46 @@
 
 namespace qps {
 
-QueryPtr Validator::validate(std::unique_ptr<Query> &query) {
-  if (IsWildcard(query) && SynonymCheck(query) && DesignEntitySynonyms(query) &&
-      isDeclaredOnce(query)) {
-    return std::move(query);
-  }
-  throw PqlSemanticErrorException("Semantic error");
+void Validator::Validate(std::unique_ptr<Query> &query) {
+  ValidateClauseArguments(query);
+  ValidateSynonymsDeclaredExactlyOnce(query);
+  ValidateSynonymsUsedAreDeclared(query);
 }
 
-// used to ensure that the design entity is correct
-bool Validator::DesignEntitySynonyms(QueryPtr &query) {
+// Used to ensure that the design entity for synonyms is correct
+// as per clause: e.g Follows(arg1, arg2)
+// if arg1 is a synonym it should be a statement or a
+// sub-type of statement (read, print, call...)
+// ValidateArguments also check if the first argument for
+// Modifies and Uses is a wildcard, which is not allowed
+void Validator::ValidateClauseArguments(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
-    if (!clause->ValidateSynonymTypes()) {
-      throw PqlSemanticErrorException("Wrong synonym type");
+    if (!clause->ValidateArguments()) {
+      throw PqlSemanticErrorException(
+          "Incompatible argument type "
+          "or undeclared synonym argument in clause");
     }
-  }
-  return true;
-}
-// Uses: line(int), variables the line uses(vector)
-// Follows : line(int), the line that this line follows / comes after(int)
-// Parent : line(int), the line that is the parent of this line(int)
-// Modifies : line(int), variables that are being modified in this line(vector)
-// Assign : line(int), the variable that is being assigned to in that
-// line(string), expression(unique pointer to ast::ExprNode)
-
-// Returns false if the clauses have a wildcard
-// declared as arg1 in the Modifies/Uses relationship
-bool Validator::IsWildcard(QueryPtr &query) {
-  // TODO(SP) edit it to check for clause type first.
-  // As of now checks all clauses as all of them are modifies
-  for (auto &clause : query->get_clauses()) {
-    if (clause->isModifies_Uses()) {
-      if (clause->get_arg1()->IsWildcard()) {
-        throw PqlSemanticErrorException(
-            "WildCard used as first arg in Uses or Modifies");
-      }
-    }
-    return true;
-  }
-}
-// Returns false if there is a clause
-// used in the Query that has not been declared as a synonym previously.
-bool Validator::SynonymCheck(QueryPtr &query) {
-  for (auto &clause : query->get_clauses()) {
-    if (clause->get_arg1()->IsIdent() || clause->get_arg2()->IsIdent()) {
-      throw PqlSemanticErrorException("Synonym used has not been declared");
-    }
-    return true;
   }
 }
 
-bool Validator::isDeclaredOnce(QueryPtr &query) {
+// Checks if all synonym names are declared only once.
+// e.g variable v; while v; will throw error
+void Validator::ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query) {
   std::unordered_set<std::string> syn_names;
   for (auto &syn : query->get_declared_synonyms()) {
-    if (syn_names.count(syn->get_syn_id())) {
+    if (syn_names.count(syn->get_syn_name())) {
       throw PqlSemanticErrorException("Synonym declared more than once");
     }
-    syn_names.insert(syn->get_syn_id());
+    syn_names.insert(syn->get_syn_name());
   }
-  return true;
+}
+
+// Checks if all synonym names used are declared.
+void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
+  for (auto syn_name : query->get_selected_synonyms()) {
+    if (!query->is_declared_synonym_name(syn_name)) {
+      throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
+    }
+  }
 }
 }  // namespace qps

@@ -28,8 +28,8 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
   // add the additional variables from the sub statement lists
   auto pkb = pkb_ptr_->EndWrite();
   auto pkb_read = pkb::PKBRead(std::move(pkb));
-  AddVariablesFromStmtList(pkb_read, *if_node->get_then(), vars);
-  AddVariablesFromStmtList(pkb_read, *if_node->get_else(), vars);
+  AddVariablesFromStmtList(pkb_read, *(if_node->get_then()), vars);
+  AddVariablesFromStmtList(pkb_read, *(if_node->get_else()), vars);
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(pkb_read.EndRead());
 
   pkb_ptr_->AddUsesData(if_node->get_line(), vars);
@@ -43,7 +43,7 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
   // add the variables from the sub statements
   auto pkb = pkb_ptr_->EndWrite();
   auto pkb_read = pkb::PKBRead(std::move(pkb));
-  AddVariablesFromStmtList(pkb_read, *while_node->get_stmts(), vars);
+  AddVariablesFromStmtList(pkb_read, *(while_node->get_stmts()), vars);
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(pkb_read.EndRead());
 
   pkb_ptr_->AddUsesData(while_node->get_line(), vars);

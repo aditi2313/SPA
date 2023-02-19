@@ -20,7 +20,7 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 
-void UsesVisitor::Process(ast::IfNode* if_node) {   
+void UsesVisitor::Process(ast::IfNode* if_node) {
   VarCollector var_collector;
   if_node->get_cond()->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();
@@ -35,7 +35,7 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
   pkb_ptr_->AddUsesData(if_node->get_line(), vars);
 }
 
-void UsesVisitor::Process(ast::WhileNode* while_node) {  
+void UsesVisitor::Process(ast::WhileNode* while_node) {
   VarCollector var_collector;
   while_node->get_cond()->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();

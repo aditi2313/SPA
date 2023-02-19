@@ -20,13 +20,12 @@ class UsesVisitor : public PKBWritingVisitor {
 
   void Process(ast::PrintNode* print_node) override;
 
-  void Process(ast::IfNode* if_node) override;  
+  void Process(ast::IfNode* if_node) override;
 
   void Process(ast::WhileNode* while_node) override;
 
  private:
-  void UsesVisitor::AddVariablesFromStmtList(
-      pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
-      std::unordered_set<std::string>& vars);
+  void AddVariablesFromStmtList(pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
+                                std::unordered_set<std::string>& vars);
 };
 }  // namespace sp

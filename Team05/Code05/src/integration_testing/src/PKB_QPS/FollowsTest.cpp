@@ -29,7 +29,8 @@ std::unique_ptr<PKBRead> InitializePKBForFollows(
     pkb_write.add_stmt(line2);
   }
 
-  return std::make_unique<PKBRead>(pkb_write.EndWrite());
+  return std::make_unique<PKBRead>(
+    pkb_write.ProcessTableAndEndWrite());
 }
 
 TEST_CASE("Test PKB and QPS integration for Follows clause") {

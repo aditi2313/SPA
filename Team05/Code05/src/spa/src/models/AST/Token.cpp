@@ -11,7 +11,7 @@ const std::unordered_set<Token> kStmtTokens{Token::kTokRead, Token::kTokPrint,
 const std::unordered_set<Token> kRelationTokens{
     Token::kTokAnd,     Token::kTokOr,           Token::kTokLess,
     Token::kTokGreater, Token::kTokGreaterEqual, Token::kTokLessEqual,
-    Token::kTokEquiv};
+    Token::kTokEquiv,   Token::kTokNotEqual};
 
 const std::unordered_set<Token>
     kKeyWordTokens{Token::kTokProcedure, Token::kTokRead,

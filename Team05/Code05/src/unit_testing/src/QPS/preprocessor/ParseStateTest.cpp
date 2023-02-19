@@ -11,10 +11,9 @@ void TestErrorCase(ParseState &state, std::vector<std::string> tokens) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
   auto itr = tokens.begin();
   REQUIRE_THROWS_AS(
-      state.parse(tokens, itr, std::move(query)), PqlSyntaxErrorException);
+      state.parse(tokens, itr, query), PqlSyntaxErrorException);
 }
 
-// TODO(jl): Replace Entity
 TEST_CASE("Test DeclarationParseState") {
   DeclarationParseState state;
 
@@ -22,12 +21,29 @@ TEST_CASE("Test DeclarationParseState") {
     std::vector<std::string> tokens{"variable", "v", ";"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
+    state.parse(tokens, itr, query);
 
     REQUIRE(query->does_synonym_exist(
         Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
+
+  SECTION("Multiple declarations should parse correctly") {
+    std::vector<std::string> tokens{
+        "variable", "v1", ",", "v2", ",", "v3", ";"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.parse(tokens, itr, query);
+
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v1", PQL::kVariableEntityName)));
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v2", PQL::kVariableEntityName)));
+    REQUIRE(query->does_synonym_exist(
+        Synonym("v3", PQL::kVariableEntityName)));
+    REQUIRE(itr == tokens.end());
+  };
+
 
   SECTION("Invalid design entity identifier should "
           "throw PqlSyntaxErrorException") {
@@ -47,13 +63,13 @@ TEST_CASE("Test DeclarationParseState") {
   }
 }
 
-TEST_CASE("Test SynonymParseState") {
-  SynonymParseState state;
+TEST_CASE("Test SelectParseState") {
+  SelectParseState state;
   SECTION("Select synonym should parse correctly") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
+    state.parse(tokens, itr, query);
 
     REQUIRE(query->get_selected_synonyms().at(0) == "v");
     REQUIRE(itr == tokens.end());
@@ -68,7 +84,7 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Modifies", "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
+    state.parse(tokens, itr, query);
     auto expected_clause = ModifiesClause(
         query->CreateArgument("6"),
         query->CreateArgument("v"));
@@ -85,7 +101,7 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Follows", "(", "6", ",", "7", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
+    state.parse(tokens, itr, query);
     auto expected_clause = FollowsClause(
         query->CreateArgument("6"),
         query->CreateArgument("7"));
@@ -102,13 +118,58 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Follows*", "(", "6", ",", "10", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
+    state.parse(tokens, itr, query);
     auto expected_clause = FollowsTClause(
         query->CreateArgument("6"),
         query->CreateArgument("7"));
 
     Clause *actual_clause =
         query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Such that clause for Parent should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Parent", "(",
+                                    "6", ",", "7", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.parse(tokens, itr, query);
+    auto expected_clause =
+        ParentClause(query->CreateArgument("6"), query->CreateArgument("7"));
+
+    Clause *actual_clause = query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Such that clause for ParentT should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Parent*", "(",
+                                    "6", ",", "7", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.parse(tokens, itr, query);
+    auto expected_clause =
+        ParentTClause(query->CreateArgument("6"), query->CreateArgument("7"));
+
+    Clause *actual_clause = query->get_clauses().at(0).get();
+
+    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Such that clause for Uses should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Uses",
+                                    "(", "6", ",", "v", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.parse(tokens, itr, query);
+    auto expected_clause =
+        UsesClause(query->CreateArgument("6"), query->CreateArgument("v"));
+
+    Clause *actual_clause = query->get_clauses().at(0).get();
 
     REQUIRE(*actual_clause == expected_clause);
     REQUIRE(itr == tokens.end());
@@ -138,46 +199,52 @@ TEST_CASE("Test PatternParseState") {
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
-    auto expected_clause = PatternClause(
+    state.parse(tokens, itr, query);
+    auto expected_modifies_clause = ModifiesClause(
+        query->CreateArgument("a"),
+        query->CreateArgument("_"));
+    auto expected_pattern_clause = PatternClause(
         query->CreateArgument("a"),
         query->CreateArgument("\"x + y\""));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
+    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 
   SECTION("Pattern wildcard clause should parse correctly") {
     std::vector<std::string> tokens{
-        "pattern", "a", "(", "_", ",", "_", ")"};
+        "pattern", "a", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
-    auto expected_clause = PatternClause(
+    state.parse(tokens, itr, query);
+    auto expected_modifies_clause = ModifiesClause(
+        query->CreateArgument("a"),
+        query->CreateArgument("v"));
+    auto expected_pattern_clause = PatternClause(
         query->CreateArgument("a"),
         query->CreateArgument("_"));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
+    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 
   SECTION("Pattern wildcard clause should parse correctly") {
     std::vector<std::string> tokens{
-        "pattern", "a", "(", "_", ",", "_\"x\"_", ")"};
+        "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    query = state.parse(tokens, itr, std::move(query));
-    auto expected_clause = PatternClause(
+    state.parse(tokens, itr, query);
+    auto expected_modifies_clause = ModifiesClause(
+        query->CreateArgument("a"),
+        query->CreateArgument("variable"));
+    auto expected_pattern_clause = PatternClause(
         query->CreateArgument("a"),
         query->CreateArgument("_\"x\"_"));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
+    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 

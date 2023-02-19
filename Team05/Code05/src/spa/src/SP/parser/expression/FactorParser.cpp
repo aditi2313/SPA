@@ -23,7 +23,8 @@ ast::ExprNodePtr FactorParser::parse(VectorLexer &lxr) {
     lxr.Decrement();
     ExpressionParser expr_parser;
     auto res = expr_parser.parse(lxr);
-    AssertExpectedToken(lxr.get_tok(), Token::kTokOpenBracket, "(");
+    AssertExpectedToken(ParseFactorSyntaxException::kParseFactorSyntaxMessage,
+                        lxr.get_tok(), Token::kTokOpenBracket);
     lxr.Decrement();
     return std::move(res);
   }

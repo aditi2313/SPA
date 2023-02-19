@@ -14,17 +14,11 @@ class ModifiesVisitor : public PKBWritingVisitor {
   explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void VisitProgram(ast::ProgramNode* program_node) override;
+  void Process(ast::AssignNode* assign_node) override;
 
-  void VisitProc(ast::ProcNode* proc_node) override;
-
-  void VisitStmtLst(ast::StmtLstNode* stmtlst_node) override;
-
-  void VisitAssign(ast::AssignNode* assign_node) override;
-
-  void VisitRead(ast::ReadNode* read_node) override;
+  void Process(ast::ReadNode* read_node) override;
 
   // TODO(Gab) Go into call node and get the information #41
-  void VisitCall(ast::CallNode* call_node) override {}
+  void Process(ast::CallNode* call_node) override {}
 };
 }  // namespace sp

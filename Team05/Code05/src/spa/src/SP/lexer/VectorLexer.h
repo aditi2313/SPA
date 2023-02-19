@@ -23,15 +23,15 @@ class VectorLexer {
   /// </summary>
   /// <param name="lxr"></param>
   explicit VectorLexer(Lexer& lxr) {
-    std::stack<int> brackets;
+    int level = 0;
     while (lxr.get_tok() != Token::kTokSemicolon &&
            lxr.get_tok() != Token::kTokEof && !IsRelationToken(lxr.get_tok())) {
       if (lxr.get_tok() == Token::kTokOpenBracket) {
-        brackets.push(1);
+        level++;
       }
       if (lxr.get_tok() == Token::kTokCloseBracket) {
-        if (brackets.empty()) break;
-        brackets.pop();
+        if (level == 0) break;
+        level--;
       }
       tokens_.push_back(lxr.get_tok());
       if (!IsStmtToken(lxr.get_tok())) {

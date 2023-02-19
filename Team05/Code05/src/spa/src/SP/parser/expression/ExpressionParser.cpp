@@ -5,12 +5,17 @@
 #include <utility>
 
 #include "TermParser.h"
+#include "common/exceptions/SP.h"
 
 namespace sp {
 
 ast::ExprNodePtr ExpressionParser::parse(Lexer& lxr) {
   VectorLexer v_lexer(lxr);
-  return parse(v_lexer);
+  auto result = parse(v_lexer);
+  if (v_lexer.get_tok() != Token::kTokEof) {
+    throw ParseException("Extra token at the front of expression");
+  }
+  return std::move(result);
 }
 
 ast::ExprNodePtr ExpressionParser::parse(VectorLexer& lxr) {

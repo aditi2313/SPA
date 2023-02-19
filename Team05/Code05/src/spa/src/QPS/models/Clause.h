@@ -172,15 +172,7 @@ class UsesClause : public Clause {
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
   inline bool ValidateArgumentTypes() override {
-    if (arg1_->IsSynonym()) {
-      auto &syn_arg = dynamic_cast<SynonymArg &>(*arg1_);
-      if (syn_arg.get_entity_name() == "stmt" ||
-          syn_arg.get_entity_name() == "read") {
-        return false;
-      }
-    }
-    return arg1_->IsStmtRef() && (arg2_->IsStmtRef() || arg2_->IsIdent()) &&
-           !arg1_->IsWildcard();
+    return arg1_->IsStmtRef() && arg2_->IsEntRef() && !arg1_->IsWildcard();
   }
 };
 // Relationship between a stmt and another stmt.

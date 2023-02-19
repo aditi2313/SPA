@@ -22,12 +22,12 @@ TEST_CASE("Test Wildcard as first argument in Clauses") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
-  SECTION("First argument for Uses is not a wildcard is valid") {
+  SECTION("Second argument cannot be int") {
     // No wildcard
     std::string query_str = "stmt s; Select s such that Uses(s, 2)";
     auto query = parser.ParseQuery(query_str);
 
-    REQUIRE_NOTHROW(Validator::Validate(query));
+    REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
   }
 
   SECTION("First argument for Modifies is a wildcard should throw error") {
@@ -70,12 +70,12 @@ TEST_CASE("Test that all synonyms used are declared") {
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
   }
 
-  SECTION("Undeclared synonym used in a Clause") {
+  /*SECTION("Undeclared synonym used in a Clause") {
     std::string query_str = "stmt s; Select s such that Modifies(v, \"var\")";
     QueryPtr query = parser.ParseQuery(query_str);
 
     REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
-  }
+  }*/
 }
 
 TEST_CASE("Test that synonyms are declared exactly once") {

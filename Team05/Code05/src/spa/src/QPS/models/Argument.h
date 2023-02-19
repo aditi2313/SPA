@@ -103,8 +103,6 @@ class IdentArg : public Argument {
 
   inline bool IsIdent() override { return true; }
 
-  inline bool IsStmtRef() override { return true; }
-
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Ident Arg: " << ident_;
     return str;

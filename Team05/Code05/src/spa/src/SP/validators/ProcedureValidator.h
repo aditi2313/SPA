@@ -9,13 +9,13 @@
 namespace sp {
 class ProcedureValidator : public Validator {
  public:
-  bool Validate() override;
+  void Validate() override;
 
   void Accept(ast::ProcNode &proc_node);
 
  private:
   std::vector<std::string> proc_names_;
 
-  bool ValidateNoDuplicateProcedureNames();
+  void ValidateNoDuplicateProcedureNames();
 };
 }  // namespace sp

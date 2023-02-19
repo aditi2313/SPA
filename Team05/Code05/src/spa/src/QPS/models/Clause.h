@@ -55,7 +55,7 @@ class Clause {
     EntityPtrList result;
     for (auto &entity : Index(index, factory, pkb)) {
       for (auto &filter_entity : RHS_filter_values) {
-        if (*entity == *filter_entity) {
+        if (entity->WeakEqual(*filter_entity)) {
           result.push_back(entity->Copy());
         }
       }

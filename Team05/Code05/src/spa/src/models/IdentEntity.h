@@ -30,6 +30,10 @@ class IdentEntity : public Entity {
         (dynamic_cast<IdentEntity *>(&other))->ident_;
   }
 
+  inline bool WeakEqual(Entity &other) override {
+    return *this == other;
+  }
+
   inline bool operator!=(Entity &other) override {
     return !(*this == other);
   }

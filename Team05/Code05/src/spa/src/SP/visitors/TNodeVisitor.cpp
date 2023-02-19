@@ -63,7 +63,16 @@ void TNodeVisitor::VisitNot(ast::NotExprNode* not_expr_node) {
   not_expr_node->get_cond()->AcceptVisitor(this);
 }
 
-void TNodeVisitor::VisitDoubleCond(ast::DoubleCondExprNode* double_cond_expr_node) {
+void TNodeVisitor::VisitVar(ast::VarNode* var_node) {
+  PerformWork(var_node);
+}
+
+void TNodeVisitor::VisitConst(ast::ConstNode* const_node) {
+  PerformWork(const_node);
+}
+
+void TNodeVisitor::VisitDoubleCond(
+    ast::DoubleCondExprNode* double_cond_expr_node) {
   PerformWork(double_cond_expr_node);
   double_cond_expr_node->get_left_cond()->AcceptVisitor(this);
   double_cond_expr_node->get_right_cond()->AcceptVisitor(this);

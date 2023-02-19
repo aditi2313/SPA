@@ -24,18 +24,8 @@ class Argument {
   virtual bool IsWildcard() { return false; }
   virtual bool IsSynonym() { return false; }
   virtual bool IsExpression() { return false; }
-  virtual bool IsIdent() { return false; }
 
-  bool operator==(Argument const &other) const {
-    const std::type_info &ti1 = typeid(*this);
-    const std::type_info &ti2 = typeid(other);
-
-    if (ti1 != ti2) return false;
-
-    // TODO(JL): continue comparing member variables
-    // for different type
-    return true;
-  }
+  virtual bool operator==(Argument &other) = 0;
 
   virtual std::unique_ptr<Argument> Copy() = 0;
 
@@ -61,6 +51,12 @@ class Wildcard : public Argument {
   }
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<Wildcard>(*this);
+  }
+
+  inline bool operator==(Argument &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    return ti1 == ti2;
   }
 };
 
@@ -88,6 +84,15 @@ class SynonymArg : public Argument {
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<SynonymArg>(*this);
   }
+  inline bool operator==(Argument &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    auto arg = dynamic_cast<SynonymArg *>(&other);
+    return syn_name_ == arg->syn_name_
+        && entity_name_ == arg->entity_name_;
+  }
 
  private:
   SynonymName syn_name_;
@@ -104,14 +109,20 @@ class IdentArg : public Argument {
 
   inline std::string get_ident() { return ident_; }
 
-  inline bool IsIdent() override { return true; }
-
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Ident Arg: " << ident_;
     return str;
   }
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<IdentArg>(*this);
+  }
+  inline bool operator==(Argument &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    auto arg = dynamic_cast<IdentArg *>(&other);
+    return ident_ == arg->ident_;
   }
 
  private:
@@ -134,6 +145,14 @@ class IntegerArg : public Argument {
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<IntegerArg>(*this);
   }
+  inline bool operator==(Argument &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    auto arg = dynamic_cast<IntegerArg *>(&other);
+    return number_ == arg->number_;
+  }
 
  private:
   int number_;
@@ -154,6 +173,17 @@ class ExpressionArg : public Argument {
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<ExpressionArg>(*this);
   }
+
+  inline bool operator==(Argument &other) override {
+    const std::type_info &ti1 = typeid(*this);
+    const std::type_info &ti2 = typeid(other);
+    if (ti1 != ti2) return false;
+
+    auto arg = dynamic_cast<ExpressionArg *>(&other);
+    return expr_ == arg->expr_
+        && is_exact_ == arg->is_exact_;
+  }
+
  private:
   std::string expr_;  // Expression
   bool is_exact_;

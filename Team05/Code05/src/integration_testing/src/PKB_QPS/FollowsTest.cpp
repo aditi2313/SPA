@@ -52,6 +52,16 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     REQUIRE(actual_results == expected_results);
   }
 
+  SECTION("Follows(SynArg, SynArg) should return correct results") {
+    std::string query_string = "stmt s; Select s such that Follows(s, s)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{};
+    REQUIRE(actual_results == expected_results);
+  }
+
   SECTION("Follows(Wildcard, IntArg) should return correct results") {
     std::string query_string = "stmt s; Select s such that Follows(_, 11)";
     std::list<std::string> actual_results;

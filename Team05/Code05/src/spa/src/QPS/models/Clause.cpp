@@ -169,7 +169,7 @@ EntityPtrList PatternClause::Filter(
 
   filter = std::make_unique<AssignPredicateFilter>([&](pkb::AssignData data) {
     return data.get_line() == line &&
-           data.TestExpression(AST, expr_arg->is_exact());
+        data.TestExpression(AST, expr_arg->is_exact());
   });
 
   auto pkb_res = pkb->Assigns(std::move(filter))->get_result();

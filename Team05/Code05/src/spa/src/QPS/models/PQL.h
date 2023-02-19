@@ -53,15 +53,26 @@ class PQL {
   }
 
   inline static bool is_argument(std::string const token) {
-    return is_ident(token) || is_integer(token) || is_wildcard(token);
+    return is_ident(token)
+        || is_integer(token)
+        || is_wildcard(token)
+        || is_pattern_exact(token)
+        || is_pattern_wildcard(token)
+        || is_ident_arg(token);
   }
 
   inline static bool is_ident(std::string str) {
-    if (str.empty() || !isalpha(str[0])) return false;
+    if (str.empty() || !isalpha(str.at(0))) return false;
     for (char c : str) {
       if (!isalnum(c)) return false;
     }
     return true;
+  }
+
+  inline static bool is_ident_arg(std::string str) {
+    if (str.size() < 3) return false;
+    if (str.front() != '\"' || str.back() != '\"') return false;
+    return is_ident(str.substr(1, str.size() - 2));
   }
 
   inline static bool is_integer(std::string str) {
@@ -74,6 +85,10 @@ class PQL {
 
   inline static bool is_wildcard(std::string str) {
     return str == "_";
+  }
+
+  inline static bool is_pattern_exact(std::string str) {
+    return str.front() == '\"' && str.back() == '\"';
   }
 
   inline static bool is_pattern_wildcard(std::string str) {
@@ -98,7 +113,11 @@ class PQL {
       return is_ident(token);
     } else if (grammar == kDesignEntityGrammar) {
       return is_entity_name(token);
-    } else if (grammar == kExprGrammar || grammar == kRecurseGrammar) {
+    } else if (grammar == kExprGrammar) {
+      return is_pattern_wildcard(token)
+          || is_pattern_exact(token)
+          || is_wildcard(token);
+    } else if (grammar == kRecurseGrammar) {
       return true;
     } else {
       return token == grammar;

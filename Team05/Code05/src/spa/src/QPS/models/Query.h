@@ -82,16 +82,13 @@ class Query {
   }
 
   inline ArgumentPtr CreateArgument(std::string token) {
-    if (is_declared_synonym_name(token)) {
-      return std::make_unique<SynonymArg>(token);
+    if (PQL::is_ident_arg(token)) {
+      token = token.substr(1, token.size() - 2);
+      return std::make_unique<IdentArg>(token);
     }
 
     if (PQL::is_wildcard(token)) {
       return std::make_unique<Wildcard>();
-    }
-
-    if (PQL::is_ident(token)) {
-      return std::make_unique<IdentArg>(token);
     }
 
     if (PQL::is_integer(token)) {
@@ -99,14 +96,18 @@ class Query {
     }
 
     // Expression Arg
-    if (PQL::is_pattern_wildcard(token)) {
-      // Remove first and last wildcard characters
-      token.pop_back();
-      token = token.substr(1);
-      return std::make_unique<ExpressionArg>(token, false);
-    } else {
+    if (PQL::is_pattern_exact(token)) {
+      token = token.substr(1, token.size() - 2);
       return std::make_unique<ExpressionArg>(token, true);
     }
+
+    if (PQL::is_pattern_wildcard(token)) {
+      // Remove first and last wildcard characters
+      token = token.substr(2, token.size() - 4);
+      return std::make_unique<ExpressionArg>(token, false);
+    }
+
+    return std::make_unique<SynonymArg>(token);
   }
 
  private:

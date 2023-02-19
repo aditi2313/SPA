@@ -18,7 +18,7 @@ class ProgramValidator : public Validator, ValidatorVisitor {
   explicit ProgramValidator(std::unique_ptr<ast::ProgramNode>& root)
       : root_(root) {}
 
-  bool Validate() override;
+  void Validate() override;
 
   void Process(ast::ProcNode* proc_node) override;
   void Process(ast::CallNode* call_node) override;

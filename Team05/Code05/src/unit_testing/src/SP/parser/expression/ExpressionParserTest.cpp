@@ -1,5 +1,3 @@
-#pragma once
-
 #include "SP/SPTesting.h"
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/expression/ExpressionParser.h"

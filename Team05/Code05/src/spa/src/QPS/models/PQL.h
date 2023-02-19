@@ -40,6 +40,9 @@ class PQL {
   inline static EntityName kFollowsRelId = "Follows";
   inline static EntityName kFollowsTRelId = "Follows*";
   inline static EntityName kPatternRelId = "pattern";
+  inline static EntityName kUsesRelId = "Uses";
+  inline static EntityName kParentRelId = "Parent";
+  inline static EntityName kParentTRelId = "Parent*";
 
   inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kPatternRelId

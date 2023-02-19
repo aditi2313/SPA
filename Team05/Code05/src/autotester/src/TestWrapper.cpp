@@ -11,6 +11,8 @@
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
+#include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/FollowsVisitor.h"
 #include "SP/validators/ProgramValidator.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
@@ -72,6 +74,14 @@ void TestWrapper::parse(std::string filename) {
   sp::ParentVisitor pv(std::move(writer));
   root->AcceptVisitor(&pv);
   writer = pv.EndVisit();
+
+  sp::UsesVisitor uv(std::move(writer));
+  root->AcceptVisitor(&uv);
+  writer = uv.EndVisit();
+
+  sp::FollowsVisitor fv(std::move(writer));
+  root->AcceptVisitor(&fv);
+  writer = fv.EndVisit();
 
   pkb_relation_ = writer->EndWrite();
 }

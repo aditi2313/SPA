@@ -1,0 +1,67 @@
+procedure parent {
+  print some;
+  read some;
+  x = 100;
+  while (some > 1200) {
+    if (some < 1200) then {
+      read some;
+      print some;
+      some = 1000;
+    } else {
+      read some;
+      print some;
+      some = 1000;      
+    }
+  }
+  while (some > 1200) {
+    while (some < 1200) {
+      read some;
+    }
+  }
+  if (some > 1200) then {
+    while (some < 1200) {
+      read some;
+      print some;
+      some = 1000;
+    }
+  } else {
+    while (some < 1200) {
+       read some;
+       print some;
+       some = 1000;
+    }
+
+  }
+  if (some > 1200) then {
+    read some;
+    print some;
+    x = 100;
+    if (some > 1200) then {
+      read some;
+      print some;
+      x = 100;
+    } else {
+      read some;
+      print some;
+      x = 100;    
+    }
+  } else {
+    read some;
+    print some;
+    x = 100;
+    if (some > 1200) then {
+      read some;
+      print some;
+      x = 100;
+    } else {
+      read some;
+      print some;
+      x = 100;
+      while (x > 5) {
+        read some;
+        print some;
+        x = 100;
+      }
+    }
+  }  
+}

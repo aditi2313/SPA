@@ -35,6 +35,8 @@ class Argument {
     return true;
   }
 
+  virtual std::unique_ptr<Argument> Copy() = 0;
+
   virtual ~Argument() = 0;
   inline virtual std::ostream &dump(std::ostream &str) const {
     return str << "Argument";
@@ -55,6 +57,9 @@ class Wildcard : public Argument {
   inline std::ostream &dump(std::ostream &str) const override {
     return str << "Wildcard";
   }
+  inline std::unique_ptr<Argument> Copy() override {
+    return std::make_unique<Wildcard>(*this);
+  }
 };
 
 class SynonymArg : public Argument {
@@ -69,6 +74,9 @@ class SynonymArg : public Argument {
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Synonym: " << syn_name_;
     return str;
+  }
+  inline std::unique_ptr<Argument> Copy() override {
+    return std::make_unique<SynonymArg>(*this);
   }
 
  private:
@@ -88,6 +96,10 @@ class IdentArg : public Argument {
     str << "Ident Arg: " << ident_;
     return str;
   }
+  inline std::unique_ptr<Argument> Copy() override {
+    return std::make_unique<IdentArg>(*this);
+  }
+
  private:
   std::string ident_;
 };
@@ -105,6 +117,10 @@ class IntegerArg : public Argument {
     str << "Int Arg: " << number_;
     return str;
   }
+  inline std::unique_ptr<Argument> Copy() override {
+    return std::make_unique<IntegerArg>(*this);
+  }
+
  private:
   int number_;
 };
@@ -120,6 +136,9 @@ class ExpressionArg : public Argument {
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Expr Arg: " << expr_;
     return str;
+  }
+  inline std::unique_ptr<Argument> Copy() override {
+    return std::make_unique<ExpressionArg>(*this);
   }
  private:
   std::string expr_;  // Expression

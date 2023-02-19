@@ -1,6 +1,8 @@
 #include "ProcedureValidator.h"
+
 #include <unordered_set>
 #include <utility>
+#include "common/exceptions/SP.h"
 
 namespace sp {
 bool ProcedureValidator::Validate() {
@@ -11,7 +13,8 @@ bool ProcedureValidator::ValidateNoDuplicateProcedureNames() {
   std::unordered_set<std::string> proc_names_set;
   for (const auto &proc_name : proc_names_) {
     if (proc_names_set.count(proc_name)) {
-      return false;
+      throw ProcedureSemanticsException("duplicate procedure name: "
+                                        + proc_name);
     }
     proc_names_set.insert(proc_name);
   }

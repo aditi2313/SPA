@@ -3,11 +3,11 @@
 #include <string>
 
 #include "models/AST/Token.h"
+
 // exception file for SP
 namespace sp {
 
-// TODO(Gab): Apply this function to the rest of the parser
-void AssertExpectedToken(Token to_test, Token expected, std::string token);
+void AssertExpectedToken(std::string prefix, Token to_test, Token expected);
 
 class LexerException : public std::exception {
  public:
@@ -29,6 +29,113 @@ class ParseException : public std::exception {
   const std::string message;
 };
 
+
+class CallSemanticsException : public ParseException {
+ public:
+  explicit CallSemanticsException(std::string additional)
+      : ParseException(kCallSemanticsExceptionMessage + additional) {}
+  CallSemanticsException()
+      : ParseException(kCallSemanticsExceptionMessage) {}
+
+  static const char kCallSemanticsExceptionMessage[];
+};
+
+class ProcedureSemanticsException : public ParseException {
+ public:
+  explicit ProcedureSemanticsException(std::string additional)
+      : ParseException(kProcedureSemanticsExceptionMessage + additional) {}
+  ProcedureSemanticsException()
+      : ParseException(kProcedureSemanticsExceptionMessage) {}
+
+  static const char kProcedureSemanticsExceptionMessage[];
+};
+
+
+class ParseProcedureSyntaxException : public ParseException {
+ public:
+  explicit ParseProcedureSyntaxException(std::string additional)
+      : ParseException(kParseProcedureSyntaxMessage + additional) {}
+  ParseProcedureSyntaxException()
+      : ParseException(kParseProcedureSyntaxMessage) {}
+
+  static const char kParseProcedureSyntaxMessage[];
+};
+
+class ParseStmtLstSyntaxException : public ParseException {
+ public:
+  explicit ParseStmtLstSyntaxException(std::string additional)
+      : ParseException(kParseStmtLstSyntaxMessage + additional) {}
+  ParseStmtLstSyntaxException()
+      : ParseException(kParseStmtLstSyntaxMessage) {}
+
+  static const char kParseStmtLstSyntaxMessage[];
+};
+
+class ParseStmtSyntaxException : public ParseException {
+ public:
+  explicit ParseStmtSyntaxException(std::string additional)
+      : ParseException(kParseStmtSyntaxMessage + additional) {}
+  ParseStmtSyntaxException()
+      : ParseException(kParseStmtSyntaxMessage) {}
+
+  static const char kParseStmtSyntaxMessage[];
+};
+
+class ParseAssignSyntaxException : public ParseException {
+ public:
+  explicit ParseAssignSyntaxException(std::string additional)
+      : ParseException(kParseAssignSyntaxMessage + additional) {}
+  ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
+
+  static const char kParseAssignSyntaxMessage[];
+};
+
+class ParsePrintSyntaxException : public ParseException {
+ public:
+  explicit ParsePrintSyntaxException(std::string additional)
+      : ParseException(kParsePrintSyntaxMessage + additional) {}
+  ParsePrintSyntaxException() : ParseException(kParsePrintSyntaxMessage) {}
+
+  static const char kParsePrintSyntaxMessage[];
+};
+
+class ParseReadSyntaxException : public ParseException {
+ public:
+  explicit ParseReadSyntaxException(std::string additional)
+      : ParseException(kParseReadSyntaxMessage + additional) {}
+  ParseReadSyntaxException() : ParseException(kParseReadSyntaxMessage) {}
+
+  static const char kParseReadSyntaxMessage[];
+};
+
+class ParseCallSyntaxException : public ParseException {
+ public:
+  explicit ParseCallSyntaxException(std::string additional)
+      : ParseException(kParseCallSyntaxMessage + additional) {}
+  ParseCallSyntaxException() : ParseException(kParseCallSyntaxMessage) {}
+
+  static const char kParseCallSyntaxMessage[];
+};
+
+class ParseIfSyntaxException : public ParseException {
+ public:
+  explicit ParseIfSyntaxException(std::string additional)
+      : ParseException(kParseIfSyntaxMessage + additional) {}
+  ParseIfSyntaxException() : ParseException(kParseIfSyntaxMessage) {}
+
+  static const char kParseIfSyntaxMessage[];
+};
+
+class ParseWhileSyntaxException : public ParseException {
+ public:
+  explicit ParseWhileSyntaxException(std::string additional)
+      : ParseException(kParseWhileSyntaxMessage + additional) {}
+  ParseWhileSyntaxException() : ParseException(kParseWhileSyntaxMessage) {}
+
+  static const char kParseWhileSyntaxMessage[];
+};
+
+
 class ParseRelationSyntaxException : public ParseException {
  public:
   explicit ParseRelationSyntaxException(std::string additional)
@@ -46,18 +153,7 @@ class ParseFactorSyntaxException : public ParseException {
       : ParseException(kParseFactorSyntaxMessage + additional) {}
   ParseFactorSyntaxException() : ParseException(kParseFactorSyntaxMessage) {}
 
- private:
   static const char kParseFactorSyntaxMessage[];
-};
-
-class ParseAssignSyntaxException : public ParseException {
- public:
-  explicit ParseAssignSyntaxException(std::string additional)
-      : ParseException(kParseAssignSyntaxMessage + additional) {}
-  ParseAssignSyntaxException() : ParseException(kParseAssignSyntaxMessage) {}
-
- private:
-  static const char kParseAssignSyntaxMessage[];
 };
 
 }  // namespace sp

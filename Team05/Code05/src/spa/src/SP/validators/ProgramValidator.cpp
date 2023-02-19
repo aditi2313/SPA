@@ -9,26 +9,12 @@ bool ProgramValidator::Validate() {
   return procedure_validator_.Validate() && call_validator_.Validate();
 }
 
-void ProgramValidator::VisitProgram(ast::ProgramNode *program_node) {
-  for (auto &proc_node : program_node->get_children()) {
-    proc_node->AcceptVisitor(this);
-  }
-}
-
-void ProgramValidator::VisitProc(ast::ProcNode *proc_node) {
+void ProgramValidator::Process(ast::ProcNode *proc_node) {
   procedure_validator_.Accept(*proc_node);
   call_validator_.Accept(*proc_node);
-
-  proc_node->get_children()->AcceptVisitor(this);
 }
 
-void ProgramValidator::VisitStmtLst(ast::StmtLstNode *stmtlst_node) {
-  for (auto &stmt_node : stmtlst_node->get_children()) {
-    stmt_node->AcceptVisitor(this);
-  }
-}
-
-void ProgramValidator::VisitCall(ast::CallNode *call_node) {
+void ProgramValidator::Process(ast::CallNode *call_node) {
   call_validator_.Accept(*call_node);
 }
 

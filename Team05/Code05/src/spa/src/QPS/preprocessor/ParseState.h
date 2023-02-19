@@ -44,7 +44,7 @@ class RecursiveParseState : public ParseState {
 
  protected:
   std::string kRecurseDelimiter;
-  virtual parse_position recurse(
+  virtual void recurse(
       parse_position &itr, parse_position &grammar_itr) = 0;
 };
 
@@ -61,13 +61,13 @@ class DeclarationParseState : public RecursiveParseState {
              parse_position &itr,
              QueryPtr &query) override;
  private:
-  parse_position recurse(
+  void recurse(
       parse_position &itr, parse_position &grammar_itr) override {
     if (*itr == kRecurseDelimiter) {
       grammar_itr = grammar_.begin();  // Reset grammar
     } else {
       itr--;
-    }
+    }    
   }
 };
 

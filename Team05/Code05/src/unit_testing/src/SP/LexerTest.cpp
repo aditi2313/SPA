@@ -132,6 +132,20 @@ TEST_CASE("Lexer checking for double condition") {
     Lexer lxr("((a > 100) && (b < 100)) || (!(a < 100))");
     REQUIRE(lxr.IsDoubleCond());
   }
+
+  SECTION("A relation") {
+    Lexer lxr("(a + b) <= (a -b)");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+  SECTION("A not") {
+    Lexer lxr("!((a == 1) && (b == 2))");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+
+  SECTION("Not within a  double cond") {
+    Lexer lxr("(a == 1) || (!(b == 2)) && (b == 3)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
 }
 
 void TestLexerForToken(std::string vals, std::vector<Token> tokens) {

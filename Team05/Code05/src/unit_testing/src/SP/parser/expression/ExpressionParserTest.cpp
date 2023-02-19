@@ -109,6 +109,13 @@ TEST_CASE("Complex const nodes expression") {
   REQUIRE(expr_parser.parse(lxr)->DeepEquals(*test));
 }
 
+TEST_CASE("Invalid expressions throw exception") {
+  Lexer lxr("lemon orange s + b");
+  ExpressionParser expr_parser;
+  REQUIRE_THROWS_AS(expr_parser.parse(lxr), ParseException);
+
+}
+
 ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,
                              ast::ExprNodePtr prev) {
   for (int i = 0; i < variables.size(); ++i) {

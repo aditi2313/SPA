@@ -21,7 +21,7 @@ Select a pattern a(_, "a - b")
 5 - uses query
 if f; variable v;
 Select v such that Uses(f, v)
-m, l, j, k
+m, l, j, k, big, smol, x, y
 5000
 6 - uses query line
 variable var123;
@@ -30,13 +30,13 @@ none
 5000
 7 - uses query line
 variable var123;
-Select var123 such that Uses(4, var123)
-x
+Select var123 such that Uses(5, var123)
+a, b
 5000
 8 - uses query while
 while while; variable variable;
 Select variable such that Uses(while, variable)
-x, m, y, j, big, smol
+x, m, y
 5000
 9 - parent query on while test
 while while; if f;

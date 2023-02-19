@@ -7,16 +7,15 @@ namespace qps {
 
 // Compares token with the transition keyword of the next stage
 // to determine if the machine should go to next state
-bool SelectClParser::ShouldGoToNextState(
+int SelectClParser::NextState(
     int current_state_index, std::string token) {
-  if (current_state_index >= states_.size() - 1) return false;  // last stage
-
-  if (current_state_index == 1 && token == "pattern") {
-    // TODO(JL): replace hard-code
-    return true;
+  for (int neighbour : transition_table_[current_state_index]) {
+    if (token == states_.at(neighbour)->kTransitionKeyword) {
+      return neighbour;
+    }
   }
 
-  return token == states_.at(current_state_index + 1)->kTransitionKeyword;
+  return current_state_index;  // Stay in same state
 }
 
 // Returns a vector of tokens retrieved from query_string
@@ -65,12 +64,9 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
   int current_state_index = 0;
   auto itr = tokens.begin();
   while (itr != tokens.end()) {
-    if (ShouldGoToNextState(current_state_index, *itr)) {
-      current_state_index++;
-      continue;  // Go to next state
-    }
-    query = states_.at(current_state_index)->parse(
-        tokens, itr, std::move(query));
+    current_state_index = NextState(current_state_index, *itr);
+    states_.at(current_state_index)->parse(
+        tokens, itr, query);
   }
 
   return query;

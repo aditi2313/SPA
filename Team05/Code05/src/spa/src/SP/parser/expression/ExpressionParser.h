@@ -9,7 +9,7 @@
 namespace sp {
 class ExpressionParser : Parser<ast::ExprNode> {
  public:
-  std::unique_ptr<ast::ExprNode> parse(Lexer& lxr);
+  std::unique_ptr<ast::ExprNode> parse(Lexer& lxr) override;
   ast::ExprNodePtr parse(VectorLexer& lxr);
 };
 }  // namespace sp

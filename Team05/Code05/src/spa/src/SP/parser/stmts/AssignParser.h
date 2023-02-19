@@ -13,24 +13,24 @@
 namespace sp {
 class AssignParser : Parser<ast::AssignNode> {
  public:
-  std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) {
+  std::unique_ptr<ast::AssignNode> parse(Lexer& lxr) override {
     if (!IsKeyWordToken(lxr.get_tok())) {
-      // TODO(aizatazhar): use custom exception
-      throw std::runtime_error("expected a variable name");
+      throw ParseAssignSyntaxException("expected a variable name");
     }
+
     auto ident = lxr.get_ident();
     lxr.Increment();
-
     auto var_node =
         std::make_unique<ast::VarNode>(ast::VarNode(ident));
+
+    AssertExpectedToken(ParseAssignSyntaxException::kParseAssignSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokEquals);
+
     ExpressionParser expr_parser;
-
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokEquals, "=");
-
     auto expr = expr_parser.parse(lxr);
-    if (lxr.GetTokAndIncrement() != Token::kTokSemicolon) {
-      throw ParseAssignSyntaxException();
-    }
+
+    AssertExpectedToken(ParseAssignSyntaxException::kParseAssignSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokSemicolon);
 
     return std::make_unique<ast::AssignNode>(
         std::move(var_node), std::move(expr), lxr.GetAndIncrementStmtCtr());

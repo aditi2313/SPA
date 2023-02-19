@@ -23,7 +23,7 @@ TEST_CASE("OR expression parses") {
   auto other_less = std::make_unique<LessThanEqualNode>(
       std::move(InitialiseAdd()), std::move(InitialiseSub()));
   auto overall =
-      std::make_unique<OrExprNode>(std::move(equal), std::move(other_less));  
+      std::make_unique<OrExprNode>(std::move(equal), std::move(other_less));
   TestCondExpr(lxr, *overall);
 }
 
@@ -34,11 +34,10 @@ TEST_CASE("NOT expression parses") {
   TestCondExpr(lxr, *not_expr);
 }
 
-TEST_CASE("(x) >= 0") { 
+TEST_CASE("(x) >= 0") {
   Lexer lxr("(x) >= 0)");
   CondExprParser parser;
   parser.parse(lxr);
-
 }
 
 // testing parsing with error

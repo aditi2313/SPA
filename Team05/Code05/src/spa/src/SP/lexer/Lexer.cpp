@@ -21,7 +21,7 @@ void Lexer::Increment() {
 }
 
 bool Lexer::IsDoubleCond() {
-  std::stack<short> brackets;
+  std::stack<int> brackets;
   auto t_data = data_;
   bool result = false;
   // first token must be an open bracket

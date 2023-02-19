@@ -1,6 +1,6 @@
-#include <catch.hpp>
 #include <string>
 #include <vector>
+#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "common/exceptions/SP.h"

@@ -151,4 +151,14 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> expected_results{"1", "2", "3", "4"};
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION("pattern a(syn, _) should return correct results") {
+    std::string query_string = "assign a; variable var; "
+                               "Select var pattern a(var, _\"x\"_)";
+    std::list<std::string> actual_results;
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"abc"};
+    REQUIRE(actual_results == expected_results);
+  }
 }

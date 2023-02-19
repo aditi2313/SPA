@@ -22,11 +22,11 @@ class VectorLexer {
   /// sequence of tokens.
   /// </summary>
   /// <param name="lxr"></param>
-  explicit VectorLexer(Lexer& lxr) {    
+  explicit VectorLexer(Lexer& lxr) {
     int level = 0;
     while (lxr.get_tok() != Token::kTokSemicolon &&
            lxr.get_tok() != Token::kTokEof && !IsRelationToken(lxr.get_tok())) {
-      if (lxr.get_tok() == Token::kTokOpenBracket) {        
+      if (lxr.get_tok() == Token::kTokOpenBracket) {
         level++;
       }
       if (lxr.get_tok() == Token::kTokCloseBracket) {

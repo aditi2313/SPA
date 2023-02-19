@@ -1,11 +1,13 @@
 #pragma once
-#include <QPS/models/Query.h>
-#include "common/exceptions/QPSExceptions.h"
 
 #include <memory>
 #include <unordered_map>
 #include <string>
 #include <vector>
+
+#include "QPS/models/Query.h"
+#include "common/exceptions/QPSExceptions.h"
+
 namespace qps {
 class Validator {
  public:

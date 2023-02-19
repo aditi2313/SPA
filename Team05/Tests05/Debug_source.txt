@@ -1,5 +1,0 @@
-procedure example {
-    while ((x) >= 0) {
-        read x;
-    }
-}

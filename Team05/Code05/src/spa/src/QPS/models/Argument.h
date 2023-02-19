@@ -61,10 +61,8 @@ class Wildcard : public Argument {
 
 class SynonymArg : public Argument {
  public:
-  explicit SynonymArg(SynonymName syn_name, EntityName entity_name)
-      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {
-    base_entity_name_ = PQL::get_base_entity_name(entity_name);
-  }
+  explicit SynonymArg(SynonymName syn_name)
+      : Argument(), syn_name_(syn_name) {}
 
   inline bool IsSynonym() override { return true; }
   inline bool IsEntRef() override { return true; }
@@ -72,6 +70,10 @@ class SynonymArg : public Argument {
 
   inline SynonymName get_syn_name() { return syn_name_; }
   inline SynonymName get_entity_name() { return entity_name_; }
+  inline void set_entity_name(EntityName entity_name) {
+    entity_name_ = entity_name;
+    base_entity_name_ = PQL::get_base_entity_name(entity_name);
+  }
   inline SynonymName get_base_entity_name() { return base_entity_name_; }
 
   inline std::ostream &dump(std::ostream &str) const override {

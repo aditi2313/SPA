@@ -110,6 +110,44 @@ TEST_CASE("Error reading cases") {
   }
 }
 
+TEST_CASE("Lexer checking for double condition") {
+  SECTION("Basic checking") {
+    Lexer lxr("(a + c) || (a - b)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+  SECTION("Single cond") {
+    Lexer lxr("((x) >= b)");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+  SECTION("Nested conditions") {
+    Lexer lxr("(((a - c + d))) || (((x - 123)) < (102))");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+
+  SECTION("Long conditions") {
+    Lexer lxr("(a + b - c * (d + l) > 1000) && (100 / 1000 < 203)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+  SECTION("Nested cond") {
+    Lexer lxr("((a > 100) && (b < 100)) || (!(a < 100))");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+
+  SECTION("A relation") {
+    Lexer lxr("(a + b) <= (a -b)");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+  SECTION("A not") {
+    Lexer lxr("!((a == 1) && (b == 2))");
+    REQUIRE(!lxr.IsDoubleCond());
+  }
+
+  SECTION("Not within a  double cond") {
+    Lexer lxr("(a == 1) || (!(b == 2)) && (b == 3)");
+    REQUIRE(lxr.IsDoubleCond());
+  }
+}
+
 void TestLexerForToken(std::string vals, std::vector<Token> tokens) {
   Lexer lxr(vals);
   Token tok;

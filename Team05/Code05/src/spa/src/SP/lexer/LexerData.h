@@ -62,6 +62,6 @@ class LexerData {
   sp::Token current_token_;
   int current_int_;
   int current_stmt_;
-  std::string program_;
+  std::string& program_;
   int ptr_;
 };

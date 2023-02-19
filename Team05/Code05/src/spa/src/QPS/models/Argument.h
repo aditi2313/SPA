@@ -1,11 +1,11 @@
 #pragma once
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
 
-#include "models/types.h"
-#include "QPS/models/Synonym.h"
 #include "QPS/models/PQL.h"
+#include "QPS/models/Synonym.h"
+#include "models/types.h"
 
 using models::SynonymName;
 
@@ -101,8 +101,7 @@ class SynonymArg : public Argument {
 
 class IdentArg : public Argument {
  public:
-  explicit IdentArg(std::string ident) :
-      Argument(), ident_(ident) {}
+  explicit IdentArg(std::string ident) : Argument(), ident_(ident) {}
 
   inline bool IsEntRef() override { return true; }
 
@@ -129,9 +128,8 @@ class IdentArg : public Argument {
 };
 
 class IntegerArg : public Argument {
- public :
-  explicit IntegerArg(int number) :
-      Argument(), number_(number) {}
+ public:
+  explicit IntegerArg(int number) : Argument(), number_(number) {}
 
   inline bool IsStmtRef() override { return true; }
 
@@ -159,8 +157,8 @@ class IntegerArg : public Argument {
 
 class ExpressionArg : public Argument {
  public:
-  explicit ExpressionArg(std::string expr, bool is_exact) :
-      Argument(), expr_(expr), is_exact_(is_exact) {}
+  explicit ExpressionArg(std::string expr, bool is_exact)
+      : Argument(), expr_(expr), is_exact_(is_exact) {}
 
   inline bool IsExpression() override { return true; }
   inline std::string get_expression() { return expr_; }

@@ -1,16 +1,11 @@
-1 - Select parent of while
-while w; stmt s;
-Select w such that Parent(s, w)
-12, 15, 38
-5000
 2 - Select parent of if
 if if; stmt s;
-Select w such that Parent(s, if)
-24, 38
+Select s such that Parent(s, if)
+4, 24
 5000
 3 - Select parent of if that is a while
 if if; while while;
-Select w such that Parent(while, if)
+Select while such that Parent(while, if)
 4
 5000
 4 - Select parent of if that is a if
@@ -33,3 +28,4 @@ if if;
 Select if such that Parent(4, 5)
 5, 15, 24, 28, 38
 5000
+

@@ -173,6 +173,7 @@ class UsesClause : public Clause {
 
   inline bool ValidateArgumentTypes() override {
     return arg1_->IsStmtRef() && arg2_->IsEntRef() && !arg1_->IsWildcard();
+    ;
   }
 };
 // Relationship between a stmt and another stmt.

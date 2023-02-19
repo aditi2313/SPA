@@ -12,17 +12,16 @@ TEST_CASE("Test FollowsTable") {
     follows_data1.add_to_list(9);
     follows_data2.add_to_list(1);
 
-    FollowsTable follows_table1;
+    FollowsTable follows_table1, follows_table2;
     follows_table1.add_row(5, follows_data1);
-    FollowsTable follows_table2;
     follows_table2.add_row(5, follows_data2);
 
     SECTION("Checking if FollowsTable rows exists") {
         REQUIRE((follows_table1.exists(5) && follows_table2.exists(5)));
     };
 
-    SECTION("Checking if FollowsTable row is empty") {
-        REQUIRE(!(follows_table1.empty() && follows_table2.empty()));
+    SECTION("Checking if FollowsTable are empty") {
+        REQUIRE((!follows_table1.empty() && !follows_table2.empty()));
     };
 
     SECTION("Retrieving FollowsTable row") {

@@ -13,17 +13,16 @@ TEST_CASE("Test ModifiesTable") {
     ModifiesData modifies_data1(1, variables1);
     ModifiesData modifies_data2(3, variables2);
 
-    ModifiesTable modifies_table1;
+    ModifiesTable modifies_table1, modifies_table2;
     modifies_table1.add_row(5, modifies_data1);
-    ModifiesTable modifies_table2;
     modifies_table2.add_row(5, modifies_data2);
 
     SECTION("Checking if ModifiesTable rows exists") {
         REQUIRE((modifies_table1.exists(5) && modifies_table2.exists(5)));
     };
 
-    SECTION("Checking if ModifiesTable row is empty") {
-        REQUIRE(!(modifies_table1.empty() && modifies_table2.empty()));
+    SECTION("Checking if ModifiesTable are empty") {
+        REQUIRE((!modifies_table1.empty() && !modifies_table2.empty()));
     };
 
     SECTION("Retrieving ModifiesTable row") {

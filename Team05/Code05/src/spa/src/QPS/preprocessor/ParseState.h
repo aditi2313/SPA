@@ -44,10 +44,8 @@ class RecursiveParseState : public ParseState {
 
  protected:
   std::string kRecurseDelimiter;
-  virtual parse_position recurse() = 0;
-  inline bool CheckRecurseDelimiter(std::string token) {
-    return token == kRecurseDelimiter;
-  }
+  virtual parse_position recurse(
+      parse_position &itr, parse_position &grammar_itr) = 0;
 };
 
 // design-entity synonym (',' synonym)* ';'
@@ -63,8 +61,13 @@ class DeclarationParseState : public RecursiveParseState {
              parse_position &itr,
              QueryPtr &query) override;
  private:
-  parse_position recurse() override {
-    return grammar_.begin();
+  parse_position recurse(
+      parse_position &itr, parse_position &grammar_itr) override {
+    if (*itr == kRecurseDelimiter) {
+      grammar_itr = grammar_.begin();  // Reset grammar
+    } else {
+      itr--;
+    }
   }
 };
 

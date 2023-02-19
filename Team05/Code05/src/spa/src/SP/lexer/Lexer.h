@@ -1,8 +1,5 @@
 #pragma once
 
-// Temporary file to contain all the refactoring made to Lexer
-// To avoid conflicts with bug fixes so they can be added
-// cleanly
 #include <list>
 #include <memory>
 #include <string>
@@ -18,8 +15,7 @@
 namespace sp {
 class Lexer {
  public:
-  explicit Lexer(std::string program)
-      : program_(program), data_(program_), current_token_(Token::kTokError) {
+  explicit Lexer(std::string program) : data_(program) {
     // create the handlers
     auto white_handler = std::make_unique<WhiteSpaceHandler>();
     auto alpha_handler = std::make_unique<AlphaNumericHandler>();
@@ -42,17 +38,15 @@ class Lexer {
 
   int GetAndIncrementStmtCtr() { return data_.GetStmtAndIncrement(); }
 
-  Token get_tok() { return current_token_; }
+  Token get_tok() { return data_.get_current_token(); }
 
   Token Peek() {
     auto temp_data = data_;
-    auto temp_curr = current_token_;
 
     Increment();
     auto res = get_tok();
 
     data_ = temp_data;
-    current_token_ = temp_curr;
 
     return res;
   }
@@ -64,8 +58,6 @@ class Lexer {
 
  private:
   LexerData data_;
-  Token current_token_;
-  std::string program_;
   std::list<std::unique_ptr<LexerHandler>> handlers;
 };
 }  // namespace sp

@@ -32,22 +32,24 @@ class PQL {
   };
 
   inline static bool const is_entity_name(std::string const token) {
-    return find(kAllEntityNames.begin(), kAllEntityNames.end(), token)
-        != kAllEntityNames.end();
+    return kAllEntityNames.find(token) != kAllRelIds.end();
   }
 
   inline static EntityName kModifiesRelId = "Modifies";
   inline static EntityName kFollowsRelId = "Follows";
   inline static EntityName kFollowsTRelId = "Follows*";
   inline static EntityName kPatternRelId = "pattern";
+  inline static EntityName kUsesRelId = "Uses";
+  inline static EntityName kParentRelId = "Parent";
+  inline static EntityName kParentTRelId = "Parent*";
 
   inline static std::unordered_set<std::string> kAllRelIds{
-      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kPatternRelId
+      kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
+      kParentTRelId, kUsesRelId, kPatternRelId
   };
 
   inline static bool is_rel_ref(std::string const token) {
-    return find(kAllRelIds.begin(), kAllRelIds.end(), token)
-        != kAllRelIds.end();
+    return kAllRelIds.find(token) != kAllRelIds.end();
   }
 
   inline static bool is_argument(std::string const token) {

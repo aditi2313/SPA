@@ -41,6 +41,12 @@ class IntEntity : public Entity {
 
   inline int get_number() { return number_; }
 
+  inline size_t hash() override {
+    std::string str = typeid(*this).name()
+        + std::to_string(number_);
+    return std::hash<std::string>{}(str);
+  }
+
  private:
   int number_;
 };

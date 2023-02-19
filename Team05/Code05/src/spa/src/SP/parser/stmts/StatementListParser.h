@@ -11,6 +11,6 @@
 namespace sp {
 class StatementListParser : Parser<ast::StmtLstNode> {
  public:
-  std::unique_ptr<ast::StmtLstNode> parse(Lexer&);
+  std::unique_ptr<ast::StmtLstNode> parse(Lexer&) override;
 };
 }  // namespace sp

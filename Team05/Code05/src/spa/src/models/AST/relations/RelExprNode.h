@@ -43,7 +43,7 @@ class RelExprNode : public CondExprNode {
     right_factor_ = std::move(right_factor);
   }
 
-  virtual void AcceptVisitor(sp::TNodeVisitor* visitor);
+  void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
   bool DeepEquals(const CondExprNode& other) override {
     if (util::InstanceOf<RelExprNode, CondExprNode>(other)) {

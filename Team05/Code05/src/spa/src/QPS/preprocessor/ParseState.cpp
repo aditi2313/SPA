@@ -25,11 +25,7 @@ void DeclarationParseState::parse(
       query->declare_synonym(*itr, entity_name);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
-      if (CheckRecurseDelimiter(*itr)) {
-        grammar_itr = recurse();
-      } else {
-        itr--;
-      }
+      recurse(itr, grammar_itr);
     }
     itr++;
     grammar_itr++;

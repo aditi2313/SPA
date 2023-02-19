@@ -44,10 +44,8 @@ bool Evaluator::EvaluateClause(QueryPtr &query, ClausePtr &clause) {
   InitializeEntitiesFromArgument(query, arg2, clause->RHS(), RHS);
 
   // Takes care of duplicates
-  std::set<EntityPtr, decltype(EntityPtrComparator)> RHS_results(
-      EntityPtrComparator);
-  std::set<EntityPtr, decltype(EntityPtrComparator)> LHS_results(
-      EntityPtrComparator);
+  EntityPtrHashset RHS_results(0, EntityPtrHash, EntityPtrEqual);
+  EntityPtrHashset LHS_results(0, EntityPtrHash, EntityPtrEqual);
 
   // Query PKB with LHS possible values
   for (auto &index : LHS) {
@@ -118,7 +116,7 @@ void Evaluator::InitializeEntitiesFromArgument(
 
 void Evaluator::UpdateSynonymEntityList(
     QueryPtr &query, ArgumentPtr &arg,
-    std::set<EntityPtr, decltype(EntityPtrComparator)> const &result) {
+    EntityPtrHashset const &result) {
   if (!arg->IsSynonym()) return;  // Not a synonym
 
   SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());

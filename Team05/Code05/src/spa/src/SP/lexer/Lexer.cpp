@@ -16,6 +16,6 @@ void Lexer::Increment() {
   if (!token) {
     throw LexerException("No valid token found");
   }
-  current_token_ = token.value();
+  data_.set_current_token(token.value());
 }
 }  // namespace sp

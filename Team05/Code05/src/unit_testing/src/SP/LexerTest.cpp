@@ -52,7 +52,8 @@ TEST_CASE("Testing lexer functionality") {
   SECTION("Test simple procedure functionality") {
     // procedure will always be treated as kTokProcedure
     // To allow procedure to be the name for a procedure,
-    // we can accept
+    // the respective parsers chooses to treat them as
+    // variable names
     std::string test =
         "procedure procedure {"
         "read x;"

@@ -40,10 +40,10 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
   QPS qps;
   std::unique_ptr<PKBRead> pkb = InitializePKB(
       {
-          {"v", 1, "x + y"},
+          {"abc", 1, "x + y"},
           {"v", 2, "abra + cadabra"},
           {"v", 3, "1 + 2 + 3"},
-          {"v", 4, "x + 1 + 3"}
+          {"abc", 4, "x + 1 + 3"}
       });
 
   SECTION("pattern a(_, _) should return correct results") {
@@ -138,7 +138,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"1", "2", "3", "4"};
+    std::list<std::string> expected_results{"2", "3"};
     REQUIRE(actual_results == expected_results);
   }
 

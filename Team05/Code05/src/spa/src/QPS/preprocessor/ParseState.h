@@ -1,11 +1,12 @@
 #pragma once
 
+#include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
-#include "common/Exceptions.h"
 
 #include "../models/Query.h"
+#include "common/Exceptions.h"
 
 namespace qps {
 class ParseState {
@@ -13,65 +14,93 @@ class ParseState {
   using parse_position = std::vector<std::string>::iterator;
   std::string kTransitionKeyword;
 
-  explicit ParseState(std::string transition) :
-      kTransitionKeyword(transition) {}
-  virtual std::unique_ptr<Query> parse(
-      const std::vector<std::string> &tokens,
-      parse_position &itr,
-      std::unique_ptr<Query> query) = 0;
+  explicit ParseState(std::string transition, std::vector<std::string> grammar)
+      : kTransitionKeyword(transition), grammar_(grammar) {}
+
+  virtual void parse(const std::vector<std::string> &tokens,
+                     parse_position &itr, QueryPtr &query) = 0;
   virtual ~ParseState() = 0;
+
  protected:
   const char *kExceptionMessage;
-  void ThrowException() {
-    throw PqlSyntaxErrorException(kExceptionMessage);
+  void ThrowException() { throw PqlSyntaxErrorException(kExceptionMessage); }
+  inline virtual bool IsComplete(parse_position grammar_itr) {
+    return grammar_itr == grammar_.end();
   }
+  std::vector<std::string> grammar_;
+};
+
+class RecursiveParseState : public ParseState {
+ public:
+  RecursiveParseState(std::string transition, std::vector<std::string> grammar,
+                      std::string kRecurseDelimiter)
+      : ParseState(transition, grammar), kRecurseDelimiter(kRecurseDelimiter) {}
+
+ protected:
+  std::string kRecurseDelimiter;
+  virtual void recurse(parse_position &itr, parse_position &grammar_itr) = 0;
 };
 
 // design-entity synonym (',' synonym)* ';'
-class DeclarationParseState : public ParseState {
+class DeclarationParseState : public RecursiveParseState {
  public:
-  DeclarationParseState() : ParseState("") {
+  DeclarationParseState()
+      : RecursiveParseState("",
+                            {PQL::kDesignEntityGrammar, PQL::kSynGrammar,
+                             PQL::kRecurseGrammar, ";"},
+                            ",") {
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
+
+ private:
+  void recurse(parse_position &itr, parse_position &grammar_itr) override {
+    if (*itr == kRecurseDelimiter) {
+      grammar_itr = grammar_.begin();  // Reset grammar
+    } else {
+      itr--;
+    }
+  }
 };
 
-// synonym (',' synonym)*
-class SynonymParseState : public ParseState {
+// synonym | tuple | BOOLEAN
+class SelectParseState : public ParseState {
  public:
-  SynonymParseState() : ParseState("Select") {
+  SelectParseState() : ParseState("Select", {"Select", PQL::kSynGrammar}) {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
 };
 
 // 'such' 'that' relRef
 class SuchThatParseState : public ParseState {
  public:
-  SuchThatParseState() : ParseState("such") {
+  SuchThatParseState()
+      : ParseState("such",
+                   {"such", "that", PQL::kRelRefGrammar, "(",
+                    PQL::kArgumentGrammar, ",", PQL::kArgumentGrammar, ")"}) {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
 };
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 class PatternParseState : public ParseState {
  public:
-  PatternParseState() : ParseState("pattern") {
+  PatternParseState()
+      : ParseState("pattern",
+                   {"pattern", PQL::kSynGrammar, "(", PQL::kArgumentGrammar,
+                    ",", PQL::kExprGrammar, ")"}) {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
   }
 
-  std::unique_ptr<Query> parse(const std::vector<std::string> &tokens,
-                               parse_position &itr,
-                               std::unique_ptr<Query> query) override;
+  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
 };
 }  // namespace qps

@@ -1,0 +1,28 @@
+1 - Queries specifically for testing the behaviour of modifies
+variable v; stmt s;
+Select v such that Modifies(s, v)
+x, z, k
+5000
+2 - Queries specifically for single line
+variable v;
+Select v such that Modifies(2, v)
+x
+5000
+3 - Queries for single line
+variable v;
+Select v such that Modifies(3, v)
+none
+5000
+4 - Queries for single line
+variable v;
+Select v such that Modifies(5, v)
+z
+5000
+5 - Queries for the statement numbers
+stmt s;
+Select s such that Modifies(s, "x")
+1, 6
+5000
+
+
+

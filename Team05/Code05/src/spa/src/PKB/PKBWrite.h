@@ -116,8 +116,6 @@ class PKBWrite {
   /// </summary>
   void ProcessParent();
 
-  void ProcessUses();
-  void RecursiveProcessUses(int);
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };
 }  // namespace pkb

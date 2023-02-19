@@ -60,25 +60,4 @@ void PKBWrite::ProcessParent() {
       [](ParentData& data) { return data.get_child(); });
 }
 
-
-
-void PKBWrite::ProcessUses() { 
-  std::unordered_set<int> container_stmts;
-  for (int v : pkb_relation_table_->if_) {
-    container_stmts.insert(v);
-  }
-  for (int v : pkb_relation_table_->whiles_) {
-    container_stmts.insert(v);
-  }
-
-
-
-
-}
-
-void PKBWrite::RecursiveProcessUses(int child) {
-
-
-}
-
 }  // namespace pkb

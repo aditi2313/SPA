@@ -11,7 +11,7 @@ namespace sp {
 std::unique_ptr<ast::StmtLstNode> StatementListParser::parse(Lexer& lxr) {
   Token current_tok = lxr.get_tok();
   std::vector<std::unique_ptr<ast::StmtNode>> stmt_nodes;
-  while (IsStmtToken(current_tok)) {
+  while (IsKeyWordToken(current_tok)) {
     StatementParser stmt_parser;
     stmt_nodes.push_back(std::move(stmt_parser.parse(lxr)));
     current_tok = lxr.get_tok();

@@ -2,7 +2,7 @@
 
 #include "QPS/preprocessor/ParseState.h"
 #include "QPS/models/PQL.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 using namespace qps; // NOLINT
 

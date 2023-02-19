@@ -1,6 +1,6 @@
 #pragma once
 #include <QPS/models/Query.h>
-#include <common/Exceptions.h>
+#include "common/exceptions/QPSExceptions.h"
 
 #include <memory>
 #include <unordered_map>

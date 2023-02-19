@@ -14,7 +14,6 @@ namespace qps {
 // e.g. Clause(Argument, Argument)
 // It can be a synonym for statement, procedure, variable,
 // character strings, wildcard, or expressions for exact/partial matches
-// TODO(JL): replace string with OOP and include wildcards etc.
 class Argument {
  public:
   // synonym | _ | INTEGER

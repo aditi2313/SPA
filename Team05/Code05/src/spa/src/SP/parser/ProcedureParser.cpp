@@ -3,7 +3,7 @@
 #include <utility>
 #include <string>
 
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 #include "models/AST/Token.h"
 #include "stmts/StatementListParser.h"
 

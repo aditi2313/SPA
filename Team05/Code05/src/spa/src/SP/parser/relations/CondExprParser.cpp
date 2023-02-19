@@ -3,7 +3,7 @@
 #include <utility>
 
 #include "RelExprParser.h"
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 
 namespace sp {
 void AssertOpenBracket(Lexer& lxr) {

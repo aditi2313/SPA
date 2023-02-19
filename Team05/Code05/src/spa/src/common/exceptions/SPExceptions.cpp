@@ -1,4 +1,4 @@
-#include "SP.h"
+#include "SPExceptions.h"
 
 namespace sp {
 

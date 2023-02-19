@@ -11,7 +11,7 @@
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace filter {
 

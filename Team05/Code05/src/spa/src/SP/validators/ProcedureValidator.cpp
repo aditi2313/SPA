@@ -2,7 +2,7 @@
 
 #include <unordered_set>
 #include <utility>
-#include "common/exceptions/SP.h"
+#include "common/exceptions/SPExceptions.h"
 
 namespace sp {
 bool ProcedureValidator::Validate() {

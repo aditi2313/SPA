@@ -2,17 +2,10 @@
 
 #include <string>
 
-const char kProcedure[] = "procedure";
-const char kRead[] = "read";
-const char kPrint[] = "print";
-const char kWhile[] = "while";
-const char kCall[] = "call";
-const char kIf[] = "if";
-const char kElse[] = "else";
-const char kThen[] = "then";
+#include "models/AST/Token.h"
 
 namespace sp {
-std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
+std::optional<Token> AlphaNumericHandler::Handle(LexerData &data) {
   char c = data.get_current_char();
   // NAME: LETTER (LETTER | DIGIT)*
   if (!isalpha(c)) {
@@ -26,29 +19,8 @@ std::optional<Token> AlphaNumericHandler::Handle(LexerData& data) {
     data.increment_pointer();
   }
   data.set_word(word);
-  if (word == kProcedure) {
-    return {Token::kTokProcedure};
-  }
-  if (word == kRead) {
-    return {Token::kTokRead};
-  }
-  if (word == kPrint) {
-    return {Token::kTokPrint};
-  }
-  if (word == kCall) {
-    return {Token::kTokCall};
-  }
-  if (word == kWhile) {
-    return {Token::kTokWhile};
-  }
-  if (word == kIf) {
-    return {Token::kTokIf};
-  }
-  if (word == kElse) {
-    return {Token::kTokElse};
-  }
-  if (word == kThen) {
-    return {Token::kTokThen};
+  if (IsTokenString(word)) {
+    return StringToToken(word);
   }
   return {Token::kTokIdent};
 }

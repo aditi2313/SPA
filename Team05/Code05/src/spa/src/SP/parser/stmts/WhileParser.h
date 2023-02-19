@@ -15,20 +15,26 @@ class WhileParser : public Parser<ast::WhileNode> {
   std::unique_ptr<ast::WhileNode> parse(Lexer& lxr) override {
     StatementListParser stmt_list_parser;
     CondExprParser cond_parser;
-    int stmt = lxr.GetAndIncrementStmtCtr();
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokWhile, "while");
+    int stmt = lxr.GetAndIncrementStmtCtr();    
+    AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokWhile);
 
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenBracket, "(");
+    AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokOpenBracket);
 
     auto cond = cond_parser.parse(lxr);
 
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseBracket, ")");
+    AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokCloseBracket);
 
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokOpenCurly, "{");
+    AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokOpenCurly);
 
     auto stmts = stmt_list_parser.parse(lxr);
 
-    AssertExpectedToken(lxr.GetTokAndIncrement(), Token::kTokCloseCurly, "}");
+    AssertExpectedToken(ParseWhileSyntaxException::kParseWhileSyntaxMessage,
+                        lxr.GetTokAndIncrement(), Token::kTokCloseCurly);
+
     return std::make_unique<ast::WhileNode>(std::move(cond), std::move(stmts),
                                             stmt);
   }

@@ -1,4 +1,5 @@
 #include "CallValidator.h"
+#include "common/exceptions/SP.h"
 
 namespace sp {
 bool CallValidator::Validate() {
@@ -8,7 +9,7 @@ bool CallValidator::Validate() {
 bool CallValidator::ValidateProcedureNameExists() {
   for (auto &call_name : call_names_set) {
     if (!procedure_names_set_.count(call_name)) {
-      return false;
+      throw CallSemanticsException("procedure does not exist: " + call_name);
     }
   }
 

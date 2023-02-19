@@ -47,7 +47,7 @@ class IntEntity : public Entity {
     return std::hash<std::string>{}(str);
   }
 
- private:
+ protected:
   int number_;
 };
 
@@ -57,6 +57,10 @@ class Constant : public IntEntity {
 
   inline EntityPtr Copy() override {
     return std::make_unique<Constant>(*this);
+  }
+
+  inline bool WeakEqual(Entity &other) override {
+    return *this == other;
   }
 };
 }  // namespace models

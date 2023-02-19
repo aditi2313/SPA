@@ -20,6 +20,7 @@ class Entity {
   virtual bool operator!=(Entity &other) = 0;
   virtual bool operator<(Entity &other) = 0;
   virtual std::unique_ptr<Entity> Copy() = 0;
+  virtual bool WeakEqual(Entity &other) = 0;
   virtual std::size_t hash() = 0;
 };
 

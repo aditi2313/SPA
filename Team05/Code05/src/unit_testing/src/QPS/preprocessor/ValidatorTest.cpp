@@ -1,10 +1,10 @@
 #include <catch.hpp>
 #include <utility>
 
-#include <QPS/models/PQL.h>
-#include <QPS/preprocessor/SelectClParser.h>
-#include <QPS/preprocessor/Validator.h>
-#include <common/Exceptions.h>
+#include "QPS/models/PQL.h"
+#include "QPS/preprocessor/SelectClParser.h"
+#include "QPS/preprocessor/Validator.h"
+#include "common/Exceptions.h"
 
 using namespace qps;  // NOLINT
 

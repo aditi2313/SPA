@@ -22,14 +22,6 @@ TEST_CASE("Test Wildcard as first argument in Clauses") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
-  SECTION("Second argument cannot be int") {
-    // No wildcard
-    std::string query_str = "stmt s; Select s such that Uses(s, \"var\")";
-    auto query = parser.ParseQuery(query_str);
-
-    REQUIRE_THROWS_AS(Validator::Validate(query), PqlSemanticErrorException);
-  }
-
   SECTION("First argument for Modifies is a wildcard should throw error") {
     std::string query_str = "stmt s; Select s such that Modifies(_, \"var\")";
     auto query = parser.ParseQuery(query_str);

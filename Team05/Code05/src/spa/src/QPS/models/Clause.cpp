@@ -6,7 +6,6 @@
 #include "SP/SourceProcessor.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/PredicateFilter.h"
-
 using namespace filter;  // NOLINT
 
 namespace qps {

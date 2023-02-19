@@ -9,13 +9,10 @@
 namespace qps {
 class Validator {
  public:
-  static bool validate(std::unique_ptr<Query> &query);
-  bool DesignEntitySynonyms(std::vector<std::unique_ptr<Clause>> clauses,
-                            std::vector<SynonymPtr> synonyms);
-  static bool IsWildcard(std::vector<std::unique_ptr<Clause>> &clauses);
-  static bool SynonymCheck(QueryPtr &query);
+  static void Validate(std::unique_ptr<Query> &query);
  private:
-  std::vector<std::unique_ptr<Clause>> clauses_;
-  std::vector<std::string> synonyms_;
+  static void ValidateClauseArguments(QueryPtr &query);
+  static void ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query);
+  static void ValidateSynonymsUsedAreDeclared(QueryPtr &query);
 };
 }  // namespace qps

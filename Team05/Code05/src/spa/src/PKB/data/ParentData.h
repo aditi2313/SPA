@@ -5,7 +5,7 @@
 namespace pkb {
 class ParentData {
  public:
-  ParentData(int parent);
+  explicit ParentData(int parent);
 
   inline int get_line() { return line_; }
 

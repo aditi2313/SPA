@@ -8,7 +8,7 @@
 #include "stmts/StatementListParser.h"
 
 namespace sp {
-std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {  
+std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {
   AssertExpectedToken(
       ParseProcedureSyntaxException::kParseProcedureSyntaxMessage,
       lxr.GetTokAndIncrement(), Token::kTokProcedure);

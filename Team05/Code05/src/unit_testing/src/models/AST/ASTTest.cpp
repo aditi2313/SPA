@@ -43,8 +43,6 @@ TEST_CASE("1st Test") {
         ast::AssignNode(std::move(var1), std::move(plus1), 3);
     sp::AssignVisitor av(std::move(mv.EndVisit()));
     av.VisitAssign(&assign1);
-
-    require(1 == 1);
   }
 
   SECTION("Test Equals") {

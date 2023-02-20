@@ -15,22 +15,14 @@ void Evaluator::InitializeSynonyms(QueryPtr &query) {
 QueryResultPtr Evaluator::EvaluateQuery(QueryPtr &query) {
   InitializeSynonyms(query);
 
-  auto &clauses = query->get_clauses();
-  int num_clauses = clauses.size();
-  for (int i = num_clauses - 1; i >= 0; i--) {
-    bool clause_result = EvaluateClause(query, clauses.at(i));
+  for (int i = 0; i < 2; ++i) {
+    for (auto &clause : query->get_clauses()) {
+      bool clause_result = EvaluateClause(query, clause);
 
-    if (!clause_result) {
-      // Clause is false, can immediately return empty result.
-      return std::make_unique<QueryResult>();
-    }
-  }
-  for (int i = 0; i < num_clauses; i++) {
-    bool clause_result = EvaluateClause(query, clauses.at(i));
-
-    if (!clause_result) {
-      // Clause is false, can immediately return empty result.
-      return std::make_unique<QueryResult>();
+      if (!clause_result) {
+        // Clause is false, can immediately return empty result.
+        return std::make_unique<QueryResult>();
+      }
     }
   }
 

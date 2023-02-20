@@ -9,9 +9,10 @@
 namespace sp {
 
 void UsesVisitor::Process(ast::AssignNode* assign_node) {
-  VarCollector varCollector;
-  assign_node->get_expr()->AcceptVisitor(&varCollector);
-  std::unordered_set<std::string> vars = varCollector.get_vars();
+  VarCollector var_collector;
+  auto& expr_node = assign_node->get_expr();
+  expr_node->AcceptVisitor(&var_collector);
+  std::unordered_set<std::string> vars = var_collector.get_vars();
   pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
 }
 
@@ -22,7 +23,8 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
 
 void UsesVisitor::Process(ast::IfNode* if_node) {
   VarCollector var_collector;
-  if_node->get_cond()->AcceptVisitor(&var_collector);
+  auto& cond_node = if_node->get_cond();
+  cond_node->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();
 
   // add the additional variables from the sub statement lists
@@ -34,7 +36,8 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
 
 void UsesVisitor::Process(ast::WhileNode* while_node) {
   VarCollector var_collector;
-  while_node->get_cond()->AcceptVisitor(&var_collector);
+  auto& cond_node = while_node->get_cond();
+  cond_node->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();
 
   // add the variables from the sub statements

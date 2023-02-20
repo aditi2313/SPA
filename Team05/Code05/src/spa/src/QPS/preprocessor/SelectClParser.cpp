@@ -31,7 +31,7 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
     } else if (*itr == '\"') {
       // This removes whitespace in the pattern match arg
       // e.g "x + y" such that it is treated as one token.
-      itr++;
+      new_query += *itr++;
       while (*itr != '\"') {
         if (*itr == ' ') {
           itr++;
@@ -39,6 +39,7 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
         }
         new_query += *itr++;
       }
+      new_query += *itr;
     } else {
       new_query += *itr;
     }

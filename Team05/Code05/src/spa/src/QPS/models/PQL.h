@@ -5,15 +5,16 @@
 #include <memory>
 #include <utility>
 
-#include "common/Exceptions.h"
+#include "common/exceptions/QPSExceptions.h"
 #include "models/types.h"
 
 using models::EntityName;
 
 namespace qps {
-
 class PQL {
  public:
+  using RelName = std::string;
+
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
   inline static std::string kPrintEntityName = "print";
@@ -48,13 +49,13 @@ class PQL {
     return entity_name;
   }
 
-  inline static EntityName kModifiesRelId = "Modifies";
-  inline static EntityName kFollowsRelId = "Follows";
-  inline static EntityName kFollowsTRelId = "Follows*";
-  inline static EntityName kPatternRelId = "pattern";
-  inline static EntityName kUsesRelId = "Uses";
-  inline static EntityName kParentRelId = "Parent";
-  inline static EntityName kParentTRelId = "Parent*";
+  inline static RelName kModifiesRelId = "Modifies";
+  inline static RelName kFollowsRelId = "Follows";
+  inline static RelName kFollowsTRelId = "Follows*";
+  inline static RelName kPatternRelId = "pattern";
+  inline static RelName kUsesRelId = "Uses";
+  inline static RelName kParentRelId = "Parent";
+  inline static RelName kParentTRelId = "Parent*";
 
   inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
@@ -66,15 +67,26 @@ class PQL {
   }
 
   inline static bool is_argument(std::string const token) {
-    return is_ident(token) || is_integer(token) || is_wildcard(token);
+    return is_ident(token)
+        || is_integer(token)
+        || is_wildcard(token)
+        || is_pattern_exact(token)
+        || is_pattern_wildcard(token)
+        || is_ident_arg(token);
   }
 
   inline static bool is_ident(std::string str) {
-    if (str.empty() || !isalpha(str[0])) return false;
+    if (str.empty() || !isalpha(str.at(0))) return false;
     for (char c : str) {
       if (!isalnum(c)) return false;
     }
     return true;
+  }
+
+  inline static bool is_ident_arg(std::string str) {
+    if (str.size() < 3) return false;
+    if (str.front() != '\"' || str.back() != '\"') return false;
+    return is_ident(str.substr(1, str.size() - 2));
   }
 
   inline static bool is_integer(std::string str) {
@@ -89,9 +101,15 @@ class PQL {
     return str == "_";
   }
 
+  inline static bool is_pattern_exact(std::string str) {
+    return str.front() == '\"' && str.back() == '\"';
+  }
+
   inline static bool is_pattern_wildcard(std::string str) {
     if (str.size() < 2) return false;
-    return str.front() == '_' && str.back() == '_';
+    return str.front() == '_'
+      && str.back() == '_'
+      && is_pattern_exact(str.substr(1, str.size() - 2));
   }
 
   inline static std::string kRelRefGrammar = "relRef";
@@ -111,7 +129,11 @@ class PQL {
       return is_ident(token);
     } else if (grammar == kDesignEntityGrammar) {
       return is_entity_name(token);
-    } else if (grammar == kExprGrammar || grammar == kRecurseGrammar) {
+    } else if (grammar == kExprGrammar) {
+      return is_pattern_wildcard(token)
+          || is_pattern_exact(token)
+          || is_wildcard(token);
+    } else if (grammar == kRecurseGrammar) {
       return true;
     } else {
       return token == grammar;

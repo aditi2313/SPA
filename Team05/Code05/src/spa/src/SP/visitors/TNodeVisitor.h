@@ -15,8 +15,7 @@ namespace sp {
  Implements a template for visiting of all children for every type of TNode
  since it is common for all subclasses.
 
- If required, subclasses can override the respective Process(TNode) method
- which will be called before visiting the children.
+ If required, subclasses can override the respective Process(TNode) method.
  */
 class TNodeVisitor {
  public:

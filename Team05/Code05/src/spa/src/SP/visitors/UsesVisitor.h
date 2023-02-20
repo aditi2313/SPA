@@ -25,7 +25,7 @@ class UsesVisitor : public PKBWritingVisitor {
   void Process(ast::WhileNode* while_node) override;
 
  private:
-  void AddVariablesFromStmtList(pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
+  void AddVariablesFromStmtList(ast::StmtLstNode& node,
                                 std::unordered_set<std::string>& vars);
 };
 }  // namespace sp

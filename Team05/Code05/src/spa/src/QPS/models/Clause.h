@@ -25,27 +25,12 @@ class Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
 
-  inline virtual bool ValidateArguments() {
-    return ValidateArgumentTypes() && ValidateSynonymTypes();
-  }
-
-  inline virtual bool ValidateSynonymTypes() {
-    if (arg1_->IsSynonym()) {
-      SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg1_.get());
-      if (synonym_arg->get_base_entity_name() != LHS_) {
-        return false;
-      }
-    }
-    if (arg2_->IsSynonym()) {
-      SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg2_.get());
-      if (synonym_arg->get_base_entity_name() != RHS_) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  virtual bool ValidateArgumentTypes() = 0;
+  template<class Data>
+  static EntityPtrList Index(
+      IntEntity *index,
+      std::function
+          <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
+      std::function<void(EntityPtrList &, Data)> add_function);
 
   inline virtual EntityPtrList Filter(
       const EntityPtr &index,
@@ -58,6 +43,20 @@ class Clause {
         if (entity->WeakEqual(*filter_entity)) {
           result.push_back(entity->Copy());
         }
+      }
+    }
+
+    return result;
+  }
+
+  inline virtual EntityPtrList SymmetricFilter(
+      const EntityPtr &index,
+      const std::unique_ptr<MasterEntityFactory> &factory,
+      const std::unique_ptr<pkb::PKBRead> &pkb) {
+    EntityPtrList result;
+    for (auto &entity : Index(index, factory, pkb)) {
+      if (entity->WeakEqual(*index)) {
+        result.push_back(entity->Copy());
       }
     }
 
@@ -80,6 +79,8 @@ class Clause {
   inline ArgumentPtr &get_arg2() { return arg2_; }
   inline EntityName LHS() { return LHS_; }
   inline EntityName RHS() { return RHS_; }
+  virtual inline bool IsExactType() { return false; }
+  virtual inline bool IsWildcardAllowedAsFirstArg() { return true; }
 
   static std::unique_ptr<Clause> CreateClause(
       EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
@@ -103,9 +104,7 @@ class ModifiesClause : public Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsEntRef() && !arg1_->IsWildcard();
-  }
+  inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
 
 // RS between statements
@@ -119,10 +118,6 @@ class FollowsClause : public Clause {
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef();
-  }
 };
 
 // RS between statements (transitive)
@@ -136,10 +131,6 @@ class FollowsTClause : public Clause {
       const EntityPtr &index,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef();
-  }
 };
 
 class PatternClause : public Clause {
@@ -159,15 +150,9 @@ class PatternClause : public Clause {
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
-  inline bool ValidateSynonymTypes() override {
-    SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg1_.get());
-    return synonym_arg->get_entity_name() == LHS_;
-  }
-
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsSynonym();
-  }
+  inline bool IsExactType() override { return true; };
 };
+
 // Relationship between a stmt and a variable or vector of variables
 class UsesClause : public Clause {
  public:
@@ -179,10 +164,9 @@ class UsesClause : public Clause {
                       const std::unique_ptr<MasterEntityFactory> &factory,
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef() && !arg1_->IsWildcard();;
-  }
+  inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
+
 // Relationship between a stmt and another stmt.
 class ParentClause : public Clause {
  public:
@@ -193,10 +177,6 @@ class ParentClause : public Clause {
   EntityPtrList Index(const EntityPtr &index,
                       const std::unique_ptr<MasterEntityFactory> &factory,
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef();
-  }
 };
 
 class ParentTClause : public Clause {
@@ -208,10 +188,6 @@ class ParentTClause : public Clause {
   EntityPtrList Index(const EntityPtr &index,
                       const std::unique_ptr<MasterEntityFactory> &factory,
                       const std::unique_ptr<pkb::PKBRead> &pkb) override;
-
-  inline bool ValidateArgumentTypes() override {
-    return arg1_->IsStmtRef() && arg2_->IsStmtRef();
-  }
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

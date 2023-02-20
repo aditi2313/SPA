@@ -16,7 +16,7 @@ void UsesVisitor::Process(ast::AssignNode* assign_node) {
 }
 
 void UsesVisitor::Process(ast::PrintNode* print_node) {
-  std::unordered_set<std::string> vars = {print_node->get_var()->get_name()};
+  std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 
@@ -26,11 +26,8 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
   std::unordered_set<std::string> vars = var_collector.get_vars();
 
   // add the additional variables from the sub statement lists
-  auto pkb = pkb_ptr_->EndWrite();
-  auto pkb_read = pkb::PKBRead(std::move(pkb));
-  AddVariablesFromStmtList(pkb_read, *if_node->get_then(), vars);
-  AddVariablesFromStmtList(pkb_read, *if_node->get_else(), vars);
-  pkb_ptr_ = std::make_unique<pkb::PKBWrite>(pkb_read.EndRead());
+  AddVariablesFromStmtList(*(if_node->get_then()), vars);
+  AddVariablesFromStmtList(*(if_node->get_else()), vars);
 
   pkb_ptr_->AddUsesData(if_node->get_line(), vars);
 }
@@ -41,20 +38,17 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
   std::unordered_set<std::string> vars = var_collector.get_vars();
 
   // add the variables from the sub statements
-  auto pkb = pkb_ptr_->EndWrite();
-  auto pkb_read = pkb::PKBRead(std::move(pkb));
-  AddVariablesFromStmtList(pkb_read, *while_node->get_stmts(), vars);
-  pkb_ptr_ = std::make_unique<pkb::PKBWrite>(pkb_read.EndRead());
-
+  AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
   pkb_ptr_->AddUsesData(while_node->get_line(), vars);
 }
 
 void UsesVisitor::AddVariablesFromStmtList(
-    pkb::PKBRead& pkb_read, ast::StmtLstNode& node,
-    std::unordered_set<std::string>& vars) {
+    ast::StmtLstNode& node, std::unordered_set<std::string>& vars) {
+  auto pkb = pkb_ptr_->EndWrite();
+  pkb::PKBRead reader(std::move(pkb));
   for (auto& child : node.get_children()) {
     auto result =
-        pkb_read
+        reader
             .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()))
             ->get_result();
     if (result->empty()) continue;
@@ -63,6 +57,8 @@ void UsesVisitor::AddVariablesFromStmtList(
       vars.insert(var);
     }
   }
+  pkb = reader.EndRead();
+  pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));
 }
 
 }  // namespace sp

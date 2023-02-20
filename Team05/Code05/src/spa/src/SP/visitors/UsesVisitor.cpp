@@ -16,7 +16,7 @@ void UsesVisitor::Process(ast::AssignNode* assign_node) {
 }
 
 void UsesVisitor::Process(ast::PrintNode* print_node) {
-  std::unordered_set<std::string> vars = {print_node->get_var()->get_name()};
+  std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
 }
 

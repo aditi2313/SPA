@@ -11,7 +11,8 @@ void TNodeVisitor::VisitProgram(ast::ProgramNode* program_node) {
 
 void TNodeVisitor::VisitProc(ast::ProcNode* proc_node) {
   Process(proc_node);
-  proc_node->get_children()->AcceptVisitor(this);
+  auto& children = proc_node->get_children();
+  children->AcceptVisitor(this);
 }
 
 void TNodeVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
@@ -32,15 +33,25 @@ void TNodeVisitor::VisitPrint(ast::PrintNode* print_node) {
 }
 
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
-  if_node->get_cond()->AcceptVisitor(this);
-  if_node->get_then()->AcceptVisitor(this);
-  if_node->get_else()->AcceptVisitor(this);
+  auto& cond_node = if_node->get_cond();
+  cond_node->AcceptVisitor(this);
+
+  auto& then_stmt_lst = if_node->get_then();
+  then_stmt_lst->AcceptVisitor(this);
+
+  auto& else_stmt_lst = if_node->get_then();
+  else_stmt_lst->AcceptVisitor(this);
+
   Process(if_node);
 }
 
 void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
-  while_node->get_cond()->AcceptVisitor(this);
-  while_node->get_stmts()->AcceptVisitor(this);
+  auto& cond_node = while_node->get_cond();
+  cond_node->AcceptVisitor(this);
+
+  auto& stmt_lst = while_node->get_stmts();
+  stmt_lst->AcceptVisitor(this);
+
   Process(while_node);
 }
 
@@ -50,13 +61,19 @@ void TNodeVisitor::VisitExpr(ast::ExprNode* expr_node) { Process(expr_node); }
 
 void TNodeVisitor::VisitOpNode(ast::OpNode* op_node) {
   Process(op_node);
-  op_node->get_left()->AcceptVisitor(this);
-  op_node->get_right()->AcceptVisitor(this);
+
+  auto& left_expr = op_node->get_left();
+  left_expr->AcceptVisitor(this);
+
+  auto& right_expr = op_node->get_right();
+  right_expr->AcceptVisitor(this);
 }
 
 void TNodeVisitor::VisitNot(ast::NotExprNode* not_expr_node) {
   Process(not_expr_node);
-  not_expr_node->get_cond()->AcceptVisitor(this);
+
+  auto& cond_expr = not_expr_node->get_cond();
+  cond_expr->AcceptVisitor(this);
 }
 
 void TNodeVisitor::VisitVar(ast::VarNode* var_node) { Process(var_node); }
@@ -68,19 +85,28 @@ void TNodeVisitor::VisitConst(ast::ConstNode* const_node) {
 void TNodeVisitor::VisitDoubleCond(
     ast::DoubleCondExprNode* double_cond_expr_node) {
   Process(double_cond_expr_node);
-  double_cond_expr_node->get_left_cond()->AcceptVisitor(this);
-  double_cond_expr_node->get_right_cond()->AcceptVisitor(this);
+
+  auto& left_cond_expr = double_cond_expr_node->get_left_cond();
+  left_cond_expr->AcceptVisitor(this);
+
+  auto& right_cond_expr = double_cond_expr_node->get_right_cond();
+  right_cond_expr->AcceptVisitor(this);
 }
 
 void TNodeVisitor::VisitRelExpr(ast::RelExprNode* rel_expr_node) {
   Process(rel_expr_node);
-  rel_expr_node->get_left_factor()->AcceptVisitor(this);
-  rel_expr_node->get_right_factor()->AcceptVisitor(this);
+
+  auto& left_factor = rel_expr_node->get_left_factor();
+  left_factor->AcceptVisitor(this);
+
+  auto& right_factor = rel_expr_node->get_right_factor();
+  right_factor->AcceptVisitor(this);
 }
 
 void TNodeVisitor::VisitRelFactor(ast::RelFactor* rel_factor) {
   Process(rel_factor);
-  rel_factor->get_expr()->AcceptVisitor(this);
-  rel_factor->get_ref()->AcceptVisitor(this);
+
+  auto& expr = rel_factor->get_expr();
+  expr->AcceptVisitor(this);
 }
 }  // namespace sp

@@ -39,7 +39,7 @@ void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   auto& then_stmt_lst = if_node->get_then();
   then_stmt_lst->AcceptVisitor(this);
 
-  auto& else_stmt_lst = if_node->get_then();
+  auto& else_stmt_lst = if_node->get_else();
   else_stmt_lst->AcceptVisitor(this);
 
   Process(if_node);

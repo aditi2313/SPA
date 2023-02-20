@@ -1,43 +1,55 @@
-1 - comment
-stmt s; Select s such that Parent(s,2)
+1 - Parent on stmt ref arg1
+stmt s;
+Select s such that Parent(s,2)
 none
 5000
-2 - comment
-stmt s; Select s such that Parent(3,s)
+2 - Parent on stmt ref arg2
+stmt s;
+Select s such that Parent(3,s)
 4
 5000
-3 - comment
-stmt s; Select s such that Parent(3,_)
+3 - Parent on wildcard to return all stmts
+stmt s;
+Select s such that Parent(3,_)
 1,2,3,4,5,6,7
 5000
-4 - comment
-stmt s; Select s such that Parent(_,s)
+4 - Parent on wildcard as arg1
+stmt s;
+Select s such that Parent(_,s)
 4,5
 5000
-5 - comment
-stmt s; Select s such that Parent(_,_)
+5 - Parent on both wildcard
+stmt s;
+Select s such that Parent(_,_)
 1,2,3,4,5
 5000
-6 - comment
-stmt s; Select s such that Parent*(s, 5)
+6 - Parent* on stmt ref
+stmt s;
+Select s such that Parent*(s, 5)
 3,4
 5000
-7 - comment
-stmt s; Select s such that Parent*(_,s)
+7 - Parent* on stmt ref and wildcard
+stmt s;
+Select s such that Parent*(_,s)
 3,4,5,6
 5000
-stmt s; Select s such that Parent*(1,s)
+8 - Parent* on no Parents
+stmt s;
+Select s such that Parent*(1,s)
 none
 5000
-8 - comment
-stmt s; Select s such that Parent(3,5)
+9 - Parent on stmt ref no Parents
+stmt s;
+Select s such that Parent(3,5)
 none
 5000
-9 - comment
-stmt s; Select s such that Parent*(4,6)
+10 - Parent* on stmts no Parent
+stmt s;
+Select s such that Parent*(4,6)
 none
 5000
-10 - comment
-stmt s; Select s such that Parent*(s,6)
+10 - Parent on nested if stmts
+stmt s;
+Select s such that Parent*(s,6)
 3
 5000

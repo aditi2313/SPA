@@ -1,40 +1,45 @@
-1 - comment
-stmt s; Select s such that Follows(s,2)
+1 - Follows on stmt ref arg1
+stmt s; 
+Select s such that Follows(s,2)
 1
 5000
-2 - comment
-stmt s; Select s such that Follows(1,s)
+2 - Follows on stmt ref arg2
+stmt s; 
+Select s such that Follows(1,s)
 2
 5000
-3 - comment
-stmt s; Select s such that Follows(s,_)
+3 - Follows on wildcard arg2
+stmt s; 
+Select s such that Follows(s,_)
 1,5,6
 5000
-4 - comment
-stmt s; Select s such that Follows(_,s)
+4 - Follows on wildcard arg1
+stmt s; 
+Select s such that Follows(_,s)
 2,6,7
 5000
-5 - comment
-stmt s; Select s such that Follows(_,_)
+5 - Follows on both wildcard
+stmt s; 
+Select s such that Follows(_,_)
 1,2,3,4,5,6,7,9,10,11
 5000
-6 - comment
-stmt s; Select s such that Follows*(5,s)
+6 - Follows* on stmt reg arg2
+stmt s; 
+Select s such that Follows*(5,s)
 6,7
 5000
-7 - comment
-stmt s; Select s such that Follows*(s, 7)
+7 - Follows* on stmt ref arg2
+stmt s; 
+Select s such that Follows*(s, 7)
 5,6
 5000
-8 - comment
-stmt s; Select s such that Follows*(3,4)
+8 - Follows* on stmts
+stmt s; 
+Select s such that Follows*(3,4)
 none
 5000
-9 - comment
-stmt s; Select s such that Follows*(3,s)
-10
-5000
-10 - comment
-stmt s; Select s such that Follows(s,4)
+9 - Follows on stmt ref returns none
+stmt s; 
+Select s such that Follows(s,4)
 none
 5000

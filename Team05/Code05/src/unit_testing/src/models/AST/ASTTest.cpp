@@ -21,7 +21,6 @@ TEST_CASE("1st Test") {
     std::unique_ptr<ast::ConstNode> c3 = std::make_unique<ast::ConstNode>(5);
     std::unique_ptr<ast::VarNode> c4 = std::make_unique<ast::VarNode>("x");
     ast::AssignNode c5 = ast::AssignNode(std::move(c4), std::move(c3), 1);
-    // TODO(nhjryan): move this to integration testing folder later
     std::unique_ptr<pkb::PKBRelationTable> p1 =
         std::make_unique<pkb::PKBRelationTable>();
     std::unique_ptr<pkb::PKBWrite> p2 =

@@ -4,17 +4,23 @@ namespace sp {
 
 void ParentVisitor::Process(ast::IfNode *if_node) {
   auto parent_line = if_node->get_line();
-  for (auto &stmt_node : if_node->get_then()->get_children()) {
+
+  auto& then_stmt_lst = if_node->get_then();
+  for (auto &stmt_node : then_stmt_lst->get_children()) {
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
-  for (auto &stmt_node : if_node->get_else()->get_children()) {
+
+  auto& else_stmt_lst = if_node->get_else();
+  for (auto &stmt_node : else_stmt_lst->get_children()) {
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
 }
 
 void ParentVisitor::Process(ast::WhileNode *while_node) {
   auto parent_line = while_node->get_line();
-  for (auto &stmt_node : while_node->get_stmts()->get_children()) {
+
+  auto& stmt_lst = while_node->get_stmts();
+  for (auto &stmt_node : stmt_lst->get_children()) {
     pkb_ptr_->AddParentData(parent_line, stmt_node->get_line());
   }
 }

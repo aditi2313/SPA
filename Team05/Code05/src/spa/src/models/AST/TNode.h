@@ -11,7 +11,6 @@ class TNode {
  public:
   virtual ~TNode() = 0;
 
-  // TODO(nhjryan): implement accept_visitor for design extractor
   virtual void AcceptVisitor(sp::TNodeVisitor* visitor) = 0;
 
  private:

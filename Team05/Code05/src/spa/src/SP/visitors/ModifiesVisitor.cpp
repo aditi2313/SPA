@@ -7,12 +7,12 @@
 namespace sp {
 
 void ModifiesVisitor::Process(ast::AssignNode* assign_node) {
-  std::unordered_set<std::string> vars = {assign_node->get_var()->get_name()};
+  std::unordered_set<std::string> vars = {assign_node->get_var_name()};
   pkb_ptr_->AddModifiesData(assign_node->get_line(), vars);
 }
 
 void ModifiesVisitor::Process(ast::ReadNode* read_node) {
-  std::unordered_set<std::string> vars = {read_node->get_var()->get_name()};
+  std::unordered_set<std::string> vars = {read_node->get_var_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
 }
 

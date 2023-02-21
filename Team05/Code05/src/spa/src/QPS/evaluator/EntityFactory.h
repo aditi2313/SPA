@@ -168,7 +168,7 @@ class WhileEntityFactory : public IntEntityFactory {
  public:
   WhileEntityFactory() : IntEntityFactory() {}
   inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<CallStmt>(number);
+    return std::make_unique<WhileStmt>(number);
   }
   inline EntityPtr CreateInstance(std::string ident) override {
     throw NotImplementedException();

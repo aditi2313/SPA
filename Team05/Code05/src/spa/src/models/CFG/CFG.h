@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include <deque>
 
 #include "CFGNode.h"
 
@@ -20,23 +21,32 @@ class CFG {
 
   bool IsEmpty() { return nodes_.size() == 0; }
 
-  CFGNode& AddChild(CFGNode& parent, std::vector<int>& lines);
+  /// <summary>
+  /// Adds the given code block starting from the
+  /// start line to the end line to the cfg. [start_line, end_line]
+  /// </summary>
+  /// <param name="parent">The parent cfg block</param>
+  /// <param name="start_line">The starting line for
+  /// the cfg block</param>
+  /// <param name="end_line">The ending line for the cfg block</param>
+  /// <returns></returns>
+  CFGNode& AddChild(CFGNode& parent, int start_line, int end_line);
 
   CFGNode& AddChild(CFGNode& parent, CFGNode& child) {
     parent.add_child(child);
     return child;
   }
-  CFGNode& GetFirstChild(CFGNode& node);
-  CFGNode& GetSecondChild(CFGNode& node);
+  const CFGNode& GetFirstChild(CFGNode& node);
+  const CFGNode& GetSecondChild(CFGNode& node);
 
-  const CFGNode& get_root() { return nodes_[0]; }
+  CFGNode& get_root() { return nodes_[0]; }
 
  private:
   CFGNode& get_node_from_id(int id) {
     int index = id_to_indexes_.at(id);
     return nodes_[index];
   }
-  std::vector<CFGNode> nodes_;
+  std::deque<CFGNode> nodes_;
   std::unordered_map<int, int> id_to_indexes_;
   ProgramCFG* program_;
 };

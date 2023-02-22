@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <unordered_set>
+#include <catch.hpp>
 
 #include "models/CFG/CFG.h"
 #include "models/CFG/ProgramCFG.h"

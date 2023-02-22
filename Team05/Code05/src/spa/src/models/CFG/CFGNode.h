@@ -24,9 +24,7 @@ class CFGNode {
   CFGNodeWeakPtr get_first_child() { return children_[0]; }
   CFGNodeWeakPtr get_second_child() { return children_[1]; }
   inline bool HasFirstChild() { return children_.size() >= 1; }
-  inline bool HasSecondChild() { 
-    return children_.size() >= 2; 
-  }
+  inline bool HasSecondChild() { return children_.size() >= 2; }
   inline bool is_end() { return children_.empty(); }
 
  private:

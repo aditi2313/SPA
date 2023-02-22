@@ -1,41 +1,43 @@
 #pragma once
 
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <memory>
 
 #include "CFGNode.h"
 
 namespace cfg {
+class ProgramCFG;  // Forward declaration for program cfg
 
 // class representing a CFG.
 // Responsible for managing the nodes in memory.
 class CFG {
  public:
-  CFG() { root_ = std::make_shared<CFGNode>(); }
+  explicit CFG(ProgramCFG* program);
 
-  CFGNodePtr AddChild(CFGNodePtr& parent, std::vector<int>& lines) {
-    Manage(parent);
-    CFGNodePtr node = std::make_unique<CFGNode>(lines);
-    Manage(node);
-    parent->add_child(node);
-    node->add_parent(parent);
-    return node;
-  }
+  CFG() : program_(nullptr) {}
 
-  CFGNodePtr AddChild(CFGNodePtr& parent, CFGNodePtr& child) {
-    Manage(parent);
-    Manage(child);
-    parent->add_child(child);
+  bool IsEmpty() { return nodes_.size() == 0; }
+
+  CFGNode& AddChild(CFGNode& parent, std::vector<int>& lines);
+
+  CFGNode& AddChild(CFGNode& parent, CFGNode& child) {
+    parent.add_child(child);
     return child;
   }
+  CFGNode& GetFirstChild(CFGNode& node);
+  CFGNode& GetSecondChild(CFGNode& node);
 
-  CFGNodePtr get_root() { return root_; }
+  const CFGNode& get_root() { return nodes_[0]; }
 
  private:
-  inline void Manage(CFGNodePtr node) { nodes_.insert(node); }
-  std::unordered_set<CFGNodePtr> nodes_;
-  CFGNodePtr root_;
+  CFGNode& get_node_from_id(int id) {
+    int index = id_to_indexes_.at(id);
+    return nodes_[index];
+  }
+  std::vector<CFGNode> nodes_;
+  std::unordered_map<int, int> id_to_indexes_;
+  ProgramCFG* program_;
 };
 }  // namespace cfg

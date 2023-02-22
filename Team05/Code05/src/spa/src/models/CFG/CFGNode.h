@@ -10,34 +10,29 @@ class CFGVisitor;
 namespace cfg {
 class CFGNode;
 
-typedef std::shared_ptr<CFGNode> CFGNodePtr;
-typedef std::weak_ptr<CFGNode> CFGNodeWeakPtr;
+typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
-  CFGNode() {}
-
-  CFGNode(std::vector<int>& lines) { lines_ = lines; }
-
   inline void add_line(int line) { lines_.push_back(line); }
 
-  CFGNodeWeakPtr get_first_child() { return children_[0]; }
-  CFGNodeWeakPtr get_second_child() { return children_[1]; }
   inline bool HasFirstChild() { return children_.size() >= 1; }
   inline bool HasSecondChild() { return children_.size() >= 2; }
   inline bool is_end() { return children_.empty(); }
 
- private:
-  void add_child(const CFGNodePtr& child) {
-    children_.push_back(CFGNodeWeakPtr(child));
+  friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
+    return LHS.id_ == RHS.id_;
   }
 
-  void add_parent(const CFGNodePtr& parent) {
-    parent_.push_back(CFGNodeWeakPtr(parent));
-  }
-  std::vector<CFGNodeWeakPtr> parent_;
-  std::vector<CFGNodeWeakPtr> children_;
+ private:
+  CFGNode(int id) : id_(id) {}
+  CFGNode(std::vector<int>& lines, int id) : id_(id) { lines_ = lines; }
+  void add_child(CFGNode& child) { children_.push_back(child.id_); }
+  int get_first_child() { return children_[0]; }
+  int get_second_child() { return children_[1]; }
+  std::vector<int> children_;
   std::vector<int> lines_;
+  int id_;
   friend class CFG;
 };
 

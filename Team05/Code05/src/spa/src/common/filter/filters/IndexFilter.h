@@ -8,11 +8,13 @@
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
+#include "PKB/data/CallsData.h"
+#include "PKB/data/UsesData.h"
+#include "PKB/data/ModifiesData.h"
+#include "PKB/data/ParentData.h"
+#include "PKB/data/FollowsData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/exceptions/QPSExceptions.h"
-#include "PKB/data/UsesData.h"
-#include "PKB/data/FollowsData.h"
-#include "PKB/data/ParentData.h"
 
 namespace filter {
 
@@ -42,4 +44,5 @@ using AssignIndexFilter = IndexFilter<pkb::AssignData>;
 using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 using ParentIndexFilter = IndexFilter<pkb::ParentData>;
+using CallsIndexFilter = IndexFilter<pkb::CallsData>;
 }  // namespace filter

@@ -47,4 +47,12 @@ std::unique_ptr<PKBResult<ParentTable>> PKBRead::Parent(
                     relation_table_->parent_table_.copy()));
     return create_result(std::move(result_table));
 }
+
+std::unique_ptr<PKBResult<CallsTable>> PKBRead::Calls(
+        IndexableFilterPtr<CallsData> filter) {
+    auto result_table =
+            filter->FilterTable(std::move(
+                    relation_table_->calls_table_.copy()));
+    return create_result(std::move(result_table));
+}
 }  // namespace pkb

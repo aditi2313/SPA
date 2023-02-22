@@ -18,8 +18,7 @@ class CFGNode {
   inline bool HasFirstChild() { return children_.size() >= 1; }
   inline bool HasSecondChild() { return children_.size() >= 2; }
   inline bool is_end() { return children_.empty(); }
-  inline bool is_empty() { 
-    return start_line_ == -1 || end_line_ == -1; }
+  inline bool is_empty() { return start_line_ == -1 || end_line_ == -1; }
   inline std::vector<int> get_lines() {
     if (is_empty()) return std::vector<int>(0, 0);
     std::vector<int> result(end_line_ - start_line_ + 1, 0);
@@ -40,9 +39,7 @@ class CFGNode {
       : id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
   }
-  void add_child(CFGNode& child) { 
-    children_.push_back(child.id_); 
-  }
+  void add_child(CFGNode& child) { children_.push_back(child.id_); }
   int get_first_child() { return children_[0]; }
   int get_second_child() { return children_[1]; }
   std::vector<int> children_;

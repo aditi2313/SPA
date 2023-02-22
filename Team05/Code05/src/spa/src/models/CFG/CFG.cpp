@@ -14,8 +14,13 @@ CFG::CFG(ProgramCFG* program) {
 CFGNode& CFG::AddChild(CFGNode& parent, int start_line, int end_line) {
   int id = program_->GetAndIncrementId();
   id_to_indexes_[id] = nodes_.size();
-  nodes_.push_back(CFGNode(start_line, end_line, id));  
+  nodes_.push_back(CFGNode(start_line, end_line, id));
   parent.add_child(get_node_from_id(id));
+
+  for (int i = start_line; i <= end_line; ++i) {
+    program_->AddLineToCfg(i, &(nodes_.at(id)));
+  }
+
   return nodes_.at(id);
 }
 

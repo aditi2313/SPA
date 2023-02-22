@@ -1,6 +1,6 @@
-#include <catch.hpp>
 #include <unordered_set>
 #include <vector>
+#include <catch.hpp>
 
 #include "models/CFG/CFG.h"
 #include "models/CFG/ProgramCFG.h"
@@ -19,7 +19,6 @@ TEST_CASE("Simple construction of cfg") {
   REQUIRE(!c.HasFirstChild());
   REQUIRE(!c.HasSecondChild());
   REQUIRE(c.is_end());
-  std::vector<int> lines2{4, 5, 6};
   auto& c_child = cfg.AddChild(c, 4, 6);
 
   REQUIRE(c.HasFirstChild());
@@ -47,13 +46,10 @@ TEST_CASE("Construction of cfg with branching") {
   ProgramCFG program_cfg;
   auto& cfg = program_cfg.add_procedure("simple_proc");
   auto& root = cfg.get_root();
-  std::vector<int> lines1{1};
-  std::vector<int> lines2{2};
-  std::vector<int> lines3{3};
 
   auto& c1 = cfg.AddChild(root, 1, 1);
-  auto& c2 = cfg.AddChild(c1, 1, 1);
-  auto& c3 = cfg.AddChild(c1, 1, 1);
+  auto& c2 = cfg.AddChild(c1, 2, 2);
+  auto& c3 = cfg.AddChild(c1, 3, 3);
 
   REQUIRE(c1.HasSecondChild());
   REQUIRE(c1.HasFirstChild());
@@ -89,12 +85,34 @@ TEST_CASE("Construction of line from start and end") {
   }
 }
 
+TEST_CASE("Test line number map in program cfg") {
+  ProgramCFG program_cfg;
+  auto& cfg = program_cfg.add_procedure("simple");
+  auto& cnode1 = cfg.AddChild(cfg.get_root(), 1, 5);
+  auto& cnode2 = cfg.AddChild(cfg.get_root(), 6, 8);
+
+  SECTION("Program cfg query start") {
+    REQUIRE(program_cfg.get_node(1) == cnode1);
+    REQUIRE(program_cfg.get_node(6) == cnode2);
+  }
+
+  SECTION("Program cfg query end") {
+    REQUIRE(program_cfg.get_node(5) == cnode1);
+    REQUIRE(program_cfg.get_node(8) == cnode2);
+  }
+
+  SECTION("Program cfg query middle") {
+    REQUIRE(program_cfg.get_node(3) == cnode1);
+    REQUIRE(program_cfg.get_node(7) == cnode2);
+  }
+}
+
 void TestGettingLineNumber(std::vector<int> lines, int start, int end) {
   ProgramCFG prog_cfg;
   auto& cfg = prog_cfg.add_procedure("some_proc");
   auto& root = cfg.get_root();
   auto& c1 = cfg.AddChild(root, start, end);
-  auto& result = c1.get_lines();
+  auto result = c1.get_lines();
   REQUIRE(result == lines);
 
   auto& other_root = cfg.get_root();

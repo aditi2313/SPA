@@ -47,7 +47,7 @@ class CFG {
     return nodes_[index];
   }
   std::deque<CFGNode> nodes_;
-  std::unordered_map<int, int> id_to_indexes_;
+  std::unordered_map<CFGNodeId, int> id_to_indexes_;
   ProgramCFG* program_;
 };
 }  // namespace cfg

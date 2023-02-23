@@ -44,13 +44,13 @@ class ProgramCFG {
 
   // unordered map mapping line number to cfg node.
   std::unordered_map<int, CFGNode*> line_to_cfg_map_;
-  int id_ctr_ = 0;
+  CFGNodeId id_ctr_ = 0;
 
   void AddLineToCfg(int line, CFGNode* node) {
     assert(line_to_cfg_map_.find(line) == line_to_cfg_map_.end());
     line_to_cfg_map_[line] = node;
   }
-  int GetAndIncrementId() { return id_ctr_++; }
+  CFGNodeId GetAndIncrementId() { return id_ctr_++; }
   friend class CFG;
 };
 }  // namespace cfg

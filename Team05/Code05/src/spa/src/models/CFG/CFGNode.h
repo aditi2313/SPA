@@ -11,14 +11,20 @@ class CFGVisitor;
 namespace cfg {
 class CFGNode;
 
+typedef int CFGNodeId;
+const CFGNodeId kEmptyId = -1;
+const int kInvalidLine = -1;
+
 typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
-  inline bool HasFirstChild() { return children_.size() >= 1; }
-  inline bool HasSecondChild() { return children_.size() >= 2; }
-  inline bool is_end() { return children_.empty(); }
-  inline bool is_empty() { return start_line_ == -1 || end_line_ == -1; }
+  inline bool HasFirstChild() { return first_child_ != kEmptyId; }
+  inline bool HasSecondChild() { return second_child_ != kEmptyId; }
+  inline bool is_end() { return !HasFirstChild() && !HasSecondChild(); }
+  inline bool is_empty() {
+    return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
+  }
   inline std::vector<int> get_lines() {
     if (is_empty()) return std::vector<int>(0, 0);
     std::vector<int> result(end_line_ - start_line_ + 1, 0);
@@ -39,13 +45,21 @@ class CFGNode {
       : id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
   }
-  void add_child(CFGNode& child) { children_.push_back(child.id_); }
-  int get_first_child() { return children_[0]; }
-  int get_second_child() { return children_[1]; }
-  std::vector<int> children_;
+  void add_child(CFGNode& child) {
+    if (first_child_ == kEmptyId) {
+      first_child_ = child.id_;
+      return;
+    }
+    assert(second_child_ == kEmptyId);
+    second_child_ = child.id_;
+  }
+  int get_first_child() { return first_child_; }
+  int get_second_child() { return second_child_; }
   int id_;
-  int start_line_ = -1;
-  int end_line_ = -1;
+  int start_line_ = kInvalidLine;
+  int end_line_ = kInvalidLine;
+  CFGNodeId first_child_ = kEmptyId;
+  CFGNodeId second_child_ = kEmptyId;
   friend class CFG;
 };
 

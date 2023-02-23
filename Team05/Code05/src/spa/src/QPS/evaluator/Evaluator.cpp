@@ -1,7 +1,5 @@
 #include "Evaluator.h"
 
-#include <set>
-
 namespace qps {
 // Initialize every synonym in the query with all possible values.
 void Evaluator::InitializeSynonyms(
@@ -17,14 +15,12 @@ QueryResultPtr Evaluator::EvaluateQuery(
     QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb) {
   InitializeSynonyms(query, pkb);
 
-  for (int i = 0; i < 2; ++i) {
-    for (auto &clause : query->get_clauses()) {
-      bool clause_result = EvaluateClause(query, clause, pkb);
+  for (auto &clause : query->get_clauses()) {
+    bool clause_result = EvaluateClause(query, clause, pkb);
 
-      if (!clause_result) {
-        // Clause is false, can immediately return empty result.
-        return std::make_unique<QueryResult>();
-      }
+    if (!clause_result) {
+      // Clause is false, can immediately return empty result.
+      return std::make_unique<QueryResult>();
     }
   }
 
@@ -42,8 +38,8 @@ bool Evaluator::EvaluateClause(
   ArgumentPtr &arg2 = clause->get_arg2();
 
   // Fill with candidate values
-  EntityPtrList LHS;
-  EntityPtrList RHS;
+  EntityPtrHashset LHS(0, EntityPtrHash, EntityPtrEqual);
+  EntityPtrHashset RHS(0, EntityPtrHash, EntityPtrEqual);
 
   InitializeEntitiesFromArgument(query, arg1, pkb, clause->LHS(), LHS);
   InitializeEntitiesFromArgument(query, arg2, pkb, clause->RHS(), RHS);
@@ -87,12 +83,12 @@ bool Evaluator::EvaluateClause(
 
 void Evaluator::InitializeEntitiesFromArgument(
     QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
-    EntityName entity_name, EntityPtrList &result) {
+    EntityName entity_name, EntityPtrHashset &result) {
   if (arg->IsExpression()) return;
   if (arg->IsWildcard()) {
     for (auto &entity :
         master_entity_factory_->GetAllFromPKB(entity_name, pkb)) {
-      result.push_back(std::move(entity));
+      result.insert(std::move(entity));
     }
     return;
   }
@@ -100,7 +96,7 @@ void Evaluator::InitializeEntitiesFromArgument(
     SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
     SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
     for (auto &entity : synonym->get_possible_entities()) {
-      result.push_back(entity->Copy());
+      result.insert(entity->Copy());
     }
     return;
   }
@@ -109,7 +105,7 @@ void Evaluator::InitializeEntitiesFromArgument(
   if (arg->IsStmtRef()) {
     // INT
     IntegerArg *integer_arg = dynamic_cast<IntegerArg *>(arg.get());
-    result.push_back(master_entity_factory_->CreateInstance(
+    result.insert(master_entity_factory_->CreateInstance(
         entity_name,
         integer_arg->get_number()));
   }
@@ -117,7 +113,7 @@ void Evaluator::InitializeEntitiesFromArgument(
   if (arg->IsEntRef()) {
     // IDENT
     IdentArg *ident_arg = dynamic_cast<IdentArg *>(arg.get());
-    result.push_back(master_entity_factory_->CreateInstance(
+    result.insert(master_entity_factory_->CreateInstance(
         entity_name,
         ident_arg->get_ident()));
   }

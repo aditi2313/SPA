@@ -20,7 +20,7 @@ class Evaluator {
   void InitializeSynonyms(QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb);
   void InitializeEntitiesFromArgument(
       QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
-      EntityName entity_name, EntityPtrList &result);
+      EntityName entity_name, EntityPtrHashset &result);
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg,

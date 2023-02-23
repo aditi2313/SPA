@@ -1,4 +1,5 @@
 #include "Evaluator.h"
+#include "QPS/models/Table.h"
 
 namespace qps {
 // Initialize every synonym in the query with all possible values.
@@ -15,6 +16,8 @@ QueryResultPtr Evaluator::EvaluateQuery(
     QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb) {
   InitializeSynonyms(query, pkb);
 
+  Table table;
+
   for (auto &clause : query->get_clauses()) {
     bool clause_result = EvaluateClause(query, clause, pkb);
 
@@ -24,10 +27,17 @@ QueryResultPtr Evaluator::EvaluateQuery(
     }
   }
 
-  // For Basic SPA, just one for now.
   SynonymName selected_synonym = query->get_selected_synonyms().at(0);
+
+  if (table.Empty()) {
+    // TODO(JL): Fix LOD Violation
+    table = Table(selected_synonym,
+                  query->get_synonym(selected_synonym)->get_possible_entities());
+  }
+
   QueryResultPtr result = std::make_unique<QueryResult>(
-      query->get_synonym(selected_synonym)->get_possible_entities());
+      table.Select(selected_synonym));
+
   return result;
 }
 

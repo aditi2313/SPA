@@ -34,7 +34,7 @@ class Clause {
 
   inline virtual EntityPtrList Filter(
       const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
+      const EntityPtrHashset &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) {
     EntityPtrList result;
@@ -146,7 +146,7 @@ class PatternClause : public Clause {
 
   EntityPtrList Filter(
       const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
+      const EntityPtrHashset &RHS_filter_values,
       const std::unique_ptr<MasterEntityFactory> &factory,
       const std::unique_ptr<pkb::PKBRead> &pkb) override;
 

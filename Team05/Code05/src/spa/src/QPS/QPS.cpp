@@ -10,7 +10,7 @@
 
 namespace qps {
 // Used for integration tests
-std::unique_ptr<pkb::PKBRead> QPS::evaluate(
+void QPS::evaluate(
     std::string query,
     std::list<std::string> &results,
     std::unique_ptr<pkb::PKBRead> &pkb) {
@@ -19,18 +19,15 @@ std::unique_ptr<pkb::PKBRead> QPS::evaluate(
     std::unique_ptr<Query> query_object = parser.ParseQuery(query);
     Validator::Validate(query_object);
 
-    Evaluator evaluator(pkb);
-    QueryResultPtr result = evaluator.EvaluateQuery(query_object);
+    Evaluator evaluator;
+    QueryResultPtr result = evaluator.EvaluateQuery(query_object, pkb);
 
     Formatter formatter;
     results = formatter.FormatQuery(result);
-    return evaluator.retrieve_pkb();
   } catch (PqlSyntaxErrorException e) {
     results = {"SyntaxError"};
-    return std::move(pkb);
   } catch (PqlSemanticErrorException e) {
     results = {"SemanticError"};
-    return std::move(pkb);
   }
 }
 }  // namespace qps

@@ -10,26 +10,23 @@
 namespace qps {
 class Evaluator {
  public:
-  explicit Evaluator(std::unique_ptr<pkb::PKBRead> &pkb) {
-    master_entity_factory_ = std::make_unique<MasterEntityFactory>();
-    pkb_ = std::move(pkb);
-  }
+  explicit Evaluator()
+      : master_entity_factory_(std::make_unique<MasterEntityFactory>()) {}
 
-  QueryResultPtr EvaluateQuery(QueryPtr &query);
-  inline auto retrieve_pkb() { return std::move(pkb_); }
+  QueryResultPtr EvaluateQuery(
+      QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb);
 
  private:
-  void InitializeSynonyms(QueryPtr &query);
+  void InitializeSynonyms(QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb);
   void InitializeEntitiesFromArgument(
-      QueryPtr &query, ArgumentPtr &arg,
+      QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
       EntityName entity_name, EntityPtrList &result);
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg,
       EntityPtrHashset const &result);
-  bool EvaluateClause(QueryPtr &query, ClausePtr &clause);
+  bool EvaluateClause(QueryPtr &query, ClausePtr &clause, std::unique_ptr<pkb::PKBRead> &pkb);
 
-  std::unique_ptr<pkb::PKBRead> pkb_;
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
 };
 }  // namespace qps

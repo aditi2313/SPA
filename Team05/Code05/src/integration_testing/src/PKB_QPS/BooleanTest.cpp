@@ -68,7 +68,8 @@ TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
   SECTION("Select BOOLEAN such that Modifies(IntArg, IdentArg) "
           "where BOOLEAN is a synonym should return correct results") {
     std::string query_string = "stmt BOOLEAN; "
-                               "Select BOOLEAN such that Modifies(BOOLEAN, \"a\")";
+                               "Select BOOLEAN such that "
+                               "Modifies(BOOLEAN, \"a\")";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

@@ -40,7 +40,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
       table_ = TableJoiner::Join(table_, clause_table);
     }
   }
-  
+
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);
   }

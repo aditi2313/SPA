@@ -11,7 +11,7 @@
 namespace qps {
 class QueryEvaluator {
  public:
-  explicit QueryEvaluator(pkb::PKBPtr &pkb)
+  explicit QueryEvaluator(pkb::PKBReadPtr &pkb)
       : pkb_(pkb),
         master_entity_factory_(std::make_unique<MasterEntityFactory>(pkb)) {}
 
@@ -24,7 +24,7 @@ class QueryEvaluator {
       EntityName entity_name,
       EntitySet &result);
 
-  pkb::PKBPtr &pkb_;
+  pkb::PKBReadPtr &pkb_;
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
   Table table_;
 };

@@ -11,7 +11,7 @@ class UsesData {
     UsesData(int line, const std::unordered_set<std::string>& variable_names);
     friend bool operator<(const UsesData& LHS, const UsesData& RHS) {
         return LHS.line_ < RHS.line_ ||
-                (LHS.line_ == RHS.line_ &&
+               (LHS.line_ == RHS.line_ &&
                 std::lexicographical_compare(LHS.variable_names_.begin(),
                                              LHS.variable_names_.end(),
                                              RHS.variable_names_.begin(),

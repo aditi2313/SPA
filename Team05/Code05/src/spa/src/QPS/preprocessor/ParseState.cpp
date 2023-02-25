@@ -103,9 +103,6 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
   query->add_clause(Clause::CreateClause(PQL::kPatternRelId,
                                          std::move(arguments.at(0)->Copy()),
                                          std::move(arguments.at(2))));
-  query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
-                                         std::move(arguments.at(0)),
-                                         std::move(arguments.at(1))));
 }
 
 ParseState::~ParseState() = default;

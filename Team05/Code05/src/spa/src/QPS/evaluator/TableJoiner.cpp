@@ -21,7 +21,7 @@ Table TableJoiner::Join(Table &LHS, Table &RHS) {
   for (int i = 0, N1 = LHS.Size(); i < N1; ++i) {
     for (int j = 0, N2 = RHS.Size(); j < N2; ++j) {
       bool should_join = true;
-      for (auto col : join_columns) {
+      for (auto &col : join_columns) {
         if (LHS.Index(i, col) != RHS.Index(j, col)) {
           should_join = false;
           break;
@@ -32,7 +32,7 @@ Table TableJoiner::Join(Table &LHS, Table &RHS) {
 
       Table::Row new_row;
 
-      for (auto col : new_columns) {
+      for (auto &col : new_columns) {
         if (LHS.HasColumn(col)) {
           new_row.emplace_back(
               col, LHS.Index(i, col));
@@ -56,10 +56,10 @@ std::vector<SynonymName> TableJoiner::UnionColumns(
     std::vector<SynonymName> &LHS,
     std::vector<SynonymName> &RHS) {
   std::unordered_set<SynonymName> cols_set;
-  for (auto col : LHS) {
+  for (auto &col : LHS) {
     cols_set.insert(col);
   }
-  for (auto col : RHS) {
+  for (auto &col : RHS) {
     cols_set.insert(col);
   }
   return std::vector<SynonymName>(
@@ -74,10 +74,10 @@ std::vector<SynonymName> TableJoiner::IntersectColumns(
     std::vector<SynonymName> &RHS) {
   std::unordered_set<SynonymName> cols_set;
   std::vector<SynonymName> results;
-  for (auto col : LHS) {
+  for (auto &col : LHS) {
     cols_set.insert(col);
   }
-  for (auto col : RHS) {
+  for (auto &col : RHS) {
     if (cols_set.count(col)) {
       results.push_back(col);
     }

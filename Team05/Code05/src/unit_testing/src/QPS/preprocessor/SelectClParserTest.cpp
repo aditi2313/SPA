@@ -82,10 +82,6 @@ TEST_CASE("Test ParseQuery") {
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
-    expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("v")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -121,19 +117,11 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         std::make_unique<ModifiesClause>(
             expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
-    expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"variable\"")));
     expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_\"x\"_")));
-    expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"variable\"")));
 
 
     REQUIRE(*actual_query == *expected_query);
@@ -172,17 +160,9 @@ TEST_CASE("Test ParseQuery") {
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
-    expected_query->add_clause(
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x\"")));
-    expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
 
     REQUIRE(*actual_query == *expected_query);
   }

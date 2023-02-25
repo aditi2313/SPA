@@ -33,14 +33,6 @@ class Query {
     return false;
   }
 
-  // Returns true if `syn` has been declared
-  inline bool is_synonym_declared(Synonym syn) {
-    for (auto &declared_syn : synonym_declarations_) {
-      if (syn == *declared_syn) return true;
-    }
-    return false;
-  }
-
   inline EntityName get_declared_synonym_entity_name(SynonymName syn_name) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_name() == syn_name)

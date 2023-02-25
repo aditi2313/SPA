@@ -23,8 +23,9 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v", PQL::kVariableEntityName)));
+    REQUIRE(query->is_synonym_name_declared("v"));
+    REQUIRE(query->get_declared_synonym_entity_name("v")
+                == PQL::kVariableEntityName);
     REQUIRE(itr == tokens.end());
   };
 
@@ -35,12 +36,16 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v1", PQL::kVariableEntityName)));
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v2", PQL::kVariableEntityName)));
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v3", PQL::kVariableEntityName)));
+    REQUIRE(query->is_synonym_name_declared("v1"));
+    REQUIRE(query->get_declared_synonym_entity_name("v1")
+                == PQL::kVariableEntityName);
+    REQUIRE(query->is_synonym_name_declared("v2"));
+    REQUIRE(query->get_declared_synonym_entity_name("v2")
+                == PQL::kVariableEntityName);
+    REQUIRE(query->is_synonym_name_declared("v3"));
+    REQUIRE(query->get_declared_synonym_entity_name("v3")
+                == PQL::kVariableEntityName);
+
     REQUIRE(itr == tokens.end());
   };
 
@@ -101,7 +106,7 @@ TEST_CASE("Test SelectParseState") {
     REQUIRE(query->get_selected_synonyms().at(0) == "BOOLEAN");
     REQUIRE(itr == tokens.end());
   }
-  
+
   // TODO(JL): Add some error cases here
 }
 

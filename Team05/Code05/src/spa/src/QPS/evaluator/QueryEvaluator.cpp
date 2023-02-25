@@ -1,10 +1,10 @@
-#include "Evaluator.h"
+#include "QueryEvaluator.h"
 #include "QPS/models/Table.h"
 #include "TableJoiner.h"
 
 namespace qps {
 // Initialize every synonym in the query with all possible values.
-void Evaluator::InitializeSynonyms(
+void QueryEvaluator::InitializeSynonyms(
     QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb) {
   for (auto &syn : query->get_declared_synonyms()) {
     EntitySet list = master_entity_factory_->GetAllFromPKB(
@@ -13,7 +13,7 @@ void Evaluator::InitializeSynonyms(
   }
 }
 
-QueryResultPtr Evaluator::EvaluateQuery(
+QueryResultPtr QueryEvaluator::EvaluateQuery(
     QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb) {
   InitializeSynonyms(query, pkb);
 
@@ -22,7 +22,8 @@ QueryResultPtr Evaluator::EvaluateQuery(
                       query->get_declared_synonym_entities(selected_synonym));
 
   for (auto &clause : query->get_clauses()) {
-    Table clause_table = EvaluateClause(query, clause, pkb);
+    Table clause_table;
+    EvaluateClause(query, clause, clause_table, pkb);
 
     if (clause_table.Empty()) {
       // Clause is false, can immediately return empty result.
@@ -39,57 +40,7 @@ QueryResultPtr Evaluator::EvaluateQuery(
   return result;
 }
 
-// Returns true if there are still results, false otherwise
-Table Evaluator::EvaluateClause(
-    QueryPtr &query, ClausePtr &clause, std::unique_ptr<pkb::PKBRead> &pkb) {
-  ArgumentPtr &arg1 = clause->get_arg1();
-  ArgumentPtr &arg2 = clause->get_arg2();
-
-  // Fill with candidate values
-  EntitySet LHS;
-  EntitySet RHS;
-
-  InitializeEntitiesFromArgument(query, arg1, pkb, clause->LHS(), LHS);
-  InitializeEntitiesFromArgument(query, arg2, pkb, clause->RHS(), RHS);
-
-  bool is_symmetric = arg1->IsSynonym() && (*arg1 == *arg2);
-
-  Table table;
-
-  // Takes care of duplicates
-  EntitySet RHS_results;
-  EntitySet LHS_results;
-
-  // Query PKB with LHS possible values
-  for (auto &index : LHS) {
-    EntitySet results;
-    if (arg2->IsWildcard()) {
-      // Just index and return all
-      results = clause->Index(index, master_entity_factory_, pkb);
-    } else {
-      // Is synonym or exact (int or ident), need filter
-      results = is_symmetric
-                ? clause->SymmetricFilter(index, master_entity_factory_, pkb)
-                : clause->Filter(index, RHS, master_entity_factory_, pkb);
-    }
-
-    if (results.empty()) continue;
-
-    LHS_results.insert(index);
-    for (auto &entity : results) {
-      RHS_results.insert(entity);
-    }
-  }
-
-  // Update list of possible values for arg1 and/or arg2
-  // if they are synonyms
-  UpdateSynonymEntityList(query, arg1, LHS_results);
-  UpdateSynonymEntityList(query, arg2, RHS_results);
-
-  return Table();
-}
-
-void Evaluator::InitializeEntitiesFromArgument(
+void QueryEvaluator::InitializeEntitiesFromArgument(
     QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
     EntityName entity_name, EntitySet &result) {
   if (arg->IsExpression()) return;

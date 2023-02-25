@@ -55,7 +55,7 @@ EntitySet Clause::Index(
 }
 
 EntitySet ModifiesClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::ModifiesData>(
       index,
@@ -71,7 +71,7 @@ EntitySet ModifiesClause::Index(
 }
 
 EntitySet FollowsClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::FollowsData>(
       index,
@@ -85,7 +85,7 @@ EntitySet FollowsClause::Index(
 }
 
 EntitySet FollowsTClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::FollowsData>(
       index,
@@ -101,7 +101,7 @@ EntitySet FollowsTClause::Index(
 }
 
 EntitySet ParentClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::ParentData>(
       index,
@@ -117,7 +117,7 @@ EntitySet ParentClause::Index(
 }
 
 EntitySet ParentTClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::ParentData>(
       index,
@@ -133,7 +133,7 @@ EntitySet ParentTClause::Index(
 }
 
 EntitySet UsesClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::UsesData>(
       index,
@@ -175,7 +175,7 @@ EntitySet PatternClause::Filter(
 }
 
 EntitySet PatternClause::Index(
-    const Entity &index, const std::unique_ptr<MasterEntityFactory> &factory,
+    const Entity &index,
     const std::unique_ptr<pkb::PKBRead> &pkb) {
   return Clause::Index<pkb::AssignData>(
       index,

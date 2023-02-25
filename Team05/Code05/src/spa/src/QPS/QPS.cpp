@@ -5,7 +5,7 @@
 
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/preprocessor/Validator.h"
-#include "QPS/evaluator/Evaluator.h"
+#include "QPS/evaluator/QueryEvaluator.h"
 #include "QPS/evaluator/Formatter.h"
 
 namespace qps {
@@ -19,7 +19,7 @@ void QPS::evaluate(
     std::unique_ptr<Query> query_object = parser.ParseQuery(query);
     Validator::Validate(query_object);
 
-    Evaluator evaluator;
+    QueryEvaluator evaluator;
     QueryResultPtr result = evaluator.EvaluateQuery(query_object, pkb);
 
     Formatter formatter;

@@ -37,8 +37,6 @@ class QueryResult {
 
   inline void clear() { query_results_.clear(); }
 
-  void IntersectWith(QueryResult &other_result);
-
  private:
   EntitySet query_results_;
 };

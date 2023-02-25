@@ -1,7 +1,7 @@
 #pragma once
 
 #include <unordered_map>
-#include <iostream>
+#include <vector>
 
 #include "Synonym.h"
 
@@ -36,9 +36,8 @@ class Table {
   }
 
   inline void AddRow() {
-
+    // TODO(JL)
   }
-  
   // Methods to create:
   // CrossProduct
   // Join

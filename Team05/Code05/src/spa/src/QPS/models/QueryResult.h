@@ -4,7 +4,6 @@
 #include <set>
 #include <vector>
 #include <utility>
-#include <algorithm>
 #include <memory>
 
 #include "Entity.h"

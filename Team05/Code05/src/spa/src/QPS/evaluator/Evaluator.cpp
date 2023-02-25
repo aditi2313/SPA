@@ -35,7 +35,8 @@ QueryResultPtr Evaluator::EvaluateQuery(
   if (table.Empty()) {
     // TODO(JL): Fix LOD Violation
     table = Table(selected_synonym,
-                  query->get_synonym(selected_synonym)->get_possible_entities());
+                  query->get_synonym(
+                      selected_synonym)->get_possible_entities());
   }
 
   EntitySet results = table.Select(selected_synonym);

@@ -11,7 +11,7 @@
 namespace qps {
 class Evaluator {
  public:
-  explicit Evaluator()
+  Evaluator()
       : master_entity_factory_(std::make_unique<MasterEntityFactory>()) {}
 
   QueryResultPtr EvaluateQuery(
@@ -19,14 +19,23 @@ class Evaluator {
 
  private:
   void InitializeSynonyms(QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb);
+
   void InitializeEntitiesFromArgument(
-      QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
-      EntityName entity_name, EntitySet &result);
+      QueryPtr &query,
+      ArgumentPtr &arg,
+      std::unique_ptr<pkb::PKBRead> &pkb,
+      EntityName entity_name,
+      EntitySet &result);
 
   void UpdateSynonymEntityList(
-      QueryPtr &query, ArgumentPtr &arg,
+      QueryPtr &query,
+      ArgumentPtr &arg,
       EntitySet const &result);
-  Table EvaluateClause(QueryPtr &query, ClausePtr &clause, std::unique_ptr<pkb::PKBRead> &pkb);
+
+  Table EvaluateClause(
+      QueryPtr &query,
+      ClausePtr &clause,
+      std::unique_ptr<pkb::PKBRead> &pkb);
 
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
 };

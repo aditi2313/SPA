@@ -6,8 +6,5 @@ namespace qps {
 class TableJoiner {
  public:
   static Table Join(Table LHS, Table RHS);
-
 };
 }   // namespace qps
-
-

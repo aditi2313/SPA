@@ -1,6 +1,7 @@
 #include "Formatter.h"
 
 #include <utility>
+#include <vector>
 
 #include "QPS/models/Entity.h"
 

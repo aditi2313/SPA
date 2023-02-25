@@ -57,6 +57,26 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
+void TupleParseState::Parse(const std::vector<std::string> &tokens,
+                            parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->add_selected_synonym(*itr);
+    }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    }
+    itr++;
+    grammar_itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
+}
+
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
 void SuchThatParseState::Parse(const std::vector<std::string> &tokens,

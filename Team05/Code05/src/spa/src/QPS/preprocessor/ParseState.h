@@ -65,15 +65,37 @@ class DeclarationParseState : public RecursiveParseState {
   }
 };
 
-// synonym | tuple | BOOLEAN
+// tuple | BOOLEAN
 class SelectParseState : public ParseState {
  public:
   SelectParseState() : ParseState("Select", {"Select", PQL::kSelectGrammar}) {
-    kExceptionMessage = "Invalid PQL syntax in select-synonym";
+    kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
 
   void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
+};
+
+// '<' elem ( ',' elem )* '>'
+class TupleParseState : public RecursiveParseState {
+ public:
+  TupleParseState() :
+      RecursiveParseState("<",
+                          {"<", PQL::kSynGrammar, PQL::kRecurseGrammar, ">"},
+                          ",") {
+    kExceptionMessage = "Invalid PQL syntax in tuple";
+  }
+
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
+ private:
+  void Recurse(parse_position &itr, parse_position &grammar_itr) override {
+    if (*itr == kRecurseDelimiter) {
+      grammar_itr = grammar_.begin();  // Reset grammar
+    } else {
+      itr--;
+    }
+  }
 };
 
 // 'such' 'that' relRef

@@ -73,7 +73,6 @@ TEST_CASE("Test SelectParseState") {
   SECTION("Select single synonym should parse correctly") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("v", PQL::kVariableEntityName);
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -85,7 +84,6 @@ TEST_CASE("Test SelectParseState") {
   SECTION("Select BOOLEAN should parse correctly") {
     std::vector<std::string> tokens{"Select", "BOOLEAN"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("v", PQL::kVariableEntityName);
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -108,6 +106,48 @@ TEST_CASE("Test SelectParseState") {
   }
 
   // TODO(JL): Add some error cases here
+}
+
+TEST_CASE("Test TupleParseState") {
+  TupleParseState state;
+  SECTION("<elem> should parse correctly") {
+    std::vector<std::string> tokens{"<", "v", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->get_selected_synonyms().at(0) == "v");
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("<elem, elem, elem> should parse correctly") {
+    std::vector<std::string> tokens{"<", "v1", ",", "v2", ",", "v3", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    std::vector<SynonymName> expected_selected_synonyms{"v1", "v2", "v3"};
+    REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("Missing comma should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"<", "v1", "v2", ",", "v3", ">"});
+  }
+
+  SECTION("Extra comma should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"<", "v1", ",", "v2", ",", "v3", ",", ">"});
+  }
+
+  SECTION("Zero elements should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"<", ">"});
+  }
+
+  SECTION("Missing bracket should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"<", "v1", ",", "v2", ",", "v3"});
+  }
 }
 
 TEST_CASE("Test SuchThatParseState") {

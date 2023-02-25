@@ -65,15 +65,43 @@ TEST_CASE("Test DeclarationParseState") {
 
 TEST_CASE("Test SelectParseState") {
   SelectParseState state;
-  SECTION("Select synonym should parse correctly") {
+  SECTION("Select single synonym should parse correctly") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("v", PQL::kVariableEntityName);
+
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->get_selected_synonyms().at(0) == "v");
     REQUIRE(itr == tokens.end());
   }
+
+  SECTION("Select BOOLEAN should parse correctly") {
+    std::vector<std::string> tokens{"Select", "BOOLEAN"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("v", PQL::kVariableEntityName);
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->is_boolean_query());
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("Select BOOLEAN where BOOLEAN is a synonym "
+          "should parse as synonym correctly") {
+    std::vector<std::string> tokens{"Select", "BOOLEAN"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("BOOLEAN", PQL::kVariableEntityName);
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->get_selected_synonyms().at(0) == "BOOLEAN");
+    REQUIRE(itr == tokens.end());
+  }
+  
   // TODO(JL): Add some error cases here
 }
 

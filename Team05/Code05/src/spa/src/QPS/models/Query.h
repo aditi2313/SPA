@@ -65,6 +65,14 @@ class Query {
     return selected_synonyms_;
   }
 
+  inline void set_boolean_query_to_true() {
+    is_boolean_query_ = true;
+  }
+
+  inline bool is_boolean_query() {
+    return is_boolean_query_;
+  }
+
   inline std::vector<std::unique_ptr<Clause>> &get_clauses() {
     return clauses_;
   }
@@ -85,6 +93,7 @@ class Query {
   ArgumentPtr CreateArgument(std::string token);
 
  private:
+  bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;
   std::vector<SynonymName> selected_synonyms_;
   std::vector<ClausePtr> clauses_;

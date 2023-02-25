@@ -23,7 +23,7 @@ class Synonym {
   inline EntityName get_entity_name() const {
     return entity_name_;
   }
-  
+
   inline bool operator==(const Synonym &other) const {
     return syn_name_ == other.syn_name_
         && entity_name_ == other.entity_name_;

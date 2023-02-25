@@ -1,6 +1,8 @@
 #pragma once
 
 #include <unordered_map>
+#include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "Synonym.h"
@@ -27,7 +29,7 @@ class Table {
   }
 
   // Initialize table with columns but no entities
-  Table(std::vector<SynonymName> &columns) {
+  explicit Table(std::vector<SynonymName> &columns) {
     int id = 0;
     columns_ = columns;
     for (auto col : columns) {

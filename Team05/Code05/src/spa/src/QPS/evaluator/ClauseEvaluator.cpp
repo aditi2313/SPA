@@ -1,8 +1,11 @@
 #include "ClauseEvaluator.h"
 
-namespace qps {
+#include <utility>
+#include <vector>
 
-// Returns true if there are still results, false otherwise
+namespace qps {
+// Returns true if there are results,
+// false otherwise
 bool ClauseEvaluator::EvaluateClause(
     ClausePtr &clause,
     Table &clause_table,
@@ -134,4 +137,4 @@ Table ClauseEvaluator::EvaluateSynonymClause(
 
   return new_table;
 }
-}
+}  // namespace qps

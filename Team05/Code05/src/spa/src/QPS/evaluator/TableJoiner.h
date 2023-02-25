@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "QPS/models/Table.h"
 
 namespace qps {
@@ -14,6 +16,5 @@ class TableJoiner {
   static std::vector<SynonymName> IntersectColumns(
       std::vector<SynonymName> &LHS,
       std::vector<SynonymName> &RHS);
-
 };
-}   // namespace qps
+}  // namespace qps

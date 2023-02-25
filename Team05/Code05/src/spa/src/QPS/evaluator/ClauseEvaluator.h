@@ -6,7 +6,7 @@
 namespace qps {
 class ClauseEvaluator {
  public:
-  ClauseEvaluator(pkb::PKBPtr &pkb)
+  explicit ClauseEvaluator(pkb::PKBPtr &pkb)
       : pkb_(pkb) {}
 
   bool EvaluateClause(

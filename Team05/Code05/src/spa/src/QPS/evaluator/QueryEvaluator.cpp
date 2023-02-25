@@ -8,8 +8,10 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
 
   SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-  EntityName entity_name = query->get_declared_synonym_entity_name(selected_synonym);
-  EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(entity_name);
+  EntityName entity_name = query->get_declared_synonym_entity_name(
+      selected_synonym);
+  EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
+      entity_name);
   table_ = Table(selected_synonym, initial_entities);
 
   for (auto &clause : query->get_clauses()) {

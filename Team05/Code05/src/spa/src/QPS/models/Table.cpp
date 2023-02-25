@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <string>
 
 namespace qps {
 void Table::PrintDebug() {

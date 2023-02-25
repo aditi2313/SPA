@@ -9,7 +9,7 @@ namespace qps {
 
 class MasterEntityFactory {
  public:
-  MasterEntityFactory(pkb::PKBPtr &pkb)
+  explicit MasterEntityFactory(pkb::PKBPtr &pkb)
       : pkb_(pkb) {
     entity_factories_.insert(
         {PQL::kProcedureEntityName,

@@ -80,8 +80,11 @@ class SelectParseState : public ParseState {
 class TupleParseState : public RecursiveParseState {
  public:
   TupleParseState() :
-      RecursiveParseState("<",
-                          {"<", PQL::kSynGrammar, PQL::kRecurseGrammar, ">"},
+      RecursiveParseState(PQL::kTupleSelectOpen,
+                          {PQL::kTupleSelectOpen,
+                           PQL::kSynGrammar,
+                           PQL::kRecurseGrammar,
+                           PQL::kTupleSelectClose},
                           ",") {
     kExceptionMessage = "Invalid PQL syntax in tuple";
   }

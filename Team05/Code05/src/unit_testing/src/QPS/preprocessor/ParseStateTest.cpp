@@ -105,6 +105,30 @@ TEST_CASE("Test SelectParseState") {
     REQUIRE(itr == tokens.end());
   }
 
+  SECTION("Select <elem> should parse correctly") {
+    std::vector<std::string> tokens{"Select", "<", "v", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->get_selected_synonyms().at(0) == "v");
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("Select <elem, elem, elem> should parse correctly") {
+    std::vector<std::string> tokens{
+        "Select", "<", "v1", ",", "v2", ",", "v3", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    std::vector<SynonymName> expected_selected_synonyms{"v1", "v2", "v3"};
+    REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
+    REQUIRE(itr == tokens.end());
+  }
+
   // TODO(JL): Add some error cases here
 }
 

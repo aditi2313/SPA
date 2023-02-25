@@ -19,6 +19,7 @@ class Entity {
  public:
   using EntityValue = std::variant<int, std::string>;
 
+  Entity() {}
   explicit Entity(int int_value) : value_(int_value) {}
   explicit Entity(std::string str) : value_(str) {}
 

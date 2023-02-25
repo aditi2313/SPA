@@ -1,6 +1,8 @@
 #include "TableJoiner.h"
 
 namespace qps {
+
+// TODO(JL): Can be optimized more in terms of time complexity
 Table TableJoiner::Join(Table &LHS, Table &RHS) {
   auto join_columns = IntersectColumns(LHS.get_columns(), RHS.get_columns());
   auto new_columns = UnionColumns(

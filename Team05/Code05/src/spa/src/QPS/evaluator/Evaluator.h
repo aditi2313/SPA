@@ -27,11 +27,6 @@ class Evaluator {
       EntityName entity_name,
       EntitySet &result);
 
-  void UpdateSynonymEntityList(
-      QueryPtr &query,
-      ArgumentPtr &arg,
-      EntitySet const &result);
-
   Table EvaluateClause(
       QueryPtr &query,
       ClausePtr &clause,

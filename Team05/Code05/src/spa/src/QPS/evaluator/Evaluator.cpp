@@ -17,7 +17,9 @@ QueryResultPtr Evaluator::EvaluateQuery(
     QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb) {
   InitializeSynonyms(query, pkb);
 
-  Table table;
+  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
+  Table table = Table(selected_synonym,
+                      query->get_declared_synonym_entities(selected_synonym));
 
   for (auto &clause : query->get_clauses()) {
     Table clause_table = EvaluateClause(query, clause, pkb);
@@ -28,15 +30,6 @@ QueryResultPtr Evaluator::EvaluateQuery(
     }
 
     table = TableJoiner::Join(table, clause_table);
-  }
-
-  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-
-  if (table.Empty()) {
-    // TODO(JL): Fix LOD Violation
-    table = Table(selected_synonym,
-                  query->get_synonym(
-                      selected_synonym)->get_possible_entities());
   }
 
   EntitySet results = table.Select(selected_synonym);
@@ -61,6 +54,8 @@ Table Evaluator::EvaluateClause(
 
   bool is_symmetric = arg1->IsSynonym() && (*arg1 == *arg2);
 
+  Table table;
+
   // Takes care of duplicates
   EntitySet RHS_results;
   EntitySet LHS_results;
@@ -78,13 +73,11 @@ Table Evaluator::EvaluateClause(
                 : clause->Filter(index, RHS, master_entity_factory_, pkb);
     }
 
-    for (auto &entity : results) {
-      // Remove duplicates
-      RHS_results.insert(std::move(entity));
-    }
+    if (results.empty()) continue;
 
-    if (!results.empty()) {
-      LHS_results.insert(index);
+    LHS_results.insert(index);
+    for (auto &entity : results) {
+      RHS_results.insert(entity);
     }
   }
 
@@ -103,14 +96,14 @@ void Evaluator::InitializeEntitiesFromArgument(
   if (arg->IsWildcard()) {
     for (auto &entity :
         master_entity_factory_->GetAllFromPKB(entity_name, pkb)) {
-      result.insert(std::move(entity));
+      result.insert(entity);
     }
     return;
   }
   if (arg->IsSynonym()) {
     SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
-    SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
-    for (auto &entity : synonym->get_possible_entities()) {
+    auto entities = query->get_declared_synonym_entities(synonym_arg->get_syn_name());
+    for (auto &entity : entities) {
       result.insert(entity);
     }
     return;
@@ -128,21 +121,5 @@ void Evaluator::InitializeEntitiesFromArgument(
     IdentArg *ident_arg = dynamic_cast<IdentArg *>(arg.get());
     result.insert(Entity(ident_arg->get_ident()));
   }
-}
-
-void Evaluator::UpdateSynonymEntityList(
-    QueryPtr &query, ArgumentPtr &arg,
-    EntitySet const &result) {
-  if (!arg->IsSynonym()) return;  // Not a synonym
-
-  SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
-  SynonymPtr &synonym = query->get_synonym(synonym_arg->get_syn_name());
-
-  EntitySet new_entity_ptr_list;
-  for (auto &entity : result) {
-    new_entity_ptr_list.insert(entity);
-  }
-
-  synonym->set_possible_entities(new_entity_ptr_list);
 }
 }  // namespace qps

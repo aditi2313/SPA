@@ -41,7 +41,7 @@ void Validator::ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query) {
 // Checks if all synonym names used are declared.
 void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
   for (auto syn_name : query->get_selected_synonyms()) {
-    if (!query->is_declared_synonym_name(syn_name)) {
+    if (!query->is_synonym_name_declared(syn_name)) {
       throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
     }
   }
@@ -63,7 +63,7 @@ void Validator::ValidateArgumentSynonymDeclared(
     QueryPtr &query, ArgumentPtr &arg) {
   if (!arg->IsSynonym()) return;
   SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
-  if (!query->is_declared_synonym_name(synonym_arg->get_syn_name())) {
+  if (!query->is_synonym_name_declared(synonym_arg->get_syn_name())) {
     throw PqlSemanticErrorException("Undeclared synonym argument in clause");
   }
 }

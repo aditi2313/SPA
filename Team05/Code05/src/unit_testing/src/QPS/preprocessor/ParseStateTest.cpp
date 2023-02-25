@@ -23,7 +23,7 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
@@ -35,11 +35,11 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v1", PQL::kVariableEntityName)));
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v2", PQL::kVariableEntityName)));
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v3", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };

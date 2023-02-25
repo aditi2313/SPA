@@ -26,7 +26,7 @@ class Query {
   }
 
   // Returns true if `token` is a synonym that has been declared
-  inline bool is_declared_synonym_name(std::string token) {
+  inline bool is_synonym_name_declared(std::string token) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_name() == token) return true;
     }
@@ -34,16 +34,25 @@ class Query {
   }
 
   // Returns true if `syn` has been declared
-  inline bool does_synonym_exist(Synonym syn) {
+  inline bool is_synonym_declared(Synonym syn) {
     for (auto &declared_syn : synonym_declarations_) {
       if (syn == *declared_syn) return true;
     }
     return false;
   }
 
-  inline SynonymPtr &get_synonym(std::string token) {
+  inline EntityName get_declared_synonym_entity_name(SynonymName syn_name) {
     for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_name() == token) return syn;
+      if (syn->get_syn_name() == syn_name)
+        return syn->get_entity_name();
+    }
+    throw std::runtime_error("Synonym has not been declared");
+  }
+
+  inline EntitySet &get_declared_synonym_entities(SynonymName syn_name) {
+    for (auto &syn : synonym_declarations_) {
+      if (syn->get_syn_name() == syn_name)
+        return syn->get_possible_entities();
     }
     throw std::runtime_error("Synonym has not been declared");
   }

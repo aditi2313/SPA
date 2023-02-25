@@ -3,14 +3,13 @@
 #include <iostream>
 #include <unordered_set>
 
-#include "QPS/models/Entity.h"
 
 namespace pkb {
 
 class UsesData {
  public:
-  UsesData(int line, const std::unordered_set<std::string> &variable_names);
-  friend bool operator<(const UsesData &LHS, const UsesData &RHS) {
+  UsesData(int line, const std::unordered_set<std::string>& variable_names);
+  friend bool operator<(const UsesData& LHS, const UsesData& RHS) {
     return LHS.line_ < RHS.line_ ||
         (LHS.line_ == RHS.line_ &&
             std::lexicographical_compare(LHS.variable_names_.begin(),
@@ -19,14 +18,14 @@ class UsesData {
                                          RHS.variable_names_.end()));
   }
 
-  friend bool operator==(const UsesData &LHS, const UsesData &RHS) {
+  friend bool operator==(const UsesData& LHS, const UsesData& RHS) {
     return LHS.line_ == RHS.line_ &&
         LHS.variable_names_ == RHS.variable_names_;
   }
 
   inline int get_line() { return line_; }
 
-  inline const std::unordered_set<std::string> &get_variables() {
+  inline const std::unordered_set<std::string>& get_variables() {
     return variable_names_;
   }
 

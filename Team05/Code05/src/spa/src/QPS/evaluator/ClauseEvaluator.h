@@ -6,7 +6,7 @@
 namespace qps {
 class ClauseEvaluator {
  public:
-  explicit ClauseEvaluator(pkb::PKBPtr &pkb)
+  explicit ClauseEvaluator(pkb::PKBReadPtr &pkb)
       : pkb_(pkb) {}
 
   bool EvaluateClause(
@@ -29,6 +29,6 @@ class ClauseEvaluator {
       EntitySet &RHS);
 
  private:
-  pkb::PKBPtr &pkb_;
+  pkb::PKBReadPtr &pkb_;
 };
 }  // namespace qps

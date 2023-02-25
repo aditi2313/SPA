@@ -9,7 +9,7 @@ namespace qps {
 
 class MasterEntityFactory {
  public:
-  explicit MasterEntityFactory(pkb::PKBPtr &pkb)
+  explicit MasterEntityFactory(pkb::PKBReadPtr &pkb)
       : pkb_(pkb) {
     entity_factories_.insert(
         {PQL::kProcedureEntityName,
@@ -39,7 +39,7 @@ class MasterEntityFactory {
   }
 
  private:
-  pkb::PKBPtr &pkb_;
+  pkb::PKBReadPtr &pkb_;
   std::unordered_map<std::string, EntityFactoryPtr> entity_factories_;
 };
 }  // namespace qps

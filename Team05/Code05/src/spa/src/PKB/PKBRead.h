@@ -64,19 +64,19 @@ class PKBRead {
     return relation_table_->constants_;
   }
 
-  const std::unordered_set<int> &get_whiles() {
+  const std::unordered_set<int>& get_whiles() {
     return relation_table_->whiles_;
   }
-  const std::unordered_set<int> &get_stmts() { return relation_table_->stmts_; }
-  const std::unordered_set<int> &get_calls() { return relation_table_->calls_; }
-  const std::unordered_set<int> &get_assign() {
+  const std::unordered_set<int>& get_stmts() { return relation_table_->stmts_; }
+  const std::unordered_set<int>& get_calls() { return relation_table_->calls_; }
+  const std::unordered_set<int>& get_assign() {
     return relation_table_->assign_;
   }
-  const std::unordered_set<int> &get_print() { return relation_table_->print_; }
-  const std::unordered_set<int> &get_read() { return relation_table_->read_; }
-  const std::unordered_set<int> &get_if() { return relation_table_->if_; }
+  const std::unordered_set<int>& get_print() { return relation_table_->print_; }
+  const std::unordered_set<int>& get_read() { return relation_table_->read_; }
+  const std::unordered_set<int>& get_if() { return relation_table_->if_; }
 
-  const std::unordered_set<std::string> &get_procedures() {
+  const std::unordered_set<std::string>& get_procedures() {
     return relation_table_->procedures_;
   }
 
@@ -85,6 +85,5 @@ class PKBRead {
   std::unique_ptr<PKBRelationTable> relation_table_;
 };
 
-using PKBPtr = std::unique_ptr<pkb::PKBRead>;
-
+using PKBReadPtr = std::unique_ptr<PKBRead>;
 }  // namespace pkb

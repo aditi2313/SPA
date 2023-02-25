@@ -43,9 +43,12 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
     if (*grammar_itr == PQL::kSelectGrammar) {
       // if BOOLEAN is a declared synonym name,
       // we treat it as a synonym (synonym takes precedence)
-      query->is_synonym_name_declared(*itr)
-      ? query->add_selected_synonym(*itr)
-      : query->set_boolean_query_to_true();
+      if (*itr == PQL::kBooleanSelect
+          && !query->is_synonym_name_declared(*itr)) {
+        query->set_boolean_query_to_true();
+      } else {
+        query->add_selected_synonym(*itr);
+      }
     }
     itr++;
     grammar_itr++;

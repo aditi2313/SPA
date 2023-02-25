@@ -13,7 +13,7 @@ namespace qps {
 void QPS::evaluate(
     std::string query,
     std::list<std::string> &results,
-    std::unique_ptr<pkb::PKBRead> &pkb) {
+    pkb::PKBPtr &pkb) {
   try {
     SelectClParser parser;
     std::unique_ptr<Query> query_object = parser.ParseQuery(query);

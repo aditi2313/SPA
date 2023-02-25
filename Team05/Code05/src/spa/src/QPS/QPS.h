@@ -12,6 +12,6 @@ class QPS {
  public:
   void evaluate(std::string query,
                 std::list<std::string> &results,
-                std::unique_ptr<pkb::PKBRead> &pkb);
+                pkb::PKBPtr &pkb);
 };
 }  // namespace qps

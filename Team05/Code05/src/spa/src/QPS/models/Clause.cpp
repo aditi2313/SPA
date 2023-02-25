@@ -56,7 +56,7 @@ EntitySet Clause::Index(
 
 EntitySet ModifiesClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::ModifiesData>(
       index,
       [&](int line) {
@@ -72,7 +72,7 @@ EntitySet ModifiesClause::Index(
 
 EntitySet FollowsClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::FollowsData>(
       index,
       [&](int line) {
@@ -86,7 +86,7 @@ EntitySet FollowsClause::Index(
 
 EntitySet FollowsTClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::FollowsData>(
       index,
       [&](int line) {
@@ -102,7 +102,7 @@ EntitySet FollowsTClause::Index(
 
 EntitySet ParentClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::ParentData>(
       index,
       [&](int line) {
@@ -118,7 +118,7 @@ EntitySet ParentClause::Index(
 
 EntitySet ParentTClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::ParentData>(
       index,
       [&](int line) {
@@ -134,7 +134,7 @@ EntitySet ParentTClause::Index(
 
 EntitySet UsesClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::UsesData>(
       index,
       [&](int line) {
@@ -149,9 +149,9 @@ EntitySet UsesClause::Index(
 }
 
 EntitySet PatternClause::Filter(
-    const Entity &index, const EntitySet &RHS_filter_values,
-    const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const Entity &index,
+    const EntitySet &RHS_filter_values,
+    const pkb::PKBPtr &pkb) {
   EntitySet result;
 
   int line = index.get_int();
@@ -176,7 +176,7 @@ EntitySet PatternClause::Filter(
 
 EntitySet PatternClause::Index(
     const Entity &index,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
+    const pkb::PKBPtr &pkb) {
   return Clause::Index<pkb::AssignData>(
       index,
       [&](int line) {

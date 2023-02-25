@@ -11,25 +11,21 @@
 namespace qps {
 class QueryEvaluator {
  public:
-  QueryEvaluator()
-      : master_entity_factory_(std::make_unique<MasterEntityFactory>()) {}
+  QueryEvaluator(pkb::PKBPtr &pkb)
+      : pkb_(pkb),
+        master_entity_factory_(std::make_unique<MasterEntityFactory>(pkb)) {}
 
   QueryResultPtr EvaluateQuery(
-      QueryPtr &query,
-      std::unique_ptr<pkb::PKBRead> &pkb);
+      QueryPtr &query);
 
  private:
-  void InitializeSynonyms(
-      QueryPtr &query,
-      std::unique_ptr<pkb::PKBRead> &pkb);
-
   void InitializeEntitiesFromArgument(
-      QueryPtr &query,
       ArgumentPtr &arg,
-      std::unique_ptr<pkb::PKBRead> &pkb,
       EntityName entity_name,
       EntitySet &result);
 
+  pkb::PKBPtr &pkb_;
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
+  Table table_;
 };
 }  // namespace qps

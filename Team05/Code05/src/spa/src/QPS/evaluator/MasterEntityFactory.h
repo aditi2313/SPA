@@ -9,7 +9,8 @@ namespace qps {
 
 class MasterEntityFactory {
  public:
-  MasterEntityFactory() {
+  MasterEntityFactory(pkb::PKBPtr &pkb)
+      : pkb_(pkb) {
     entity_factories_.insert(
         {PQL::kProcedureEntityName,
          std::make_unique<ProcedureEntityFactory>()});
@@ -33,11 +34,12 @@ class MasterEntityFactory {
         {PQL::kConstantEntityName, std::make_unique<ConstantEntityFactory>()});
   }
 
-  inline EntitySet GetAllFromPKB(EntityName entity_name, PKBPtr &pkb) {
-    return entity_factories_.at(entity_name)->GetAllFromPKB(pkb);
+  inline EntitySet GetAllFromPKB(EntityName entity_name) {
+    return entity_factories_.at(entity_name)->GetAllFromPKB(pkb_);
   }
 
  private:
+  pkb::PKBPtr &pkb_;
   std::unordered_map<std::string, EntityFactoryPtr> entity_factories_;
 };
 }  // namespace qps

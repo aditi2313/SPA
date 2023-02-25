@@ -49,14 +49,6 @@ class Query {
     throw std::runtime_error("Synonym has not been declared");
   }
 
-  inline EntitySet &get_declared_synonym_entities(SynonymName syn_name) {
-    for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_name() == syn_name)
-        return syn->get_possible_entities();
-    }
-    throw std::runtime_error("Synonym has not been declared");
-  }
-
   inline std::vector<SynonymPtr> &get_declared_synonyms() {
     return synonym_declarations_;
   }

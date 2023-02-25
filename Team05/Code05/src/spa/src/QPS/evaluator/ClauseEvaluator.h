@@ -6,10 +6,29 @@
 namespace qps {
 class ClauseEvaluator {
  public:
-  static bool EvaluateClause(
-      QueryPtr &query,
+  ClauseEvaluator(pkb::PKBPtr &pkb)
+      : pkb_(pkb) {}
+
+  bool EvaluateClause(
       ClausePtr &clause,
       Table &clause_table,
-      std::unique_ptr<pkb::PKBRead> &pkb);
+      EntitySet &LHS,
+      EntitySet &RHS);
+
+  // Clauses where neither argument is a synonym
+  bool EvaluateExactClause(
+      ClausePtr &clause,
+      EntitySet &LHS,
+      EntitySet &RHS);
+
+  // Clauses where there is at least one synonym
+  // in the argument
+  Table EvaluateSynonymClause(
+      ClausePtr &clause,
+      EntitySet &LHS,
+      EntitySet &RHS);
+
+ private:
+  pkb::PKBPtr &pkb_;
 };
 }  // namespace qps

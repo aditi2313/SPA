@@ -22,7 +22,7 @@ class Clause {
 
   virtual EntitySet Index(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
+      const pkb::PKBPtr &pkb) = 0;
 
   template<class Data>
   static EntitySet Index(
@@ -34,7 +34,7 @@ class Clause {
   inline virtual EntitySet Filter(
       const Entity &index,
       const EntitySet &RHS_filter_values,
-      const std::unique_ptr<pkb::PKBRead> &pkb) {
+      const pkb::PKBPtr &pkb) {
     EntitySet result;
     for (auto &entity : Index(index, pkb)) {
       for (auto &filter_entity : RHS_filter_values) {
@@ -49,7 +49,7 @@ class Clause {
 
   inline virtual EntitySet SymmetricFilter(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) {
+      const pkb::PKBPtr &pkb) {
     EntitySet result;
     for (auto &entity : Index(index, pkb)) {
       if (entity.WeakEqual(index)) {
@@ -98,7 +98,7 @@ class ModifiesClause : public Clause {
 
   EntitySet Index(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      const pkb::PKBPtr &pkb) override;
 
   inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
@@ -112,7 +112,7 @@ class FollowsClause : public Clause {
 
   EntitySet Index(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      const pkb::PKBPtr &pkb) override;
 };
 
 // RS between statements (transitive)
@@ -124,7 +124,7 @@ class FollowsTClause : public Clause {
 
   EntitySet Index(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      const pkb::PKBPtr &pkb) override;
 };
 
 class PatternClause : public Clause {
@@ -135,12 +135,12 @@ class PatternClause : public Clause {
 
   EntitySet Index(
       const Entity &index,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      const pkb::PKBPtr &pkb) override;
 
   EntitySet Filter(
       const Entity &index,
       const EntitySet &RHS_filter_values,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+      const pkb::PKBPtr &pkb) override;
 
   inline bool IsExactType() override { return true; };
 };
@@ -153,7 +153,7 @@ class UsesClause : public Clause {
                PQL::kVariableEntityName) {}
 
   EntitySet Index(const Entity &index,
-                  const std::unique_ptr<pkb::PKBRead> &pkb) override;
+                  const pkb::PKBPtr &pkb) override;
 
   inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
@@ -166,7 +166,7 @@ class ParentClause : public Clause {
                PQL::kStmtEntityName) {}
 
   EntitySet Index(const Entity &index,
-                  const std::unique_ptr<pkb::PKBRead> &pkb) override;
+                  const pkb::PKBPtr &pkb) override;
 };
 
 class ParentTClause : public Clause {
@@ -176,7 +176,7 @@ class ParentTClause : public Clause {
                PQL::kStmtEntityName) {}
 
   EntitySet Index(const Entity &index,
-                  const std::unique_ptr<pkb::PKBRead> &pkb) override;
+                  const pkb::PKBPtr &pkb) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

@@ -23,15 +23,7 @@ class Synonym {
   inline EntityName get_entity_name() const {
     return entity_name_;
   }
-
-  inline EntitySet &get_possible_entities() {
-    return possible_entities_;
-  }
-
-  inline void set_possible_entities(EntitySet &entities) {
-    possible_entities_ = entities;
-  }
-
+  
   inline bool operator==(const Synonym &other) const {
     return syn_name_ == other.syn_name_
         && entity_name_ == other.entity_name_;
@@ -44,7 +36,6 @@ class Synonym {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
-  EntitySet possible_entities_;
 };
 
 using SynonymPtr = std::unique_ptr<Synonym>;

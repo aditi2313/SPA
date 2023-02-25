@@ -14,7 +14,7 @@ bool ClauseEvaluator::EvaluateClause(
   if (arg1->IsSynonym() || arg2->IsSynonym()) {
     auto table = EvaluateSynonymClause(clause, LHS, RHS);
     clause_table = table;
-    return table.Empty();
+    return !table.Empty();
   } else {
     return EvaluateExactClause(clause, LHS, RHS);
   }

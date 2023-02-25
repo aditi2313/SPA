@@ -28,8 +28,10 @@ class Table {
 
   // Initialize table with columns but no entities
   Table(std::vector<SynonymName> &columns) {
+    int id = 0;
     columns_ = columns;
     for (auto col : columns) {
+      id_map_[col] = id++;
       columns_set_.insert(col);
     }
   }
@@ -71,6 +73,8 @@ class Table {
     }
     rows_.emplace_back(new_row);
   }
+
+  void PrintDebug();
 
  private:
   std::vector<SynonymName> columns_;

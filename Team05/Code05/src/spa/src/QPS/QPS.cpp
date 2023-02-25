@@ -19,8 +19,8 @@ void QPS::evaluate(
     std::unique_ptr<Query> query_object = parser.ParseQuery(query);
     Validator::Validate(query_object);
 
-    QueryEvaluator evaluator;
-    QueryResultPtr result = evaluator.EvaluateQuery(query_object, pkb);
+    QueryEvaluator evaluator(pkb);
+    QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
     Formatter formatter;
     results = formatter.FormatQuery(result);

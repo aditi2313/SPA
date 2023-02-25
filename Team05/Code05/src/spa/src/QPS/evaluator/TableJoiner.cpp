@@ -13,6 +13,9 @@ namespace qps {
 // essentially the cross product of the two tables.
 // TODO(JL): Can be optimized further in terms of time complexity
 Table TableJoiner::Join(Table &LHS, Table &RHS) {
+  if (LHS.Empty()) return RHS;
+  if (RHS.Empty()) return LHS;
+
   auto join_columns = IntersectColumns(LHS.get_columns(), RHS.get_columns());
   auto new_columns = UnionColumns(
       LHS.get_columns(), RHS.get_columns());

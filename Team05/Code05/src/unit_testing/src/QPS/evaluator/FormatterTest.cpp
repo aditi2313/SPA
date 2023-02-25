@@ -13,7 +13,7 @@ TEST_CASE("Test QueryFormatter") {
   SECTION("For statements") {
     EntitySet entities;
     entities.insert(Entity(1));
-    QueryResultPtr query_result = std::make_unique<QueryResult>(entities);
+    QueryResultPtr query_result = std::make_unique<ListQueryResult>(entities);
     std::list<std::string> actual =
         query_formatter.FormatQuery(query_result);
     REQUIRE(actual.front() == "1");

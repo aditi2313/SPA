@@ -27,7 +27,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
     if (!res) {
       // Clause is false, can immediately return empty result.
-      return std::make_unique<QueryResult>();
+      return std::make_unique<ListQueryResult>();
     }
 
     if (!clause_table.Empty()) {
@@ -36,7 +36,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   }
 
   EntitySet results = table_.Select(selected_synonym);
-  QueryResultPtr result = std::make_unique<QueryResult>(
+  QueryResultPtr result = std::make_unique<ListQueryResult>(
       results);
 
   return result;

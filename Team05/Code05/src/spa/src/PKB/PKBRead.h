@@ -42,10 +42,10 @@ class PKBRead {
   /// <param name=""></param>
   /// <returns></returns>
   std::unique_ptr<PKBResult<ModifiesTable>> Modifies(
-          IndexableFilterPtr<ModifiesData>);
+      IndexableFilterPtr<ModifiesData>);
 
   std::unique_ptr<PKBResult<AssignTable>> Assigns(
-          IndexableFilterPtr<AssignData>);
+      IndexableFilterPtr<AssignData>);
 
   std::unique_ptr<PKBResult<UsesTable>> Uses(
           IndexableFilterPtr<UsesData>);

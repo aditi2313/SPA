@@ -15,6 +15,9 @@ class ClauseEvaluator {
       EntitySet &LHS,
       EntitySet &RHS);
 
+ private:
+  pkb::PKBReadPtr &pkb_;
+
   // Clauses where neither argument is a synonym
   bool EvaluateExactClause(
       ClausePtr &clause,
@@ -27,8 +30,5 @@ class ClauseEvaluator {
       ClausePtr &clause,
       EntitySet &LHS,
       EntitySet &RHS);
-
- private:
-  pkb::PKBReadPtr &pkb_;
 };
 }  // namespace qps

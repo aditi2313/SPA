@@ -4,6 +4,13 @@
 #include <vector>
 
 namespace qps {
+// Join two tables on common columns
+// For example, if LHS and RHS share the two columns
+// Synonym "a" and Synonym "v",
+// the new table contains all the rows where the values
+// for "a" and "v" for LHS and RHS are the same.
+// If there are no common columns, the result is
+// essentially the cross product of the two tables.
 // TODO(JL): Can be optimized further in terms of time complexity
 Table TableJoiner::Join(Table &LHS, Table &RHS) {
   auto join_columns = IntersectColumns(LHS.get_columns(), RHS.get_columns());
@@ -42,6 +49,9 @@ Table TableJoiner::Join(Table &LHS, Table &RHS) {
   return new_table;
 }
 
+// Given two list of columns, return a list of columns
+// that is the union of all the column names that
+// appear in either list
 std::vector<SynonymName> TableJoiner::UnionColumns(
     std::vector<SynonymName> &LHS,
     std::vector<SynonymName> &RHS) {
@@ -56,6 +66,9 @@ std::vector<SynonymName> TableJoiner::UnionColumns(
       cols_set.begin(), cols_set.end());
 }
 
+// Given two list of columns, return a list of columns
+// that is the intersection of all the column names that
+// must appear in both lists
 std::vector<SynonymName> TableJoiner::IntersectColumns(
     std::vector<SynonymName> &LHS,
     std::vector<SynonymName> &RHS) {

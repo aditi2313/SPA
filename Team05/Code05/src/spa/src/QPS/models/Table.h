@@ -11,23 +11,34 @@ class Table {
   // Empty constructor.
   Table() {}
 
-  Table(SynonymName syn_name, EntityPtrList &entities) {
-    int id = data_.size();
+  Table(SynonymName syn_name, EntitySet &entities) {
+    int id = columns_.size();
     id_map_[syn_name] = id;
     columns_.push_back(syn_name);
-    data_.push_back(EntityPtrList());
     for (auto &entity : entities) {
-      data_.at(id).push_back(entity->Copy());
+      rows_.push_back(std::vector<Entity>());
+      rows_.back().push_back(entity);
     }
   }
 
   inline bool Empty() {
-    return data_.empty();
+    return rows_.empty();
   }
 
-  inline EntityPtrList &Select(SynonymName syn_name) {
-    return data_.at(id_map_.at(syn_name));
+  inline EntitySet Select(SynonymName syn_name) {
+    EntitySet results;
+
+    int index = id_map_.at(syn_name);
+    for (auto &arr : rows_) {
+      results.insert(arr.at(index));
+    }
+    return results;
   }
+
+  inline void AddRow() {
+
+  }
+  
   // Methods to create:
   // CrossProduct
   // Join
@@ -36,6 +47,6 @@ class Table {
  private:
   std::vector<SynonymName> columns_;
   std::unordered_map<SynonymName, int> id_map_;
-  std::vector<EntityPtrList> data_;
+  std::vector<std::vector<Entity>> rows_;
 };
 }  // namespace qps

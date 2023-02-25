@@ -4,7 +4,8 @@
 #include <utility>
 #include <set>
 
-#include "../models/Query.h"
+#include "QPS/models/Query.h"
+#include "QPS/models/Table.h"
 #include "QPS/models/QueryResult.h"
 
 namespace qps {
@@ -20,12 +21,12 @@ class Evaluator {
   void InitializeSynonyms(QueryPtr &query, std::unique_ptr<pkb::PKBRead> &pkb);
   void InitializeEntitiesFromArgument(
       QueryPtr &query, ArgumentPtr &arg, std::unique_ptr<pkb::PKBRead> &pkb,
-      EntityName entity_name, EntityPtrHashset &result);
+      EntityName entity_name, EntitySet &result);
 
   void UpdateSynonymEntityList(
       QueryPtr &query, ArgumentPtr &arg,
-      EntityPtrHashset const &result);
-  bool EvaluateClause(QueryPtr &query, ClausePtr &clause, std::unique_ptr<pkb::PKBRead> &pkb);
+      EntitySet const &result);
+  Table EvaluateClause(QueryPtr &query, ClausePtr &clause, std::unique_ptr<pkb::PKBRead> &pkb);
 
   std::unique_ptr<MasterEntityFactory> master_entity_factory_;
 };

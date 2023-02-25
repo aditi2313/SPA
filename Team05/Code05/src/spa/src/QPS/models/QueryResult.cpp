@@ -7,27 +7,25 @@ namespace qps {
 // Intersection is defined as the list of elements that occur
 // in both lists.
 void QueryResult::IntersectWith(QueryResult &other_result) {
-  EntityPtrList result_list;
+  EntitySet result_list;
 
-  // Vector, hence not guaranteed to be in ascending order
-  // Need to sort first
-  this->Sort();
-  other_result.Sort();
+  auto arr1 = this->Sort();
+  auto arr2 = other_result.Sort();
 
-  auto it1 = query_results_.begin();
-  auto it2 = other_result.query_results_.begin();
+  auto it1 = arr1.begin();
+  auto it2 = arr2.begin();
 
   while (
-      it1 != query_results_.end()
-          && it2 != other_result.query_results_.end()
+      it1 != arr1.end()
+          && it2 != arr2.end()
       ) {
     // Need to dereference twice because it is
     // a vector of unique pointers
-    if (*(*it1) == *(*it2)) {
-      result_list.push_back((*it2)->Copy());
+    if (*it1 == *it2) {
+      result_list.insert(*it2);
       it1++;
       it2++;
-    } else if (*(*it1) < *(*it2)) {
+    } else if (*it1 < *it2) {
       it1++;
     } else {
       // it2 > it1
@@ -35,9 +33,6 @@ void QueryResult::IntersectWith(QueryResult &other_result) {
     }
   }
 
-  query_results_.clear();
-  for (auto &entity : result_list) {
-    query_results_.push_back(std::move(entity));
-  }
+  query_results_ = result_list;
 }
 }  // namespace qps

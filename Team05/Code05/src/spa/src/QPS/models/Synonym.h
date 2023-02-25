@@ -4,10 +4,9 @@
 #include <utility>
 #include <memory>
 
-#include "models/Entity.h"
+#include "Entity.h"
 #include "models/types.h"
 
-using models::EntityPtrList;
 using models::EntityName;
 using models::SynonymName;
 
@@ -25,15 +24,12 @@ class Synonym {
     return entity_name_;
   }
 
-  inline EntityPtrList &get_possible_entities() {
+  inline EntitySet &get_possible_entities() {
     return possible_entities_;
   }
 
-  inline void set_possible_entities(EntityPtrList &entities) {
-    possible_entities_.clear();
-    for (auto &entity : entities) {
-      possible_entities_.push_back(std::move(entity));
-    }
+  inline void set_possible_entities(EntitySet &entities) {
+    possible_entities_ = entities;
   }
 
   inline bool operator==(const Synonym &other) const {
@@ -48,7 +44,7 @@ class Synonym {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
-  EntityPtrList possible_entities_;
+  EntitySet possible_entities_;
 };
 
 using SynonymPtr = std::unique_ptr<Synonym>;

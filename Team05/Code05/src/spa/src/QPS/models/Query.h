@@ -9,7 +9,7 @@
 
 #include "Clause.h"
 #include "common/Utiity.h"
-#include "models/Entity.h"
+#include "Entity.h"
 #include "Synonym.h"
 #include "PQL.h"
 

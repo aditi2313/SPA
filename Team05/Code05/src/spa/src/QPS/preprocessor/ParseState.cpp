@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "QPS/models/PQL.h"
-#include "models/Entity.h"
+#include "QPS/models/Entity.h"
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'

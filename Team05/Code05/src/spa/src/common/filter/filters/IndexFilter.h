@@ -22,7 +22,7 @@ template<class T>
 class IndexFilter
         : public IndexableFilter<T> {
  public:
-    explicit IndexFilter(int line) : line_(line) {}
+    explicit IndexFilter(std::variant<int, std::string> line) : line_(line) {}
 
     inline pkb::IndexableTablePtr<T>
             FilterTable(pkb::IndexableTablePtr<T> table) override {
@@ -36,7 +36,7 @@ class IndexFilter
     }
 
  private:
-    int line_;
+    std::variant<int, std::string> line_;
 };
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;

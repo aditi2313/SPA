@@ -44,7 +44,9 @@ class IndexableTable {
     return result;
   }
 
-  inline bool exists(IntOrStringVariant v) { return id_map_.find(v) != id_map_.end(); }
+  inline bool exists(IntOrStringVariant v) {
+      return id_map_.find(v) != id_map_.end();
+  }
 
   inline bool empty() { return rows_.empty(); }
 

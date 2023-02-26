@@ -61,12 +61,12 @@ class PKBWrite {
   void AddParentData(int line, const int parent_line);
 
   /// <summary>
-  /// Adds a parent row.
+  /// Adds a calls row.
   ///
   /// </summary>
-  /// <param name="line"></param>
-  /// <param name="parent_line"></param>
-  void AddCallsData(int line, std::string caller, std::string callee);
+  /// <param name="caller"></param>
+  /// <param name="callee"></param>
+  void AddCallsData(std::string caller, std::string callee);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);

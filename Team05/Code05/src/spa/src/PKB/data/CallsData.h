@@ -6,10 +6,12 @@
 namespace pkb {
 class CallsData {
  public:
-    CallsData(std::string caller, std::string callees);
+    CallsData(std::string caller, std::string callee);
+
     friend bool operator==(const CallsData& LHS, const CallsData& RHS) {
-        return LHS.caller_ == RHS.caller_ && LHS.callee_ == RHS.callee_ &&
-        LHS.callee_list_ == RHS.callee_list_;
+        return LHS.caller_ == RHS.caller_
+        && LHS.callee_ == RHS.callee_
+        && LHS.callee_list_ == RHS.callee_list_;
     }
 
     inline std::string get_caller() { return caller_; }

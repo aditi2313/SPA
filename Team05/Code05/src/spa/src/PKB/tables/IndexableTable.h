@@ -5,6 +5,8 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
+#include <variant>
+#include <string>
 
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ModifiesData.h"
@@ -23,23 +25,26 @@ namespace pkb {
 template <class T>
 class IndexableTable {
  public:
+  using Variant = std::variant<int, std::string>;
+
   IndexableTable() = default;
 
-  inline void add_row(int line, T row) {
-    id_map_[line] = rows_.size();
+  inline void add_row(Variant v, T row) {
+    id_map_[v] = rows_.size();
     rows_.push_back(std::move(row));
   }
-  inline T& get_row(int num) { return rows_.at(id_map_.at(num)); }
 
-  inline std::set<int> get_indexes() {
-    std::set<int> result;
-    for (auto &[line, row] : id_map_) {
-      result.insert(line);
+  inline T& get_row(Variant v) { return rows_.at(id_map_.at(v)); }
+
+  inline std::set<Variant> get_indexes() {
+    std::set<Variant> result;
+    for (auto &[v, row] : id_map_) {
+      result.insert(v);
     }
     return result;
   }
 
-  inline bool exists(int line) { return id_map_.find(line) != id_map_.end(); }
+  inline bool exists(Variant v) { return id_map_.find(v) != id_map_.end(); }
 
   inline bool empty() { return rows_.empty(); }
 
@@ -58,7 +63,7 @@ class IndexableTable {
 
  protected:
   std::vector<T> rows_;
-  std::unordered_map<int, int> id_map_;
+  std::unordered_map<std::variant<int, std::string>, int> id_map_;
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;

@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <functional>
+#include <variant>
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
@@ -31,7 +32,7 @@ class PredicateFilter
         pkb::IndexableTablePtr<T> result =
                 std::make_unique<pkb::IndexableTable<T>>();
 
-        for (int line : table->get_indexes()) {
+        for (std::variant<int, std::string> line : table->get_indexes()) {
             auto data = table->get_row(line);
             if (predicate_(data)) {
                 result->add_row(line, data);

@@ -29,6 +29,7 @@ class PKBRelationTable {
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
   IndexableTable<AssignData> assign_table_;
+  IndexableTable<CallsData> calls_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -66,6 +67,10 @@ class PKBRelationTable {
       parent_table_.add_row(line, ParentData(line));
     }
     parent_table_.get_row(line).add_direct_child(child_line);
+  }
+
+  void add_calls_data(std::string caller, std::string callee) {
+      calls_table_.add_row(caller, CallsData(caller, callee));
   }
 };
 }  // namespace pkb

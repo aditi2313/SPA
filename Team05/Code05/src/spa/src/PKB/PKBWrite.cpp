@@ -14,7 +14,7 @@ void ProcessIndexableTable(
     IndexableTable<Data>& table,
     std::function<void(Data&, int)> adding_function,
     std::function<std::unordered_set<int>(Data&)> get_children) {
-  for (int id : table.get_indexes()) {
+  for (std::variant<int, std::string> id : table.get_indexes()) {
     Data& data_to_update = table.get_row(id);
     // use dfs to add all possible children
     std::stack<Data> frontier;
@@ -53,6 +53,10 @@ void PKBWrite::AddFollowsData(const int line, const int follows) {
 
 void PKBWrite::AddParentData(const int parent, const int child_line) {
   pkb_relation_table_->add_parent_data(parent, child_line);
+}
+
+void PKBWrite::AddCallsData(std::string caller, std::string callee) {
+    pkb_relation_table_->add_calls_data(caller, callee);
 }
 
 void PKBWrite::ProcessFollows() {

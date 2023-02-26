@@ -25,26 +25,26 @@ namespace pkb {
 template <class T>
 class IndexableTable {
  public:
-  using Variant = std::variant<int, std::string>;
+  using IntOrStringVariant = std::variant<int, std::string>;
 
   IndexableTable() = default;
 
-  inline void add_row(Variant v, T row) {
+  inline void add_row(IntOrStringVariant v, T row) {
     id_map_[v] = rows_.size();
     rows_.push_back(std::move(row));
   }
 
-  inline T& get_row(Variant v) { return rows_.at(id_map_.at(v)); }
+  inline T& get_row(IntOrStringVariant v) { return rows_.at(id_map_.at(v)); }
 
-  inline std::set<Variant> get_indexes() {
-    std::set<Variant> result;
+  inline std::set<IntOrStringVariant> get_indexes() {
+    std::set<IntOrStringVariant> result;
     for (auto &[v, row] : id_map_) {
       result.insert(v);
     }
     return result;
   }
 
-  inline bool exists(Variant v) { return id_map_.find(v) != id_map_.end(); }
+  inline bool exists(IntOrStringVariant v) { return id_map_.find(v) != id_map_.end(); }
 
   inline bool empty() { return rows_.empty(); }
 

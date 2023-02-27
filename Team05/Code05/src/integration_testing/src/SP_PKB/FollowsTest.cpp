@@ -7,25 +7,40 @@
 #include "SP/visitors/FollowsVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
+pkb::FollowsTable InitializeActualResult(std::string program) {
+  std::unique_ptr<pkb::PKBRelationTable> table =
+      std::make_unique<pkb::PKBRelationTable>();
+  auto root = sp::SourceProcessor::ParseProgram(program);
+  sp::SourceProcessor::ExtractRelationships(root, table);
+  pkb::PKBRead reader(std::move(table));
+  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
+      [](pkb::FollowsData data) { return true; });
+  auto results_ptr = reader.Follows(std::move(ftr));
+  auto results = *(results_ptr->get_result());
+
+  return results;
+}
+
+pkb::FollowsTable InitializeEmptyExpectedResult() {
+  std::unique_ptr<pkb::PKBRelationTable> table =
+      std::make_unique<pkb::PKBRelationTable>();
+  pkb::PKBRead reader(std::move(table));
+  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
+      [](pkb::FollowsData data) { return true; });
+  auto results_ptr = reader.Follows(std::move(ftr));
+  auto results = *(results_ptr->get_result());
+
+  return results;
+}
+
 TEST_CASE("Test SP and PKB integration for Follows data") {
   SECTION("There should be no data if there is only one statement") {
     std::string program = "procedure readfollows { read x; }";
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    std::unique_ptr<pkb::PKBRelationTable> actual_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    auto root = sp::SourceProcessor::ParseProgram(program);
-    sp::SourceProcessor::ExtractRelationships(root, actual_table);
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    pkb::PKBRead actual_reader(std::move(actual_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr = expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
-    auto actual_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto actual_results_ptr = actual_reader.Follows(std::move(actual_ftr));
-    auto actual_results = *(actual_results_ptr->get_result());
+
+    auto actual_results = InitializeActualResult(program);
+
+    auto expected_results = InitializeEmptyExpectedResult();
+
     REQUIRE(actual_results == expected_results);
   }
 
@@ -87,70 +102,22 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
             expected_results->get_result()->get_row(1).get_follows_list());
   }
 
-  //maybe move to FollowsTTest
-  SECTION("Follows(s1, s3) does not hold for three read statements") {
-    std::string program = "procedure readfollows { read x; read y; read z; }";
-
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    std::unique_ptr<pkb::PKBRelationTable> actual_table =
-        std::make_unique<pkb::PKBRelationTable>();
-
-    auto root = sp::SourceProcessor::ParseProgram(program);
-    sp::SourceProcessor::ExtractRelationships(root, actual_table);
-
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(1, 2);
-    expected_writer.AddFollowsData(2, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    pkb::PKBRead actual_reader(std::move(actual_table));
-
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results = expected_reader.Follows(std::move(expected_ftr));
-    auto actual_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto actual_results = actual_reader.Follows(std::move(actual_ftr));
-
-    REQUIRE(actual_results->get_result()->get_row(1).get_follows_list() ==
-            expected_results->get_result()->get_row(1).get_follows_list());
-
-    //REQUIRE(actual_results->get_result()->get_row(2).get_follows_list() ==
-    //        expected_results->get_result()->get_row(2).get_follows_list());
-  }
-
   SECTION("Follows(s1, s2) does not hold at different nesting levels") {
     std::string program =
         "procedure readfollows { while (x != 0) { y = y + 1; } }";
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    std::unique_ptr<pkb::PKBRelationTable> actual_table =
-        std::make_unique<pkb::PKBRelationTable>();
+    auto actual_results = InitializeActualResult(program);
 
-    auto root = sp::SourceProcessor::ParseProgram(program);
-    sp::SourceProcessor::ExtractRelationships(root, actual_table);
+    auto expected_results = InitializeEmptyExpectedResult();
 
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    pkb::PKBRead actual_reader(std::move(actual_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
-    auto actual_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto actual_results_ptr = actual_reader.Follows(std::move(actual_ftr));
-    auto actual_results = *(actual_results_ptr->get_result());
     REQUIRE(actual_results == expected_results);
   }
 
   SECTION(
       "Follows(s1, s2) holds at the same nesting level in an if statement") {
     std::string program =
-        "procedure readfollows { if (x < 0) then { read x; read y; } else { read z; } "
+        "procedure readfollows { if (x < 0) then { read x; read y; } else { "
+        "read z; } "
         "}";
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
@@ -179,8 +146,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
             expected_results->get_result()->get_row(2).get_follows_list());
   }
 
-  SECTION(
-      "Follows(s1, s3) holds for two while loops") {
+  SECTION("Follows(s1, s3) holds for two while loops") {
     std::string program =
         "procedure readfollows { while (i > 0) { i = i - 1; } while (j < 0) { "
         "j = j + 1; } }";
@@ -215,25 +181,10 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     std::string program =
         "procedure readfollows { x = 5; } procedure readfollows2 { y = 3; }";
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    std::unique_ptr<pkb::PKBRelationTable> actual_table =
-        std::make_unique<pkb::PKBRelationTable>();
+    auto actual_results = InitializeActualResult(program);
 
-    auto root = sp::SourceProcessor::ParseProgram(program);
-    sp::SourceProcessor::ExtractRelationships(root, actual_table);
+    auto expected_results = InitializeEmptyExpectedResult();
 
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    pkb::PKBRead actual_reader(std::move(actual_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
-    auto actual_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto actual_results_ptr = actual_reader.Follows(std::move(actual_ftr));
-    auto actual_results = *(actual_results_ptr->get_result());
     REQUIRE(actual_results == expected_results);
   }
 }

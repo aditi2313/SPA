@@ -18,7 +18,8 @@ TEST_CASE("Test CallsData") {
 
     SECTION("Retrieving CallsData callee_list") {
         calls_data.add_to_list("callee2");
-        std::unordered_set<std::string> expected_callee_list{"callee1", "callee2"};
+        std::unordered_set<std::string>
+            expected_callee_list{"callee1", "callee2"};
         REQUIRE(calls_data.get_callee_list() == expected_callee_list);
     };
 }

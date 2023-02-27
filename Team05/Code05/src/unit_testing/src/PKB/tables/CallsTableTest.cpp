@@ -17,7 +17,8 @@ TEST_CASE("Test CallsTable") {
     calls_table2.add_row("caller2", calls_data2);
 
     SECTION("Checking if CallsTable rows exists") {
-        REQUIRE((calls_table1.exists("caller1") && calls_table2.exists("caller2")));
+        REQUIRE((calls_table1.exists("caller1")
+            && calls_table2.exists("caller2")));
     };
 
     SECTION("Checking if CallsTable are empty") {

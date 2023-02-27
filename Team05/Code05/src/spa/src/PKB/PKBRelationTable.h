@@ -9,6 +9,7 @@
 #include "data/ModifiesData.h"
 #include "data/ParentData.h"
 #include "data/UsesData.h"
+#include "data/NextData.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "tables/IndexableTable.h"
 
@@ -30,6 +31,7 @@ class PKBRelationTable {
   IndexableTable<UsesData> uses_table_;
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
+  IndexableTable<NextData> next_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -46,7 +48,7 @@ class PKBRelationTable {
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
 
-  void add_assign_data(std::string variable, int line,
+  void add_assign_data(const std::string variable, const int line,
                        std::unique_ptr<ast::ExprNode> expression) {
     variables_.insert(variable);
     assign_table_.add_row(line,
@@ -69,8 +71,12 @@ class PKBRelationTable {
     parent_table_.get_row(line).add_direct_child(child_line);
   }
 
-  void add_calls_data(std::string caller, std::string callee) {
+  void add_calls_data(const std::string caller, const std::string callee) {
       calls_table_.add_row(caller, CallsData(caller, callee));
+  }
+
+  void add_next_data(const int line, const int next) {
+      next_table_.add_row(line, NextData(line, next));
   }
 };
 }  // namespace pkb

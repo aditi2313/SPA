@@ -59,6 +59,10 @@ void PKBWrite::AddCallsData(std::string caller, std::string callee) {
     pkb_relation_table_->add_calls_data(caller, callee);
 }
 
+void PKBWrite::AddNextData(int line, int next) {
+    pkb_relation_table_->add_next_data(line, next);
+}
+
 void PKBWrite::ProcessFollows() {
   ProcessIndexableTable<FollowsData>(
       pkb_relation_table_->follows_table_,

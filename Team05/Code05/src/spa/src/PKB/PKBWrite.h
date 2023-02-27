@@ -68,6 +68,14 @@ class PKBWrite {
   /// <param name="callee"></param>
   void AddCallsData(std::string caller, std::string callee);
 
+  /// <summary>
+  /// Adds a next row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="next"></param>
+  void AddNextData(int line, int next);
+
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
   }

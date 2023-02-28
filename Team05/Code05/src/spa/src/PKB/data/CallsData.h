@@ -14,7 +14,7 @@ class CallsData {
         && LHS.callee_list_ == RHS.callee_list_;
     }
 
-    inline std::string get_caller() { return caller_; }
+    inline std::string get_line() { return caller_; }
 
     inline std::string get_callee() { return callee_; }
 

@@ -16,7 +16,7 @@ TEST_CASE("Test NextData") {
         REQUIRE(next_data.get_next() == 2);
     };
 
-    SECTION("Retrieving NextData callee_list") {
+    SECTION("Retrieving NextData next_list") {
         next_data.add_to_list(3);
         std::unordered_set<int> expected_next_list{2, 3};
         REQUIRE(next_data.get_next_list() == expected_next_list);

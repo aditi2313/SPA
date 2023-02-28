@@ -9,7 +9,7 @@ TEST_CASE("Test CallsData") {
     CallsData calls_data("caller", "callee1");
 
     SECTION("Retrieving CallsData caller") {
-        REQUIRE(calls_data.get_caller() == "caller");
+        REQUIRE(calls_data.get_line() == "caller");
     };
 
     SECTION("Retrieving CallsData callee") {

@@ -18,7 +18,10 @@ class NextData {
 
     inline std::unordered_set<int>& get_next_list() { return next_list_; }
 
-    inline void add_to_list(int v) { next_list_.insert(v); }
+    inline void add_to_list(int v) {
+        assert(next_list_.size() < 2);
+        next_list_.insert(v);
+    }
 
  private:
     int line_;

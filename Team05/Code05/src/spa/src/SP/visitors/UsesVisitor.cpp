@@ -8,6 +8,28 @@
 
 namespace sp {
 
+// Merges the variables used by a procedure directly with the variables used
+// indirectly via calls within the procedure, then writes the results to PKB.
+void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
+  for (auto& proc_node : program_node->get_children()) {
+    auto parent_proc = proc_node->get_name();
+    auto parent_uses = proc_direct_uses_[parent_proc];
+    for (auto& child_call : proc_calls_[parent_proc]) {
+      auto child_uses = proc_direct_uses_[child_call];
+      parent_uses.merge(child_uses);
+      pkb_ptr_->AddUsesData(parent_proc, parent_uses);
+    }
+  }
+}
+
+// Collects the vars that the procedure uses directly
+void UsesVisitor::Process(ast::ProcNode* proc_node) {
+  VarCollector var_collector;
+  proc_node->AcceptVisitor(&var_collector);
+  std::unordered_set<std::string> vars = var_collector.get_vars();
+  proc_direct_uses_.insert({proc_node->get_name(), vars});
+}
+
 void UsesVisitor::Process(ast::AssignNode* assign_node) {
   VarCollector var_collector;
   auto& expr_node = assign_node->get_expr();
@@ -43,6 +65,13 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
   pkb_ptr_->AddUsesData(while_node->get_line(), vars);
+}
+
+void UsesVisitor::Process(ast::CallNode* call_node) {
+  auto parent_proc = call_node->get_parent_proc();
+  auto calls = proc_calls_[parent_proc];
+  calls.insert(call_node->get_var()->get_name());
+  proc_calls_[parent_proc] = calls;
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

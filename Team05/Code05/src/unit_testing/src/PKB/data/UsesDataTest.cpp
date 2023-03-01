@@ -6,7 +6,7 @@
 
 using namespace pkb; // NOLINT
 
-TEST_CASE("Test UsesData") {
+TEST_CASE("Test UsesData int") {
     std::unordered_set<std::string> variables = {"a"};
     UsesData uses_data(10, variables);
 
@@ -15,6 +15,21 @@ TEST_CASE("Test UsesData") {
     };
 
     SECTION("Retrieving UsesData line") {
-        REQUIRE(uses_data.get_line() == 10);
-    };
+        REQUIRE((std::holds_alternative<int>(uses_data.get_line())
+                && std::get<int>(uses_data.get_line()) == 10));
+    }
+}
+
+TEST_CASE("Test UsesData string") {
+    std::unordered_set<std::string> variables = {"a"};
+    UsesData uses_data("main", variables);
+
+    SECTION("Retrieving UsesData attributes") {
+        REQUIRE(uses_data.get_variables().count("a"));
+    }
+
+    SECTION("Retrieving UsesData line") {
+        REQUIRE((std::holds_alternative<std::string>(uses_data.get_line())
+                 && std::get<std::string>(uses_data.get_line()) == "main"));
+    }
 }

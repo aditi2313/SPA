@@ -43,7 +43,8 @@ void PKBWrite::AddAssignData(std::string variable, int line,
 }
 
 void PKBWrite::AddUsesData(
-    const int line, const std::unordered_set<std::string>& variable_names) {
+    const std::variant<int, std::string> line,
+    const std::unordered_set<std::string>& variable_names) {
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 

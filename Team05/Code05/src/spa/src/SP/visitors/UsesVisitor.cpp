@@ -69,9 +69,8 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
 
 void UsesVisitor::Process(ast::CallNode* call_node) {
   auto parent_proc = call_node->get_parent_proc();
-  auto calls = proc_calls_[parent_proc];
-  calls.insert(call_node->get_var()->get_name());
-  proc_calls_[parent_proc] = calls;
+  auto called_procedure_name = call_node->get_var()->get_name();
+  proc_calls_[parent_proc].insert(called_procedure_name);
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

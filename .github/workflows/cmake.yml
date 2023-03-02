@@ -47,7 +47,7 @@ jobs:
           if ["RUNNER_OS" == "macOS"]; then
           ./unit_testing
           else
-          ./unit_testing.exe
+          ./Release/unit_testing.exe
           fi
       shell: bash
 
@@ -57,7 +57,7 @@ jobs:
           if ["RUNNER_OS" == "macOS"]; then
           ./integration_testing
           else
-          ./integration_testing.exe
+          ./Release/integration_testing.exe
           fi
       shell: bash
 
@@ -67,6 +67,6 @@ jobs:
           if ["RUNNER_OS" == "macOS"]; then
           ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml
           else
-          ${{github.workspace}}/build/src/autotester/autotester.exe Basic_source.txt Basic_queries.txt output.xml
+          ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml
           fi
       shell: bash

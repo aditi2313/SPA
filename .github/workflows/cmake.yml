@@ -74,7 +74,9 @@ jobs:
       shell: bash
 
     - name: Autotester on windows
-      working-directory: Team05/Tests05
+      working-directory: ${{github.workspace}}/build/src/autotester
+      # working-directory: Team05/Tests05
       if: runner.os == 'Windows'
-      run: ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml          
+      # ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml          
+      run: ls -R
       shell: bash

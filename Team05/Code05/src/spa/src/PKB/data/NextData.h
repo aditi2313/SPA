@@ -1,6 +1,7 @@
 #pragma once
 
 #include <unordered_set>
+#include <cassert>
 
 namespace pkb {
 class NextData {

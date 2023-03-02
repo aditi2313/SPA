@@ -7,9 +7,23 @@
 #include "SP/visitors/FollowsVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
+//pkb::FollowsTable InitializeActualResult(std::string program) {
+//  std::unique_ptr<pkb::PKBRelationTable> table =
+//      std::make_unique<pkb::PKBRelationTable>();
+//  auto root = sp::SourceProcessor::ParseProgram(program);
+//  sp::SourceProcessor::ExtractRelationships(root, table);
+//  pkb::PKBRead reader(std::move(table));
+//  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
+//      [](pkb::FollowsData data) { return true; });
+//  auto results_ptr = reader.Follows(std::move(ftr));
+//  auto results = *(results_ptr->get_result());
+//
+//  return results;
+//}
+
 TEST_CASE("Test SP and PKB integration for FollowsT data") {
   // maybe move to FollowsTTest
-  SECTION("Follows(s1, s3) does not hold for three read statements") {
+  SECTION("Follows*(s1, s3) holds for three read statements") {
     std::string program = "procedure readfollows { read x; read y; read z; }";
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
@@ -41,4 +55,6 @@ TEST_CASE("Test SP and PKB integration for FollowsT data") {
     // REQUIRE(actual_results->get_result()->get_row(2).get_follows_list() ==
     //        expected_results->get_result()->get_row(2).get_follows_list());
   }
+
+  SECTION("Follows") {}
 }

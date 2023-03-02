@@ -44,29 +44,30 @@ jobs:
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
       run: |
-          if ["$RUNNER_OS" == "macOS"]; then
-          ./unit_testing
-          else
+          if ["$RUNNER_OS" == "Windows"]; then
           ./Release/unit_testing.exe
+          else
+          ./unit_testing          
           fi
       shell: bash
 
     - name: Integration Tests
       working-directory: ${{github.workspace}}/build/src/integration_testing      
       run: |
-          if ["$RUNNER_OS" == "macOS"]; then
-          ./integration_testing
-          else
+          if ["$RUNNER_OS" == "Windows"]; then
           ./Release/integration_testing.exe
+          else
+          ./integration_testing
+          
           fi
       shell: bash
 
     - name: Autotester
       working-directory: Team05/Tests05
       run: |
-          if ["$RUNNER_OS" == "macOS"]; then
-          ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml
-          else
+          if ["$RUNNER_OS" == "Windows"]; then
           ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml
+          else
+          ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml          
           fi
       shell: bash

@@ -28,6 +28,15 @@ class SourceProcessor {
     return exp_parser.parse(lxr);
   }
 
+  static bool ValidateExpression(std::string expr) {
+    try {
+      ParseExpression(expr);
+    } catch (std::exception _) {
+      return false;
+    }
+    return true;
+  }
+
   static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
     sp::Lexer lxr(std::move(program));
     sp::ProgramParser program_parser;
@@ -40,7 +49,7 @@ class SourceProcessor {
   }
 
   static void ExtractRelationships(std::unique_ptr<ast::ProgramNode> &root,
-      std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
+                                   std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 
     sp::AssignVisitor av(std::move(writer));

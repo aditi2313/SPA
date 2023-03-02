@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "common/exceptions/QPSExceptions.h"
+#include "SP/SourceProcessor.h"
 #include "models/types.h"
 
 using models::EntityName;
@@ -104,7 +105,9 @@ class PQL {
   }
 
   inline static bool is_pattern_exact(std::string str) {
-    return str.front() == '\"' && str.back() == '\"';
+    return str.front() == '\"'
+        && str.back() == '\"'
+        && sp::SourceProcessor::ValidateExpression(str);
   }
 
   inline static bool is_pattern_wildcard(std::string str) {

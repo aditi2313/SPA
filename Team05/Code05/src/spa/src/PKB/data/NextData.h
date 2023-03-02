@@ -5,7 +5,7 @@
 namespace pkb {
 class NextData {
  public:
-    NextData(int line);
+    explicit NextData(int line);
 
     friend bool operator==(const NextData& LHS, const NextData& RHS) {
         return LHS.line_ == RHS.line_ &&

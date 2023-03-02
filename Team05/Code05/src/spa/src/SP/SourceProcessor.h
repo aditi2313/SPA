@@ -28,7 +28,7 @@ class SourceProcessor {
     return exp_parser.parse(lxr);
   }
 
-  static bool ValidateExpression(std::string expr) {
+  static bool IsExpression(std::string expr) {
     try {
       ParseExpression(expr);
     } catch (std::exception _) {

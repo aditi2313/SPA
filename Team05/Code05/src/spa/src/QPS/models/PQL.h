@@ -108,7 +108,7 @@ class PQL {
     if (str.size() < 2) return false;
     return str.front() == '\"'
         && str.back() == '\"'
-        && sp::SourceProcessor::ValidateExpression(
+        && sp::SourceProcessor::IsExpression(
             str.substr(1, str.size() - 2));
   }
 

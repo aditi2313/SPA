@@ -51,4 +51,5 @@ using FollowsPredicateFilter = PredicateFilter<pkb::FollowsData>;
 using ParentPredicateFilter = PredicateFilter<pkb::ParentData>;
 using AssignPredicateFilter = PredicateFilter<pkb::AssignData>;
 using CallsPredicateFilter = PredicateFilter<pkb::CallsData>;
+using NextPredicateFilter = PredicateFilter<pkb::NextData>;
 }  // namespace filter

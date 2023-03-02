@@ -22,6 +22,6 @@ TEST_CASE("Test ParentData") {
     };
 
     SECTION("Retrieving ParentData line") {
-        REQUIRE(parent_data.get_line() == 10);
+        REQUIRE(parent_data.get_index() == 10);
     };
 }

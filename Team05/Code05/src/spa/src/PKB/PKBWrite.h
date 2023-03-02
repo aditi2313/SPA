@@ -74,7 +74,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="next"></param>
-  void AddNextData(int line, int next);
+  void AddNextData(int line, const int next);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);

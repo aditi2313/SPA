@@ -7,10 +7,12 @@
 using namespace pkb;  // NOLINT
 
 TEST_CASE("Test CallsTable") {
-    CallsData calls_data1("caller1", "callee11");
-    CallsData calls_data2("caller2", "callee21");
-    calls_data1.add_to_list("callee12");
-    calls_data2.add_to_list("callee22");
+    CallsData calls_data1("caller1");
+    CallsData calls_data2("caller2");
+    calls_data1.add_to_direct_calls("callee11");
+    calls_data1.add_to_total_calls("callee12");
+    calls_data2.add_to_direct_calls("callee21");
+    calls_data2.add_to_total_calls("callee22");
 
     CallsTable calls_table1, calls_table2;
     calls_table1.add_row("caller1", calls_data1);

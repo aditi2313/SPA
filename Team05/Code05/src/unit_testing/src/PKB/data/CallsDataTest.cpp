@@ -6,20 +6,21 @@
 using namespace pkb; // NOLINT
 
 TEST_CASE("Test CallsData") {
-    CallsData calls_data("caller", "callee1");
+    CallsData calls_data("caller");
+    calls_data.add_to_direct_calls("callee1");
+    calls_data.add_to_total_calls("callee2");
 
     SECTION("Retrieving CallsData caller") {
         REQUIRE(calls_data.get_line() == "caller");
     };
 
-    SECTION("Retrieving CallsData callee") {
-        REQUIRE(calls_data.get_callee() == "callee1");
+    SECTION("Retrieving CallsData direct callees") {
+        std::unordered_set<std::string> expected = {"callee1"};
+        REQUIRE(calls_data.get_direct_calls() == expected);
     };
 
-    SECTION("Retrieving CallsData callee_list") {
-        calls_data.add_to_list("callee2");
-        std::unordered_set<std::string>
-            expected_callee_list{"callee1", "callee2"};
-        REQUIRE(calls_data.get_callee_list() == expected_callee_list);
+    SECTION("Retrieving CallsData total callees") {
+        std::unordered_set<std::string> expected = {"callee2"};
+        REQUIRE(calls_data.get_total_calls() == expected);
     };
 }

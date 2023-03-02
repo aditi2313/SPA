@@ -12,19 +12,19 @@ using std::string;
 using std::vector;
 
 std::unique_ptr<pkb::CallsTable> InitialiseCallsTestTable(
-        vector<vector<string>> callees);
+        vector<vector<string>> direct_callees);
 
 TEST_CASE("Test Calls by callee Filter") {
-    vector<vector<string>> callees = {
+    vector<vector<string>> direct_callees = {
             {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
-    vector<vector<string>> result_variables =
+    vector<vector<string>> result_callees =
             {{"a", "b", "c"}, {"a", "b"}};
-    auto table = InitialiseCallsTestTable(callees);
+    auto table = InitialiseCallsTestTable(direct_callees);
     std::unordered_set<string> filtered = {"a"};
     filter::CallsPredicateFilter callee_filter(
             [filtered](pkb::CallsData data) {
-                for (auto var : data.get_callee_list()) {
+                for (auto var : data.get_direct_calls()) {
                     if (filtered.find(var) != filtered.end()) {
                         return true;
                     }
@@ -32,33 +32,33 @@ TEST_CASE("Test Calls by callee Filter") {
                 return false;
             });
     auto new_table = callee_filter.FilterTable(std::move(table));
-    auto expected = InitialiseCallsTestTable(result_variables);
+    auto expected = InitialiseCallsTestTable(result_callees);
     REQUIRE(*expected == *new_table);
 }
 
 TEST_CASE("Test Calls by Caller filter") {
-    vector<vector<string>> callees = {
+    vector<vector<string>> direct_callees = {
             {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
-    vector<vector<string>> result_variables = {{"a", "b", "c"}};
-    auto table = InitialiseCallsTestTable(callees);
+    vector<vector<string>> result_callees = {{"a", "b", "c"}};
+    auto table = InitialiseCallsTestTable(direct_callees);
     filter::CallsIndexFilter caller_filter("x");
 
     auto new_table = caller_filter.FilterTable(std::move(table));
-    auto expected = InitialiseCallsTestTable(result_variables);
+    auto expected = InitialiseCallsTestTable(result_callees);
 
     REQUIRE(*expected == *new_table);
 }
 
 std::unique_ptr<pkb::CallsTable> InitialiseCallsTestTable(
-        vector<vector<string>> callees) {
+        vector<vector<string>> direct_callees) {
     vector<string> callers = {"x", "y", "z"};
     std::unique_ptr<pkb::CallsTable> result =
             std::make_unique<pkb::CallsTable>();
-    for (int i = 0; i < callees.size(); ++i) {
-        pkb::CallsData data(callers.at(i), callees.at(i).at(0));
-        for (int j = 1; j < callees.at(i).size(); ++j) {
-            data.add_to_list(callees.at(i).at(j));
+    for (int i = 0; i < direct_callees.size(); ++i) {
+        pkb::CallsData data(callers.at(i));
+        for (int j = 0; j < direct_callees.at(i).size(); ++j) {
+            data.add_to_direct_calls(direct_callees.at(i).at(j));
         }
         result->add_row(callers.at(i), data);
     }

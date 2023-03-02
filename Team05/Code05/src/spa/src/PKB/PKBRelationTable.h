@@ -71,8 +71,12 @@ class PKBRelationTable {
     parent_table_.get_row(line).add_direct_child(child_line);
   }
 
-  void add_calls_data(const std::string caller, const std::string callee) {
-      calls_table_.add_row(caller, CallsData(caller, callee));
+  void add_calls_data(const std::string caller,
+                      const std::string callee) {
+      if (!calls_table_.exists(caller)) {
+          calls_table_.add_row(caller, CallsData(caller));
+      }
+      calls_table_.get_row(caller).add_to_direct_calls(callee);
   }
 
   void add_next_data(const int line, const int next) {

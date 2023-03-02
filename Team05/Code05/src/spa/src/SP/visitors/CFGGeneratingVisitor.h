@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <stack>
 
 #include "TNodeVisitor.h"
 #include "models/CFG/ProgramCFG.h"
@@ -22,21 +23,30 @@ class CFGGeneratingVisitor : public TNodeVisitor {
 
   void Process(ast::IfNode* if_node) override;
 
+  void ProcessAft(ast::StmtLstNode* stmt_node) override;
+
   std::unique_ptr<cfg::ProgramCFG> CreateCFG() {
     return std::make_unique<cfg::ProgramCFG>(program_cfg_);
   }
 
  private:
   cfg::CFGNode& AddChild() {
-    return current_cfg_->AddChild(*current_node_, current_start_, current_end_);
+    auto& res =
+        current_cfg_->AddChild(*parents_.top(), current_start_, current_end_);
+    current_start_ = -1;
+    current_end_ = -1;
+
+    return res;
   }
   void ProcStmtNode(ast::StmtNode* node) {
     if (current_start_ == -1) current_start_ = node->get_line();
     current_end_ = std::max(current_end_, node->get_line());
   }
+
   cfg::ProgramCFG program_cfg_;
   cfg::CFG* current_cfg_;
-  cfg::CFGNode* current_node_;
+  std::stack<cfg::CFGNode*> parents_;
+  std::stack<cfg::CFGNode*> ends_;
   int current_start_ = -1;
   int current_end_ = -1;
 };

@@ -1,10 +1,10 @@
 #pragma once
 
+#include <deque>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include <deque>
 
 #include "CFGNode.h"
 
@@ -33,13 +33,19 @@ class CFG {
   CFGNode& AddChild(CFGNode& parent, int start_line, int end_line);
 
   /// <summary>
-  /// Utility function for adding a node to the cfg without 
+  /// Utility function for adding a node to the cfg without
   /// requiring a parent.
   /// </summary>
   /// <param name="start_line">The start line of the cfg node</param>
   /// <param name="end_line">The end line of the cfg node</param>
   /// <returns></returns>
   CFGNode& AddNode(int start_line, int end_line);
+
+  /// <summary>
+  /// Adds an empty node.
+  /// </summary>
+  /// <returns></returns>
+  CFGNode& AddNode();
 
   CFGNode& AddChild(CFGNode& parent, CFGNode& child) {
     parent.add_child(child);

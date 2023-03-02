@@ -20,6 +20,7 @@ void TNodeVisitor::VisitStmtLst(ast::StmtLstNode* stmtlst_node) {
   for (auto& child : stmtlst_node->get_children()) {
     child->AcceptVisitor(this);
   }
+  ProcessAft(stmtlst_node);
 }
 
 void TNodeVisitor::VisitAssign(ast::AssignNode* assign_node) {

@@ -27,6 +27,7 @@ class TNodeVisitor {
 
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node);
   virtual void Process(ast::StmtLstNode* stmtlst_node) {}
+  virtual void ProcessAft(ast::StmtLstNode* stmtlst_node) {}
 
   void VisitAssign(ast::AssignNode* assign_node);
   virtual void Process(ast::AssignNode* assign_node) {}

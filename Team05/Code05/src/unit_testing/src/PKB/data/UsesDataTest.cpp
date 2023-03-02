@@ -15,8 +15,8 @@ TEST_CASE("Test UsesData int") {
     };
 
     SECTION("Retrieving UsesData line") {
-        REQUIRE((std::holds_alternative<int>(uses_data.get_line())
-                && std::get<int>(uses_data.get_line()) == 10));
+        REQUIRE((std::holds_alternative<int>(uses_data.get_index())
+                && std::get<int>(uses_data.get_index()) == 10));
     }
 }
 
@@ -29,7 +29,7 @@ TEST_CASE("Test UsesData string") {
     }
 
     SECTION("Retrieving UsesData line") {
-        REQUIRE((std::holds_alternative<std::string>(uses_data.get_line())
-                 && std::get<std::string>(uses_data.get_line()) == "main"));
+        REQUIRE((std::holds_alternative<std::string>(uses_data.get_index())
+                 && std::get<std::string>(uses_data.get_index()) == "main"));
     }
 }

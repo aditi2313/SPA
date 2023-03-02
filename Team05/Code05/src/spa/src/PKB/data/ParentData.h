@@ -12,7 +12,7 @@ class ParentData {
       LHS.total_children_ == RHS.total_children_;
   }
 
-  inline int get_line() { return line_; }
+  inline int get_index() { return line_; }
 
   inline std::unordered_set<int> get_direct_children() {
     return direct_children_;

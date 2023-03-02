@@ -7,10 +7,10 @@
 using namespace pkb;  // NOLINT
 
 TEST_CASE("Test NextTable") {
-    NextData next_data1(1, 2);
-    NextData next_data2(11, 12);
-    next_data1.add_to_list(3);
-    next_data2.add_to_list(13);
+    NextData next_data1(1);
+    NextData next_data2(11);
+    next_data1.add_to_next_im_list(2);
+    next_data2.add_to_next_im_list(12);
 
     NextTable next_table1, next_table2;
     next_table1.add_row(1, next_data1);

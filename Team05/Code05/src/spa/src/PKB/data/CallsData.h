@@ -14,7 +14,7 @@ class CallsData {
         && LHS.total_calls_ == RHS.total_calls_;
     }
 
-    inline std::string get_line() { return caller_; }
+    inline std::string get_index() { return caller_; }
 
     inline std::unordered_set<std::string>& get_direct_calls() {
         return direct_calls_;

@@ -80,7 +80,10 @@ class PKBRelationTable {
   }
 
   void add_next_data(const int line, const int next) {
-      next_table_.add_row(line, NextData(line, next));
+      if (!next_table_.exists(line)) {
+          next_table_.add_row(line, NextData(line));
+      }
+      next_table_.get_row(line).add_to_next_im_list(next);
   }
 };
 }  // namespace pkb

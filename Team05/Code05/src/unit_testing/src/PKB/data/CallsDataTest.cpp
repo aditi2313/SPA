@@ -11,7 +11,7 @@ TEST_CASE("Test CallsData") {
     calls_data.add_to_total_calls("callee2");
 
     SECTION("Retrieving CallsData caller") {
-        REQUIRE(calls_data.get_line() == "caller");
+        REQUIRE(calls_data.get_index() == "caller");
     };
 
     SECTION("Retrieving CallsData direct callees") {

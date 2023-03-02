@@ -12,6 +12,7 @@ class AssignData {
  public:
   AssignData(std::string variable, int line,
              std::unique_ptr<ast::ExprNode> expression);
+
   AssignData(const AssignData& other);
 
   bool TestExpression(

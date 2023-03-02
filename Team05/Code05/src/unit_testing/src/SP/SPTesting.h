@@ -1,9 +1,9 @@
 #pragma once
 
-#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <utility>
+#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"

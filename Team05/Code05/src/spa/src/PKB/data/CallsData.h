@@ -6,7 +6,7 @@
 namespace pkb {
 class CallsData {
  public:
-    CallsData(std::string caller);
+    explicit CallsData(std::string caller);
 
     friend bool operator==(const CallsData& LHS, const CallsData& RHS) {
         return LHS.caller_ == RHS.caller_

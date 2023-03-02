@@ -45,7 +45,7 @@ bool ClauseEvaluator::EvaluateExactClause(
   // looking through and returning the whole table
   for (auto &index : LHS) {
     EntitySet results;
-    results = clause->Index(index, pkb_);
+    clause->Index(index, pkb_, results);
 
     for (auto &entity : results) {
       if (RHS.count(entity)) return true;
@@ -83,12 +83,12 @@ Table ClauseEvaluator::EvaluateSynonymClause(
     EntitySet results;
     if (arg2->IsWildcard()) {
       // Just index and return all
-      results = clause->Index(index, pkb_);
+      clause->Index(index, pkb_, results);
     } else {
       // Is synonym or exact (int or ident), use filter
-      results = is_symmetric
-                ? clause->SymmetricFilter(index, pkb_)
-                : clause->Filter(index, RHS, pkb_);
+      is_symmetric
+      ? clause->SymmetricFilter(index, pkb_, results)
+      : clause->Filter(index, RHS, pkb_, results);
     }
 
     if (results.empty()) continue;
@@ -100,7 +100,7 @@ Table ClauseEvaluator::EvaluateSynonymClause(
     }
   }
 
-  /* ============== Get new table ============== */
+  /* ============= Get new table ============== */
   std::vector<SynonymName> columns;
   SynonymName arg1_syn_name, arg2_syn_name;
   if (is_arg1_syn)

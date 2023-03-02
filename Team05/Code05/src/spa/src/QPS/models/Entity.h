@@ -8,6 +8,7 @@
 
 #include "models/types.h"
 #include "PQL.h"
+#include <cassert>
 
 using models::EntityName;
 

@@ -12,10 +12,35 @@
 namespace qps {
 class QueryResult {
  public:
-  QueryResult() {}
+  virtual inline bool is_boolean() {
+    return false;
+  }
+  virtual ~QueryResult() = default;
+};
 
-  explicit QueryResult(EntitySet &entities) : QueryResult() {
-    query_results_ = entities;
+class BooleanQueryResult : public QueryResult {
+ public:
+  explicit BooleanQueryResult(bool is_true)
+      : QueryResult(), is_true_(is_true) {}
+
+  inline bool is_boolean() override {
+    return true;
+  }
+
+  inline bool is_true() {
+    return is_true_;
+  }
+
+ private:
+  bool is_true_;
+};
+
+class ListQueryResult : public QueryResult {
+ public:
+  ListQueryResult() : QueryResult() {}
+
+  explicit ListQueryResult(EntitySet &entities)
+      : QueryResult(), query_results_(entities) {
   }
 
   inline EntitySet &get_query_results() {

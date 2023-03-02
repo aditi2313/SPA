@@ -33,7 +33,8 @@ void ProcessIndexableTable(
 }
 
 void PKBWrite::AddModifiesData(
-    const int line, const std::unordered_set<std::string>& variables) {
+    const std::variant<int, std::string> line,
+    const std::unordered_set<std::string>& variables) {
   pkb_relation_table_->add_modifies_data(line, variables);
 }
 

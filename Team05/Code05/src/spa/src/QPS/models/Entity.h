@@ -5,6 +5,7 @@
 #include <variant>
 #include <vector>
 #include <unordered_set>
+#include <cassert>
 
 #include "models/types.h"
 #include "PQL.h"

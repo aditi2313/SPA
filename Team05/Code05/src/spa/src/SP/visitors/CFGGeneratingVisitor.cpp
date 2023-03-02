@@ -1,9 +1,15 @@
 #include "CFGGeneratingVisitor.h"
 
+#include <cassert>
+
 namespace sp {
 
 void CFGGeneratingVisitor::Process(ast::ProcNode* proc_node) {
   auto& cfg = program_cfg_.add_procedure(proc_node->get_name());
+
+  assert(parents_.empty());
+  assert(ends_.empty());
+
   current_cfg_ = &cfg;
   parents_.push(&current_cfg_->get_root());
   cfg::CFGNode& empt = current_cfg_->AddNode();
@@ -19,10 +25,15 @@ void CFGGeneratingVisitor::ProcessAft(ast::StmtLstNode* stmt_lst_node) {
 
 void CFGGeneratingVisitor::Process(ast::IfNode* if_node) {
   ProcStmtNode(if_node);
-  cfg::CFGNode& child = AddChild();
-  // remove the previous parent
-  parents_.push(&child);
   cfg::CFGNode& empt = current_cfg_->AddNode();
+
+  cfg::CFGNode& child = AddChild();
+
+  parents_.pop();
+  parents_.push(&empt);
+  parents_.push(&child);
+  parents_.push(&child);
+
   ends_.push(&empt);
   ends_.push(&empt);
 }

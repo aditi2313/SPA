@@ -26,7 +26,7 @@ class ProgramCFG {
   /// </summary>
   /// <param name="proc">The procedure to add.</param>
   /// <returns></returns>
-  const CFG& get_cfg(std::string proc) {
+  CFG& get_cfg(std::string proc) {
     return procedure_to_cfg_map_.at(proc);
   }
 
@@ -36,7 +36,7 @@ class ProgramCFG {
   /// <param name="line">The line number contained in the code block of the
   /// cfg node</param> <returns>The cfg node containing the line
   /// number</returns>
-  const CFGNode& get_node(int line) { return *(line_to_cfg_map_[line]); }
+  CFGNode& get_node(int line) { return *(line_to_cfg_map_[line]); }
 
  private:
   // mapping to procedure.

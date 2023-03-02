@@ -58,15 +58,15 @@ class CFG {
 
   /// <summary>
   /// Function for obtaining the non empty children of the provided
-  /// node. If the child of this node is empty, 
+  /// node. If the child of this node is empty,
   /// we will traverse the first child of the empty node.
-  /// This is under the assumption that if a node is empty, it can only 
+  /// This is under the assumption that if a node is empty, it can only
   /// have one child. This is because an if-node and a while node
   /// cannot be empty.
-  /// 
+  ///
   /// </summary>
-  /// <param name="node">The node of which we are obtaining the children.</param>
-  /// <returns></returns>
+  /// <param name="node">The node of which we are obtaining the
+  /// children.</param> <returns></returns>
   std::vector<CFGNode*> GetNonEmptyChildren(CFGNode& node) {
     if (node.is_empty()) {
       return GetNonEmptyChildren(GetFirstChild(node));

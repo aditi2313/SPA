@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <memory>
+#include <catch.hpp>
 
 #include "SP/SPTesting.h"
 #include "SP/SourceProcessor.h"

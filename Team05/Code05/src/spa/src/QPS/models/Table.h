@@ -11,6 +11,7 @@ namespace qps {
 class Table {
  public:
   using Row = std::vector<std::pair<SynonymName, Entity>>;
+  friend class TableJoiner;
 
   // Empty constructor.
   Table() {}
@@ -89,6 +90,7 @@ class Table {
 
   void PrintDebug();
 
+ private:
   inline void add_row(Row &row) {
     std::vector<Entity> new_row(columns_.size());
     for (auto [syn, entity] : row) {
@@ -96,8 +98,6 @@ class Table {
     }
     rows_.emplace_back(new_row);
   }
-
- private:
 
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn

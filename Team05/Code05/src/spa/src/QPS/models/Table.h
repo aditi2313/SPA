@@ -11,6 +11,7 @@ namespace qps {
 class Table {
  public:
   using Row = std::vector<std::pair<SynonymName, Entity>>;
+  friend class TableJoiner;
 
   // Empty constructor.
   Table() {}
@@ -54,6 +55,25 @@ class Table {
     return columns_;
   }
 
+  inline void add_values(SynonymName column, EntitySet &values) {
+    for (auto &value : values) {
+      Table::Row new_row;
+      new_row.emplace_back(column, value);
+      add_row(new_row);
+    }
+  }
+
+  inline void add_values(
+      SynonymName col1, SynonymName col2,
+      std::vector<std::pair<Entity, Entity>> &values) {
+    for (auto &[lhs, rhs] : values) {
+      Table::Row new_row;
+      new_row.emplace_back(col1, lhs);
+      new_row.emplace_back(col2, rhs);
+      add_row(new_row);
+    }
+  }
+
   inline bool HasColumn(SynonymName syn_name) {
     return columns_set_.count(syn_name);
   }
@@ -68,7 +88,10 @@ class Table {
     return results;
   }
 
-  inline void AddRow(Row &row) {
+  void PrintDebug();
+
+ private:
+  inline void add_row(Row &row) {
     std::vector<Entity> new_row(columns_.size());
     for (auto [syn, entity] : row) {
       new_row.at(id_map_.at(syn)) = entity;
@@ -76,9 +99,6 @@ class Table {
     rows_.emplace_back(new_row);
   }
 
-  void PrintDebug();
-
- private:
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
   std::unordered_map<SynonymName, int> id_map_;

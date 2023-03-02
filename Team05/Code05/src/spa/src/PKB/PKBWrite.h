@@ -23,7 +23,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line,
+  void AddModifiesData(std::variant<int, std::string> line,
                        const std::unordered_set<std::string>& variables);
 
   /// <summary>
@@ -41,7 +41,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
-  void AddUsesData(int line,
+  void AddUsesData(const std::variant<int, std::string> line,
                    const std::unordered_set<std::string>& variable_names);
 
   /// <summary>
@@ -59,6 +59,14 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="parent_line"></param>
   void AddParentData(int line, const int parent_line);
+
+  /// <summary>
+  /// Adds a calls row.
+  ///
+  /// </summary>
+  /// <param name="caller"></param>
+  /// <param name="callee"></param>
+  void AddCallsData(std::string caller, std::string callee);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);

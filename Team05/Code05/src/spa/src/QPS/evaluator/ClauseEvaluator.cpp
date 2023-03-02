@@ -14,13 +14,10 @@ bool ClauseEvaluator::EvaluateClause(
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
 
-  if (arg1->IsSynonym() || arg2->IsSynonym()) {
-    auto table = EvaluateSynonymClause(clause, LHS, RHS);
-    clause_table = table;
-    return !table.Empty();
-  } else {
-    return EvaluateExactClause(clause, LHS, RHS);
-  }
+  return (arg1->IsSynonym() || arg2->IsSynonym())
+         ? EvaluateSynonymClause(
+          clause, clause_table, LHS, RHS)
+         : EvaluateExactClause(clause, LHS, RHS);
 }
 
 // Handles these cases:
@@ -32,20 +29,55 @@ bool ClauseEvaluator::EvaluateExactClause(
     ClausePtr &clause,
     EntitySet &LHS,
     EntitySet &RHS) {
-  /* ============ ASSERTION CHECK ============= */
-  ArgumentPtr &arg1 = clause->get_arg1();
-  ArgumentPtr &arg2 = clause->get_arg2();
+  AssertExactClauseArgs(
+      clause->get_arg1(), clause->get_arg2());
 
+  return QueryPKBForExactClause(
+      clause, LHS, RHS);
+}
+
+// Handles these cases:
+// (syn, exact | _)
+// (exact | _, syn)
+// (syn1, syn2) where syn1 != syn2
+// (syn, syn) where syn == syn
+bool ClauseEvaluator::EvaluateSynonymClause(
+    ClausePtr &clause,
+    Table &clause_table,
+    EntitySet &LHS,
+    EntitySet &RHS) {
+  AssertSynonymClauseArgs(
+      clause->get_arg1(), clause->get_arg2());
+
+  EntitySet RHS_results;
+  EntitySet LHS_results;
+  TwoSynonymRows rows;
+
+  QueryPKBForSynonymClause(
+      clause, LHS, RHS,
+      LHS_results, RHS_results, rows);
+
+  CreateClauseTable(
+      clause, clause_table,
+      LHS_results, RHS_results, rows);
+
+  return !clause_table.Empty();
+}
+
+void ClauseEvaluator::AssertExactClauseArgs(
+    ArgumentPtr &arg1, ArgumentPtr &arg2) {
   assert(!arg1->IsSynonym() && !arg2->IsSynonym());
-  /* ============= END OF CHECK =============== */
+}
 
-
+bool ClauseEvaluator::QueryPKBForExactClause(ClausePtr &clause,
+                                             EntitySet &LHS,
+                                             EntitySet &RHS) {
   // Using Index instead of Filter because
-  // I want the method to return early instead of
+  // the method should return early instead of
   // looking through and returning the whole table
   for (auto &index : LHS) {
     EntitySet results;
-    results = clause->Index(index, pkb_);
+    clause->Index(index, pkb_, results);
 
     for (auto &entity : results) {
       if (RHS.count(entity)) return true;
@@ -54,41 +86,32 @@ bool ClauseEvaluator::EvaluateExactClause(
   return false;
 }
 
-// Handles these cases:
-// (syn, exact | _)
-// (exact | _, syn)
-// (syn1, syn2) where syn1 != syn2
-// (syn, syn) where syn == syn
-Table ClauseEvaluator::EvaluateSynonymClause(
+void ClauseEvaluator::AssertSynonymClauseArgs(
+    ArgumentPtr &arg1, ArgumentPtr &arg2) {
+  assert(arg1->IsSynonym() || arg2->IsSynonym());
+}
+
+void ClauseEvaluator::QueryPKBForSynonymClause(
     ClausePtr &clause,
     EntitySet &LHS,
-    EntitySet &RHS) {
-  /* ============ ASSERTION CHECK ============= */
+    EntitySet &RHS,
+    EntitySet &LHS_results,
+    EntitySet &RHS_results,
+    TwoSynonymRows &rows) {
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
-  bool is_arg1_syn = arg1->IsSynonym();
-  bool is_arg2_syn = arg2->IsSynonym();
-
-  assert(is_arg1_syn || is_arg2_syn);
-  /* ============= END OF CHECK =============== */
-
   bool is_symmetric = *arg1 == *arg2;
 
-  EntitySet RHS_results;
-  EntitySet LHS_results;
-  std::vector<std::pair<Entity, Entity>> rows;
-
-  /* === Query PKB with LHS possible values === */
   for (auto &index : LHS) {
     EntitySet results;
     if (arg2->IsWildcard()) {
       // Just index and return all
-      results = clause->Index(index, pkb_);
+      clause->Index(index, pkb_, results);
     } else {
       // Is synonym or exact (int or ident), use filter
-      results = is_symmetric
-                ? clause->SymmetricFilter(index, pkb_)
-                : clause->Filter(index, RHS, pkb_);
+      is_symmetric
+      ? clause->SymmetricFilter(index, pkb_, results)
+      : clause->Filter(index, RHS, pkb_, results);
     }
 
     if (results.empty()) continue;
@@ -99,8 +122,20 @@ Table ClauseEvaluator::EvaluateSynonymClause(
       rows.emplace_back(index, entity);
     }
   }
+}
 
-  /* ============== Get new table ============== */
+void ClauseEvaluator::CreateClauseTable(
+    ClausePtr &clause,
+    Table &clause_table,
+    EntitySet &LHS_results,
+    EntitySet &RHS_results,
+    TwoSynonymRows &rows) {
+  ArgumentPtr &arg1 = clause->get_arg1();
+  ArgumentPtr &arg2 = clause->get_arg2();
+  bool is_arg1_syn = arg1->IsSynonym();
+  bool is_arg2_syn = arg2->IsSynonym();
+  bool is_symmetric = *arg1 == *arg2;
+
   std::vector<SynonymName> columns;
   SynonymName arg1_syn_name, arg2_syn_name;
   if (is_arg1_syn)
@@ -111,30 +146,15 @@ Table ClauseEvaluator::EvaluateSynonymClause(
     columns.emplace_back(
         arg2_syn_name = SynonymArg::get_syn_name(arg2));
 
-  Table new_table(columns);
+  clause_table = Table(columns);
 
   if (is_arg1_syn && is_arg2_syn && !is_symmetric) {
-    for (auto &[lhs, rhs] : rows) {
-      Table::Row new_row;
-      new_row.emplace_back(arg1_syn_name, lhs);
-      new_row.emplace_back(arg2_syn_name, rhs);
-      new_table.AddRow(new_row);
-    }
+    clause_table.add_values(arg1_syn_name, arg2_syn_name, rows);
   } else if (is_arg1_syn) {
-    for (auto &lhs : LHS_results) {
-      Table::Row new_row;
-      new_row.emplace_back(arg1_syn_name, lhs);
-      new_table.AddRow(new_row);
-    }
+    clause_table.add_values(arg1_syn_name, LHS_results);
   } else {
     // arg2 is syn
-    for (auto &rhs : RHS_results) {
-      Table::Row new_row;
-      new_row.emplace_back(arg2_syn_name, rhs);
-      new_table.AddRow(new_row);
-    }
+    clause_table.add_values(arg2_syn_name, RHS_results);
   }
-
-  return new_table;
 }
 }  // namespace qps

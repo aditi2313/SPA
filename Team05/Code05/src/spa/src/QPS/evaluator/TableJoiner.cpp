@@ -45,7 +45,7 @@ Table TableJoiner::Join(Table &LHS, Table &RHS) {
         }
       }
 
-      new_table.AddRow(new_row);
+      new_table.add_row(new_row);
     }
   }
 

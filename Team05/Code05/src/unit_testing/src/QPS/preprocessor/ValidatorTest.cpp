@@ -55,6 +55,14 @@ TEST_CASE("Test that all synonyms used are declared") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
+  SECTION("Select BOOLEAN is valid and should not throw error") {
+    // All used synonyms are declared
+    std::string query_str = "stmt s; Select BOOLEAN";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
   SECTION("Undeclared synonym used in Select") {
     std::string query_str = "stmt s; Select v";
     QueryPtr query = parser.ParseQuery(query_str);

@@ -37,6 +37,8 @@ class Argument {
   }
 };
 
+using ArgumentPtr = std::unique_ptr<Argument>;
+
 class Wildcard : public Argument {
  public:
   Wildcard() : Argument() {}
@@ -91,6 +93,10 @@ class SynonymArg : public Argument {
     auto arg = dynamic_cast<SynonymArg *>(&other);
     return syn_name_ == arg->syn_name_
         && entity_name_ == arg->entity_name_;
+  }
+  static inline SynonymName get_syn_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_syn_name();
   }
 
  private:
@@ -186,5 +192,4 @@ class ExpressionArg : public Argument {
   bool is_exact_;
 };
 
-using ArgumentPtr = std::unique_ptr<Argument>;
 }  // namespace qps

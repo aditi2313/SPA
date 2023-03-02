@@ -1,6 +1,6 @@
 #include <catch.hpp>
 
-#include "QPS/evaluator/Evaluator.h"
+#include "QPS/evaluator/QueryEvaluator.h"
 
 using namespace qps;  // NOLINT
 

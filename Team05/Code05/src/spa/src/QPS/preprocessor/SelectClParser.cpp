@@ -66,7 +66,7 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
   auto itr = tokens.begin();
   while (itr != tokens.end()) {
     current_state_index = NextState(current_state_index, *itr);
-    states_.at(current_state_index)->parse(
+    states_.at(current_state_index)->Parse(
         tokens, itr, query);
   }
 

@@ -4,11 +4,11 @@
 #include <utility>
 
 #include "QPS/models/PQL.h"
-#include "models/Entity.h"
+#include "QPS/models/Entity.h"
 
 namespace qps {
 // design-entity synonym (',' synonym)* ';'
-void DeclarationParseState::parse(const std::vector<std::string> &tokens,
+void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
                                   parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   EntityName entity_name;
@@ -23,7 +23,7 @@ void DeclarationParseState::parse(const std::vector<std::string> &tokens,
       query->declare_synonym(*itr, entity_name);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
-      recurse(itr, grammar_itr);
+      Recurse(itr, grammar_itr);
     }
     itr++;
     grammar_itr++;
@@ -33,7 +33,7 @@ void DeclarationParseState::parse(const std::vector<std::string> &tokens,
 }
 
 // synonym | tuple | BOOLEAN
-void SelectParseState::parse(const std::vector<std::string> &tokens,
+void SelectParseState::Parse(const std::vector<std::string> &tokens,
                              parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
@@ -52,7 +52,7 @@ void SelectParseState::parse(const std::vector<std::string> &tokens,
 
 // 'such' 'that' relRef
 // e.g. relRef = Modifies(6, v)
-void SuchThatParseState::parse(const std::vector<std::string> &tokens,
+void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
                                parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   std::string rel_ident;
@@ -78,7 +78,7 @@ void SuchThatParseState::parse(const std::vector<std::string> &tokens,
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-void PatternParseState::parse(const std::vector<std::string> &tokens,
+void PatternParseState::Parse(const std::vector<std::string> &tokens,
                               parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   std::vector<ArgumentPtr> arguments;
@@ -103,9 +103,6 @@ void PatternParseState::parse(const std::vector<std::string> &tokens,
   query->add_clause(Clause::CreateClause(PQL::kPatternRelId,
                                          std::move(arguments.at(0)->Copy()),
                                          std::move(arguments.at(2))));
-  query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
-                                         std::move(arguments.at(0)),
-                                         std::move(arguments.at(1))));
 }
 
 ParseState::~ParseState() = default;

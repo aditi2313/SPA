@@ -30,8 +30,8 @@ ArgumentPtr Query::CreateArgument(std::string token) {
   }
 
   auto syn_arg = std::make_unique<SynonymArg>(token);
-  if (is_declared_synonym_name(token)) {
-    syn_arg->set_entity_name(get_synonym(token)->get_entity_name());
+  if (is_synonym_name_declared(token)) {
+    syn_arg->set_entity_name(get_declared_synonym_entity_name(token));
   }
   return syn_arg;
 }

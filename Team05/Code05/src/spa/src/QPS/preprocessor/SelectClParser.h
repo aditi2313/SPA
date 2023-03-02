@@ -8,8 +8,7 @@
 #include "../models/Query.h"
 #include "../models/Clause.h"
 #include "ParseState.h"
-#include "models/Entity.h"
-#include "models/Stmt.h"
+#include "QPS/models/Entity.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {

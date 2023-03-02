@@ -23,7 +23,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line,
+  void AddModifiesData(std::variant<int, std::string> line,
                        const std::unordered_set<std::string>& variables);
 
   /// <summary>

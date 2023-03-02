@@ -6,12 +6,6 @@
 
 #include "../../spa/src/QPS/QPS.h"
 #include "../../spa/src/SP/SourceProcessor.h"
-#include "SP/visitors/AssignVisitor.h"
-#include "SP/visitors/DataVisitor.h"
-#include "SP/visitors/FollowsVisitor.h"
-#include "SP/visitors/ModifiesVisitor.h"
-#include "SP/visitors/ParentVisitor.h"
-#include "SP/visitors/UsesVisitor.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -53,5 +47,6 @@ void TestWrapper::parse(std::string filename) {
 void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
   qps::QPS qps;
   auto reader = std::make_unique<pkb::PKBRead>(std::move(pkb_relation_));
-  pkb_relation_ = qps.evaluate(query, results, reader)->EndRead();
+  qps.evaluate(query, results, reader);
+  pkb_relation_ = reader->EndRead();
 }

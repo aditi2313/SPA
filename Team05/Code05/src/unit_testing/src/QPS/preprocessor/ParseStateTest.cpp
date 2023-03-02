@@ -11,7 +11,7 @@ void TestErrorCase(ParseState &state, std::vector<std::string> tokens) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
   auto itr = tokens.begin();
   REQUIRE_THROWS_AS(
-      state.parse(tokens, itr, query), PqlSyntaxErrorException);
+      state.Parse(tokens, itr, query), PqlSyntaxErrorException);
 }
 
 TEST_CASE("Test DeclarationParseState") {
@@ -21,9 +21,9 @@ TEST_CASE("Test DeclarationParseState") {
     std::vector<std::string> tokens{"variable", "v", ";"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
 
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
@@ -33,13 +33,13 @@ TEST_CASE("Test DeclarationParseState") {
         "variable", "v1", ",", "v2", ",", "v3", ";"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
 
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v1", PQL::kVariableEntityName)));
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v2", PQL::kVariableEntityName)));
-    REQUIRE(query->does_synonym_exist(
+    REQUIRE(query->is_synonym_declared(
         Synonym("v3", PQL::kVariableEntityName)));
     REQUIRE(itr == tokens.end());
   };
@@ -69,7 +69,7 @@ TEST_CASE("Test SelectParseState") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
 
     REQUIRE(query->get_selected_synonyms().at(0) == "v");
     REQUIRE(itr == tokens.end());
@@ -84,7 +84,7 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Modifies", "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause = ModifiesClause(
         query->CreateArgument("6"),
         query->CreateArgument("v"));
@@ -101,7 +101,7 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Follows", "(", "6", ",", "7", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause = FollowsClause(
         query->CreateArgument("6"),
         query->CreateArgument("7"));
@@ -118,7 +118,7 @@ TEST_CASE("Test SuchThatParseState") {
         "such", "that", "Follows*", "(", "6", ",", "10", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause = FollowsTClause(
         query->CreateArgument("6"),
         query->CreateArgument("10"));
@@ -135,7 +135,7 @@ TEST_CASE("Test SuchThatParseState") {
                                     "6", ",", "7", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause =
         ParentClause(query->CreateArgument("6"), query->CreateArgument("7"));
 
@@ -150,7 +150,7 @@ TEST_CASE("Test SuchThatParseState") {
                                     "6", ",", "7", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause =
         ParentTClause(query->CreateArgument("6"), query->CreateArgument("7"));
 
@@ -165,7 +165,7 @@ TEST_CASE("Test SuchThatParseState") {
                                     "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_clause =
         UsesClause(query->CreateArgument("6"), query->CreateArgument("v"));
 
@@ -199,7 +199,7 @@ TEST_CASE("Test PatternParseState") {
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_modifies_clause = ModifiesClause(
         query->CreateArgument("a"),
         query->CreateArgument("_"));
@@ -217,7 +217,7 @@ TEST_CASE("Test PatternParseState") {
         "pattern", "a", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_modifies_clause = ModifiesClause(
         query->CreateArgument("a"),
         query->CreateArgument("v"));
@@ -235,7 +235,7 @@ TEST_CASE("Test PatternParseState") {
         "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
-    state.parse(tokens, itr, query);
+    state.Parse(tokens, itr, query);
     auto expected_modifies_clause = ModifiesClause(
         query->CreateArgument("a"),
         query->CreateArgument("variable"));

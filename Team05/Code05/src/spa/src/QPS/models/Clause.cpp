@@ -39,123 +39,132 @@ ClausePtr Clause::CreateClause(EntityName rel_ref_ident, ArgumentPtr arg1,
 }
 
 template<class Data>
-EntityPtrList Clause::Index(
-    IntEntity *index,
+void Clause::Index(
+    const Entity &index,
     std::function
         <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
-    std::function<void(EntityPtrList &, Data)> add_function
-) {
-  EntityPtrList result;
-  int line = index->get_number();
+    std::function<void(EntitySet &, Data)> add_function,
+    EntitySet &results) {
+  int line = index.get_int();
   auto pkb_res = pkb_read_function(line);
-  if (pkb_res->empty()) return result;
+  if (pkb_res->empty()) return;
   Data data = pkb_res->get_row(line);
-  add_function(result, data);
-  return result;
+  add_function(results, data);
 }
 
-EntityPtrList ModifiesClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::ModifiesData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void ModifiesClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::ModifiesData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<ModifiesIndexFilter>(line);
         return std::move(pkb->Modifies(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::ModifiesData data) {
+      [&](EntitySet &result, pkb::ModifiesData data) {
         for (auto var : data.get_variables()) {
-          result.push_back(factory->CreateInstance(RHS(), var));
+          result.insert(Entity(var));
         }
-      });
+      },
+      results);
 }
 
-EntityPtrList FollowsClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::FollowsData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void FollowsClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::FollowsData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<FollowsIndexFilter>(line);
         return std::move(pkb->Follows(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::FollowsData data) {
-        result.push_back(factory->CreateInstance(RHS(), data.get_follows()));
-      });
+      [&](EntitySet &result, pkb::FollowsData data) {
+        result.insert(Entity(data.get_follows()));
+      },
+      results);
 }
 
-EntityPtrList FollowsTClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::FollowsData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void FollowsTClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::FollowsData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<FollowsIndexFilter>(line);
         return std::move(pkb->Follows(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::FollowsData data) {
+      [&](EntitySet &result, pkb::FollowsData data) {
         for (auto stmt : data.get_follows_list()) {
-          result.push_back(factory->CreateInstance(RHS(), stmt));
+          result.insert(Entity(stmt));
         }
-      });
+      },
+      results);
 }
 
-EntityPtrList ParentClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::ParentData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void ParentClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::ParentData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<ParentIndexFilter>(line);
         return std::move(pkb->Parent(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::ParentData data) {
+      [&](EntitySet &result, pkb::ParentData data) {
         for (auto child : data.get_direct_children()) {
-          result.push_back(factory->CreateInstance(RHS(), child));
+          result.insert(Entity(child));
         }
-      });
+      },
+      results);
 }
 
-EntityPtrList ParentTClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::ParentData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void ParentTClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::ParentData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<ParentIndexFilter>(line);
         return std::move(pkb->Parent(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::ParentData data) {
+      [&](EntitySet &result, pkb::ParentData data) {
         for (auto child : data.get_all_children()) {
-          result.push_back(factory->CreateInstance(RHS(), child));
+          result.insert(Entity(child));
         }
-      });
+      },
+      results);
 }
 
-EntityPtrList UsesClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::UsesData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void UsesClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::UsesData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<UsesIndexFilter>(line);
         return std::move(pkb->Uses(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::UsesData data) {
+      [&](EntitySet &result, pkb::UsesData data) {
         for (auto child : data.get_variables()) {
-          result.push_back(factory->CreateInstance(RHS(), child));
+          result.insert(Entity(child));
         }
-      });
+      },
+      results);
 }
 
-EntityPtrList PatternClause::Filter(
-    const EntityPtr &index, const EntityPtrList &RHS_filter_values,
-    const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  EntityPtrList result;
+void PatternClause::Filter(
+    const Entity &index,
+    const EntitySet &RHS_filter_values,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
 
-  IntEntity *line_arg = dynamic_cast<IntEntity *>(index.get());
-  int line = line_arg->get_number();
+  int line = index.get_int();
 
   std::unique_ptr<AssignPredicateFilter> filter;
 
@@ -168,25 +177,25 @@ EntityPtrList PatternClause::Filter(
   });
 
   auto pkb_res = pkb->Assigns(std::move(filter))->get_result();
-  if (pkb_res->empty()) return result;
+  if (pkb_res->empty()) return;
 
-  result.push_back(factory->CreateInstance(PQL::kAssignEntityName, line));
-
-  return result;
+  results.insert(Entity(line));
 }
 
-EntityPtrList PatternClause::Index(
-    const EntityPtr &index, const std::unique_ptr<MasterEntityFactory> &factory,
-    const std::unique_ptr<pkb::PKBRead> &pkb) {
-  return Clause::Index<pkb::AssignData>(
-      dynamic_cast<IntEntity *>(index.get()),
+void PatternClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::AssignData>(
+      index,
       [&](int line) {
         auto filter = std::make_unique<AssignIndexFilter>(line);
         return std::move(pkb->Assigns(std::move(filter))->get_result());
       },
-      [&](EntityPtrList &result, pkb::AssignData data) {
-        result.push_back(factory->CreateInstance(RHS(), data.get_line()));
-      });
+      [&](EntitySet &result, pkb::AssignData data) {
+        result.insert(Entity(data.get_line()));
+      },
+      results);
 }
 
 Clause::~Clause() = default;

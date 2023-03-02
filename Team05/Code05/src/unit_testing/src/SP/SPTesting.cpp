@@ -31,3 +31,15 @@ ExprNodePtr CreateOp(ExprNodePtr left, ExprNodePtr right, Token tok) {
 ExprNodePtr MakeConst(int v) {
   return std::make_unique<ConstNode>(ConstNode(v));
 }
+
+std::unique_ptr<ReadNode> MakeRead(std::string var_name, int line) {
+  return std::make_unique<ReadNode>(MakeVar(var_name), line);
+}
+
+std::unique_ptr<PrintNode> MakePrint(std::string var_name, int line) {
+  return std::make_unique<PrintNode>(MakeVar(var_name), line);
+}
+
+std::unique_ptr<IfNode> MakeIf(int line) { return nullptr; }
+
+std::unique_ptr<WhileNode> MakeWhile(int line) { return nullptr; }

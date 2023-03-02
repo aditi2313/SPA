@@ -11,6 +11,7 @@ void CFGGeneratingVisitor::Process(ast::ProcNode* proc_node) {
 }
 
 void CFGGeneratingVisitor::ProcessAft(ast::StmtLstNode* stmt_lst_node) {
+  AddChild();
   current_cfg_->AddChild(*parents_.top(), *ends_.top());
   ends_.pop();
   parents_.pop();
@@ -20,8 +21,6 @@ void CFGGeneratingVisitor::Process(ast::IfNode* if_node) {
   ProcStmtNode(if_node);
   cfg::CFGNode& child = AddChild();
   // remove the previous parent
-  parents_.pop();
-  parents_.push(&child);
   parents_.push(&child);
   cfg::CFGNode& empt = current_cfg_->AddNode();
   ends_.push(&empt);
@@ -30,12 +29,8 @@ void CFGGeneratingVisitor::Process(ast::IfNode* if_node) {
 
 void CFGGeneratingVisitor::Process(ast::WhileNode* while_node) {
   cfg::CFGNode& prev = AddChild();
-  parents_.pop();
-  parents_.push(&prev);
   ProcStmtNode(while_node);
   cfg::CFGNode& child = AddChild();
-  parents_.pop();
-  parents_.push(&child);
   parents_.push(&child);
   ends_.push(&child);
 }

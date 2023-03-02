@@ -35,7 +35,8 @@ class CFGGeneratingVisitor : public TNodeVisitor {
         current_cfg_->AddChild(*parents_.top(), current_start_, current_end_);
     current_start_ = -1;
     current_end_ = -1;
-
+    parents_.pop();
+    parents_.push(&res);
     return res;
   }
   void ProcStmtNode(ast::StmtNode* node) {

@@ -88,4 +88,5 @@ class PKBRead {
   std::unique_ptr<PKBRelationTable> relation_table_;
 };
 
+using PKBReadPtr = std::unique_ptr<PKBRead>;
 }  // namespace pkb

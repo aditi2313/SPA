@@ -11,8 +11,8 @@ TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 
   SECTION("For statements") {
-    EntityPtrList entities;
-    entities.push_back(std::make_unique<Stmt>(1));
+    EntitySet entities;
+    entities.insert(Entity(1));
     QueryResultPtr query_result = std::make_unique<QueryResult>(entities);
     std::list<std::string> actual =
         query_formatter.FormatQuery(query_result);

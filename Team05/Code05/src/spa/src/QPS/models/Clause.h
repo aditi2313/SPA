@@ -20,47 +20,46 @@ class Clause {
       arg1_(std::move(arg1)), arg2_(std::move(arg2)), LHS_(LHS), RHS_(RHS) {}
   virtual ~Clause() = 0;
 
-  virtual EntityPtrList Index(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) = 0;
+  virtual void Index(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) = 0;
 
   template<class Data>
-  static EntityPtrList Index(
-      IntEntity *index,
+  static void Index(
+      const Entity &index,
       std::function
           <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
-      std::function<void(EntityPtrList &, Data)> add_function);
+      std::function<void(EntitySet &, Data)> add_function,
+      EntitySet &results);
 
-  inline virtual EntityPtrList Filter(
-      const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) {
-    EntityPtrList result;
-    for (auto &entity : Index(index, factory, pkb)) {
-      for (auto &filter_entity : RHS_filter_values) {
-        if (entity->WeakEqual(*filter_entity)) {
-          result.push_back(entity->Copy());
+  inline virtual void Filter(
+      const Entity &index,
+      const EntitySet &filter_values,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) {
+    EntitySet index_results;
+    Index(index, pkb, index_results);
+    for (auto &entity : index_results) {
+      for (auto &filter_entity : filter_values) {
+        if (entity.WeakEqual(filter_entity)) {
+          results.insert(entity);
         }
       }
     }
-
-    return result;
   }
 
-  inline virtual EntityPtrList SymmetricFilter(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) {
-    EntityPtrList result;
-    for (auto &entity : Index(index, factory, pkb)) {
-      if (entity->WeakEqual(*index)) {
-        result.push_back(entity->Copy());
+  inline virtual void SymmetricFilter(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) {
+    EntitySet index_results;
+    Index(index, pkb, index_results);
+    for (auto &entity : index_results) {
+      if (entity.WeakEqual(index)) {
+        results.insert(entity);
       }
     }
-
-    return result;
   }
 
   bool operator==(Clause const &other) const {
@@ -99,10 +98,10 @@ class ModifiesClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kStmtEntityName, PQL::kVariableEntityName) {}
 
-  EntityPtrList Index(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) override;
 
   inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
@@ -114,10 +113,10 @@ class FollowsClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kStmtEntityName, PQL::kStmtEntityName) {}
 
-  EntityPtrList Index(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) override;
 };
 
 // RS between statements (transitive)
@@ -127,10 +126,10 @@ class FollowsTClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kStmtEntityName, PQL::kStmtEntityName) {}
 
-  EntityPtrList Index(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) override;
 };
 
 class PatternClause : public Clause {
@@ -139,16 +138,16 @@ class PatternClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2),
                PQL::kAssignEntityName, PQL::kAssignEntityName) {}
 
-  EntityPtrList Index(
-      const EntityPtr &index,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) override;
 
-  EntityPtrList Filter(
-      const EntityPtr &index,
-      const EntityPtrList &RHS_filter_values,
-      const std::unique_ptr<MasterEntityFactory> &factory,
-      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Filter(
+      const Entity &index,
+      const EntitySet &RHS_filter_values,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results) override;
 
   inline bool IsExactType() override { return true; };
 };
@@ -160,9 +159,9 @@ class UsesClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
                PQL::kVariableEntityName) {}
 
-  EntityPtrList Index(const EntityPtr &index,
-                      const std::unique_ptr<MasterEntityFactory> &factory,
-                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
 
   inline bool IsWildcardAllowedAsFirstArg() override { return false; };
 };
@@ -174,9 +173,9 @@ class ParentClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
                PQL::kStmtEntityName) {}
 
-  EntityPtrList Index(const EntityPtr &index,
-                      const std::unique_ptr<MasterEntityFactory> &factory,
-                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
 };
 
 class ParentTClause : public Clause {
@@ -185,9 +184,9 @@ class ParentTClause : public Clause {
       : Clause(std::move(arg1), std::move(arg2), PQL::kStmtEntityName,
                PQL::kStmtEntityName) {}
 
-  EntityPtrList Index(const EntityPtr &index,
-                      const std::unique_ptr<MasterEntityFactory> &factory,
-                      const std::unique_ptr<pkb::PKBRead> &pkb) override;
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

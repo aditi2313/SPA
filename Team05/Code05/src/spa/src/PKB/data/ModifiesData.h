@@ -2,13 +2,13 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
-
-#include "models/Entity.h"
+#include <variant>
 
 namespace pkb {
 class ModifiesData {
  public:
-  ModifiesData(int line, const std::unordered_set<std::string>& variables);
+  ModifiesData(std::variant<int, std::string> line,
+               const std::unordered_set<std::string>& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
         (LHS.line_ == RHS.line_ &&
@@ -22,14 +22,14 @@ class ModifiesData {
     return LHS.line_ == RHS.line_ && LHS.variables_ == RHS.variables_;
   }
 
-  inline int get_line() { return line_; }
+  inline std::variant<int, std::string> get_line() { return line_; }
 
   inline const std::unordered_set<std::string>& get_variables() {
       return variables_;
   }
 
  private:
-  int line_;
+  std::variant<int, std::string> line_;
   std::unordered_set<std::string> variables_;
 };
 }  // namespace pkb

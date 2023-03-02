@@ -17,7 +17,7 @@ class ParseState {
   explicit ParseState(std::string transition, std::vector<std::string> grammar)
       : kTransitionKeyword(transition), grammar_(grammar) {}
 
-  virtual void parse(const std::vector<std::string> &tokens,
+  virtual void Parse(const std::vector<std::string> &tokens,
                      parse_position &itr, QueryPtr &query) = 0;
   virtual ~ParseState() = 0;
 
@@ -38,7 +38,7 @@ class RecursiveParseState : public ParseState {
 
  protected:
   std::string kRecurseDelimiter;
-  virtual void recurse(parse_position &itr, parse_position &grammar_itr) = 0;
+  virtual void Recurse(parse_position &itr, parse_position &grammar_itr) = 0;
 };
 
 // design-entity synonym (',' synonym)* ';'
@@ -52,11 +52,11 @@ class DeclarationParseState : public RecursiveParseState {
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 
-  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
 
  private:
-  void recurse(parse_position &itr, parse_position &grammar_itr) override {
+  void Recurse(parse_position &itr, parse_position &grammar_itr) override {
     if (*itr == kRecurseDelimiter) {
       grammar_itr = grammar_.begin();  // Reset grammar
     } else {
@@ -72,7 +72,7 @@ class SelectParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in select-synonym";
   }
 
-  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
 };
 
@@ -86,7 +86,7 @@ class SuchThatParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
   }
 
-  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
 };
 
@@ -100,7 +100,7 @@ class PatternParseState : public ParseState {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
   }
 
-  void parse(const std::vector<std::string> &tokens, parse_position &itr,
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
 };
 }  // namespace qps

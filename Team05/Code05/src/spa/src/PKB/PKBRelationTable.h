@@ -41,7 +41,7 @@ class PKBRelationTable {
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
 
-  void add_modifies_data(const int line,
+  void add_modifies_data(const std::variant<int, std::string> line,
                          const std::unordered_set<std::string>& variables) {
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
@@ -53,7 +53,7 @@ class PKBRelationTable {
                           AssignData(variable, line, std::move(expression)));
   }
 
-  void add_uses_data(const int line,
+  void add_uses_data(const std::variant<int, std::string> line,
                      const std::unordered_set<std::string>& variable_names) {
     uses_table_.add_row(line, UsesData(line, variable_names));
   }

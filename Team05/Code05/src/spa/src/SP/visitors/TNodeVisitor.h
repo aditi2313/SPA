@@ -39,9 +39,11 @@ class TNodeVisitor {
 
   void VisitIf(ast::IfNode*);
   virtual void Process(ast::IfNode* if_node) {}
+  virtual void ProcessAft(ast::IfNode* if_node) {}
 
   void VisitWhile(ast::WhileNode*);
   virtual void Process(ast::WhileNode* while_node) {}
+  virtual void ProcessAft(ast::WhileNode* if_node) {}
 
   void VisitCall(ast::CallNode* call_node);
   virtual void Process(ast::CallNode* call_node) {}

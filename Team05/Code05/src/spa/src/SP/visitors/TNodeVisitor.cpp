@@ -33,6 +33,7 @@ void TNodeVisitor::VisitPrint(ast::PrintNode* print_node) {
 }
 
 void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
+  Process(if_node);
   auto& cond_node = if_node->get_cond();
   cond_node->AcceptVisitor(this);
 
@@ -42,17 +43,18 @@ void TNodeVisitor::VisitIf(ast::IfNode* if_node) {
   auto& else_stmt_lst = if_node->get_else();
   else_stmt_lst->AcceptVisitor(this);
 
-  Process(if_node);
+  ProcessAft(if_node);
 }
 
 void TNodeVisitor::VisitWhile(ast::WhileNode* while_node) {
+  Process(while_node);
   auto& cond_node = while_node->get_cond();
   cond_node->AcceptVisitor(this);
 
   auto& stmt_lst = while_node->get_stmts();
   stmt_lst->AcceptVisitor(this);
 
-  Process(while_node);
+  ProcessAft(while_node);
 }
 
 void TNodeVisitor::VisitCall(ast::CallNode* call_node) { Process(call_node); }

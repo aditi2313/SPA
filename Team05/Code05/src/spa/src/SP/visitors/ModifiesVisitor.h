@@ -25,8 +25,8 @@ class ModifiesVisitor : public PKBWritingVisitor {
   // TODO(Gab) Go into call node and get the information #41
   void Process(ast::CallNode* call_node) override {}
 
-  void Process(ast::IfNode*) override;
-  void Process(ast::WhileNode*) override;
+  void ProcessAft(ast::IfNode*) override;
+  void ProcessAft(ast::WhileNode*) override;
 
  private:
   void AddVariablesFromStmtList(ast::StmtLstNode& node,

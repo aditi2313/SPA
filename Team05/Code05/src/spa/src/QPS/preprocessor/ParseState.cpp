@@ -32,7 +32,7 @@ void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// synonym | tuple | BOOLEAN
+// tuple | BOOLEAN
 void SelectParseState::Parse(const std::vector<std::string> &tokens,
                              parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
@@ -40,8 +40,15 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    if (*grammar_itr == PQL::kSynGrammar) {
-      query->add_selected_synonym(*itr);
+    if (*grammar_itr == PQL::kSelectGrammar) {
+      // if BOOLEAN is a declared synonym name,
+      // we treat it as a synonym (synonym takes precedence)
+      if (*itr == PQL::kBooleanSelect
+          && !query->is_synonym_name_declared(*itr)) {
+        query->set_boolean_query_to_true();
+      } else {
+        query->add_selected_synonym(*itr);
+      }
     }
     itr++;
     grammar_itr++;
@@ -73,8 +80,10 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
 
   if (!IsComplete(grammar_itr)) ThrowException();
 
-  query->add_clause(Clause::CreateClause(rel_ident, std::move(arguments.at(0)),
-                                         std::move(arguments.at(1))));
+  query->add_clause(Clause::CreateClause(
+      rel_ident,
+      std::move(arguments.at(0)),
+      std::move(arguments.at(1))));
 }
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'

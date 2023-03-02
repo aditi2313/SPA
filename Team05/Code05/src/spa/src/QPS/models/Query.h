@@ -33,14 +33,6 @@ class Query {
     return false;
   }
 
-  // Returns true if `syn` has been declared
-  inline bool is_synonym_declared(Synonym syn) {
-    for (auto &declared_syn : synonym_declarations_) {
-      if (syn == *declared_syn) return true;
-    }
-    return false;
-  }
-
   inline EntityName get_declared_synonym_entity_name(SynonymName syn_name) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_name() == syn_name)
@@ -65,6 +57,14 @@ class Query {
     return selected_synonyms_;
   }
 
+  inline void set_boolean_query_to_true() {
+    is_boolean_query_ = true;
+  }
+
+  inline bool is_boolean_query() {
+    return is_boolean_query_;
+  }
+
   inline std::vector<std::unique_ptr<Clause>> &get_clauses() {
     return clauses_;
   }
@@ -85,6 +85,7 @@ class Query {
   ArgumentPtr CreateArgument(std::string token);
 
  private:
+  bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;
   std::vector<SynonymName> selected_synonyms_;
   std::vector<ClausePtr> clauses_;

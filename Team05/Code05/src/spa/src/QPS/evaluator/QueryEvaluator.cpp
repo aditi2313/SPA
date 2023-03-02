@@ -7,14 +7,16 @@ namespace qps {
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
 
-  // TODO(JL): Extend to support multiple synonyms
-  SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-  EntityName entity_name = query->get_declared_synonym_entity_name(
-      selected_synonym);
-  EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
-      entity_name);
+  if (!query->is_boolean_query()) {
+    // TODO(JL): Extend to support multiple synonyms
+    SynonymName selected_synonym = query->get_selected_synonyms().at(0);
+    EntityName entity_name = query->get_declared_synonym_entity_name(
+        selected_synonym);
+    EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
+        entity_name);
 
-  table_ = Table(selected_synonym, initial_entities);
+    table_ = Table(selected_synonym, initial_entities);
+  }
 
   for (auto &clause : query->get_clauses()) {
     Table clause_table;
@@ -27,7 +29,11 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
     if (!res) {
       // Clause is false, can immediately return empty result.
-      return std::make_unique<QueryResult>();
+      if (query->is_boolean_query()) {
+        return std::make_unique<BooleanQueryResult>(false);
+      } else {
+        return std::make_unique<ListQueryResult>();
+      }
     }
 
     if (!clause_table.Empty()) {
@@ -35,8 +41,13 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     }
   }
 
-  EntitySet results = table_.Select(selected_synonym);
-  QueryResultPtr result = std::make_unique<QueryResult>(
+  if (query->is_boolean_query()) {
+    return std::make_unique<BooleanQueryResult>(true);
+  }
+
+  EntitySet results = table_.Select(
+      query->get_selected_synonyms().at(0));
+  QueryResultPtr result = std::make_unique<ListQueryResult>(
       results);
 
   return result;

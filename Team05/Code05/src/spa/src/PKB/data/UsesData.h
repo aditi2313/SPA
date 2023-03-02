@@ -25,7 +25,7 @@ class UsesData {
         LHS.variable_names_ == RHS.variable_names_;
     }
 
-    inline std::variant<int, std::string> get_line() { return line_; }
+    inline std::variant<int, std::string> get_index() { return line_; }
 
     inline const std::unordered_set<std::string>& get_variables() {
         return variable_names_;

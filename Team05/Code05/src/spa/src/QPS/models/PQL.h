@@ -57,6 +57,8 @@ class PQL {
   inline static RelName kParentRelId = "Parent";
   inline static RelName kParentTRelId = "Parent*";
 
+  inline static std::string kBooleanSelect = "BOOLEAN";
+
   inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
       kParentTRelId, kUsesRelId, kPatternRelId
@@ -108,8 +110,8 @@ class PQL {
   inline static bool is_pattern_wildcard(std::string str) {
     if (str.size() < 2) return false;
     return str.front() == '_'
-      && str.back() == '_'
-      && is_pattern_exact(str.substr(1, str.size() - 2));
+        && str.back() == '_'
+        && is_pattern_exact(str.substr(1, str.size() - 2));
   }
 
   inline static std::string kRelRefGrammar = "relRef";
@@ -118,6 +120,8 @@ class PQL {
   inline static std::string kExprGrammar = "exp";
   inline static std::string kDesignEntityGrammar = "designEntity";
   inline static std::string kRecurseGrammar = "*";
+  inline static std::string kBooleanGrammar = "boolean";
+  inline static std::string kSelectGrammar = "select";
 
   inline static bool CheckGrammar(
       std::string const token, std::string const grammar) {
@@ -135,6 +139,12 @@ class PQL {
           || is_wildcard(token);
     } else if (grammar == kRecurseGrammar) {
       return true;
+    } else if (grammar == kBooleanGrammar) {
+      return token == kBooleanSelect;
+    } else if (grammar == kSelectGrammar) {
+      // tuple | BOOLEAN
+      return CheckGrammar(token, kSynGrammar)
+          || CheckGrammar(token, kBooleanGrammar);
     } else {
       return token == grammar;
     }

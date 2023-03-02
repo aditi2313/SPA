@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_set>
+#include <variant>
 
 namespace pkb {
 class ModifiesData {

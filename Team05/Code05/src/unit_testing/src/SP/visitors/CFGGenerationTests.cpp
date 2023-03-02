@@ -67,7 +67,7 @@ TEST_CASE("Test construction of cfg on while ast") {
   auto cfg = res->get_cfg("procedure");
   auto& if1 = res->get_node(4);
   REQUIRE(cfg.GetSecondChild(if1) == res->get_node(6));
-  
+
   auto& w1 = res->get_node(1);
   REQUIRE(cfg.GetSecondChild(w1) == res->get_node(7));
   REQUIRE(!w1.is_empty());
@@ -79,6 +79,4 @@ TEST_CASE("Test construction of cfg on while ast") {
   REQUIRE(end1.is_empty());
   REQUIRE(end2.is_empty());
   REQUIRE(cfg.GetFirstChild(end2) == w1);
-
-
 }

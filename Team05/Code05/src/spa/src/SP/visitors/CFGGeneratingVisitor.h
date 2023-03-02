@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <stack>
+#include <algorithm>
 
 #include "TNodeVisitor.h"
 #include "models/CFG/ProgramCFG.h"

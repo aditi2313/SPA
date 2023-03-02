@@ -105,9 +105,11 @@ class PQL {
   }
 
   inline static bool is_pattern_exact(std::string str) {
+    if (str.size() < 2) return false;
     return str.front() == '\"'
         && str.back() == '\"'
-        && sp::SourceProcessor::ValidateExpression(str);
+        && sp::SourceProcessor::ValidateExpression(
+            str.substr(1, str.size() - 2));
   }
 
   inline static bool is_pattern_wildcard(std::string str) {

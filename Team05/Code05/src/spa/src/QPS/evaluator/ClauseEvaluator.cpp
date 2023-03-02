@@ -114,25 +114,12 @@ Table ClauseEvaluator::EvaluateSynonymClause(
   Table new_table(columns);
 
   if (is_arg1_syn && is_arg2_syn && !is_symmetric) {
-    for (auto &[lhs, rhs] : rows) {
-      Table::Row new_row;
-      new_row.emplace_back(arg1_syn_name, lhs);
-      new_row.emplace_back(arg2_syn_name, rhs);
-      new_table.AddRow(new_row);
-    }
+    new_table.add_values(arg1_syn_name, arg2_syn_name, rows);
   } else if (is_arg1_syn) {
-    for (auto &lhs : LHS_results) {
-      Table::Row new_row;
-      new_row.emplace_back(arg1_syn_name, lhs);
-      new_table.AddRow(new_row);
-    }
+    new_table.add_values(arg1_syn_name, LHS_results);
   } else {
     // arg2 is syn
-    for (auto &rhs : RHS_results) {
-      Table::Row new_row;
-      new_row.emplace_back(arg2_syn_name, rhs);
-      new_table.AddRow(new_row);
-    }
+    new_table.add_values(arg2_syn_name, RHS_results);
   }
 
   return new_table;

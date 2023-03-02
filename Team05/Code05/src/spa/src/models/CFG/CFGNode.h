@@ -39,6 +39,10 @@ class CFGNode {
            LHS.start_line_ == RHS.start_line_;
   }
 
+  friend bool operator!=(const CFGNode& LHS, const CFGNode& RHS) {
+    return !(LHS == RHS);
+  }
+
  private:
   explicit CFGNode(int id) : id_(id) {}
   CFGNode(int start, int end, int id)
@@ -51,6 +55,7 @@ class CFGNode {
       return;
     }
     assert(second_child_ == kEmptyId);
+    assert(!is_empty());
     second_child_ = child.id_;
   }
   int get_first_child() { return first_child_; }

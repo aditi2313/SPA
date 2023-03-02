@@ -89,7 +89,7 @@ TEST_CASE("Test line number map in program cfg") {
   ProgramCFG program_cfg;
   auto& cfg = program_cfg.add_procedure("simple");
   auto& cnode1 = cfg.AddChild(cfg.get_root(), 1, 5);
-  auto& cnode2 = cfg.AddChild(cfg.get_root(), 6, 8);
+  auto& cnode2 = cfg.AddChild(cnode1, 6, 8);  
 
   SECTION("Program cfg query start") {
     REQUIRE(program_cfg.get_node(1) == cnode1);

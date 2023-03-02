@@ -56,6 +56,40 @@ class CFG {
 
   CFGNode& get_root() { return nodes_[0]; }
 
+  /// <summary>
+  /// Function for obtaining the non empty children of the provided
+  /// node. If the child of this node is empty, 
+  /// we will traverse the first child of the empty node.
+  /// This is under the assumption that if a node is empty, it can only 
+  /// have one child. This is because an if-node and a while node
+  /// cannot be empty.
+  /// 
+  /// </summary>
+  /// <param name="node">The node of which we are obtaining the children.</param>
+  /// <returns></returns>
+  std::vector<CFGNode*> GetNonEmptyChildren(CFGNode& node) {
+    if (node.is_empty()) {
+      return GetNonEmptyChildren(GetFirstChild(node));
+    }
+    std::vector<CFGNode*> result;
+    if (node.HasFirstChild()) {
+      auto& curr = GetFirstChild(node);
+      while (curr.is_empty()) {
+        curr = GetFirstChild(curr);
+      }
+      result.push_back(&curr);
+    }
+
+    if (node.HasSecondChild()) {
+      auto& curr = GetSecondChild(node);
+      while (curr.is_empty()) {
+        curr = GetFirstChild(curr);
+      }
+      result.push_back(&curr);
+    }
+    return result;
+  }
+
  private:
   CFGNode& get_node_from_id(int id) {
     int index = id_to_indexes_.at(id);

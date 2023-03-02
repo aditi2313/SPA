@@ -75,6 +75,6 @@ jobs:
 
     - name: Autotester on windows
       working-directory: Team05/Tests05
-      if: runner.os == 'macOS'
+      if: runner.os == 'Windows'
       run: ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml          
       shell: bash

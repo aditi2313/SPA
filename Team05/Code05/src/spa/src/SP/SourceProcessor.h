@@ -49,7 +49,7 @@ class SourceProcessor {
   }
 
   static void ExtractRelationships(std::unique_ptr<ast::ProgramNode> &root,
-                                   std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
+      std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 
     sp::AssignVisitor av(std::move(writer));

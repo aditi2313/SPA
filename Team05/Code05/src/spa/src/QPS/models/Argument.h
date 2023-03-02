@@ -2,6 +2,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "QPS/models/PQL.h"
 #include "QPS/models/Synonym.h"

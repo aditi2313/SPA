@@ -28,15 +28,6 @@ class SourceProcessor {
     return exp_parser.parse(lxr);
   }
 
-  static bool IsExpression(std::string expr) {
-    try {
-      ParseExpression(expr);
-    } catch (std::exception _) {
-      return false;
-    }
-    return true;
-  }
-
   static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
     sp::Lexer lxr(std::move(program));
     sp::ProgramParser program_parser;

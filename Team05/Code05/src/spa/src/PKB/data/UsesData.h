@@ -1,9 +1,9 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <variant>
 #include <unordered_set>
 
-#include "models/Entity.h"
 
 namespace pkb {
 

@@ -5,23 +5,18 @@
 #include <string>
 #include <memory>
 
-#include "models/EntityExport.h"
 #include "PKB/PKBRead.h"
 #include "common/exceptions/QPSExceptions.h"
 
 using namespace models;  // NOLINT
 
 namespace qps {
-using PKBPtr = std::unique_ptr<pkb::PKBRead>;
-
 class EntityFactory {
  public:
   EntityFactory() {}
-  virtual EntityPtrList GetAllFromPKB(PKBPtr &pkb) = 0;
-  virtual EntityPtr CreateInstance(std::string ident) = 0;
-  virtual EntityPtr CreateInstance(int number) = 0;
+  virtual EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) = 0;
 
-  virtual ~EntityFactory() = 0;
+  virtual ~EntityFactory() = default;
 };
 
 class IntEntityFactory : public EntityFactory {
@@ -29,10 +24,10 @@ class IntEntityFactory : public EntityFactory {
   IntEntityFactory() : EntityFactory() {}
 
  protected:
-  inline EntityPtrList CreateInstanceList(std::unordered_set<int> ls) {
-    EntityPtrList result;
+  inline EntitySet CreateInstanceList(std::unordered_set<int> ls) {
+    EntitySet result;
     for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
-      result.push_back(CreateInstance(*itr));
+      result.insert(Entity(*itr));
     }
     return result;
   }
@@ -43,10 +38,10 @@ class IdentEntityFactory : public EntityFactory {
   IdentEntityFactory() : EntityFactory() {}
 
  protected:
-  inline EntityPtrList CreateInstanceList(std::unordered_set<std::string> ls) {
-    EntityPtrList result;
+  inline EntitySet CreateInstanceList(std::unordered_set<std::string> ls) {
+    EntitySet result;
     for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
-      result.push_back(CreateInstance(*itr));
+      result.insert(Entity(*itr));
     }
     return result;
   }
@@ -55,13 +50,8 @@ class IdentEntityFactory : public EntityFactory {
 class ProcedureEntityFactory : public IdentEntityFactory {
  public:
   ProcedureEntityFactory() : IdentEntityFactory() {}
-  inline EntityPtr CreateInstance(std::string ident) override {
-    return std::make_unique<Procedure>(ident);
-  }
-  inline EntityPtr CreateInstance(int number) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_procedures());
   }
 };
@@ -69,13 +59,8 @@ class ProcedureEntityFactory : public IdentEntityFactory {
 class VariableEntityFactory : public IdentEntityFactory {
  public:
   VariableEntityFactory() : IdentEntityFactory() {}
-  inline EntityPtr CreateInstance(std::string ident) override {
-    return std::make_unique<Variable>(ident);
-  }
-  inline EntityPtr CreateInstance(int number) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_variables());
   }
 };
@@ -83,13 +68,8 @@ class VariableEntityFactory : public IdentEntityFactory {
 class ConstantEntityFactory : public IntEntityFactory {
  public:
   ConstantEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<Constant>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_constants());
   }
 };
@@ -97,13 +77,8 @@ class ConstantEntityFactory : public IntEntityFactory {
 class StmtEntityFactory : public IntEntityFactory {
  public:
   StmtEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<Stmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_stmts());
   }
 };
@@ -111,13 +86,8 @@ class StmtEntityFactory : public IntEntityFactory {
 class ReadEntityFactory : public IntEntityFactory {
  public:
   ReadEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<ReadStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_read());
   }
 };
@@ -125,13 +95,8 @@ class ReadEntityFactory : public IntEntityFactory {
 class PrintEntityFactory : public IntEntityFactory {
  public:
   PrintEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<PrintStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_print());
   }
 };
@@ -139,13 +104,8 @@ class PrintEntityFactory : public IntEntityFactory {
 class AssignEntityFactory : public IntEntityFactory {
  public:
   AssignEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<AssignStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_assign());
   }
 };
@@ -153,13 +113,8 @@ class AssignEntityFactory : public IntEntityFactory {
 class CallEntityFactory : public IntEntityFactory {
  public:
   CallEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<CallStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_calls());
   }
 };
@@ -167,13 +122,8 @@ class CallEntityFactory : public IntEntityFactory {
 class WhileEntityFactory : public IntEntityFactory {
  public:
   WhileEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<WhileStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_whiles());
   }
 };
@@ -181,13 +131,8 @@ class WhileEntityFactory : public IntEntityFactory {
 class IfEntityFactory : public IntEntityFactory {
  public:
   IfEntityFactory() : IntEntityFactory() {}
-  inline EntityPtr CreateInstance(int number) override {
-    return std::make_unique<IfStmt>(number);
-  }
-  inline EntityPtr CreateInstance(std::string ident) override {
-    throw NotImplementedException();
-  }
-  inline EntityPtrList GetAllFromPKB(PKBPtr &pkb) override {
+
+  inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_if());
   }
 };

@@ -10,8 +10,8 @@ namespace qps {
 // Wrapper class for QPS
 class QPS {
  public:
-  std::unique_ptr<pkb::PKBRead> evaluate(std::string query,
-                                    std::list<std::string> &results,
-                                    std::unique_ptr<pkb::PKBRead> &pkb);
+  void evaluate(std::string query,
+                std::list<std::string> &results,
+                pkb::PKBReadPtr &pkb);
 };
 }  // namespace qps

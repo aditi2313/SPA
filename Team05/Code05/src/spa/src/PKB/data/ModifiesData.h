@@ -3,8 +3,6 @@
 #include <string>
 #include <unordered_set>
 
-#include "models/Entity.h"
-
 namespace pkb {
 class ModifiesData {
  public:

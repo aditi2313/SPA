@@ -29,6 +29,7 @@ class PKBRelationTable {
   IndexableTable<ParentData> parent_table_;
   IndexableTable<UsesData> uses_table_;
   IndexableTable<AssignData> assign_table_;
+  IndexableTable<CallsData> calls_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -40,7 +41,7 @@ class PKBRelationTable {
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
 
-  void add_modifies_data(const int line,
+  void add_modifies_data(const std::variant<int, std::string> line,
                          const std::unordered_set<std::string>& variables) {
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
@@ -52,7 +53,7 @@ class PKBRelationTable {
                           AssignData(variable, line, std::move(expression)));
   }
 
-  void add_uses_data(const int line,
+  void add_uses_data(const std::variant<int, std::string> line,
                      const std::unordered_set<std::string>& variable_names) {
     uses_table_.add_row(line, UsesData(line, variable_names));
   }
@@ -66,6 +67,10 @@ class PKBRelationTable {
       parent_table_.add_row(line, ParentData(line));
     }
     parent_table_.get_row(line).add_direct_child(child_line);
+  }
+
+  void add_calls_data(std::string caller, std::string callee) {
+      calls_table_.add_row(caller, CallsData(caller, callee));
   }
 };
 }  // namespace pkb

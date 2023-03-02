@@ -36,7 +36,7 @@ TEST_CASE("Test Modifies by variable Filter") {
   REQUIRE(*expected == *new_table);
 }
 
-TEST_CASE("Test ModifiesFilterByLine") {
+TEST_CASE("Test int ModifiesFilterByLine") {
   vector<std::unordered_set<string>> variables = {
       {"a", "b", "c"}, {"a", "b"}, {"k", "d", "m"}};
 
@@ -48,6 +48,21 @@ TEST_CASE("Test ModifiesFilterByLine") {
   auto expected = InitialiseModifiesTestTable(result_variables);
 
   REQUIRE(*expected == *new_table);
+}
+
+TEST_CASE("Test Modifies by string line filter") {
+  vector<std::unordered_set<string>> vars = {{"a", "c"}, {"a", "b"}};
+  auto table = std::make_unique<pkb::ModifiesTable>();
+  table->add_row("main", pkb::ModifiesData("main", vars.at(0)));
+  table->add_row("helper", pkb::ModifiesData("helper", vars.at(1)));
+
+  auto expected_table = std::make_unique<pkb::ModifiesTable>();
+  expected_table->add_row("main", pkb::ModifiesData("main", vars.at(0)));
+
+  filter::ModifiesIndexFilter line_filter("main");
+  auto actual_table = line_filter.FilterTable(std::move(table));
+
+  REQUIRE(*actual_table == *expected_table);
 }
 
 std::unique_ptr<pkb::ModifiesTable> InitialiseModifiesTestTable(

@@ -72,11 +72,10 @@ jobs:
       if: runner.os == 'macOS'
       run: ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml          
       shell: bash
-
-    - name: Autotester on windows
-      working-directory: ${{github.workspace}}/build/src/autotester
-      # working-directory: Team05/Tests05
-      if: runner.os == 'Windows'
-      # ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml          
-      run: ls -R
-      shell: bash
+    # cannot run autotester on windows for some odd reason
+    # actions cannot find the executable
+    #- name: Autotester on windows      
+    #  working-directory: Team05/Tests05
+    #  if: runner.os == 'Windows'
+    #  run: ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml                
+    #  shell: bash

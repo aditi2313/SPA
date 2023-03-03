@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "common/exceptions/QPSExceptions.h"
+#include "SP/SourceProcessor.h"
 #include "models/types.h"
 
 using models::EntityName;
@@ -104,6 +105,7 @@ class PQL {
   }
 
   inline static bool is_pattern_exact(std::string str) {
+    if (str.size() < 2) return false;
     return str.front() == '\"' && str.back() == '\"';
   }
 

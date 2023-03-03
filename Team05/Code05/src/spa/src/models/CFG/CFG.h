@@ -36,8 +36,8 @@ class CFG {
     parent.add_child(child);
     return child;
   }
-  const CFGNode& GetFirstChild(CFGNode& node);
-  const CFGNode& GetSecondChild(CFGNode& node);
+  CFGNode& GetFirstChild(CFGNode& node);
+  CFGNode& GetSecondChild(CFGNode& node);
 
   CFGNode& get_root() { return nodes_[0]; }
 

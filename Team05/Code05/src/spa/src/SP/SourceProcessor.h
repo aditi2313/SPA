@@ -16,6 +16,7 @@
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
+#include "SP/CFGExtractor.h"
 
 namespace sp {
 

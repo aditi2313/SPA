@@ -38,6 +38,10 @@ class ProgramCFG {
   /// number</returns>
   const CFGNode& get_node(int line) { return *(line_to_cfg_map_[line]); }
 
+  std::unordered_map<std::string, CFG>& get_procedure_cfg_map() {
+    return procedure_to_cfg_map_;
+  }
+
  private:
   // mapping to procedure.
   std::unordered_map<std::string, CFG> procedure_to_cfg_map_;

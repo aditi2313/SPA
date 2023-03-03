@@ -5,7 +5,7 @@
 #include <vector>
 
 namespace sp {
-class CFGVisitor;
+class CFG;
 }
 
 namespace cfg {
@@ -22,16 +22,20 @@ class CFGNode {
   inline bool HasFirstChild() { return first_child_ != kEmptyId; }
   inline bool HasSecondChild() { return second_child_ != kEmptyId; }
   inline bool is_end() { return !HasFirstChild() && !HasSecondChild(); }
-  inline bool is_empty() {
+  inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline std::vector<int> get_lines() {
-    if (is_empty()) return std::vector<int>(0, 0);
-    std::vector<int> result(end_line_ - start_line_ + 1, 0);
-    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
-      result[j] = i;
+  inline std::vector<int>& get_lines() {
+    if (lines_.size() != 0) {
+      return lines_;
     }
-    return result;
+    if (is_empty()) return std::vector<int>(0, 0);
+    lines_.assign(end_line_ - start_line_ + 1, 0);
+
+    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
+      lines_[j] = i;
+    }
+    return lines_;
   }
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
@@ -39,10 +43,13 @@ class CFGNode {
            LHS.start_line_ == RHS.start_line_;
   }
 
+  CFGNode& GetFirstChild() { return cfg_->GetFirstChild(*this); }
+  CFGNode& GetSecondChild() { return cfg_->GetSecondChild(*this); }
+
  private:
-  explicit CFGNode(int id) : id_(id) {}
-  CFGNode(int start, int end, int id)
-      : id_(id), start_line_(start), end_line_(end) {
+  explicit CFGNode(int id, CFG* cfg) : id_(id), cfg_(cfg) {}
+  CFGNode(int start, int end, int id, CFG* cfg)
+      : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
   }
   void add_child(CFGNode& child) {
@@ -56,10 +63,12 @@ class CFGNode {
   int get_first_child() { return first_child_; }
   int get_second_child() { return second_child_; }
   int id_;
+  std::vector<int> lines_;
   int start_line_ = kInvalidLine;
   int end_line_ = kInvalidLine;
   CFGNodeId first_child_ = kEmptyId;
   CFGNodeId second_child_ = kEmptyId;
+  CFG* cfg_;
   friend class CFG;
 };
 

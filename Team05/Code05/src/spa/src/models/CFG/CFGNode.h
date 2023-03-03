@@ -4,18 +4,13 @@
 #include <memory>
 #include <vector>
 
-namespace sp {
-class CFG;
-}
-
 namespace cfg {
 class CFGNode;
+class CFG;
 
 typedef int CFGNodeId;
 const CFGNodeId kEmptyId = -1;
 const int kInvalidLine = -1;
-
-typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
@@ -29,7 +24,7 @@ class CFGNode {
     if (lines_.size() != 0) {
       return lines_;
     }
-    if (is_empty()) return std::vector<int>(0, 0);
+    if (is_empty()) return lines_;
     lines_.assign(end_line_ - start_line_ + 1, 0);
 
     for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
@@ -43,8 +38,8 @@ class CFGNode {
            LHS.start_line_ == RHS.start_line_;
   }
 
-  CFGNode& GetFirstChild() { return cfg_->GetFirstChild(*this); }
-  CFGNode& GetSecondChild() { return cfg_->GetSecondChild(*this); }
+  CFGNode& GetFirstChild();
+  CFGNode& GetSecondChild();
 
  private:
   explicit CFGNode(int id, CFG* cfg) : id_(id), cfg_(cfg) {}

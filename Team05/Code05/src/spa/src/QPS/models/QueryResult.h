@@ -39,14 +39,8 @@ class ListQueryResult : public QueryResult {
  public:
   ListQueryResult() : QueryResult() {}
 
-  explicit ListQueryResult(std::vector<EntitySet> &selected_entities)
-      : QueryResult() {
-    for(auto &entities : selected_entities) {
-      std::vector<Entity> results(entities.begin(), entities.end());
-      sort(results.begin(), results.end());
-      query_results_.push_back(results);
-    }
-  }
+  explicit ListQueryResult(std::vector<std::vector<Entity>> &results)
+      : QueryResult(), query_results_(results) {}
 
   std::vector<std::vector<Entity>> &get_query_results() {
     return query_results_;

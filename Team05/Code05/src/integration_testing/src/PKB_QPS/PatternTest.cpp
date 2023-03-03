@@ -52,7 +52,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"1", "2", "3", "4"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, \"x + y\") should return correct results") {
@@ -61,7 +61,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"1"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, \"abra + cadabra\") should return correct results") {
@@ -71,7 +71,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"2"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"x\"_) should return correct results") {
@@ -80,7 +80,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"1", "4"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"cadabra\"_) should return correct results") {
@@ -90,7 +90,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"2"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"2\"_) should return correct results") {
@@ -100,7 +100,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"3"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"1 + 2\"_) should return correct results") {
@@ -110,7 +110,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"3"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"2 + 3\"_) should return correct results") {
@@ -120,7 +120,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{};  // Shouldn't match with 3
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(_, _\"x + 1\"_) should return correct results") {
@@ -130,7 +130,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"4"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(ident, _) should return correct results") {
@@ -139,7 +139,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"2", "3"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(syn, _) should return correct results") {
@@ -149,7 +149,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"1", "2", "3", "4"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("pattern a(syn, _) should return correct results") {
@@ -159,6 +159,6 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"abc"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }

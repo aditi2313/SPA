@@ -68,6 +68,21 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
+  SECTION("Query with one clause and selected tuple should parse correctly") {
+    std::string query_string = "variable v; stmt s; Select <s, v> such that Modifies(s, v)";
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
+        {{"v", PQL::kVariableEntityName},
+         {"s", PQL::kStmtEntityName}},
+        {"s", "v"});
+    expected_query->add_clause(
+        std::make_unique<ModifiesClause>(
+            expected_query->CreateArgument("s"),
+            expected_query->CreateArgument("v")));
+
+    REQUIRE(*actual_query == *expected_query);
+  }
+
   SECTION("Query with one pattern clauses should parse correctly") {
     std::string query_string = "assign a; Select a pattern a(v, \"x + y\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
@@ -167,6 +182,7 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
+  // TODO(JL): outdated, update, should parse correctly for Milestone2
   SECTION("Query with wrong order of states should "
           "throw PqlSyntaxErrorException") {
     // Pattern should not be before such-that

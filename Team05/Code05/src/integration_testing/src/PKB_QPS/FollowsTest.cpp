@@ -30,7 +30,7 @@ std::unique_ptr<PKBRead> InitializePKBForFollows(
   }
 
   return std::make_unique<PKBRead>(
-    pkb_write.ProcessTableAndEndWrite());
+      pkb_write.ProcessTableAndEndWrite());
 }
 
 TEST_CASE("Test PKB and QPS integration for Follows clause") {
@@ -49,7 +49,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(SynArg, SynArg) should return correct results") {
@@ -59,7 +59,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(Wildcard, IntArg) should return correct results") {
@@ -69,7 +69,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(synonym, IntArg) should return correct results") {
@@ -79,7 +79,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(IntArg, synonym) should return correct results") {
@@ -89,7 +89,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"11"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(Wildcard, synonym) should return correct results") {
@@ -99,7 +99,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(synonym, synonym) should return correct results") {
@@ -110,7 +110,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(IntArg, Wildcard) should return correct results") {
@@ -120,7 +120,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(Wildcard, Wildcard) should return correct results") {
@@ -130,7 +130,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Follows(synonym, Wildcard) should return correct results") {
@@ -140,7 +140,7 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }
 

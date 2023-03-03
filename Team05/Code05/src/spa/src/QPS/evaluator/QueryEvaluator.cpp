@@ -45,14 +45,11 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     return std::make_unique<BooleanQueryResult>(true);
   }
 
-  std::vector<EntitySet> selected_entities;
-  for(SynonymName syn : query->get_selected_synonyms()) {
-    selected_entities.push_back(table_.Select(syn));
-  }
-  QueryResultPtr result = std::make_unique<ListQueryResult>(
-      selected_entities);
+  std::vector<std::vector<Entity>> results;
+  table_.Select(query->get_selected_synonyms(), results);
 
-  return result;
+  return std::make_unique<ListQueryResult>(
+      results);
 }
 
 // Given an argument, initialize into `result`
@@ -66,7 +63,11 @@ void QueryEvaluator::InitializeEntitiesFromArgument(
   if (arg->IsSynonym()) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
     if (table_.HasColumn(syn_arg->get_syn_name())) {
-      result = table_.Select(syn_arg->get_syn_name());
+      std::vector<std::vector<Entity>> values;
+      table_.Select({syn_arg->get_syn_name()}, values);
+      for (auto &entities : values) {
+        result.insert(entities.at(0));
+      }
     } else {
       result = master_entity_factory_->GetAllFromPKB(
           syn_arg->get_entity_name());

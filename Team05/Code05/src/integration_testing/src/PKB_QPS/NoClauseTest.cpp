@@ -102,7 +102,7 @@ void TestQuery(
     string query, std::list<string> expected_results) {
   std::list<string> actual_results;
   qps.evaluate(query, actual_results, pkb);
-  REQUIRE(actual_results == expected_results);
+  REQUIRE(util::CompareResults(actual_results, expected_results));
 }
 
 TEST_CASE("Test PKB and QPS integration for Select with no clauses") {

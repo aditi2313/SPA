@@ -20,18 +20,19 @@ std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
     ListQueryResult *list_query_result =
         dynamic_cast<ListQueryResult *>(query_result.get());
     auto result_entities = list_query_result->get_query_results();
-    if(result_entities.empty()) return {};
 
-    int num_columns = result_entities.size();
-    int num_queries = result_entities.at(0).size();
-    for (int i = 0; i < num_queries; ++i) {
+    if (result_entities.empty()) return {};
+
+    int num_rows = result_entities.size();
+    int num_columns = result_entities.at(0).size();
+    for (int i = 0; i < num_rows; ++i) {
       std::string result = "";
-      for(int j = 0; j < num_columns; ++j) {
-        if(j > 0) {
+      for (int j = 0; j < num_columns; ++j) {
+        if (j > 0) {
           result += ", ";
         }
         result +=
-            result_entities.at(j).at(i).to_str();
+            result_entities.at(i).at(j).to_str();
       }
       output.push_back(result);
     }

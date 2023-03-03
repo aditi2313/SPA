@@ -35,7 +35,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(Wildcard, IntArg) should return correct results") {
@@ -45,7 +45,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(synonym, IntArg) should return correct results") {
@@ -55,7 +55,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(IntArg, synonym) should return correct results") {
@@ -65,7 +65,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(Wildcard, synonym) should return correct results") {
@@ -75,7 +75,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(synonym, synonym) should return correct results") {
@@ -86,7 +86,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(IntArg, Wildcard) should return correct results") {
@@ -96,7 +96,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(Wildcard, Wildcard) should return correct results") {
@@ -106,7 +106,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12", "13"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("FollowsT(synonym, Wildcard) should return correct results") {
@@ -116,6 +116,6 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "11", "12"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }

@@ -49,7 +49,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Uses(StmtSynonym, VarSynonym) should return "
@@ -61,7 +61,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -74,7 +74,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -87,7 +87,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Uses(StmtSynonym, VarSynonym) should return correct "
@@ -100,7 +100,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Uses(StmtSynonym, VarSynonym) should return "
@@ -113,7 +113,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Uses(IntArg, VarSynonym) should return "
@@ -126,7 +126,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Uses(IntArg, VarSynonym) should return "
@@ -139,7 +139,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -152,7 +152,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -166,7 +166,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -180,7 +180,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -194,6 +194,6 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "20", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }

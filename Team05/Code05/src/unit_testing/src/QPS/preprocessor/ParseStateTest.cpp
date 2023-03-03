@@ -294,7 +294,11 @@ TEST_CASE("Test PatternParseState") {
   };
 
   SECTION("Missing bracket should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"pattern", "(", "_", ",", "x + y"});
+    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "x + y"});
   };
+
+  SECTION("Invalid expression should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "_\" +temp\"_"});
+  }
 }
 

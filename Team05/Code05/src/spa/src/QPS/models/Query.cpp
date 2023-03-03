@@ -1,4 +1,5 @@
 #include "Query.h"
+#include "SP/SourceProcessor.h"
 
 namespace qps {
 ArgumentPtr Query::CreateArgument(std::string token) {
@@ -17,17 +18,24 @@ ArgumentPtr Query::CreateArgument(std::string token) {
   }
 
   // Expression Arg
-  if (PQL::is_pattern_exact(token)) {
+  if (PQL::is_pattern_exact(token) || PQL::is_pattern_wildcard(token)) {
+    bool is_exact = PQL::is_pattern_exact(token);
     // Remove first and last quotation marks
-    token = token.substr(1, token.size() - 2);
-    return std::make_unique<ExpressionArg>(token, true);
+    // or first and last wildcard + quotation marks
+    token = is_exact
+        ? token.substr(1, token.size() - 2)
+        : token.substr(2, token.size() - 4);
+
+    try {
+      auto AST = sp::SourceProcessor::ParseExpression(token);
+      return std::make_unique<ExpressionArg>(
+          std::move(AST), is_exact);
+    } catch (std::exception _) {
+      throw PqlSyntaxErrorException("Invalid expression");
+    }
   }
 
-  if (PQL::is_pattern_wildcard(token)) {
-    // Remove first and last wildcard + quotation mark characters
-    token = token.substr(2, token.size() - 4);
-    return std::make_unique<ExpressionArg>(token, false);
-  }
+
 
   auto syn_arg = std::make_unique<SynonymArg>(token);
   if (is_synonym_name_declared(token)) {

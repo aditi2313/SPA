@@ -169,10 +169,10 @@ void PatternClause::Filter(
   std::unique_ptr<AssignPredicateFilter> filter;
 
   auto expr_arg = dynamic_cast<ExpressionArg *>(arg2_.get());
-  auto AST = sp::SourceProcessor::ParseExpression(expr_arg->get_expression());
+  auto &AST = expr_arg->get_expression();
 
   filter = std::make_unique<AssignPredicateFilter>([&](pkb::AssignData data) {
-    return data.get_line() == line &&
+    return data.get_index() == line &&
         data.TestExpression(AST, expr_arg->is_exact());
   });
 
@@ -193,7 +193,7 @@ void PatternClause::Index(
         return std::move(pkb->Assigns(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::AssignData data) {
-        result.insert(Entity(data.get_line()));
+        result.insert(Entity(data.get_index()));
       },
       results);
 }

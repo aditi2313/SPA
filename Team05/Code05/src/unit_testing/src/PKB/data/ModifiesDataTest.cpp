@@ -15,8 +15,8 @@ TEST_CASE("Test ModifiesData int") {
     }
 
     SECTION("Retrieving ModifiesData line") {
-        REQUIRE((std::holds_alternative<int>(modifies_data.get_line())
-                 && std::get<int>(modifies_data.get_line()) == 10));
+        REQUIRE((std::holds_alternative<int>(modifies_data.get_index())
+                 && std::get<int>(modifies_data.get_index()) == 10));
     }
 }
 
@@ -29,7 +29,7 @@ TEST_CASE("Test ModifiesData string") {
     }
 
     SECTION("Retrieving ModifiesData line") {
-        REQUIRE((std::holds_alternative<std::string>(modifies_data.get_line())
-            && std::get<std::string>(modifies_data.get_line()) == "main"));
+        REQUIRE((std::holds_alternative<std::string>(modifies_data.get_index())
+            && std::get<std::string>(modifies_data.get_index()) == "main"));
     }
 }

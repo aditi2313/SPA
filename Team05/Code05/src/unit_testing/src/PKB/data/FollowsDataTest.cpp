@@ -13,7 +13,7 @@ TEST_CASE("Test FollowsData") {
     };
 
     SECTION("Retrieving FollowsData line") {
-        REQUIRE(follows_data.get_line() == 11);
+        REQUIRE(follows_data.get_index() == 11);
     };
 
     SECTION("Adding and Retrieving FollowsData list") {

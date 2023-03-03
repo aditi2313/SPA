@@ -29,11 +29,12 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
     if (special_characters.find(*itr) != std::string::npos) {
       new_query += " " + std::string(1, *itr) + " ";
     } else if (*itr == '\"') {
-      // This removes whitespace in the pattern match arg
+      // This removes whitespace and tabs in the
+      // pattern match arg
       // e.g "x + y" such that it is treated as one token.
       new_query += *itr++;
       while (*itr != '\"') {
-        if (*itr == ' ') {
+        if (isspace(*itr)) {
           itr++;
           continue;
         }

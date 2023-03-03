@@ -98,7 +98,7 @@ TEST_CASE("Test PKB and QPS integration for FollowsT clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{
-        "10, 11", "10, 12", "10, 13", "11, 12", "11, 13", "12, 13"};
+        "10 11", "10 12", "10 13", "11 12", "11 13", "12 13"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 

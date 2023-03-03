@@ -27,6 +27,6 @@ TEST_CASE("Test QueryFormatter") {
         selected_entities);
     std::list<std::string> actual =
         query_formatter.FormatQuery(query_result);
-    REQUIRE(actual.front() == "1, 2");
+    REQUIRE(actual.front() == "1 2");
   };
 }

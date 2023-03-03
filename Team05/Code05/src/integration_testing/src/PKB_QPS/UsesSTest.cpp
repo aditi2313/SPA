@@ -73,7 +73,7 @@ TEST_CASE("Test PKB and QPS integration for UsesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{
-        "10, a", "10, b", "10, c", "20, d", "20, e", "30, f"};
+        "10 a", "10 b", "10 c", "20 d", "20 e", "30 f"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 

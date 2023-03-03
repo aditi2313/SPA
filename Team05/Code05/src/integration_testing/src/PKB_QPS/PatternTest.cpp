@@ -169,7 +169,7 @@ TEST_CASE("Test PKB and QPS integration for Pattern clause") {
     std::list<std::string> actual_results;
     qps.evaluate(query_string, actual_results, pkb);
 
-    std::list<std::string> expected_results{"1, abc", "4, abc"};
+    std::list<std::string> expected_results{"1 abc", "4 abc"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }

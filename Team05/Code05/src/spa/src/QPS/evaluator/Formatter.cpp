@@ -29,7 +29,7 @@ std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
       std::string result = "";
       for (int j = 0; j < num_columns; ++j) {
         if (j > 0) {
-          result += ", ";
+          result += " ";
         }
         result +=
             result_entities.at(i).at(j).to_str();

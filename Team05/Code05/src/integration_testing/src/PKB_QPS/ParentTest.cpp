@@ -103,7 +103,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{
-        "1, 2", "2, 3", "3, 4", "4, 5", "5, 6"};
+        "1 2", "2 3", "3 4", "4 5", "5 6"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 

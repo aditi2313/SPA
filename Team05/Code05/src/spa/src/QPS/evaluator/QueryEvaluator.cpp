@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "QueryEvaluator.h"
 #include "QPS/models/Table.h"
 #include "TableJoiner.h"

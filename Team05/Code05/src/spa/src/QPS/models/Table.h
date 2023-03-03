@@ -90,7 +90,6 @@ class Table {
       for (auto col : columns) {
         new_row.emplace_back(arr[id_map_.at(col)]);
       }
-      
       // Already added
       if (seen.count(new_row)) { continue; }
 

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <unordered_map>
+#include <string>
 #include <list>
 #include <iostream>
 
@@ -51,7 +52,7 @@ inline bool CompareResults(const std::list<std::string> &LHS,
   for (auto &res : RHS) {
     RHS_map[res]++;
   }
-  
+
   return LHS_map == RHS_map;
 }
 }  // namespace util

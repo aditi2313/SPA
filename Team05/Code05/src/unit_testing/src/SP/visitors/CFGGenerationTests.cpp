@@ -1,5 +1,6 @@
-#include <catch.hpp>
 #include <memory>
+#include <catch.hpp>
+
 
 #include "SP/SPTesting.h"
 #include "SP/SourceProcessor.h"
@@ -22,7 +23,7 @@ TEST_CASE("Test construction of cfg on basic ast") {
   auto& cfg = program.add_procedure("proc");
   auto& empt = cfg.AddNode();
   auto& child = cfg.AddChild(cfg.get_root(), 1, 2);
-  
+
   cfg.AddChild(child, empt);
 
   CFGGeneratingVisitor visitor;

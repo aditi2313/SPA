@@ -1,8 +1,8 @@
 #pragma once
 
 #include <memory>
-#include <utility>
 #include <unordered_set>
+#include <utility>
 
 #include "PKBWriter.h"
 #include "models/CFG/ProgramCFG.h"
@@ -35,9 +35,8 @@ class CFGExtractor : public PKBWriter {
     }
     for (int i = 0, j = 1; j < lines.size(); ++j, ++i) {
       pkb_ptr_->AddNextData(lines[i], lines[j]);
-      visited.insert(lines[i]);
     }
-    
+
     visited.insert(last_line);
     // add the next children
     if (node.HasFirstChild()) {

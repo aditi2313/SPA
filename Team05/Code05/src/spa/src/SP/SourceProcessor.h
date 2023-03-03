@@ -70,4 +70,6 @@ class SourceProcessor {
     pkb_relation = writer->ProcessTableAndEndWrite();
   }
 };
+
+using ExprNodePtr = std::unique_ptr<ast::ExprNode>;
 }  // namespace sp

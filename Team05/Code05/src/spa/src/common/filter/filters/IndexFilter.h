@@ -30,7 +30,7 @@ class IndexFilter
                 std::make_unique<pkb::IndexableTable<T>>();
         if (table->exists(line_)) {
             auto row = table->get_row(line_);
-            result->add_row(row.get_line(), row);
+            result->add_row(row.get_index(), row);
         }
         return result;
     }
@@ -45,4 +45,5 @@ using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 using ParentIndexFilter = IndexFilter<pkb::ParentData>;
 using CallsIndexFilter = IndexFilter<pkb::CallsData>;
+using NextIndexFilter = IndexFilter<pkb::NextData>;
 }  // namespace filter

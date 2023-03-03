@@ -39,31 +39,21 @@ class ListQueryResult : public QueryResult {
  public:
   ListQueryResult() : QueryResult() {}
 
-  explicit ListQueryResult(EntitySet &entities)
-      : QueryResult(), query_results_(entities) {
+  explicit ListQueryResult(std::vector<EntitySet> &selected_entities)
+      : QueryResult() {
+    for(auto &entities : selected_entities) {
+      std::vector<Entity> results(entities.begin(), entities.end());
+      sort(results.begin(), results.end());
+      query_results_.push_back(results);
+    }
   }
 
-  inline EntitySet &get_query_results() {
+  std::vector<std::vector<Entity>> &get_query_results() {
     return query_results_;
   }
 
-  inline void add_query_result(Entity entity) {
-    query_results_.insert(entity);
-  }
-
-  inline std::vector<Entity> Sort() {
-    std::vector<Entity> arr(
-        query_results_.begin(), query_results_.end());
-    std::sort(arr.begin(), arr.end());
-    return arr;
-  }
-
-  inline bool is_empty() { return query_results_.empty(); }
-
-  inline void clear() { query_results_.clear(); }
-
  private:
-  EntitySet query_results_;
+  std::vector<std::vector<Entity>> query_results_;
 };
 
 using QueryResultPtr = std::unique_ptr<QueryResult>;

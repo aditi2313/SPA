@@ -45,10 +45,12 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     return std::make_unique<BooleanQueryResult>(true);
   }
 
-  EntitySet results = table_.Select(
-      query->get_selected_synonyms().at(0));
+  std::vector<EntitySet> selected_entities;
+  for(SynonymName syn : query->get_selected_synonyms()) {
+    selected_entities.push_back(table_.Select(syn));
+  }
   QueryResultPtr result = std::make_unique<ListQueryResult>(
-      results);
+      selected_entities);
 
   return result;
 }
@@ -93,5 +95,4 @@ void QueryEvaluator::InitializeEntitiesFromArgument(
     result.insert(Entity(ident_arg->get_ident()));
   }
 }
-
 }  // namespace qps

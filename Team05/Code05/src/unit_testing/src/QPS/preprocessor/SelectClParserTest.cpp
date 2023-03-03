@@ -123,18 +123,19 @@ TEST_CASE("Test ParseQuery") {
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_\"x\"_")));
 
-
     REQUIRE(*actual_query == *expected_query);
   }
 
   SECTION(
       "Query with multiple declarations, multiple synonyms "
-      "and multiple such-that and pattern clauses and many random whitespaces "
+      "and multiple such-that and pattern clauses and "
+      "many random whitespaces and tabs"
       "should parse correctly") {
-    std::string query_string = "variable    v;    procedure    p; "
-                               "Select v such  that  Modifies(  6, v) "
-                               "  such      that    Modifies(3, v) "
-                               "pattern a(_, \"x + y\") pattern a(_,  \"x\")";
+    std::string query_string = "variable  \t  v;    procedure    p; "
+                               "Select v such  that \t  Modifies(  6, v) "
+                               "  such  \t    that    Modifies(3, v) "
+                               "pattern a(_, \"x + y   \t  \") "
+                               "   \t pattern a(_,  \"   x  \t\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},

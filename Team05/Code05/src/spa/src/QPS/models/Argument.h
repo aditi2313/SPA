@@ -2,6 +2,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "QPS/models/PQL.h"
 #include "QPS/models/Synonym.h"
@@ -163,18 +164,19 @@ class IntegerArg : public Argument {
 
 class ExpressionArg : public Argument {
  public:
-  explicit ExpressionArg(std::string expr, bool is_exact)
-      : Argument(), expr_(expr), is_exact_(is_exact) {}
+  explicit ExpressionArg(sp::ExprNodePtr expr, bool is_exact)
+      : Argument(), expr_(std::move(expr)), is_exact_(is_exact) {}
 
   inline bool IsExpression() override { return true; }
-  inline std::string get_expression() { return expr_; }
+  inline sp::ExprNodePtr &get_expression() { return expr_; }
   inline bool is_exact() { return is_exact_; }
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Expr Arg: " << expr_;
     return str;
   }
   inline std::unique_ptr<Argument> Copy() override {
-    return std::make_unique<ExpressionArg>(*this);
+    return std::make_unique<ExpressionArg>(
+        expr_->Copy(), is_exact_);
   }
 
   inline bool operator==(Argument &other) override {
@@ -183,12 +185,12 @@ class ExpressionArg : public Argument {
     if (ti1 != ti2) return false;
 
     auto arg = dynamic_cast<ExpressionArg *>(&other);
-    return expr_ == arg->expr_
+    return expr_->DeepEquals(*(arg->expr_))
         && is_exact_ == arg->is_exact_;
   }
 
  private:
-  std::string expr_;  // Expression
+  sp::ExprNodePtr expr_;  // Expression
   bool is_exact_;
 };
 

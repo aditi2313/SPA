@@ -23,8 +23,9 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v", PQL::kVariableEntityName)));
+    REQUIRE(query->is_synonym_name_declared("v"));
+    REQUIRE(query->get_declared_synonym_entity_name("v")
+                == PQL::kVariableEntityName);
     REQUIRE(itr == tokens.end());
   };
 
@@ -35,12 +36,16 @@ TEST_CASE("Test DeclarationParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v1", PQL::kVariableEntityName)));
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v2", PQL::kVariableEntityName)));
-    REQUIRE(query->is_synonym_declared(
-        Synonym("v3", PQL::kVariableEntityName)));
+    REQUIRE(query->is_synonym_name_declared("v1"));
+    REQUIRE(query->get_declared_synonym_entity_name("v1")
+                == PQL::kVariableEntityName);
+    REQUIRE(query->is_synonym_name_declared("v2"));
+    REQUIRE(query->get_declared_synonym_entity_name("v2")
+                == PQL::kVariableEntityName);
+    REQUIRE(query->is_synonym_name_declared("v3"));
+    REQUIRE(query->get_declared_synonym_entity_name("v3")
+                == PQL::kVariableEntityName);
+
     REQUIRE(itr == tokens.end());
   };
 
@@ -65,15 +70,43 @@ TEST_CASE("Test DeclarationParseState") {
 
 TEST_CASE("Test SelectParseState") {
   SelectParseState state;
-  SECTION("Select synonym should parse correctly") {
+  SECTION("Select single synonym should parse correctly") {
     std::vector<std::string> tokens{"Select", "v"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("v", PQL::kVariableEntityName);
+
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->get_selected_synonyms().at(0) == "v");
     REQUIRE(itr == tokens.end());
   }
+
+  SECTION("Select BOOLEAN should parse correctly") {
+    std::vector<std::string> tokens{"Select", "BOOLEAN"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("v", PQL::kVariableEntityName);
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->is_boolean_query());
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("Select BOOLEAN where BOOLEAN is a synonym "
+          "should parse as synonym correctly") {
+    std::vector<std::string> tokens{"Select", "BOOLEAN"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("BOOLEAN", PQL::kVariableEntityName);
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->get_selected_synonyms().at(0) == "BOOLEAN");
+    REQUIRE(itr == tokens.end());
+  }
+
   // TODO(JL): Add some error cases here
 }
 
@@ -261,7 +294,11 @@ TEST_CASE("Test PatternParseState") {
   };
 
   SECTION("Missing bracket should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"pattern", "(", "_", ",", "x + y"});
+    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "x + y"});
   };
+
+  SECTION("Invalid expression should throw PqlSyntaxErrorException") {
+    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "_\" +temp\"_"});
+  }
 }
 

@@ -12,6 +12,7 @@ class AssignData {
  public:
   AssignData(std::string variable, int line,
              std::unique_ptr<ast::ExprNode> expression);
+
   AssignData(const AssignData& other);
 
   bool TestExpression(
@@ -21,7 +22,7 @@ class AssignData {
            : expression_->PartialMatch(*other_node);
   }
 
-  inline int get_line() { return line_; }
+  inline int get_index() { return line_; }
 
   inline const std::string& get_variable() { return variable_; }
 

@@ -9,17 +9,6 @@ namespace qps {
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
 
-  if (!query->is_boolean_query()) {
-    // TODO(JL): Extend to support multiple synonyms
-    SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-    EntityName entity_name = query->get_declared_synonym_entity_name(
-        selected_synonym);
-    EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
-        entity_name);
-
-    table_ = Table(selected_synonym, initial_entities);
-  }
-
   for (auto &clause : query->get_clauses()) {
     Table clause_table;
     EntitySet LHS, RHS;
@@ -45,6 +34,18 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);
+  } else {
+    // Join with selected synonyms at the end
+    // instead of the beginning as a slight optimisation
+    for (SynonymName syn : query->get_selected_synonyms()) {
+      EntityName entity_name = query->get_declared_synonym_entity_name(
+          syn);
+      EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
+          entity_name);
+
+      auto synonym_table = Table(syn, initial_entities);
+      table_ = TableJoiner::Join(table_, synonym_table);
+    }
   }
 
   std::vector<std::vector<Entity>> results;

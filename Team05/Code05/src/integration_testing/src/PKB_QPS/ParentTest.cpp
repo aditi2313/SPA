@@ -77,7 +77,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
-  SECTION("Parent(Intarg, synonym) should return correct results") {
+  SECTION("Parent(IntArg, synonym) should return correct results") {
     std::string query_string = "stmt s; Select s such that Parent(1,s)";
     std::list<std::string> actual_results;
 
@@ -86,7 +86,7 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
-  SECTION("Parent(synoym, synonym) should return correct results") {
+  SECTION("Parent(synonym, synonym) should return correct results") {
     std::string query_string = "stmt s1, s2; Select s1 such that Parent(s1,s2)";
     std::list<std::string> actual_results;
 
@@ -95,12 +95,15 @@ TEST_CASE("Test PKB and QPS integration for valid Parent clause") {
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
-  SECTION("Parent(synoym, synonym) should return correct results") {
-    std::string query_string = "stmt s1, s2; Select s2 such that Parent(s1,s2)";
+  SECTION("Parent(synonym, synonym) with multiple select"
+          "should return correct results") {
+    std::string query_string = "stmt s1, s2; Select <s1, s2> "
+                               "such that Parent(s1,s2)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
-    std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
+    std::list<std::string> expected_results{
+        "1, 2", "2, 3", "3, 4", "4, 5", "5, 6"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 

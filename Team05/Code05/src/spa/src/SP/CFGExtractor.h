@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <utility>
+#include <unordered_set>
 
 #include "PKBWriter.h"
 #include "models/CFG/ProgramCFG.h"
@@ -27,10 +28,17 @@ class CFGExtractor : public PKBWriter {
       WriteNext(node.GetFirstChild());
     }
     auto& lines = node.get_lines();
+    // TODO(Gab): Consider using id to remember visited instead
+    int last_line = lines[lines.size() - 1];
+    if (visited.count(last_line)) {
+      return;
+    }
     for (int i = 0, j = 1; j < lines.size(); ++j, ++i) {
       pkb_ptr_->AddNextData(lines[i], lines[j]);
+      visited.insert(lines[i]);
     }
-    int last_line = lines[lines.size() - 1];
+    
+    visited.insert(last_line);
     // add the next children
     if (node.HasFirstChild()) {
       WriteToNext(&(node.GetFirstChild()), last_line);
@@ -41,6 +49,7 @@ class CFGExtractor : public PKBWriter {
   }
 
  private:
+  std::unordered_set<int> visited;
   void WriteToNext(cfg::CFGNode* node, int last_line) {
     cfg::CFGNode* curr = node;
     while (curr->is_empty()) {

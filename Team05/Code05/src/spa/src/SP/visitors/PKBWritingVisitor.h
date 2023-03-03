@@ -9,7 +9,7 @@
 namespace sp {
 class PKBWritingVisitor : public TNodeVisitor, public PKBWriter {
  public:
-  PKBWritingVisitor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
+  explicit PKBWritingVisitor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
       : PKBWriter(std::move(pkb_ptr)) {}
 };
 }  // namespace sp

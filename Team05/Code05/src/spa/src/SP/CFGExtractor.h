@@ -1,12 +1,15 @@
 #pragma once
 
+#include <memory>
+#include <utility>
+
 #include "PKBWriter.h"
 #include "models/CFG/ProgramCFG.h"
 
 namespace sp {
 class CFGExtractor : public PKBWriter {
  public:
-  CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
+  explicit CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
       : PKBWriter(std::move(pkb_ptr)) {}
 
   void WriteCFG(cfg::ProgramCFG& program_cfg) {

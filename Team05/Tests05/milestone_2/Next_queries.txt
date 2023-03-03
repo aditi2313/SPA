@@ -1,0 +1,20 @@
+1 - basic next test
+stmt s;
+Select s such that Next(4, s)
+5, 10
+5000
+2 - basic next test
+stmt s;
+Select s such that Next(2, s)
+4
+5000
+3 - basic next test
+stmt s;
+Select s such that Next(s, 3)
+1
+5000
+4 - basic next test
+stmt s;
+Select s such that Next(s, 6)
+5
+5000

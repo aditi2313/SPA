@@ -4,7 +4,6 @@
 #include <list>
 #include <catch.hpp>
 
-#include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "PKB/PKBRead.h"
 #include "QPS/QPS.h"
@@ -38,7 +37,7 @@ TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"TRUE"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Select BOOLEAN such that Modifies(IntArg, IdentArg) "
@@ -50,7 +49,7 @@ TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"TRUE"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Select BOOLEAN such that Modifies(IntArg, IdentArg) "
@@ -62,7 +61,7 @@ TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"FALSE"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Select BOOLEAN such that Modifies(IntArg, IdentArg) "
@@ -75,7 +74,7 @@ TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }
 

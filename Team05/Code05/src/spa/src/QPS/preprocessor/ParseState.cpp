@@ -35,6 +35,8 @@ void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
 // tuple | BOOLEAN
 void SelectParseState::Parse(const std::vector<std::string> &tokens,
                              parse_position &itr, QueryPtr &query) {
+  TupleParseState tuple_parse_state;
+
   auto grammar_itr = grammar_.begin();
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
@@ -46,9 +48,33 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
       if (*itr == PQL::kBooleanSelect
           && !query->is_synonym_name_declared(*itr)) {
         query->set_boolean_query_to_true();
+      } else if (*itr == PQL::kTupleSelectOpen) {
+        tuple_parse_state.Parse(tokens, itr, query);
+        itr--;
       } else {
         query->add_selected_synonym(*itr);
       }
+    }
+    itr++;
+    grammar_itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
+}
+
+// '<' elem ( ',' elem )* '>'
+void TupleParseState::Parse(const std::vector<std::string> &tokens,
+                            parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSynGrammar) {
+      query->add_selected_synonym(*itr);
+    }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
     }
     itr++;
     grammar_itr++;

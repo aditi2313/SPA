@@ -59,6 +59,8 @@ class PQL {
   inline static RelName kParentTRelId = "Parent*";
 
   inline static std::string kBooleanSelect = "BOOLEAN";
+  inline static std::string kTupleSelectOpen = "<";
+  inline static std::string kTupleSelectClose = ">";
 
   inline static std::unordered_set<std::string> kAllRelIds{
       kModifiesRelId, kFollowsRelId, kFollowsTRelId, kParentRelId,
@@ -146,7 +148,8 @@ class PQL {
     } else if (grammar == kSelectGrammar) {
       // tuple | BOOLEAN
       return CheckGrammar(token, kSynGrammar)
-          || CheckGrammar(token, kBooleanGrammar);
+          || CheckGrammar(token, kBooleanGrammar)
+          || token == kTupleSelectOpen;
     } else {
       return token == grammar;
     }

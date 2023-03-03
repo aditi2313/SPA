@@ -19,13 +19,13 @@ typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
-  inline bool HasFirstChild() { return first_child_ != kEmptyId; }
-  inline bool HasSecondChild() { return second_child_ != kEmptyId; }
-  inline bool is_end() { return !HasFirstChild() && !HasSecondChild(); }
-  inline bool is_empty() {
+  inline bool HasFirstChild() const { return first_child_ != kEmptyId; }
+  inline bool HasSecondChild() const { return second_child_ != kEmptyId; }
+  inline bool is_end() const { return !HasFirstChild() && !HasSecondChild(); }
+  inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline std::vector<int> get_lines() {
+  inline std::vector<int> get_lines() const {
     if (is_empty()) return std::vector<int>(0, 0);
     std::vector<int> result(end_line_ - start_line_ + 1, 0);
     for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
@@ -36,7 +36,9 @@ class CFGNode {
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
     return LHS.id_ == RHS.id_ && LHS.end_line_ == RHS.end_line_ &&
-           LHS.start_line_ == RHS.start_line_;
+           LHS.start_line_ == RHS.start_line_ &&
+           LHS.first_child_ == RHS.first_child_ &&
+           LHS.second_child_ == RHS.second_child_;
   }
 
   friend bool operator!=(const CFGNode& LHS, const CFGNode& RHS) {
@@ -58,8 +60,8 @@ class CFGNode {
     assert(!is_empty());
     second_child_ = child.id_;
   }
-  int get_first_child() { return first_child_; }
-  int get_second_child() { return second_child_; }
+  int get_first_child() const { return first_child_; }
+  int get_second_child() const { return second_child_; }
   int id_;
   int start_line_ = kInvalidLine;
   int end_line_ = kInvalidLine;

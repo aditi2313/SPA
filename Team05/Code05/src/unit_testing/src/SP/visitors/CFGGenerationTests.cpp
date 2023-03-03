@@ -1,5 +1,5 @@
-#include <memory>
 #include <catch.hpp>
+#include <memory>
 
 #include "SP/SPTesting.h"
 #include "SP/SourceProcessor.h"
@@ -17,12 +17,18 @@ TEST_CASE("Test construction of cfg on basic ast") {
   auto proc = std::make_unique<ProcNode>("proc", std::move(stmt_list));
   auto prog = std::make_unique<ProgramNode>(std::move(proc));
 
+  // expected cfg
+  cfg::ProgramCFG program;
+  auto& cfg = program.add_procedure("proc");
+  auto& empt = cfg.AddNode();
+  auto& child = cfg.AddChild(cfg.get_root(), 1, 2);
+  
+  cfg.AddChild(child, empt);
+
   CFGGeneratingVisitor visitor;
   visitor.VisitProgram(prog.get());
   auto res = visitor.CreateCFG();
-
-  auto cfg = res->get_cfg("proc");
-  cfg.GetFirstChild(cfg.get_root());
+  REQUIRE(program == *res);
 }
 
 // TODO(Gab) consider more specific methods of constructing test cases instead

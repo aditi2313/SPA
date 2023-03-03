@@ -90,8 +90,12 @@ class CFG {
     return result;
   }
 
+  friend bool operator==(const CFG& LHS, const CFG& RHS) {
+    return LHS.id_to_indexes_ == RHS.id_to_indexes_ && LHS.nodes_ == RHS.nodes_;
+  }
+
  private:
-  CFGNode& get_node_from_id(int id) {
+  CFGNode& get_node_from_id(CFGNodeId id) {
     int index = id_to_indexes_.at(id);
     return nodes_[index];
   }

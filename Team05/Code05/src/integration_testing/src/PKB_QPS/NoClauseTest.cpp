@@ -182,9 +182,8 @@ TEST_CASE("Test PKB and QPS integration for Select with no clauses") {
   SECTION("Get all constants and variables from PKB") {
     TestQuery(qps, pkb,
               "constant c; variable v; Select <c, v>",
-              {
-                  "123, x", "123, y", "123, z",
-                  "456, x", "456, y", "456, z",
-                  "789, x", "789, y", "789, z"});
+              {"123, x", "123, y", "123, z",
+               "456, x", "456, y", "456, z",
+               "789, x", "789, y", "789, z"});
   }
 }

@@ -11,9 +11,8 @@ TEST_CASE("Test QueryFormatter") {
   Formatter query_formatter;
 
   SECTION("Single selected synonym") {
-    EntitySet entities;
-    entities.insert(Entity(1));
-    std::vector<EntitySet> selected_entities = {entities};
+    std::vector<std::vector<Entity>> selected_entities =
+        {{Entity(1)}};
     QueryResultPtr query_result = std::make_unique<ListQueryResult>(
         selected_entities);
     std::list<std::string> actual =
@@ -22,10 +21,8 @@ TEST_CASE("Test QueryFormatter") {
   };
 
   SECTION("Multiple selected synonyms") {
-    EntitySet entities1, entities2;
-    entities1.insert(Entity(1));
-    entities2.insert(Entity(2));
-    std::vector<EntitySet> selected_entities = {entities1, entities2};
+    std::vector<std::vector<Entity>> selected_entities =
+        {{Entity(1), Entity(2)}};
     QueryResultPtr query_result = std::make_unique<ListQueryResult>(
         selected_entities);
     std::list<std::string> actual =

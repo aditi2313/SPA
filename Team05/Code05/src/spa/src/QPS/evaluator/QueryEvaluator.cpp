@@ -34,18 +34,18 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);
-  } else {
-    // Join with selected synonyms at the end
-    // instead of the beginning as a slight optimisation
-    for (SynonymName syn : query->get_selected_synonyms()) {
-      EntityName entity_name = query->get_declared_synonym_entity_name(
-          syn);
-      EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
-          entity_name);
+  }
 
-      auto synonym_table = Table(syn, initial_entities);
-      table_ = TableJoiner::Join(table_, synonym_table);
-    }
+  // Join with selected synonyms at the end
+  // instead of the beginning as a slight optimisation
+  for (SynonymName syn : query->get_selected_synonyms()) {
+    EntityName entity_name = query->get_declared_synonym_entity_name(
+        syn);
+    EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
+        entity_name);
+
+    auto synonym_table = Table(syn, initial_entities);
+    table_ = TableJoiner::Join(table_, synonym_table);
   }
 
   std::vector<std::vector<Entity>> results;

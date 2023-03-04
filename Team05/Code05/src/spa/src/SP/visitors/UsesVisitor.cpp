@@ -4,21 +4,29 @@
 
 #include "PKB/PKBRead.h"
 #include "SP/visitors/VarCollector.h"
+#include "SP/utils/TopologicalSorter.h"
 #include "common/filter/filters/IndexFilter.h"
 
 namespace sp {
 
 // Merges the variables used by a procedure directly with the variables used
-// indirectly via calls within the procedure, then writes the results to PKB.
+// indirectly via calls within the procedure in topological order. Then writes
+// the results to PKB.
 void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
-  for (auto& proc_node : program_node->get_children()) {
-    auto parent_proc = proc_node->get_name();
-    auto parent_uses = proc_direct_uses_[parent_proc];
-    for (auto& child_call : proc_calls_[parent_proc]) {
-      auto child_uses = proc_direct_uses_[child_call];
-      parent_uses.merge(child_uses);
-      pkb_ptr_->AddUsesData(parent_proc, parent_uses);
+  auto topological_order = sp::TopologicalSorter::Sort(called_by_);
+  // Assert that all procedures are in the topological order vector
+  for (auto& proc_nodes : program_node->get_children()) {
+    assert(std::find(topological_order.begin(),
+                     topological_order.end(),
+                     proc_nodes->get_name()) != topological_order.end());
+  }
+
+  for (auto& proc : topological_order) {
+    auto merged_uses = direct_uses_[proc];
+    for (auto& called_proc : proc_calls_[proc]) {
+      merged_uses.merge(direct_uses_[called_proc]);
     }
+    pkb_ptr_->AddUsesData(proc, merged_uses);
   }
 }
 
@@ -27,7 +35,7 @@ void UsesVisitor::Process(ast::ProcNode* proc_node) {
   VarCollector var_collector;
   proc_node->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();
-  proc_direct_uses_.insert({proc_node->get_name(), vars});
+  direct_uses_.insert({proc_node->get_name(), vars});
 }
 
 void UsesVisitor::Process(ast::AssignNode* assign_node) {
@@ -69,8 +77,9 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
 
 void UsesVisitor::Process(ast::CallNode* call_node) {
   auto parent_proc = call_node->get_parent_proc();
-  auto called_procedure_name = call_node->get_var()->get_name();
-  proc_calls_[parent_proc].insert(called_procedure_name);
+  auto called_proc = call_node->get_var()->get_name();
+  called_by_[called_proc].insert(parent_proc);
+  proc_calls_[parent_proc].insert(called_proc);
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

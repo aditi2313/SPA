@@ -35,11 +35,11 @@ class UsesVisitor : public PKBWritingVisitor {
   void AddVariablesFromStmtList(ast::StmtLstNode& node,
                                 std::unordered_set<std::string>& vars);
 
-  // Mapping from procedure name to the variables used directly
-  std::unordered_map<std::string, std::unordered_set<std::string>>
-      proc_direct_uses_;
-
-  // Mapping from procedure name to calls within the procedure
+  // Mapping from a procedure to the variables it uses directly
+  std::unordered_map<std::string, std::unordered_set<std::string>> direct_uses_;
+  // Mapping from a procedure to the procedures which call it
+  std::unordered_map<std::string, std::unordered_set<std::string>> called_by_;
+  // Mapping from a procedure to the calls within the procedure
   std::unordered_map<std::string, std::unordered_set<std::string>> proc_calls_;
 };
 }  // namespace sp

@@ -18,13 +18,13 @@ namespace qps {
 // Variable | Constant
 class Entity {
  public:
-  using EntityValue = std::variant<int, std::string>;
+  using Value = std::variant<int, std::string>;
 
   Entity() {}
   explicit Entity(int int_value) : value_(int_value) {}
   explicit Entity(std::string str) : value_(str) {}
 
-  inline EntityValue get_value() const {
+  inline Value get_value() const {
     return value_;
   }
 
@@ -80,7 +80,7 @@ class Entity {
 
  private:
   EntityName entity_name_;
-  EntityValue value_;
+  Value value_;
 };
 
 using EntitySet = std::unordered_set<Entity>;

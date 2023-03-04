@@ -57,6 +57,7 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kWithRelName = "with";
 
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{

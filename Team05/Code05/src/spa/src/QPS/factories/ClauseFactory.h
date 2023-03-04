@@ -202,5 +202,18 @@ class NextFactory : public ClauseFactory {
   }
 };
 
+class WithFactory : public ClauseFactory {
+ public:
+  WithFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllEntityNames;
+    RHS_entity_names_ = PQL::kAllEntityNames;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<WithClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 using ClauseFactoryPtr = std::unique_ptr<ClauseFactory>;
 }  // namespace qps

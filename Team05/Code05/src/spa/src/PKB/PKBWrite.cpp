@@ -98,7 +98,8 @@ void PKBWrite::ProcessCalls() {
             [](CallsData& data, IntOrStringVariant v) {
                 data.add_to_total_calls(std::get<std::string>(v));},
             [](CallsData& data) {
-                std::unordered_set<std::string> direct_calls_set = data.get_direct_calls();
+                std::unordered_set<std::string> direct_calls_set =
+                        data.get_direct_calls();
                 std::unordered_set<IntOrStringVariant> variant_set;
                 for (const auto& i : direct_calls_set) {
                     variant_set.emplace(i);

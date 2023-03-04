@@ -170,5 +170,21 @@ class CallsFactory : public ClauseFactory {
   }
 };
 
+class CallsTFactory : public ClauseFactory {
+ public:
+  CallsTFactory() : ClauseFactory() {
+    LHS_entity_names_.insert(PQL::kProcedureEntityName);
+    RHS_entity_names_.insert(PQL::kProcedureEntityName);
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kProcedureEntityName);
+    InitializeWildcard(arg2, PQL::kProcedureEntityName);
+
+    return std::make_unique<CallsTClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 using ClauseFactoryPtr = std::unique_ptr<ClauseFactory>;
 }  // namespace qps

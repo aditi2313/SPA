@@ -14,6 +14,7 @@ const int kInvalidLine = -1;
 
 class CFGNode {
  public:
+  virtual ~CFGNode() {}
   inline bool HasFirstChild() { return first_child_ != kEmptyId; }
   inline bool HasSecondChild() { return second_child_ != kEmptyId; }
   inline bool is_end() { return !HasFirstChild() && !HasSecondChild(); }
@@ -38,12 +39,9 @@ class CFGNode {
            LHS.start_line_ == RHS.start_line_;
   }
 
-  CFGNode& GetFirstChild();
-  CFGNode& GetSecondChild();
-
  private:
-  explicit CFGNode(int id, CFG* cfg) : id_(id), cfg_(cfg) {}
-  CFGNode(int start, int end, int id, CFG* cfg)
+  explicit CFGNode(int id, CFG& cfg) : id_(id), cfg_(cfg) {}
+  CFGNode(int start, int end, int id, CFG& cfg)
       : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
   }
@@ -63,7 +61,7 @@ class CFGNode {
   int end_line_ = kInvalidLine;
   CFGNodeId first_child_ = kEmptyId;
   CFGNodeId second_child_ = kEmptyId;
-  CFG* cfg_;
+  CFG& cfg_;
   friend class CFG;
 };
 

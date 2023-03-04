@@ -10,24 +10,25 @@
 namespace sp {
 class CFGExtractor : public PKBWriter {
  public:
-  explicit CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
+  CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
       : PKBWriter(std::move(pkb_ptr)) {}
 
   void WriteCFG(cfg::ProgramCFG& program_cfg) {
     auto& procedure_map = program_cfg.get_procedure_cfg_map();
     for (auto& [_, cfg] : procedure_map) {
-      WriteNext(cfg.get_root());
+      WriteNext(cfg.get_root(), cfg);
     }
   }
 
-  void WriteNext(cfg::CFGNode& node) {
+  void WriteNext(cfg::CFGNode& node, cfg::CFG& cfg) {
     if (node.is_empty() && !node.HasFirstChild() && !node.HasSecondChild()) {
       return;
     }
     if (node.is_empty()) {
-      WriteNext(node.GetFirstChild());
+      WriteNext(cfg.GetFirstChild(node), cfg);
+      return;
     }
-    auto& lines = node.get_lines();
+    auto& lines = node.get_lines();    
     // TODO(Gab): Consider using id to remember visited instead
     int last_line = lines[lines.size() - 1];
     if (visited.count(last_line)) {
@@ -40,22 +41,22 @@ class CFGExtractor : public PKBWriter {
     visited.insert(last_line);
     // add the next children
     if (node.HasFirstChild()) {
-      WriteToNext(&(node.GetFirstChild()), last_line);
+      WriteToNext(cfg.GetFirstChild(node), cfg, last_line);
     }
     if (node.HasSecondChild()) {
-      WriteToNext(&(node.GetSecondChild()), last_line);
+      WriteToNext(cfg.GetFirstChild(node), cfg, last_line);
     }
   }
 
  private:
-  std::unordered_set<int> visited;
-  void WriteToNext(cfg::CFGNode* node, int last_line) {
-    cfg::CFGNode* curr = node;
+  std::unordered_set<int> visited;  
+  void WriteToNext(cfg::CFGNode& node, cfg::CFG& cfg, int last_line) {
+    cfg::CFGNode* curr = &node;
     while (curr->is_empty()) {
-      curr = &(curr->GetFirstChild());
+      curr = &cfg.GetFirstChild(*curr);
     }
     pkb_ptr_->AddNextData(last_line, curr->get_lines().at(0));
-    WriteNext(*curr);
+    WriteNext(*curr, cfg);
   }
 };
 }  // namespace sp

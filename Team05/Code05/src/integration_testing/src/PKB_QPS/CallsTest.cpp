@@ -29,7 +29,6 @@ std::unique_ptr<PKBRead> InitializePKBForCalls(
       pkb_write.add_procedure(callee);
       pkb_write.AddCallsData(caller, callee);
     }
-
   }
 
   return std::make_unique<PKBRead>(
@@ -67,7 +66,8 @@ TEST_CASE("Test PKB and QPS integration for Calls clause") {
   }
 
   SECTION("Calls(Wildcard, IdentArg) should return correct results") {
-    std::string query_string = "procedure p; Select p such that Calls(_, \"proc2\")";
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls(_, \"proc2\")";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -77,7 +77,8 @@ TEST_CASE("Test PKB and QPS integration for Calls clause") {
   }
 
   SECTION("Calls(ProcSyn, IdentArg) should return correct results") {
-    std::string query_string = "procedure p; Select p such that Calls(p, \"proc2\")";
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls(p, \"proc2\")";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -87,7 +88,8 @@ TEST_CASE("Test PKB and QPS integration for Calls clause") {
   }
 
   SECTION("Calls(IdentArg, ProcSyn) should return correct results") {
-    std::string query_string = "procedure p; Select p such that Calls(\"proc1\", p)";
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls(\"proc1\", p)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -130,7 +132,8 @@ TEST_CASE("Test PKB and QPS integration for Calls clause") {
   }
 
   SECTION("Calls(IdentArg, Wildcard) should return correct results") {
-    std::string query_string = "procedure p; Select p such that Calls(\"proc1\", _)";
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls(\"proc1\", _)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

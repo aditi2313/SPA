@@ -32,12 +32,14 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 //
 //  SECTION("Calls*(IdentArg, IdentArg) should return correct results") {
 //    std::string query_string = "procedure p; "
-//                               "Select p such that Calls*(\"proc1\", \"proc2\")";
+//                               "Select p "
+//                               "such that Calls*(\"proc1\", \"proc2\")";
 //    std::list<std::string> actual_results;
 //
 //    qps.evaluate(query_string, actual_results, pkb);
 //
-//    std::list<std::string> expected_results{"proc1", "proc2", "proc3", "proc4"};
+//    std::list<std::string> expected_results{
+//                                "proc1", "proc2", "proc3", "proc4"};
 //    REQUIRE(util::CompareResults(actual_results, expected_results));
 //  }
 //
@@ -52,7 +54,8 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 //  }
 //
 //  SECTION("Calls*(Wildcard, IdentArg) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(_, \"proc2\")";
+//    std::string query_string = "procedure p; "
+//                               "Select p such that Calls*(_, \"proc2\")";
 //    std::list<std::string> actual_results;
 //
 //    qps.evaluate(query_string, actual_results, pkb);
@@ -62,7 +65,8 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 //  }
 //
 //  SECTION("Calls*(ProcSyn, IdentArg) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(p, \"proc2\")";
+//    std::string query_string = "procedure p; "
+//                               "Select p such that Calls*(p, \"proc2\")";
 //    std::list<std::string> actual_results;
 //
 //    qps.evaluate(query_string, actual_results, pkb);
@@ -72,7 +76,8 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 //  }
 //
 //  SECTION("Calls*(IdentArg, ProcSyn) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(\"proc1\", p)";
+//    std::string query_string = "procedure p; "
+//                               "Select p such that Calls*(\"proc1\", p)";
 //    std::list<std::string> actual_results;
 //
 //    qps.evaluate(query_string, actual_results, pkb);
@@ -115,7 +120,8 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 //  }
 //
 //  SECTION("Calls*(IdentArg, Wildcard) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(\"proc1\", _)";
+//    std::string query_string = "procedure p; "
+//                               "Select p such that Calls*(\"proc1\", _)";
 //    std::list<std::string> actual_results;
 //
 //    qps.evaluate(query_string, actual_results, pkb);

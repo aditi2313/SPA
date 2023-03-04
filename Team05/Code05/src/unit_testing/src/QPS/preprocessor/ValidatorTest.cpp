@@ -117,7 +117,8 @@ TEST_CASE("Test synonym types for each clause are valid") {
   }
 
   SECTION("Valid synonym types for Calls Clause") {
-    std::string query_str = "procedure p1, p2; Select p1 such that Calls(p1, p2)";
+    std::string query_str = "procedure p1, p2; "
+                            "Select p1 such that Calls(p1, p2)";
     QueryPtr query = parser.ParseQuery(query_str);
 
     REQUIRE_NOTHROW(Validator::Validate(query));

@@ -1,7 +1,10 @@
 #pragma once
+
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
+#include <unordered_set>
 #include <utility>
 
 #include "QPS/models/PQL.h"

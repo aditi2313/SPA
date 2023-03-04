@@ -135,12 +135,14 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
 
   if (!IsComplete(grammar_itr)) ThrowException();
 
-  query->add_clause(master_clause_factory_.Create(PQL::kModifiesRelName,
-                                                  std::move(arguments.at(0)->Copy()),
-                                                  std::move(arguments.at(1))));
-  query->add_clause(master_clause_factory_.Create(PQL::kPatternRelName,
-                                                  std::move(arguments.at(0)),
-                                                  std::move(arguments.at(2))));
+  query->add_clause(master_clause_factory_.Create(
+      PQL::kModifiesRelName,
+      std::move(arguments.at(0)->Copy()),
+      std::move(arguments.at(1))));
+  query->add_clause(master_clause_factory_.Create(
+      PQL::kPatternRelName,
+      std::move(arguments.at(0)),
+      std::move(arguments.at(2))));
 }
 
 ParseState::~ParseState() = default;

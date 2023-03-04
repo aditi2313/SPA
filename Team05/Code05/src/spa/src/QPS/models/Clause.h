@@ -156,7 +156,6 @@ class UsesClause : public Clause {
   void Index(const Entity &index,
              const pkb::PKBReadPtr &pkb,
              EntitySet &results) override;
-
 };
 
 // Relationship between a stmt and another stmt.

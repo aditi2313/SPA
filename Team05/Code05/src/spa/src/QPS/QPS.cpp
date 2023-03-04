@@ -11,6 +11,7 @@
 
 namespace qps {
 MasterClauseFactory master_clause_factory_;
+MasterEntityFactory master_entity_factory_;
 
 void QPS::evaluate(
     std::string query,

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -8,8 +10,7 @@
 namespace qps {
 class MasterEntityFactory {
  public:
-  explicit MasterEntityFactory(pkb::PKBReadPtr &pkb)
-      : pkb_(pkb) {
+  MasterEntityFactory() {
     entity_factories_.insert(
         {PQL::kProcedureEntityName,
          std::make_unique<ProcedureEntityFactory>()});
@@ -33,12 +34,19 @@ class MasterEntityFactory {
         {PQL::kConstantEntityName, std::make_unique<ConstantEntityFactory>()});
   }
 
-  inline EntitySet GetAllFromPKB(EntityName entity_name) {
-    return entity_factories_.at(entity_name)->GetAllFromPKB(pkb_);
+  inline EntitySet GetAllFromPKB(EntityName entity_name, pkb::PKBReadPtr &pkb) {
+    return entity_factories_.at(entity_name)->GetAllFromPKB(pkb);
+  }
+
+  inline bool is_integer(EntityName entity_name) {
+    return entity_factories_.at(entity_name)->is_integer();
+  }
+
+  inline bool is_ident(EntityName entity_name) {
+    return entity_factories_.at(entity_name)->is_ident();
   }
 
  private:
-  pkb::PKBReadPtr &pkb_;
   std::unordered_map<std::string, EntityFactoryPtr> entity_factories_;
 };
 }  // namespace qps

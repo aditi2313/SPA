@@ -38,16 +38,8 @@ class PQL {
       kWhileEntityName, kIfEntityName, kAssignEntityName
   };
 
-  inline static bool const is_entity_name(std::string const token) {
-    return kAllEntityNames.count(token) == 1;
-  }
-
-  inline static EntityName const get_base_entity_name(
-      EntityName const entity_name) {
-    if (kAllStmtEntityNames.count(entity_name)) {
-      return kStmtEntityName;
-    }
-    return entity_name;
+  inline static bool const is_entity_name(EntityName const str) {
+    return kAllEntityNames.count(str) == 1;
   }
 
   inline static std::string kBooleanSelect = "BOOLEAN";

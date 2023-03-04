@@ -178,7 +178,7 @@ class PQL {
           || token == kTupleSelectOpen;
     } else if (grammar == kRefGrammar) {
       // "IDENT" | INTEGER | attrRef
-      return is_ident(token)
+      return is_ident_arg(token)
           || is_integer(token)
           || is_attr_ref(token);
     } else {

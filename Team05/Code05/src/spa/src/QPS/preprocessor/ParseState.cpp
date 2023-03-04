@@ -169,7 +169,26 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
 
 // 'with' attrCompare '(' and ',' attrCompare ')'
 void WithParseState::Parse(const std::vector<std::string> &tokens,
-                           parse_position &itr, QueryPtr &query) {}
+                           parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  std::string rel_ident;
+  ArgumentPtr arg1, arg2;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    // TODO(JL): Add logic for creating With Clauses
+
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
+    }
+    itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
+}
 
 ParseState::~ParseState() = default;
 }  // namespace qps

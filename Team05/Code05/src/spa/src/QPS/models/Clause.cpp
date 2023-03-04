@@ -188,5 +188,10 @@ void CallsClause::Index(
       results);
 }
 
+void CallsTClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {}
+
 Clause::~Clause() = default;
 }  // namespace qps

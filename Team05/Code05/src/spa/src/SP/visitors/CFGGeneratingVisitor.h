@@ -1,14 +1,14 @@
 #pragma once
 
+#include <algorithm>
 #include <memory>
 #include <stack>
-#include <algorithm>
 
 #include "TNodeVisitor.h"
 #include "models/CFG/ProgramCFG.h"
 
 namespace sp {
- 
+
 class CFGGeneratingVisitor : public TNodeVisitor {
  public:
   void Process(ast::ProcNode* proc_node) override;

@@ -2,8 +2,10 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <set>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "Synonym.h"
 
@@ -57,7 +59,7 @@ class Table {
 
   inline void add_values(SynonymName column, EntitySet &values) {
     for (auto &value : values) {
-      Table::Row new_row;
+      Row new_row;
       new_row.emplace_back(column, value);
       add_row(new_row);
     }
@@ -67,7 +69,7 @@ class Table {
       SynonymName col1, SynonymName col2,
       std::vector<std::pair<Entity, Entity>> &values) {
     for (auto &[lhs, rhs] : values) {
-      Table::Row new_row;
+      Row new_row;
       new_row.emplace_back(col1, lhs);
       new_row.emplace_back(col2, rhs);
       add_row(new_row);
@@ -78,14 +80,23 @@ class Table {
     return columns_set_.count(syn_name);
   }
 
-  inline EntitySet Select(SynonymName syn_name) {
-    EntitySet results;
+  inline void Select(
+      std::vector<SynonymName> columns,
+      std::vector<std::vector<Entity>> &results) {
+    std::set<std::vector<Entity>> seen;
 
-    int index = id_map_.at(syn_name);
     for (auto &arr : rows_) {
-      results.insert(arr.at(index));
+      std::vector<Entity> new_row;
+      for (auto col : columns) {
+        new_row.emplace_back(arr[id_map_.at(col)]);
+      }
+      // Already added
+      if (seen.count(new_row)) { continue; }
+
+      // Add to results
+      results.emplace_back(new_row);
+      seen.insert(new_row);
     }
-    return results;
   }
 
   void PrintDebug();

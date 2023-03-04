@@ -33,7 +33,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(WILDCARD, IntArg) should return correct results") {
@@ -42,7 +42,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(IntArg, WILDCARD) should return correct results") {
@@ -51,7 +51,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(synonym, IntArg) should return correct results") {
@@ -60,7 +60,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(IntArg, synonym) should return correct results") {
@@ -69,7 +69,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(synoym, synonym) should return correct results") {
@@ -79,7 +79,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(synoym, synonym) should return correct results") {
@@ -89,7 +89,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(WILDCARD, synonym) should return correct results") {
@@ -98,7 +98,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("ParentT(synoym, WILDCARD) should return correct results") {
@@ -107,7 +107,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Parent(WILDCARD, WILDCARD) should return correct results") {
@@ -116,7 +116,7 @@ TEST_CASE("Test PKB and QPS integration for valid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{"1", "2", "3", "4", "5", "6"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }
 
@@ -131,7 +131,7 @@ TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION(
@@ -142,6 +142,6 @@ TEST_CASE("Test PKB and QPS integration for Invalid ParentT clause") {
 
     qps.evaluate(query_string, actual_results, pkb);
     std::list<std::string> expected_results{};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }

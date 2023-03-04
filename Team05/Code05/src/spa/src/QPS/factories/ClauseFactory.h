@@ -44,7 +44,6 @@ class ModifiesFactory : public ClauseFactory {
  public:
   ModifiesFactory() : ClauseFactory() {
     LHS_entity_names_ = PQL::kAllStmtEntityNames;
-    LHS_entity_names_.insert(PQL::kProcedureEntityName);
     RHS_entity_names_.insert(PQL::kVariableEntityName);
     is_wildcard_allowed_as_first_arg_ = false;
   }
@@ -126,7 +125,6 @@ class UsesFactory : public ClauseFactory {
  public:
   UsesFactory() : ClauseFactory() {
     LHS_entity_names_ = PQL::kAllStmtEntityNames;
-    LHS_entity_names_.insert(PQL::kProcedureEntityName);
     RHS_entity_names_.insert(PQL::kVariableEntityName);
     is_wildcard_allowed_as_first_arg_ = false;
   }

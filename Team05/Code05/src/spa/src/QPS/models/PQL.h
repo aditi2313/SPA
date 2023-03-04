@@ -15,6 +15,7 @@ namespace qps {
 class PQL {
  public:
   using RelName = std::string;
+  using AttrName = std::string;
 
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
@@ -39,7 +40,7 @@ class PQL {
   };
 
   inline static bool const is_entity_name(std::string const token) {
-    return kAllEntityNames.count(token) == 1;
+    return kAllEntityNames.count(token);
   }
 
   inline static EntityName const get_base_entity_name(
@@ -118,6 +119,30 @@ class PQL {
         && is_pattern_exact(str.substr(1, str.size() - 2));
   }
 
+  inline static AttrName kProcedureAttrName = "procName";
+  inline static AttrName kVariableAttrName = "varName";
+  inline static AttrName kValueAttrName = "value";
+  inline static AttrName kStmtAttrName = "stmt#";
+
+  inline static std::unordered_set<std::string> kAllAttrName{
+      kProcedureAttrName, kVariableAttrName,
+      kValueAttrName, kStmtAttrName
+  };
+
+  inline static bool is_attr_name(std::string str) {
+    return kAllAttrName.count(str);
+  }
+
+  inline static bool is_attr_ref(std::string str) {
+    auto index = str.find('.');
+    // "." doesn't exist
+    if (index == std::string::npos) return false;
+    std::string syn = str.substr(0, index);
+    std::string attr_name = str.substr(index + 1);
+    return CheckGrammar(syn, kSynGrammar)
+        && is_attr_name(attr_name);
+  }
+
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";
@@ -151,6 +176,11 @@ class PQL {
       return CheckGrammar(token, kSynGrammar)
           || CheckGrammar(token, kBooleanGrammar)
           || token == kTupleSelectOpen;
+    } else if (grammar == kRefGrammar) {
+      // "IDENT" | INTEGER | attrRef
+      return is_ident(token)
+          || is_integer(token)
+          || is_attr_ref(token);
     } else {
       return token == grammar;
     }

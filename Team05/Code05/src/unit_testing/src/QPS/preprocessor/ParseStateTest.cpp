@@ -29,7 +29,7 @@ TEST_CASE("Test DeclarationParseState") {
                 == PQL::kVariableEntityName);
     REQUIRE(itr == tokens.end());
   };
-  
+
   SECTION("Multiple declarations should parse correctly") {
     std::vector<std::string> tokens{
         "variable", "v1", ",", "v2", ",", "v3", ";"};

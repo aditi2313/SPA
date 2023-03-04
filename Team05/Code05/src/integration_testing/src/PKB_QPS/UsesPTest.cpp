@@ -44,7 +44,8 @@ TEST_CASE("Test PKB and QPS integration for UsesP clause") {
       });
 
   SECTION("Uses(IdentArg, VarSynonym) should return correct results") {
-    std::string query_string = "variable v; Select v such that Uses(\"proc1\", v)";
+    std::string query_string = "variable v; "
+                               "Select v such that Uses(\"proc1\", v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

@@ -46,7 +46,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesP clause") {
       });
 
   SECTION("Modifies(IdentArg, VarSynonym) should return correct results") {
-    std::string query_string = "variable v; Select v such that Modifies(\"proc1\", v)";
+    std::string query_string = "variable v; "
+                               "Select v such that Modifies(\"proc1\", v)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -102,7 +103,8 @@ TEST_CASE("Test PKB and QPS integration for ModifiesP clause") {
   }
 
   SECTION("Modifies(ProcSynonym, IdentArg) should return correct results") {
-    std::string query_string = "procedure p; Select p such that Modifies(p, \"a\")";
+    std::string query_string = "procedure p; "
+                               "Select p such that Modifies(p, \"a\")";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);

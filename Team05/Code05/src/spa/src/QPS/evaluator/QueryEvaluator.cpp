@@ -51,7 +51,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     auto synonym_table = Table(syn, initial_entities);
     table_ = TableJoiner::Join(table_, synonym_table);
   }
-  
+
   std::vector<std::vector<Entity>> results;
   table_.Select(query->get_selected_synonyms(), results);
 

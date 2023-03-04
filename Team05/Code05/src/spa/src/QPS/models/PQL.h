@@ -58,7 +58,8 @@ class PQL {
 
   inline static std::unordered_set<std::string> kAllRelNames{
       kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
-      kParentTRelName, kUsesRelName, kPatternRelName, kCallsRelName
+      kParentTRelName, kUsesRelName, kPatternRelName,
+      kCallsRelName, kCallsTRelName
   };
 
   inline static bool is_rel_name(std::string const token) {

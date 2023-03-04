@@ -38,5 +38,4 @@ TEST_CASE("Simple cfg extracted") {
   auto cfg = program->add_procedure("proc");
   cfg.AddChild(cfg.get_root(), 1, 5);
   TestExtractingCFG(cfg, {{1, 2}, {2, 3}, {3, 4}, {4, 5}});
-  
 }

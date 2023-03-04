@@ -10,7 +10,7 @@
 namespace sp {
 class CFGExtractor : public PKBWriter {
  public:
-  CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
+  explicit CFGExtractor(std::unique_ptr<pkb::PKBWrite> pkb_ptr)
       : PKBWriter(std::move(pkb_ptr)) {}
 
   void WriteCFG(cfg::ProgramCFG& program_cfg) {
@@ -28,7 +28,7 @@ class CFGExtractor : public PKBWriter {
       WriteNext(cfg.GetFirstChild(node), cfg);
       return;
     }
-    auto& lines = node.get_lines();    
+    auto& lines = node.get_lines();
     // TODO(Gab): Consider using id to remember visited instead
     int last_line = lines[lines.size() - 1];
     if (visited.count(last_line)) {
@@ -49,7 +49,7 @@ class CFGExtractor : public PKBWriter {
   }
 
  private:
-  std::unordered_set<int> visited;  
+  std::unordered_set<int> visited;
   void WriteToNext(cfg::CFGNode& node, cfg::CFG& cfg, int last_line) {
     cfg::CFGNode* curr = &node;
     while (curr->is_empty()) {

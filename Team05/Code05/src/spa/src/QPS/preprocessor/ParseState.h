@@ -125,7 +125,8 @@ class SuchThatParseState : public RecursiveParseState {
              QueryPtr &query) override;
 };
 
-// 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// pattern ( 'and' pattern )*
+// pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
@@ -137,6 +138,27 @@ class PatternParseState : public RecursiveParseState {
                              PQL::kRecurseGrammar}, "and") {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
     kRecurseBegin = grammar_.begin();
+    // Allow state to end on PQL::kRecurseGrammar
+    end_states_.push_back(prev(grammar_.end()));
+  }
+
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
+};
+
+// 'with' attrCompare '(' and ',' attrCompare ')'
+class WithParseState : public RecursiveParseState {
+ public:
+  WithParseState()
+      : RecursiveParseState("with",
+                            {"with",
+                             PQL::kRefGrammar,
+                             "=",
+                             PQL::kRefGrammar,
+                             PQL::kRecurseGrammar},
+                            "and") {
+    kExceptionMessage = "Invalid PQL syntax in with clause";
+    kRecurseBegin = next(grammar_.begin());
     // Allow state to end on PQL::kRecurseGrammar
     end_states_.push_back(prev(grammar_.end()));
   }

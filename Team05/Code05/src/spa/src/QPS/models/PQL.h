@@ -122,6 +122,7 @@ class PQL {
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";
   inline static std::string kExprGrammar = "exp";
+  inline static std::string kRefGrammar = "ref";
   inline static std::string kDesignEntityGrammar = "designEntity";
   inline static std::string kRecurseGrammar = "*";
   inline static std::string kBooleanGrammar = "boolean";

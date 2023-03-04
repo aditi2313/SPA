@@ -1,9 +1,12 @@
 #include <utility>
 #include <unordered_set>
+
 #include "Validator.h"
+#include "QPS/factories/MasterClauseFactory.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
+extern MasterClauseFactory master_clause_factory_;
 
 void Validator::Validate(std::unique_ptr<Query> &query) {
   ValidateSynonymsDeclaredExactlyOnce(query);
@@ -23,6 +26,7 @@ void Validator::ValidateClauseArguments(QueryPtr &query) {
         clause->get_arg1(), clause->LHS(), clause->IsExactType());
     ValidateArgumentSynonymType(
         clause->get_arg2(), clause->RHS(), clause->IsExactType());
+//    master_clause_factory_.Validate(clause->)
   }
 }
 

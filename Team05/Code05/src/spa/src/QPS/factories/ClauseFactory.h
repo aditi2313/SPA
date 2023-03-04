@@ -15,6 +15,8 @@ class ClauseFactory {
   virtual ClausePtr Create(
       ArgumentPtr arg1, ArgumentPtr arg2) = 0;
 
+  virtual bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) = 0;
+
   virtual ~ClauseFactory() = default;
 };
 
@@ -26,6 +28,10 @@ class ModifiesFactory : public ClauseFactory {
     return std::make_unique<ModifiesClause>(
         std::move(arg1), std::move(arg2));
   }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsEntRef();
+  }
 };
 
 class FollowsFactory : public ClauseFactory {
@@ -35,6 +41,10 @@ class FollowsFactory : public ClauseFactory {
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<FollowsClause>(
         std::move(arg1), std::move(arg2));
+  }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsStmtRef();
   }
 };
 
@@ -46,6 +56,10 @@ class FollowsTFactory : public ClauseFactory {
     return std::make_unique<FollowsTClause>(
         std::move(arg1), std::move(arg2));
   }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsStmtRef();
+  }
 };
 
 class ParentFactory : public ClauseFactory {
@@ -55,6 +69,10 @@ class ParentFactory : public ClauseFactory {
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<ParentClause>(
         std::move(arg1), std::move(arg2));
+  }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsStmtRef();
   }
 };
 
@@ -66,6 +84,10 @@ class ParentTFactory : public ClauseFactory {
     return std::make_unique<ParentTClause>(
         std::move(arg1), std::move(arg2));
   }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsStmtRef();
+  }
 };
 
 class UsesFactory : public ClauseFactory {
@@ -76,6 +98,10 @@ class UsesFactory : public ClauseFactory {
     return std::make_unique<UsesClause>(
         std::move(arg1), std::move(arg2));
   }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsStmtRef() && arg2->IsEntRef();
+  }
 };
 
 class PatternFactory : public ClauseFactory {
@@ -85,6 +111,10 @@ class PatternFactory : public ClauseFactory {
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<PatternClause>(
         std::move(arg1), std::move(arg2));
+  }
+
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    return arg1->IsSynonym() && arg2->IsExpression();
   }
 };
 

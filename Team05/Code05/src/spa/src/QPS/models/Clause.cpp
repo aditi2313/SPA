@@ -3,8 +3,6 @@
 #include <string>
 #include <utility>
 
-#include "QPS/models/PQL.h"
-#include "QPS/preprocessor/ClauseValidator.h"
 #include "SP/SourceProcessor.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/PredicateFilter.h"

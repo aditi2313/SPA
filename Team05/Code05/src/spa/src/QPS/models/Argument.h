@@ -35,9 +35,6 @@ class Argument {
   virtual bool operator==(Argument &other) = 0;
 
   virtual std::unique_ptr<Argument> Copy() = 0;
-  virtual void set_entity_name(EntityName entity_name) {
-    return;
-  }
 
   // Returns true if the entity name of the argument
   // exists in the parameter hashset of entity names
@@ -73,7 +70,7 @@ class Wildcard : public Argument {
     return std::make_unique<Wildcard>(*this);
   }
 
-  inline void set_entity_name(EntityName entity_name) override {
+  inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
 
@@ -111,7 +108,7 @@ class SynonymArg : public Argument {
   inline bool IsStmtRef() override { return true; }
 
   inline SynonymName get_syn_name() { return syn_name_; }
-  inline void set_entity_name(EntityName entity_name) override {
+  inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
 

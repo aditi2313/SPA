@@ -1,6 +1,7 @@
 #include <exception>
 #include <catch.hpp>
 
+#include "QPS/factories/MasterClauseFactory.h"
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/models/PQL.h"
 
@@ -43,6 +44,7 @@ TEST_CASE("Test SelectClParser methods") {
 
 TEST_CASE("Test ParseQuery") {
   SelectClParser parser;
+  MasterClauseFactory master_clause_factory;
 
   SECTION("Query with no clauses should parse correctly") {
     std::string query_string = "procedure p; Select p";
@@ -61,9 +63,9 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName}},
         {"v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("6"),
-            expected_query->CreateArgument("v")));
+        master_clause_factory.Create(PQL::kModifiesRelName,
+                                     expected_query->CreateArgument("6"),
+                                     expected_query->CreateArgument("v")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -77,9 +79,9 @@ TEST_CASE("Test ParseQuery") {
          {"s", PQL::kStmtEntityName}},
         {"s", "v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("s"),
-            expected_query->CreateArgument("v")));
+        master_clause_factory.Create(PQL::kModifiesRelName,
+                                     expected_query->CreateArgument("s"),
+                                     expected_query->CreateArgument("v")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -91,11 +93,13 @@ TEST_CASE("Test ParseQuery") {
         {{"a", PQL::kAssignEntityName}},
         {"a"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
 
@@ -114,28 +118,35 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
+
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("6"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"variable\"")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_\"x\"_")));
 
@@ -157,27 +168,33 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("6"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x\"")));
 

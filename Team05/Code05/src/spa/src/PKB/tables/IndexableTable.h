@@ -36,7 +36,7 @@ class IndexableTable {
 
   inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
 
-  inline std::unordered_set<IntOrStringVariant> &get_indexes() {
+  inline const std::unordered_set<IntOrStringVariant> &get_indexes() const {
     return indexes_;
   }
 
@@ -68,6 +68,7 @@ class IndexableTable {
     std::unique_ptr<IndexableTable<T>> result =
         std::make_unique<IndexableTable<T>>();
     result->table_ = table_;
+    result->indexes_ = indexes_;
     return std::move(result);
   }
 

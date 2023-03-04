@@ -166,7 +166,6 @@ TEST_CASE("Test synonym types for each clause are valid") {
     REQUIRE_THROWS_AS(Validator::Validate(query),
                       PqlSemanticErrorException);
   }
-
 }
 
 TEST_CASE("Overall Validation") {

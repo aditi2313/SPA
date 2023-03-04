@@ -5,8 +5,11 @@
 
 #include "QPS/models/PQL.h"
 #include "QPS/models/Entity.h"
+#include "QPS/factories/MasterClauseFactory.h"
 
 namespace qps {
+extern MasterClauseFactory master_clause_factory_;
+
 // design-entity synonym (',' synonym)* ';'
 void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
                                   parse_position &itr, QueryPtr &query) {

@@ -1,13 +1,12 @@
 #pragma once
 
 #include <memory>
-#include <unordered_set>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <variant>
 #include <vector>
-
 
 #include "PKB/data/AssignData.h"
 #include "PKB/data/CallsData.h"
@@ -16,7 +15,6 @@
 #include "PKB/data/NextData.h"
 #include "PKB/data/ParentData.h"
 #include "PKB/data/UsesData.h"
-#include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
 
@@ -38,17 +36,32 @@ class IndexableTable {
 
   inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
 
-  inline std::unordered_set<IntOrStringVariant> &get_indexes() { return indexes_; }
+  inline std::unordered_set<IntOrStringVariant> &get_indexes() {
+    return indexes_;
+  }
 
-  inline bool exists(IntOrStringVariant v) {
+  inline bool exists(IntOrStringVariant v) const {
     return table_.find(v) != table_.end();
   }
 
   inline bool empty() { return table_.empty(); }
 
-  friend bool operator==(const IndexableTable<T> &LHS,
-                         const IndexableTable<T> &RHS) {
-    return LHS.table_ == RHS.table_;
+  friend bool operator==(const IndexableTable &LHS, const IndexableTable &RHS) {
+    for (auto &[key, value] : LHS.table_) {
+      if (!RHS.exists(key)) {
+        return false;
+      }
+      const T val = RHS.table_.at(key);
+      if (!(val == value)) return false;
+    }
+    for (auto &[key, value] : RHS.table_) {
+      if (!LHS.exists(key)) {
+        return false;
+      }
+      const T val = LHS.table_.at(key);
+      if (!(val == value)) return false;
+    }
+    return true;
   }
 
   std::unique_ptr<IndexableTable<T>> copy() {

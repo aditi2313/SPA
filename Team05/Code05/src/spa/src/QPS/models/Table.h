@@ -20,7 +20,7 @@ class Table {
   // Entities
   Table(SynonymName syn_name, EntitySet &entities) {
     int id = columns_.size();
-    id_map_[syn_name] = id;
+    table_[syn_name] = id;
     columns_.push_back(syn_name);
     columns_set_.insert(syn_name);
     for (auto &entity : entities) {
@@ -34,7 +34,7 @@ class Table {
     int id = 0;
     columns_ = columns;
     for (auto col : columns) {
-      id_map_[col] = id++;
+      table_[col] = id++;
       columns_set_.insert(col);
     }
   }
@@ -48,7 +48,7 @@ class Table {
   }
 
   inline Entity Index(int row, SynonymName col) {
-    return rows_.at(row).at(id_map_.at(col));
+    return rows_.at(row).at(table_.at(col));
   }
 
   inline std::vector<SynonymName> &get_columns() {
@@ -81,7 +81,7 @@ class Table {
   inline EntitySet Select(SynonymName syn_name) {
     EntitySet results;
 
-    int index = id_map_.at(syn_name);
+    int index = table_.at(syn_name);
     for (auto &arr : rows_) {
       results.insert(arr.at(index));
     }
@@ -94,14 +94,14 @@ class Table {
   inline void add_row(Row &row) {
     std::vector<Entity> new_row(columns_.size());
     for (auto [syn, entity] : row) {
-      new_row.at(id_map_.at(syn)) = entity;
+      new_row.at(table_.at(syn)) = entity;
     }
     rows_.emplace_back(new_row);
   }
 
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
-  std::unordered_map<SynonymName, int> id_map_;
+  std::unordered_map<SynonymName, int> table_;
   std::vector<std::vector<Entity>> rows_;
 };
 }  // namespace qps

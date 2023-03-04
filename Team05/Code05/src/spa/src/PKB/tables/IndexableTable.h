@@ -1,20 +1,21 @@
 #pragma once
 
 #include <memory>
-#include <set>
+#include <unordered_set>
+#include <string>
 #include <unordered_map>
 #include <utility>
-#include <vector>
 #include <variant>
-#include <string>
+#include <vector>
+
 
 #include "PKB/data/AssignData.h"
-#include "PKB/data/ModifiesData.h"
-#include "PKB/data/UsesData.h"
-#include "PKB/data/FollowsData.h"
-#include "PKB/data/ParentData.h"
 #include "PKB/data/CallsData.h"
+#include "PKB/data/FollowsData.h"
+#include "PKB/data/ModifiesData.h"
 #include "PKB/data/NextData.h"
+#include "PKB/data/ParentData.h"
+#include "PKB/data/UsesData.h"
 #include "PKB/tables/IndexableTable.h"
 
 namespace pkb {
@@ -31,42 +32,35 @@ class IndexableTable {
   IndexableTable() = default;
 
   inline void add_row(IntOrStringVariant v, T row) {
-    id_map_[v] = rows_.size();
-    rows_.push_back(std::move(row));
+    indexes_.insert(v);
+    table_.insert(std::make_pair(v, row));
   }
 
-  inline T& get_row(IntOrStringVariant v) { return rows_.at(id_map_.at(v)); }
+  inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
 
-  inline std::set<IntOrStringVariant> get_indexes() {
-    std::set<IntOrStringVariant> result;
-    for (auto &[v, row] : id_map_) {
-      result.insert(v);
-    }
-    return result;
-  }
+  inline std::unordered_set<IntOrStringVariant> &get_indexes() { return indexes_; }
 
   inline bool exists(IntOrStringVariant v) {
-      return id_map_.find(v) != id_map_.end();
+    return table_.find(v) != table_.end();
   }
 
-  inline bool empty() { return rows_.empty(); }
+  inline bool empty() { return table_.empty(); }
 
   friend bool operator==(const IndexableTable<T> &LHS,
                          const IndexableTable<T> &RHS) {
-    return LHS.rows_ == RHS.rows_;
+    return LHS.table_ == RHS.table_;
   }
 
   std::unique_ptr<IndexableTable<T>> copy() {
     std::unique_ptr<IndexableTable<T>> result =
         std::make_unique<IndexableTable<T>>();
-    result->rows_ = rows_;
-    result->id_map_ = id_map_;
+    result->table_ = table_;
     return std::move(result);
   }
 
  protected:
-  std::vector<T> rows_;
-  std::unordered_map<std::variant<int, std::string>, int> id_map_;
+  std::unordered_map<IntOrStringVariant, T> table_;
+  std::unordered_set<IntOrStringVariant> indexes_;
 };
 
 typedef IndexableTable<ModifiesData> ModifiesTable;

@@ -22,6 +22,12 @@ QueryPtr BuildQuery(
   return query;
 }
 
+// Helper method for testing
+void TestNoThrows(std::string query_string) {
+  SelectClParser parser;
+  REQUIRE_NOTHROW(parser.ParseQuery(query_string));
+}
+
 TEST_CASE("Test SelectClParser methods") {
   SelectClParser parser;
   SECTION("Test PreprocessQueryString") {
@@ -184,16 +190,27 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
-    // TODO(JL): outdated, update, should parse correctly for Milestone2
-  SECTION("Query with wrong order of states should "
-          "throw PqlSyntaxErrorException") {
-    // Pattern should not be before such-that
-    std::string query_string = "variable v; procedure p; "
-                               "Select v, p pattern a(_, \"x + y\") "
+    // In these following testcases, it is too verbose to create the
+    // full expected clause for much longer queries, so will just be testing NoThrows.
+    // The previous testcases cover whether the expected query has the
+    // correct clauses
+  SECTION("Query with pattern before such-that should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v)";
 
-    REQUIRE_THROWS_AS(
-        parser.ParseQuery(query_string),
-        PqlSyntaxErrorException);
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with many interleaving clauses of different types"
+          "should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "pattern a(v, _\"x\"_) "
+                               "such that Uses(6, v) "
+                               "such that Parent(6, 7)";
+
+    TestNoThrows(query_string);
   }
 }

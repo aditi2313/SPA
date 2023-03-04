@@ -19,7 +19,7 @@ class SelectClParser {
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
     // State Order is defined as
-    // Declaration -> Synonym -> Such-That -> Pattern
+    // Declaration -> Select -> (Such-That | Pattern | With)*
     states_.emplace_back(std::make_unique<DeclarationParseState>());
     states_.emplace_back(std::make_unique<SelectParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
@@ -29,8 +29,9 @@ class SelectClParser {
     for (int i = 0; i < num_states - 1; ++i) {
       transition_table_[i].push_back(i + 1);
     }
-    // Can go to Pattern without passing through Such-That
-    transition_table_[1].push_back(3);
+    transition_table_[1].push_back(3); // Select -> Pattern
+    transition_table_[3].push_back(2); // Pattern -> Such-That
+
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

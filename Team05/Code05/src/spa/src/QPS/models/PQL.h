@@ -58,14 +58,15 @@ class PQL {
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
 
-  inline static std::unordered_set<std::string> kAllRelNames{
+  // All relationships that appear after such that
+  inline static std::unordered_set<std::string> kAllSuchThatRelNames{
       kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
       kParentTRelName, kUsesRelName, kPatternRelName,
       kCallsRelName, kCallsTRelName, kNextRelName
   };
 
-  inline static bool is_rel_name(std::string const token) {
-    return kAllRelNames.find(token) != kAllRelNames.end();
+  inline static bool is_such_that_rel_name(std::string const token) {
+    return kAllSuchThatRelNames.count(token);
   }
 
   inline static bool is_argument(std::string const token) {
@@ -154,7 +155,7 @@ class PQL {
     if (grammar == kArgumentGrammar) {
       return is_argument(token);
     } else if (grammar == kRelRefGrammar) {
-      return is_rel_name(token);
+      return is_such_that_rel_name(token);
     } else if (grammar == kSynGrammar) {
       return is_ident(token);
     } else if (grammar == kDesignEntityGrammar) {

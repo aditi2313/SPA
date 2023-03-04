@@ -220,6 +220,18 @@ class NextClause : public Clause {
              EntitySet &results) override;
 };
 
+class WithClause : public Clause {
+ public:
+  WithClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {
+    rel_name_ = PQL::kNextRelName;
+  }
+
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
+};
+
 using ClausePtr = std::unique_ptr<Clause>;
 
 }  // namespace qps

@@ -191,7 +191,8 @@ TEST_CASE("Test ParseQuery") {
   }
 
     // In these following testcases, it is too verbose to create the
-    // full expected clause for much longer queries, so will just be testing NoThrows.
+    // full expected clause for much longer queries,
+    // so will just be testing NoThrows.
     // The previous testcases cover whether the expected query has the
     // correct clauses
   SECTION("Query with pattern before such-that should parse correctly") {

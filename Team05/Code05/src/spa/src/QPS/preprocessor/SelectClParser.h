@@ -29,9 +29,8 @@ class SelectClParser {
     for (int i = 0; i < num_states - 1; ++i) {
       transition_table_[i].push_back(i + 1);
     }
-    transition_table_[1].push_back(3); // Select -> Pattern
-    transition_table_[3].push_back(2); // Pattern -> Such-That
-
+    transition_table_[1].push_back(3);  // Select -> Pattern
+    transition_table_[3].push_back(2);  // Pattern -> Such-That
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

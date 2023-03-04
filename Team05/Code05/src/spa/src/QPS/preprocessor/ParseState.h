@@ -110,7 +110,9 @@ class SuchThatParseState : public RecursiveParseState {
   SuchThatParseState()
       : RecursiveParseState("such",
                             {"such", "that", PQL::kRelRefGrammar,
-                             "(", PQL::kArgumentGrammar, ",", PQL::kArgumentGrammar, ")",
+                             "(",
+                             PQL::kArgumentGrammar, ",", PQL::kArgumentGrammar,
+                             ")",
                              PQL::kRecurseGrammar},
                             "and") {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
@@ -129,7 +131,9 @@ class PatternParseState : public RecursiveParseState {
   PatternParseState()
       : RecursiveParseState("pattern",
                             {"pattern", PQL::kSynGrammar,
-                             "(", PQL::kArgumentGrammar, ",", PQL::kExprGrammar, ")",
+                             "(",
+                             PQL::kArgumentGrammar, ",", PQL::kExprGrammar,
+                             ")",
                              PQL::kRecurseGrammar}, "and") {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
     kRecurseBegin = grammar_.begin();

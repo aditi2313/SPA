@@ -106,6 +106,9 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
       }
     }
     if (*(grammar_itr + 1) == PQL::kRecurseGrammar) {
+      if (arg1 == nullptr || arg2 == nullptr) {
+        ThrowException();
+      }
       query->add_clause(Clause::CreateClause(
           rel_ident,
           std::move(arg1),

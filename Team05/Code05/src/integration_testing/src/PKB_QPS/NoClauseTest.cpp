@@ -102,7 +102,7 @@ void TestQuery(
     string query, std::list<string> expected_results) {
   std::list<string> actual_results;
   qps.evaluate(query, actual_results, pkb);
-  REQUIRE(actual_results == expected_results);
+  REQUIRE(util::CompareResults(actual_results, expected_results));
 }
 
 TEST_CASE("Test PKB and QPS integration for Select with no clauses") {
@@ -177,5 +177,13 @@ TEST_CASE("Test PKB and QPS integration for Select with no clauses") {
     TestQuery(qps, pkb,
               "constant c; Select c",
               {"123", "456", "789"});
+  }
+
+  SECTION("Get all constants and variables from PKB") {
+    TestQuery(qps, pkb,
+              "constant c; variable v; Select <c, v>",
+              {"123 x", "123 y", "123 z",
+               "456 x", "456 y", "456 z",
+               "789 x", "789 y", "789 z"});
   }
 }

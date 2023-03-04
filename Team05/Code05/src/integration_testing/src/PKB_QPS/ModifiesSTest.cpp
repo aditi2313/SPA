@@ -4,6 +4,7 @@
 #include <list>
 #include <catch.hpp>
 
+#include "common/Utiity.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "PKB/PKBRead.h"
@@ -51,7 +52,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(StmtSynonym, VarSynonym) should return correct results") {
@@ -62,7 +63,20 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Modifies(StmtSynonym, VarSynonym) with Select <s, v> "
+          "should return correct results") {
+    std::string query_string = "variable v; stmt s; "
+                               "Select <s, v> such that Modifies(s, v)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{
+        "10 a", "10 b", "10 c", "25 d", "25 e", "30 f"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(StmtSynonym, VarSynonym) should return correct results") {
@@ -73,7 +87,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "25", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(IntArg, IdentArg) should return correct results") {
@@ -84,7 +98,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(StmtSynonym, IdentArg) should return correct results") {
@@ -94,7 +108,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(IntArg, Wildcard) should return correct results") {
@@ -105,7 +119,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"a", "b", "c", "d", "e", "f"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
   SECTION("Modifies(StmtSynonym, Wildcard) should return correct results") {
@@ -115,7 +129,7 @@ TEST_CASE("Test PKB and QPS integration for ModifiesS clause") {
     qps.evaluate(query_string, actual_results, pkb);
 
     std::list<std::string> expected_results{"10", "25", "30"};
-    REQUIRE(actual_results == expected_results);
+    REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }
 

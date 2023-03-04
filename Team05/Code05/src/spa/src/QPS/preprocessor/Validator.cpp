@@ -49,20 +49,5 @@ void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
       throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
     }
   }
-
-  for (auto &clause : query->get_clauses()) {
-    ValidateArgumentSynonymDeclared(query, clause->get_arg1());
-    ValidateArgumentSynonymDeclared(query, clause->get_arg2());
-  }
-}
-
-// If argument is a synonym, check if it has been declared
-void Validator::ValidateArgumentSynonymDeclared(
-    QueryPtr &query, ArgumentPtr &arg) {
-  if (!arg->IsSynonym()) return;
-  SynonymArg *synonym_arg = dynamic_cast<SynonymArg *>(arg.get());
-  if (!query->is_synonym_name_declared(synonym_arg->get_syn_name())) {
-    throw PqlSemanticErrorException("Undeclared synonym argument in clause");
-  }
 }
 }  // namespace qps

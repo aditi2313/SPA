@@ -43,6 +43,9 @@ class ModifiesFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    // Note: arg1 cannot be wildcard
+    arg2->set_entity_name(PQL::kVariableEntityName);
+
     return std::make_unique<ModifiesClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -56,6 +59,9 @@ class FollowsFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    arg1->set_entity_name(PQL::kStmtEntityName);
+    arg2->set_entity_name(PQL::kStmtEntityName);
+
     return std::make_unique<FollowsClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -69,6 +75,9 @@ class FollowsTFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    arg1->set_entity_name(PQL::kStmtEntityName);
+    arg2->set_entity_name(PQL::kStmtEntityName);
+
     return std::make_unique<FollowsTClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -82,6 +91,9 @@ class ParentFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    arg1->set_entity_name(PQL::kStmtEntityName);
+    arg2->set_entity_name(PQL::kStmtEntityName);
+
     return std::make_unique<ParentClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -95,6 +107,9 @@ class ParentTFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    arg1->set_entity_name(PQL::kStmtEntityName);
+    arg2->set_entity_name(PQL::kStmtEntityName);
+
     return std::make_unique<ParentTClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -110,6 +125,9 @@ class UsesFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    // Note: arg1 cannot be wildcard
+    arg2->set_entity_name(PQL::kVariableEntityName);
+
     return std::make_unique<UsesClause>(
         std::move(arg1), std::move(arg2));
   }
@@ -122,6 +140,8 @@ class PatternFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    arg1->set_entity_name(PQL::kAssignEntityName);
+
     return std::make_unique<PatternClause>(
         std::move(arg1), std::move(arg2));
   }

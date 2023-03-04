@@ -18,11 +18,6 @@ class QueryEvaluator {
       QueryPtr &query);
 
  private:
-  void InitializeEntitiesFromArgument(
-      ArgumentPtr &arg,
-      EntityName entity_name,
-      EntitySet &result);
-
   pkb::PKBReadPtr &pkb_;
   Table table_;
 };

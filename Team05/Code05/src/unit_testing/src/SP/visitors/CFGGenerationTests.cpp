@@ -1,6 +1,5 @@
-#include <memory>
 #include <catch.hpp>
-
+#include <memory>
 
 #include "SP/SPTesting.h"
 #include "SP/SourceProcessor.h"
@@ -30,6 +29,32 @@ TEST_CASE("Test construction of cfg on basic ast") {
   visitor.VisitProgram(prog.get());
   auto res = visitor.CreateCFG();
   REQUIRE(program == *res);
+}
+
+TEST_CASE("Test construction of cfg on simple while loop") {
+  auto w = MakeWhile(1, 2, 9);
+  auto stmt_lst = std::make_unique<StmtLstNode>(std::move(w));
+  auto proc = std::make_unique<ProcNode>("while", std::move(stmt_lst));
+  auto prog = std::make_unique<ProgramNode>(std::move(proc));
+
+  // construction
+  cfg::ProgramCFG program;
+  auto& cfg = program.add_procedure("while");
+  auto& empt = cfg.AddNode();
+  auto& inner_empt = cfg.AddNode();
+  cfg.AddChild(cfg.get_root(), inner_empt);
+  auto& child = cfg.AddChild(inner_empt, 1, 1);
+  auto& while_stmts_node = cfg.AddChild(child, 2, 9);
+  cfg.AddChild(while_stmts_node, child);
+  auto& last_empt = cfg.AddNode();
+  cfg.AddChild(child, last_empt);
+  cfg.AddChild(last_empt, empt);
+
+  CFGGeneratingVisitor visitor;
+  visitor.VisitProgram(prog.get());
+  auto res = visitor.CreateCFG();
+
+  REQUIRE(*res == program);
 }
 
 // TODO(Gab) consider more specific methods of constructing test cases instead

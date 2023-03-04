@@ -1,9 +1,9 @@
 #pragma once
 
+#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <utility>
-#include <catch.hpp>
 
 #include "SP/lexer/Lexer.h"
 #include "SP/parser/relations/CondExprParser.h"
@@ -33,5 +33,5 @@ ExprNodePtr MakeConst(int);
 std::unique_ptr<ReadNode> MakeRead(std::string var_name, int);
 std::unique_ptr<PrintNode> MakePrint(std::string var_name, int line);
 std::unique_ptr<AndExprNode> MakeAnd(std::string left, std::string right);
-std::unique_ptr<IfNode> MakeIf(int line);
-std::unique_ptr<WhileNode> MakeWhile(int line);
+std::unique_ptr<IfNode> MakeIf(int line, int s1, int e1, int s2, int e2);
+std::unique_ptr<WhileNode> MakeWhile(int line, int, int);

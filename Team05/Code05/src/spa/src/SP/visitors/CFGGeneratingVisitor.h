@@ -8,6 +8,7 @@
 #include "models/CFG/ProgramCFG.h"
 
 namespace sp {
+ 
 class CFGGeneratingVisitor : public TNodeVisitor {
  public:
   void Process(ast::ProcNode* proc_node) override;
@@ -31,19 +32,8 @@ class CFGGeneratingVisitor : public TNodeVisitor {
   }
 
  private:
-  cfg::CFGNode& AddChild() {
-    auto& res =
-        current_cfg_->AddChild(*parents_.top(), current_start_, current_end_);
-    current_start_ = -1;
-    current_end_ = -1;
-    parents_.pop();
-    parents_.push(&res);
-    return res;
-  }
-  void ProcStmtNode(ast::StmtNode* node) {
-    if (current_start_ == -1) current_start_ = node->get_line();
-    current_end_ = std::max(current_end_, node->get_line());
-  }
+  cfg::CFGNode& AddChild();
+  void ProcStmtNode(ast::StmtNode* node);
 
   cfg::ProgramCFG program_cfg_;
   cfg::CFG* current_cfg_;

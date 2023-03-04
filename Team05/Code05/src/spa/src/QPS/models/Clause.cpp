@@ -11,33 +11,6 @@
 using namespace filter;  // NOLINT
 
 namespace qps {
-ClausePtr Clause::CreateClause(EntityName rel_ref_ident, ArgumentPtr arg1,
-                               ArgumentPtr arg2) {
-  ClauseValidator::ValidateClauseArgumentTypes(rel_ref_ident, arg1, arg2);
-  if (rel_ref_ident == PQL::kModifiesRelId) {
-    return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kPatternRelId) {
-    return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kFollowsRelId) {
-    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kFollowsTRelId) {
-    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kParentRelId) {
-    return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kParentTRelId) {
-    return std::make_unique<ParentTClause>(std::move(arg1), std::move(arg2));
-  }
-  if (rel_ref_ident == PQL::kUsesRelId) {
-    return std::make_unique<UsesClause>(std::move(arg1), std::move(arg2));
-  }
-  throw PqlSyntaxErrorException("Unknown relationship in PQL query");
-}
-
 template<class Data>
 void Clause::Index(
     const Entity &index,

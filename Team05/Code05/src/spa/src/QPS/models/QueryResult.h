@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "Entity.h"
-#include "QPS/evaluator/EntityFactory.h"
+#include "QPS/factories/EntityFactory.h"
 
 namespace qps {
 class QueryResult {

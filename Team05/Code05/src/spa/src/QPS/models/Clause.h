@@ -7,7 +7,7 @@
 
 #include "Argument.h"
 #include "PKB/PKBRead.h"
-#include "QPS/evaluator/MasterEntityFactory.h"
+#include "QPS/factories/MasterEntityFactory.h"
 #include "common/filter/filters/PredicateFilter.h"
 #include "QueryResult.h"
 
@@ -80,9 +80,6 @@ class Clause {
   inline EntityName RHS() { return RHS_; }
   virtual inline bool IsExactType() { return false; }
   virtual inline bool IsWildcardAllowedAsFirstArg() { return true; }
-
-  static std::unique_ptr<Clause> CreateClause(
-      EntityName rel_ref_ident, ArgumentPtr arg1, ArgumentPtr arg2);
 
  protected:
   ArgumentPtr arg1_;

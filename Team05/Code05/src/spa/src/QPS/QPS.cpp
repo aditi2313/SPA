@@ -7,9 +7,11 @@
 #include "QPS/preprocessor/Validator.h"
 #include "QPS/evaluator/QueryEvaluator.h"
 #include "QPS/evaluator/Formatter.h"
+#include "QPS/factories/MasterClauseFactory.h"
 
 namespace qps {
-// Used for integration tests
+MasterClauseFactory master_clause_factory_;
+
 void QPS::evaluate(
     std::string query,
     std::list<std::string> &results,

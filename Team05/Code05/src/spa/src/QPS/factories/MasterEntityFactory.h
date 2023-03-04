@@ -6,7 +6,6 @@
 #include "QPS/models/PQL.h"
 
 namespace qps {
-
 class MasterEntityFactory {
  public:
   explicit MasterEntityFactory(pkb::PKBReadPtr &pkb)

@@ -44,7 +44,7 @@ void CFGGeneratingVisitor::Process(ast::WhileNode* while_node) {
   cfg::CFGNode& prev = AddChild();
   ProcStmtNode(while_node);
   cfg::CFGNode& child = AddChild();
-  parents_.push(&child);  
+  parents_.push(&child);
   ends_.push(&child);
 }
 

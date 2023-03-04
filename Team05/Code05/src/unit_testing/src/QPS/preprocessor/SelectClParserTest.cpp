@@ -57,6 +57,15 @@ TEST_CASE("Test SelectClParser methods") {
 TEST_CASE("Test ParseQuery") {
   SelectClParser parser;
 
+  SECTION("Query with no declarations should not throw SyntaxError") {
+    // It needs to throw SemanticError
+    std::string query_string = "Select p";
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery({}, {"p"});
+
+    REQUIRE(*actual_query == *expected_query);
+  }
+
   SECTION("Query with no clauses should parse correctly") {
     std::string query_string = "procedure p; Select p";
     QueryPtr actual_query = parser.ParseQuery(query_string);
@@ -111,6 +120,18 @@ TEST_CASE("Test ParseQuery") {
         std::make_unique<PatternClause>(
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
+
+    REQUIRE(*actual_query == *expected_query);
+  }
+
+  SECTION("Query with one with clause should parse correctly") {
+    std::string query_string = "assign a; Select a with a.stmt# = 12";
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
+        {{"a", PQL::kAssignEntityName}},
+        {"a"});
+
+    // TODO(JL): Update after creating WITH clause
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -216,8 +237,10 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v) "
                                "pattern a(v, _\"x\"_) "
+                               "with 12 = \"test\" "
                                "such that Uses(6, v) "
-                               "such that Parent(6, 7)";
+                               "with a.stmt# = c.value "
+                               "pattern a(_, _)";
 
     TestNoThrows(query_string);
   }
@@ -268,11 +291,21 @@ TEST_CASE("Test ParseQuery") {
   }
 
   SECTION("Query with using 'and' to connect "
-          "between pattern and such-that"
+          "between pattern and with"
           "should throw error") {
     std::string query_string = "variable v;"
                                "Select v pattern a(_, \"x + y\") "
-                               "and Modifies(6, v)";
+                               "and with a.stmt# = c.value";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between such-that and with"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v such that Modifies(6, v) "
+                               "and with a.stmt# = c.value";
 
     TestThrows(query_string);
   }

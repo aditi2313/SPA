@@ -15,7 +15,7 @@ namespace qps {
 class SelectClParser {
  public:
   SelectClParser() {
-    int num_states = 4;
+    int num_states = 5;
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
     // State Order is defined as
@@ -24,13 +24,15 @@ class SelectClParser {
     states_.emplace_back(std::make_unique<SelectParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
     states_.emplace_back(std::make_unique<PatternParseState>());
+    states_.emplace_back(std::make_unique<WithParseState>());
 
     transition_table_.assign(num_states, std::vector<int>());
-    for (int i = 0; i < num_states - 1; ++i) {
-      transition_table_[i].push_back(i + 1);
-    }
-    transition_table_[1].push_back(3);  // Select -> Pattern
-    transition_table_[3].push_back(2);  // Pattern -> Such-That
+
+    transition_table_[0] = {1};  // Declare -> Select
+    transition_table_[1] = {2, 3, 4};  // Select -> (Such-that | Pattern | With)
+    transition_table_[2] = {3, 4};  // Such-that -> (Pattern | With)
+    transition_table_[3] = {2, 4};  // Pattern -> (Such-that | With)
+    transition_table_[4] = {2, 3};  // With -> (Such-that | Pattern)
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

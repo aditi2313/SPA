@@ -24,7 +24,7 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
   // First insert whitespaces around special characters
   // (e.g. semicolons and brackets) for easier delimitation
   std::string new_query = "";
-  std::string special_characters = ";(),";
+  std::string special_characters = ";(),<>";
   for (auto itr = query_string.begin(); itr != query_string.end(); ++itr) {
     if (special_characters.find(*itr) != std::string::npos) {
       new_query += " " + std::string(1, *itr) + " ";

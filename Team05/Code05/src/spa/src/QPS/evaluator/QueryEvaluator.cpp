@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "QueryEvaluator.h"
 #include "QPS/models/Table.h"
 #include "TableJoiner.h"
@@ -6,17 +8,6 @@
 namespace qps {
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
-
-  if (!query->is_boolean_query()) {
-    // TODO(JL): Extend to support multiple synonyms
-    SynonymName selected_synonym = query->get_selected_synonyms().at(0);
-    EntityName entity_name = query->get_declared_synonym_entity_name(
-        selected_synonym);
-    EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
-        entity_name);
-
-    table_ = Table(selected_synonym, initial_entities);
-  }
 
   for (auto &clause : query->get_clauses()) {
     Table clause_table;
@@ -45,12 +36,23 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     return std::make_unique<BooleanQueryResult>(true);
   }
 
-  EntitySet results = table_.Select(
-      query->get_selected_synonyms().at(0));
-  QueryResultPtr result = std::make_unique<ListQueryResult>(
-      results);
+  // Join with selected synonyms at the end
+  // instead of the beginning as a slight optimisation
+  for (SynonymName syn : query->get_selected_synonyms()) {
+    EntityName entity_name = query->get_declared_synonym_entity_name(
+        syn);
+    EntitySet initial_entities = master_entity_factory_->GetAllFromPKB(
+        entity_name);
 
-  return result;
+    auto synonym_table = Table(syn, initial_entities);
+    table_ = TableJoiner::Join(table_, synonym_table);
+  }
+
+  std::vector<std::vector<Entity>> results;
+  table_.Select(query->get_selected_synonyms(), results);
+
+  return std::make_unique<ListQueryResult>(
+      results);
 }
 
 // Given an argument, initialize into `result`
@@ -64,7 +66,11 @@ void QueryEvaluator::InitializeEntitiesFromArgument(
   if (arg->IsSynonym()) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
     if (table_.HasColumn(syn_arg->get_syn_name())) {
-      result = table_.Select(syn_arg->get_syn_name());
+      std::vector<std::vector<Entity>> values;
+      table_.Select({syn_arg->get_syn_name()}, values);
+      for (auto &entities : values) {
+        result.insert(entities.at(0));
+      }
     } else {
       result = master_entity_factory_->GetAllFromPKB(
           syn_arg->get_entity_name());
@@ -93,5 +99,4 @@ void QueryEvaluator::InitializeEntitiesFromArgument(
     result.insert(Entity(ident_arg->get_ident()));
   }
 }
-
 }  // namespace qps

@@ -115,6 +115,7 @@ class PKBWrite {
   inline std::unique_ptr<PKBRelationTable> ProcessTableAndEndWrite() {
     ProcessFollows();
     ProcessParent();
+    ProcessCalls();
     return std::move(pkb_relation_table_);
   }
 
@@ -131,6 +132,12 @@ class PKBWrite {
   /// parent table to obtain all the Parent* lines.
   /// </summary>
   void ProcessParent();
+
+  /// <summary>
+  /// Processes the current
+  /// calls table to obtain all the Calls* lines.
+  /// </summary>
+  void ProcessCalls();
 
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };

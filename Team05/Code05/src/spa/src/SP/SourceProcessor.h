@@ -13,9 +13,11 @@
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
 #include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/CallsVisitor.h"
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
+#include "visitors/CFGGeneratingVisitor.h"
 
 namespace sp {
 
@@ -39,7 +41,8 @@ class SourceProcessor {
     return root;
   }
 
-  static void ExtractRelationships(std::unique_ptr<ast::ProgramNode> &root,
+  static void ExtractRelationships(
+      std::unique_ptr<ast::ProgramNode> &root,
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 
@@ -66,6 +69,10 @@ class SourceProcessor {
     sp::FollowsVisitor fv(std::move(writer));
     root->AcceptVisitor(&fv);
     writer = fv.EndVisit();
+
+    sp::CallsVisitor cv(std::move(writer));
+    root->AcceptVisitor(&cv);
+    writer = cv.EndVisit();
 
     pkb_relation = writer->ProcessTableAndEndWrite();
   }

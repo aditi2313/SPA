@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <utility>
 #include "models/AST/Token.h"
 
 /// <summary>
@@ -12,6 +13,7 @@ class LexerData {
     ptr_ = 0;
     current_stmt_ = 1;
     current_int_ = -1;
+    current_procedure_ = "";
     current_token_ = sp::Token::kTokError;
     word_ = "";
   }
@@ -20,6 +22,7 @@ class LexerData {
     ptr_ = data.ptr_;
     current_stmt_ = data.current_stmt_;
     current_int_ = data.current_int_;
+    current_procedure_ = data.current_procedure_;
     current_token_ = data.current_token_;
     word_ = data.word_;
   }
@@ -28,6 +31,7 @@ class LexerData {
     this->current_int_ = data.current_int_;
     this->current_stmt_ = data.current_stmt_;
     this->current_token_ = data.current_token_;
+    this->current_procedure_ = data.current_procedure_;
     this->program_ = data.program_;
     this->ptr_ = data.ptr_;
     this->word_ = data.word_;
@@ -40,6 +44,7 @@ class LexerData {
 
   inline sp::Token get_current_token() { return current_token_; }
   inline std::string get_ident() { return word_; }
+  inline std::string get_current_procedure() { return current_procedure_; }
   inline char get_current_char() { return program_[ptr_]; }
 
   /// <summary>
@@ -54,6 +59,9 @@ class LexerData {
   inline bool is_end() { return ptr_ >= program_.length(); }
 
   inline void set_current_token(sp::Token token) { current_token_ = token; }
+  inline void set_current_procedure(std::string proc) {
+    current_procedure_ = std::move(proc);
+  }
   inline void set_word(std::string& word) { word_ = word; }
   inline void set_int(int val) { current_int_ = val; }
 
@@ -62,6 +70,7 @@ class LexerData {
   sp::Token current_token_;
   int current_int_;
   int current_stmt_;
+  std::string current_procedure_;
   std::string& program_;
   int ptr_;
 };

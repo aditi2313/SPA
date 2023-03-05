@@ -20,18 +20,7 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline std::vector<int>& get_lines() {
-    if (lines_.size() != 0) {
-      return lines_;
-    }
-    if (is_empty()) return lines_;
-    lines_.assign(end_line_ - start_line_ + 1, 0);
-
-    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
-      lines_[j] = i;
-    }
-    return lines_;
-  }
+  inline std::vector<int>& get_lines() { return lines_; }
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
     return LHS.id_ == RHS.id_ && LHS.end_line_ == RHS.end_line_ &&
@@ -45,10 +34,22 @@ class CFGNode {
   }
 
  private:
+  inline void InitialiseLines() {
+    if (lines_.size() != 0) {
+      return;
+    }
+    if (is_empty()) return;
+    lines_.assign(end_line_ - start_line_ + 1, 0);
+
+    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
+      lines_[j] = i;
+    }
+  }
   explicit CFGNode(int id, CFG& cfg) : id_(id), cfg_(cfg) {}
   CFGNode(int start, int end, int id, CFG& cfg)
       : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
+    InitialiseLines();
   }
   void add_child(CFGNode& child) {
     if (first_child_ == kEmptyId) {

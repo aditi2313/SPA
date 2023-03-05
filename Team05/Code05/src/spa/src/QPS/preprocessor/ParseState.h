@@ -15,7 +15,9 @@ class ParseState {
   std::string kTransitionKeyword;
 
   explicit ParseState(std::string transition, std::vector<std::string> grammar)
-      : kTransitionKeyword(transition), grammar_(grammar) {}
+      : kTransitionKeyword(transition), grammar_(grammar) {
+    end_states_.push_back(grammar_.end());
+  }
 
   virtual void Parse(const std::vector<std::string> &tokens,
                      parse_position &itr, QueryPtr &query) = 0;
@@ -25,20 +27,33 @@ class ParseState {
   const char *kExceptionMessage;
   void ThrowException() { throw PqlSyntaxErrorException(kExceptionMessage); }
   inline virtual bool IsComplete(parse_position grammar_itr) {
-    return grammar_itr == grammar_.end();
+    for (auto &pos : end_states_) {
+      if (grammar_itr == pos) return true;
+    }
+    return false;
   }
   std::vector<std::string> grammar_;
+  std::vector<parse_position> end_states_;
 };
 
 class RecursiveParseState : public ParseState {
  public:
   RecursiveParseState(std::string transition, std::vector<std::string> grammar,
                       std::string kRecurseDelimiter)
-      : ParseState(transition, grammar), kRecurseDelimiter(kRecurseDelimiter) {}
+      : ParseState(transition, grammar),
+        kRecurseDelimiter(kRecurseDelimiter) {}
 
  protected:
   std::string kRecurseDelimiter;
-  virtual void Recurse(parse_position &itr, parse_position &grammar_itr) = 0;
+  parse_position kRecurseBegin;
+  void Recurse(parse_position &itr, parse_position &grammar_itr) {
+    if (*itr == kRecurseDelimiter) {
+      grammar_itr = kRecurseBegin;
+    } else {
+      grammar_itr++;
+      itr--;
+    }
+  }
 };
 
 // design-entity synonym (',' synonym)* ';'
@@ -46,30 +61,14 @@ class DeclarationParseState : public RecursiveParseState {
  public:
   DeclarationParseState()
       : RecursiveParseState("",
-                            {PQL::kDesignEntityGrammar, PQL::kSynGrammar,
-                             PQL::kRecurseGrammar, ";"},
-                            ",") {
+                            {
+                                PQL::kDesignEntityGrammar,
+                                PQL::kSynGrammar,
+                                PQL::kRecurseGrammar,
+                                PQL::kSemicolonToken},
+                            PQL::kCommaToken) {
     kExceptionMessage = "Invalid PQL syntax in declaration";
-  }
-
-  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
-             QueryPtr &query) override;
-
- private:
-  void Recurse(parse_position &itr, parse_position &grammar_itr) override {
-    if (*itr == kRecurseDelimiter) {
-      grammar_itr = grammar_.begin();  // Reset grammar
-    } else {
-      itr--;
-    }
-  }
-};
-
-// tuple | BOOLEAN
-class SelectParseState : public ParseState {
- public:
-  SelectParseState() : ParseState("Select", {"Select", PQL::kSelectGrammar}) {
-    kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
+    kRecurseBegin = next(grammar_.begin());
   }
 
   void Parse(const std::vector<std::string> &tokens, parse_position &itr,
@@ -81,34 +80,57 @@ class TupleParseState : public RecursiveParseState {
  public:
   TupleParseState() :
       RecursiveParseState(PQL::kTupleSelectOpen,
-                          {PQL::kTupleSelectOpen,
-                           PQL::kSynGrammar,
-                           PQL::kRecurseGrammar,
-                           PQL::kTupleSelectClose},
+                          {
+                              PQL::kTupleSelectOpen,
+                              PQL::kSynGrammar,
+                              PQL::kRecurseGrammar,
+                              PQL::kTupleSelectClose},
                           ",") {
     kExceptionMessage = "Invalid PQL syntax in tuple";
+    kRecurseBegin = next(grammar_.begin());
+  }
+
+  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
+             QueryPtr &query) override;
+};
+
+// tuple | BOOLEAN
+class SelectParseState : public ParseState {
+ public:
+  SelectParseState() : ParseState(PQL::kSelectToken,
+                                  {
+                                      PQL::kSelectToken,
+                                      PQL::kSelectGrammar}) {
+    kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
 
   void Parse(const std::vector<std::string> &tokens, parse_position &itr,
              QueryPtr &query) override;
  private:
-  void Recurse(parse_position &itr, parse_position &grammar_itr) override {
-    if (*itr == kRecurseDelimiter) {
-      grammar_itr = grammar_.begin();  // Reset grammar
-    } else {
-      itr--;
-    }
-  }
+  TupleParseState tuple_parse_state_;
 };
 
-// 'such' 'that' relRef
-class SuchThatParseState : public ParseState {
+// 'such' 'that' relCond
+// relCond: relRef ('and' relRef)*
+class SuchThatParseState : public RecursiveParseState {
  public:
   SuchThatParseState()
-      : ParseState("such",
-                   {"such", "that", PQL::kRelRefGrammar, "(",
-                    PQL::kArgumentGrammar, ",", PQL::kArgumentGrammar, ")"}) {
+      : RecursiveParseState(PQL::kSuchToken,
+                            {
+                                PQL::kSuchToken,
+                                PQL::kThatToken,
+                                PQL::kRelRefGrammar,
+                                PQL::kOpenBktToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCommaToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCloseBktToken,
+                                PQL::kRecurseGrammar},
+                            PQL::kAndToken) {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
+    kRecurseBegin = next(grammar_.begin(), 2);
+    // Allow state to end on PQL::kRecurseGrammar
+    end_states_.push_back(prev(grammar_.end()));
   }
 
   void Parse(const std::vector<std::string> &tokens, parse_position &itr,
@@ -116,13 +138,24 @@ class SuchThatParseState : public ParseState {
 };
 
 // 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-class PatternParseState : public ParseState {
+class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
-      : ParseState("pattern",
-                   {"pattern", PQL::kSynGrammar, "(", PQL::kArgumentGrammar,
-                    ",", PQL::kExprGrammar, ")"}) {
+      : RecursiveParseState(PQL::kPatternToken,
+                            {
+                                PQL::kPatternToken,
+                                PQL::kSynGrammar,
+                                PQL::kOpenBktToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCommaToken,
+                                PQL::kExprGrammar,
+                                PQL::kCloseBktToken,
+                                PQL::kRecurseGrammar},
+                            PQL::kAndToken) {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
+    kRecurseBegin = grammar_.begin();
+    // Allow state to end on PQL::kRecurseGrammar
+    end_states_.push_back(prev(grammar_.end()));
   }
 
   void Parse(const std::vector<std::string> &tokens, parse_position &itr,

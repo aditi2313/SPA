@@ -13,13 +13,14 @@ template<class Data>
 void Clause::Index(
     const Entity &index,
     std::function
-        <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
+        <std::unique_ptr<pkb::IndexableTable<Data>>(
+            Entity::Value)> pkb_read_function,
     std::function<void(EntitySet &, Data)> add_function,
     EntitySet &results) {
-  int line = index.get_int();
-  auto pkb_res = pkb_read_function(line);
+  Entity::Value key = index.get_value();
+  auto pkb_res = pkb_read_function(key);
   if (pkb_res->empty()) return;
-  Data data = pkb_res->get_row(line);
+  Data data = pkb_res->get_row(key);
   add_function(results, data);
 }
 
@@ -29,8 +30,8 @@ void ModifiesClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::ModifiesData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<ModifiesIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<ModifiesIndexFilter>(key);
         return std::move(pkb->Modifies(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::ModifiesData data) {
@@ -47,8 +48,8 @@ void FollowsClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::FollowsData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<FollowsIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<FollowsIndexFilter>(key);
         return std::move(pkb->Follows(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::FollowsData data) {
@@ -63,8 +64,8 @@ void FollowsTClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::FollowsData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<FollowsIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<FollowsIndexFilter>(key);
         return std::move(pkb->Follows(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::FollowsData data) {
@@ -81,8 +82,8 @@ void ParentClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::ParentData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<ParentIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<ParentIndexFilter>(key);
         return std::move(pkb->Parent(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::ParentData data) {
@@ -99,8 +100,8 @@ void ParentTClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::ParentData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<ParentIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<ParentIndexFilter>(key);
         return std::move(pkb->Parent(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::ParentData data) {
@@ -117,8 +118,8 @@ void UsesClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::UsesData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<UsesIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<UsesIndexFilter>(key);
         return std::move(pkb->Uses(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::UsesData data) {
@@ -159,8 +160,8 @@ void PatternClause::Index(
     EntitySet &results) {
   Clause::Index<pkb::AssignData>(
       index,
-      [&](int line) {
-        auto filter = std::make_unique<AssignIndexFilter>(line);
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<AssignIndexFilter>(key);
         return std::move(pkb->Assigns(std::move(filter))->get_result());
       },
       [&](EntitySet &result, pkb::AssignData data) {

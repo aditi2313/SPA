@@ -23,6 +23,19 @@ QueryPtr BuildQuery(
   return query;
 }
 
+// Helper method for testing
+void TestNoThrows(std::string query_string) {
+  SelectClParser parser;
+  REQUIRE_NOTHROW(parser.ParseQuery(query_string));
+}
+
+// Helper method for testing
+void TestThrows(std::string query_string) {
+  SelectClParser parser;
+  REQUIRE_THROWS_AS(
+      parser.ParseQuery(query_string), PqlSyntaxErrorException);
+}
+
 TEST_CASE("Test SelectClParser methods") {
   SelectClParser parser;
   SECTION("Test PreprocessQueryString") {
@@ -201,16 +214,83 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE(*actual_query == *expected_query);
   }
 
-    // TODO(JL): outdated, update, should parse correctly for Milestone2
-  SECTION("Query with wrong order of states should "
-          "throw PqlSyntaxErrorException") {
-    // Pattern should not be before such-that
-    std::string query_string = "variable v; procedure p; "
-                               "Select v, p pattern a(_, \"x + y\") "
+    // In the following testcases, it is too verbose to create the
+    // full expected clause as the queries are much longer,
+    // so will just be testing NoThrows or Throws.
+    // The previous testcases cover whether the expected query has the
+    // correct clauses.
+  SECTION("Query with pattern before such-that should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v)";
 
-    REQUIRE_THROWS_AS(
-        parser.ParseQuery(query_string),
-        PqlSyntaxErrorException);
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with interleaving clauses of different types"
+          "should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "pattern a(v, _\"x\"_) "
+                               "such that Uses(6, v) "
+                               "such that Parent(6, 7)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with mix of using 'and' and no 'and' "
+          "should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "and Uses(6, v) "
+                               "such that Parent(6, 7)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with interleaving clauses of different types"
+          "and with 'and' should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "pattern a(v, _\"x\"_) "
+                               "and pattern a(_, \"x\") "
+                               "such that Uses(6, v) "
+                               "and Parent(6, 7)";
+
+    TestNoThrows(query_string);
+  }
+
+    /* ============ ERROR CASES =============== */
+  SECTION("Query with both 'and' and 'such-that'"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "and such that Uses(6, v)";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between such-that and pattern"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v such that Modifies(6, v) "
+                               "and pattern a(v, _\"x\"_)";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between pattern and such-that"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "and Modifies(6, v)";
+
+    TestThrows(query_string);
   }
 }

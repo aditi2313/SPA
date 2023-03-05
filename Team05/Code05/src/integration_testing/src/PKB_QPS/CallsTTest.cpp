@@ -28,126 +28,126 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
           {"proc3", {"proc4"}},
       });
 
-  // TODO(JL): re-enable after ProcessCalls PR is merged
-//
-//  SECTION("Calls*(IdentArg, IdentArg) should return correct results") {
-//    std::string query_string = "procedure p; "
-//                               "Select p "
-//                               "such that Calls*(\"proc1\", \"proc2\")";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{
-//                                "proc1", "proc2", "proc3", "proc4"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(SynArg, SynArg) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(p, p)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(Wildcard, IdentArg) should return correct results") {
-//    std::string query_string = "procedure p; "
-//                               "Select p such that Calls*(_, \"proc2\")";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1", "proc2", "proc3"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(ProcSyn, IdentArg) should return correct results") {
-//    std::string query_string = "procedure p; "
-//                               "Select p such that Calls*(p, \"proc2\")";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(IdentArg, ProcSyn) should return correct results") {
-//    std::string query_string = "procedure p; "
-//                               "Select p such that Calls*(\"proc1\", p)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc2"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(Wildcard, ProcSyn) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(_, p)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc2", "proc3"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(ProcSyn, ProcSyn) should return correct results") {
-//    std::string query_string = "procedure p1, p2; "
-//                               "Select p1 such that Calls*(p1, p2)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1", "proc2"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(ProcSyn, ProcSyn) with both synonyms selected"
-//          "should return correct results") {
-//    std::string query_string = "procedure p1, p2; "
-//                               "Select <p1, p2> such that Calls*(p1, p2)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1 proc2", "proc2 proc3"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(IdentArg, Wildcard) should return correct results") {
-//    std::string query_string = "procedure p; "
-//                               "Select p such that Calls*(\"proc1\", _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1", "proc2", "proc3"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(Wildcard, Wildcard) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(_, _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1", "proc2", "proc3"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
-//
-//  SECTION("Calls*(ProcSyn, Wildcard) should return correct results") {
-//    std::string query_string = "procedure p; Select p such that Calls*(p, _)";
-//    std::list<std::string> actual_results;
-//
-//    qps.evaluate(query_string, actual_results, pkb);
-//
-//    std::list<std::string> expected_results{"proc1", "proc2"};
-//    REQUIRE(util::CompareResults(actual_results, expected_results));
-//  }
+  SECTION("Calls*(IdentArg, IdentArg) should return correct results") {
+    std::string query_string = "procedure p; "
+                               "Select p "
+                               "such that Calls*(\"proc1\", \"proc2\")";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{
+        "proc1", "proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(SynArg, SynArg) should return correct results") {
+    std::string query_string = "procedure p; Select p such that Calls*(p, p)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(Wildcard, IdentArg) should return correct results") {
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls*(_, \"proc3\")";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1", "proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(ProcSyn, IdentArg) should return correct results") {
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls*(p, \"proc2\")";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(IdentArg, ProcSyn) should return correct results") {
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls*(\"proc1\", p)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(Wildcard, ProcSyn) should return correct results") {
+    std::string query_string = "procedure p; Select p such that Calls*(_, p)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(ProcSyn, ProcSyn) should return correct results") {
+    std::string query_string = "procedure p1, p2; "
+                               "Select p1 such that Calls*(p1, p2)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1", "proc2", "proc3"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(ProcSyn, ProcSyn) with both synonyms selected"
+          "should return correct results") {
+    std::string query_string = "procedure p1, p2; "
+                               "Select <p1, p2> such that Calls*(p1, p2)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{
+        "proc1 proc2", "proc1 proc3", "proc1 proc4",
+        "proc2 proc3", "proc2 proc4", "proc3 proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(IdentArg, Wildcard) should return correct results") {
+    std::string query_string = "procedure p; "
+                               "Select p such that Calls*(\"proc1\", _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1", "proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(Wildcard, Wildcard) should return correct results") {
+    std::string query_string = "procedure p; Select p such that Calls*(_, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1", "proc2", "proc3", "proc4"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
+
+  SECTION("Calls*(ProcSyn, Wildcard) should return correct results") {
+    std::string query_string = "procedure p; Select p such that Calls*(p, _)";
+    std::list<std::string> actual_results;
+
+    qps.evaluate(query_string, actual_results, pkb);
+
+    std::list<std::string> expected_results{"proc1", "proc2", "proc3"};
+    REQUIRE(util::CompareResults(actual_results, expected_results));
+  }
 }
 

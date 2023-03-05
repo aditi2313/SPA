@@ -28,6 +28,8 @@ class MasterClauseFactory {
         {PQL::kCallsRelName, std::make_unique<CallsFactory>()});
     clause_factories_.insert(
         {PQL::kCallsTRelName, std::make_unique<CallsTFactory>()});
+    clause_factories_.insert(
+        {PQL::kNextRelName, std::make_unique<NextFactory>()});
   }
 
   inline ClausePtr Create(

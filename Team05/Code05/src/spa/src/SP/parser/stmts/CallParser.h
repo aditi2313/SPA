@@ -26,7 +26,8 @@ class CallParser : Parser<ast::CallNode> {
                         lxr.GetTokAndIncrement(), Token::kTokSemicolon);
 
     auto var_node = std::make_unique<ast::VarNode>(ast::VarNode(var_name));
-    return std::make_unique<ast::CallNode>(std::move(var_node),
+    return std::make_unique<ast::CallNode>(lxr.get_current_procedure(),
+                                           std::move(var_node),
                                            lxr.GetAndIncrementStmtCtr());
   }
 };

@@ -86,6 +86,6 @@ TEST_CASE("Test on branching with loops and empty nodes") {
   cfg.AddChild(c4, c3);
   auto& empt = cfg.AddNode();
   cfg.AddChild(c4, empt);
-  cfg.AddChild(empt, c3);  
+  cfg.AddChild(empt, c3);
   TestExtractingCFG(cfg, {{1, 2}, {1, 3}, {3, 4}, {4, 3}});
 }

@@ -59,9 +59,7 @@ inline bool CompareResults(const std::list<std::string> &LHS,
 
 class BoundedInt {
  public:
-  BoundedInt(int val, int max, int min) : min_(min), max_(max), val_(val) {
-    assert(val <= max && val >= min);
-  }
+  BoundedInt(int val, int max, int min) : min_(min), max_(max), val_(val) {}
 
   int operator*() const {
     if (ExceedBound()) {

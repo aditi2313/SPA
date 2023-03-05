@@ -11,16 +11,16 @@
 using namespace pkb;  // NOLINT
 using namespace qps;  // NOLINT
 
-using modifies_data = std::pair<int, std::unordered_set<std::string>>;
+using modifiesS_data = std::pair<int, std::unordered_set<std::string>>;
 
 // Helper method for testing. Forward declared.
-std::unique_ptr<PKBRead> InitializePKBForModifies(
-    std::vector<modifies_data> data
+std::unique_ptr<PKBRead> InitializePKBForModifiesS(
+    std::vector<modifiesS_data> data
 );
 
 TEST_CASE("Test PKB and QPS integration for BOOLEAN clauses") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKBForModifies(
+  std::unique_ptr<PKBRead> pkb = InitializePKBForModifiesS(
       {
           {10, {"a", "b", "c"}},
           {25, {"d", "e"}},

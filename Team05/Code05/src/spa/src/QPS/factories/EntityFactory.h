@@ -15,6 +15,8 @@ class EntityFactory {
  public:
   EntityFactory() {}
   virtual EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) = 0;
+  virtual bool is_integer() { return false; }
+  virtual bool is_ident() { return false; }
 
   virtual ~EntityFactory() = default;
 };
@@ -22,6 +24,10 @@ class EntityFactory {
 class IntEntityFactory : public EntityFactory {
  public:
   IntEntityFactory() : EntityFactory() {}
+
+  inline bool is_integer() override {
+    return true;
+  }
 
  protected:
   inline EntitySet CreateInstanceList(std::unordered_set<int> ls) {
@@ -36,6 +42,10 @@ class IntEntityFactory : public EntityFactory {
 class IdentEntityFactory : public EntityFactory {
  public:
   IdentEntityFactory() : EntityFactory() {}
+
+  inline bool is_ident() override {
+    return true;
+  }
 
  protected:
   inline EntitySet CreateInstanceList(std::unordered_set<std::string> ls) {

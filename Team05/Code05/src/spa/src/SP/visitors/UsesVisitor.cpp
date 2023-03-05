@@ -51,7 +51,7 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   direct_uses_[current_procedure_].merge(vars);
 }
 
-void UsesVisitor::Process(ast::IfNode* if_node) {
+void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
   VarCollector var_collector;
   auto& cond_node = if_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);
@@ -65,7 +65,7 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
   direct_uses_[current_procedure_].merge(vars);
 }
 
-void UsesVisitor::Process(ast::WhileNode* while_node) {
+void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
   VarCollector var_collector;
   auto& cond_node = while_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);

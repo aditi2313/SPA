@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <functional>
+#include <catch.hpp>
 
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"

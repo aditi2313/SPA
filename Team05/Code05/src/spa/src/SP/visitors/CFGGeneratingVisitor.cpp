@@ -2,8 +2,6 @@
 
 #include <cassert>
 
-const int kInvalidLine = 1;
-
 namespace sp {
 
 void CFGGeneratingVisitor::Process(ast::ProcNode* proc_node) {
@@ -67,15 +65,15 @@ void CFGGeneratingVisitor::Process(ast::PrintNode* stmt_node) {
 cfg::CFGNode& CFGGeneratingVisitor::AddChild() {
   auto& res =
       current_cfg_->AddChild(*parents_.top(), current_start_, current_end_);
-  current_start_ = -1;
-  current_end_ = -1;
+  current_start_ = kInvalidLine;
+  current_end_ = kInvalidLine;
   parents_.pop();
   parents_.push(&res);
   return res;
 }
 
 void CFGGeneratingVisitor::ProcStmtNode(ast::StmtNode* node) {
-  if (current_start_ == -1) current_start_ = node->get_line();
+  if (current_start_ == kInvalidLine) current_start_ = node->get_line();
   current_end_ = std::max(current_end_, node->get_line());
 }
 

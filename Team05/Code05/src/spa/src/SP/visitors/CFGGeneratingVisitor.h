@@ -39,8 +39,9 @@ class CFGGeneratingVisitor : public TNodeVisitor {
   cfg::CFG* current_cfg_;
   std::stack<cfg::CFGNode*> parents_;
   std::stack<cfg::CFGNode*> ends_;
-  int current_start_ = -1;
-  int current_end_ = -1;
+  static const int kInvalidLine = -1;
+  int current_start_ = kInvalidLine;
+  int current_end_ = kInvalidLine;
 };
 
 }  // namespace sp

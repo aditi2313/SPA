@@ -4,11 +4,14 @@
 #include <memory>
 #include <vector>
 
+#include "common/Utiity.h"
+
 namespace sp {
 class CFGVisitor;
 }
 
 namespace cfg {
+
 class CFGNode;
 
 typedef int CFGNodeId;
@@ -25,6 +28,15 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
+
+  inline util::BoundedInt end() {
+    return util::BoundedInt(end_line_, end_line_, start_line_);
+  }
+
+  inline util::BoundedInt begin() {
+    return util::BoundedInt(start_line_, end_line_, start_line_);
+  }
+
   inline std::vector<int> get_lines() const {
     if (is_empty()) return std::vector<int>(0, 0);
     std::vector<int> result(end_line_ - start_line_ + 1, 0);

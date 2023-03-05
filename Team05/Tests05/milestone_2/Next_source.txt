@@ -14,3 +14,23 @@ procedure basic {
   }
   print x;
 }
+
+procedure extra {
+  if (x <= y) then {
+    read x;
+    print x;
+
+    read x;
+    print x;
+  } else {
+    while (x < 100) {
+      read x;
+      while (y > 1000) {
+        k = x - 1;
+        read k;
+      }
+      print x;
+    }
+    read x;
+  }
+}

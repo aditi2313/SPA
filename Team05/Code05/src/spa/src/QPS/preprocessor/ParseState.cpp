@@ -5,8 +5,11 @@
 
 #include "QPS/models/PQL.h"
 #include "QPS/models/Entity.h"
+#include "QPS/factories/MasterClauseFactory.h"
 
 namespace qps {
+extern MasterClauseFactory master_clause_factory_;
+
 // design-entity synonym (',' synonym)* ';'
 void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
                                   parse_position &itr, QueryPtr &query) {
@@ -109,7 +112,7 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
       if (arg1 == nullptr || arg2 == nullptr) {
         ThrowException();
       }
-      query->add_clause(Clause::CreateClause(
+      query->add_clause(master_clause_factory_.Create(
           rel_ident,
           std::move(arg1),
           std::move(arg2)));
@@ -147,12 +150,14 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
       if (arg1 == nullptr || arg2 == nullptr || arg3 == nullptr) {
         ThrowException();
       }
-      query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
-                                             std::move(arg1->Copy()),
-                                             std::move(arg2)));
-      query->add_clause(Clause::CreateClause(PQL::kPatternRelId,
-                                             std::move(arg1),
-                                             std::move(arg3)));
+      query->add_clause(master_clause_factory_.Create(
+          PQL::kModifiesRelName,
+          std::move(arg1->Copy()),
+          std::move(arg2)));
+      query->add_clause(master_clause_factory_.Create(
+          PQL::kPatternRelName,
+          std::move(arg1),
+          std::move(arg3)));
     }
 
     if (*grammar_itr == PQL::kRecurseGrammar) {

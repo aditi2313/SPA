@@ -2,6 +2,7 @@
 
 #include "QPS/preprocessor/ParseState.h"
 #include "QPS/models/PQL.h"
+#include "QPS/factories/MasterClauseFactory.h"
 #include "common/exceptions/QPSExceptions.h"
 
 using namespace qps; // NOLINT
@@ -176,20 +177,20 @@ TEST_CASE("Test TupleParseState") {
 
 TEST_CASE("Test SuchThatParseState") {
   SuchThatParseState state;
+  MasterClauseFactory master_clause_factory;
+
   SECTION("Such that clause for Modifies should parse correctly") {
     std::vector<std::string> tokens{
         "such", "that", "Modifies", "(", "6", ",", "v", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause = ModifiesClause(
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kModifiesRelName,
         query->CreateArgument("6"),
         query->CreateArgument("v"));
 
-    Clause *actual_clause =
-        query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -199,14 +200,12 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause = FollowsClause(
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kFollowsRelName,
         query->CreateArgument("6"),
         query->CreateArgument("7"));
 
-    Clause *actual_clause =
-        query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -216,14 +215,12 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause = FollowsTClause(
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kFollowsTRelName,
         query->CreateArgument("6"),
         query->CreateArgument("10"));
 
-    Clause *actual_clause =
-        query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -233,12 +230,12 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause =
-        ParentClause(query->CreateArgument("6"), query->CreateArgument("7"));
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kParentRelName,
+        query->CreateArgument("6"),
+        query->CreateArgument("7"));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -248,12 +245,12 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause =
-        ParentTClause(query->CreateArgument("6"), query->CreateArgument("7"));
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kParentTRelName,
+        query->CreateArgument("6"),
+        query->CreateArgument("7"));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -263,12 +260,12 @@ TEST_CASE("Test SuchThatParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_clause =
-        UsesClause(query->CreateArgument("6"), query->CreateArgument("v"));
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kUsesRelName,
+        query->CreateArgument("6"),
+        query->CreateArgument("v"));
 
-    Clause *actual_clause = query->get_clauses().at(0).get();
-
-    REQUIRE(*actual_clause == expected_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -303,21 +300,25 @@ TEST_CASE("Test SuchThatParseState") {
 
 TEST_CASE("Test PatternParseState") {
   PatternParseState state;
+  MasterClauseFactory master_clause_factory;
+
   SECTION("Pattern clause should parse correctly") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_modifies_clause = ModifiesClause(
+    auto expected_modifies_clause = master_clause_factory.Create(
+        PQL::kModifiesRelName,
         query->CreateArgument("a"),
         query->CreateArgument("_"));
-    auto expected_pattern_clause = PatternClause(
+    auto expected_pattern_clause = master_clause_factory.Create(
+        PQL::kPatternRelName,
         query->CreateArgument("a"),
         query->CreateArgument("\"x + y\""));
 
-    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
-    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
+    REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -327,15 +328,17 @@ TEST_CASE("Test PatternParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_modifies_clause = ModifiesClause(
+    auto expected_modifies_clause = master_clause_factory.Create(
+        PQL::kModifiesRelName,
         query->CreateArgument("a"),
         query->CreateArgument("v"));
-    auto expected_pattern_clause = PatternClause(
+    auto expected_pattern_clause = master_clause_factory.Create(
+        PQL::kPatternRelName,
         query->CreateArgument("a"),
         query->CreateArgument("_"));
 
-    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
-    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
+    REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 
@@ -345,17 +348,19 @@ TEST_CASE("Test PatternParseState") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
-    auto expected_modifies_clause = ModifiesClause(
+    auto expected_modifies_clause = master_clause_factory.Create(
+        PQL::kModifiesRelName,
         query->CreateArgument("a"),
         query->CreateArgument("variable"));
-    auto expected_pattern_clause = PatternClause(
+    auto expected_pattern_clause = master_clause_factory.Create(
+        PQL::kPatternRelName,
         query->CreateArgument("a"),
         query->CreateArgument("_\"x\"_"));
 
-    REQUIRE(*(query->get_clauses().at(0)) == expected_modifies_clause);
-    REQUIRE(*(query->get_clauses().at(1)) == expected_pattern_clause);
+    REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
+    REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
     REQUIRE(itr == tokens.end());
-  };
+  }
 
   SECTION("Pattern clause with 'and' should parse correctly") {
     std::vector<std::string> tokens{

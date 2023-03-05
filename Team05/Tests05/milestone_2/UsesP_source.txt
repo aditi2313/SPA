@@ -1,0 +1,29 @@
+procedure uses1 {
+  read out1;
+  print in1;
+
+  out2 = in2 + 1;
+
+  call uses2;
+}
+
+procedure uses2 {
+  if (in3 < in4) then {
+    out3 = in5 / in6;
+  } else {
+     read out4;
+     call uses3;
+  }
+}
+
+procedure uses3 {
+  while ((in7 < 100) || (in8 > 1000)) {
+    out5 = in9 + in10;
+    if (in11 > in12) then {
+      out6 = in13 / in14;
+    } else {
+      read out7;
+      print in15;
+    }
+  } 
+}

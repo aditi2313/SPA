@@ -21,12 +21,14 @@ class TNodeVisitor {
  public:
   void VisitProgram(ast::ProgramNode* program_node);
   virtual void Process(ast::ProgramNode* program_node) {}
+  virtual void ProcessAfter(ast::ProgramNode* program_node) {}
 
   void VisitProc(ast::ProcNode* proc_node);
   virtual void Process(ast::ProcNode* proc_node) {}
 
   void VisitStmtLst(ast::StmtLstNode* stmtlst_node);
   virtual void Process(ast::StmtLstNode* stmtlst_node) {}
+  virtual void ProcessAft(ast::StmtLstNode* stmtlst_node) {}
 
   void VisitAssign(ast::AssignNode* assign_node);
   virtual void Process(ast::AssignNode* assign_node) {}
@@ -39,9 +41,11 @@ class TNodeVisitor {
 
   void VisitIf(ast::IfNode*);
   virtual void Process(ast::IfNode* if_node) {}
+  virtual void ProcessAft(ast::IfNode* if_node) {}
 
   void VisitWhile(ast::WhileNode*);
   virtual void Process(ast::WhileNode* while_node) {}
+  virtual void ProcessAft(ast::WhileNode* if_node) {}
 
   void VisitCall(ast::CallNode* call_node);
   virtual void Process(ast::CallNode* call_node) {}

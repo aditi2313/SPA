@@ -36,7 +36,7 @@ class IndexableTable {
 
   inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
 
-  inline const T &get_row(IntOrStringVariant v) const { return table.at(v); }
+  inline const T &get_row(IntOrStringVariant v) const { return table_.at(v); }
 
   inline const std::unordered_set<IntOrStringVariant> &get_indexes() const {
     return indexes_;

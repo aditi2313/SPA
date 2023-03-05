@@ -25,7 +25,7 @@ class CFGExtractor : public PKBWriter {
       return;
     }
     if (node.is_empty()) {
-      WriteNext(cfg.GetFirstChild(node), cfg);
+      if (node.HasFirstChild()) WriteNext(cfg.GetFirstChild(node), cfg);
       return;
     }
     auto& lines = node.get_lines();
@@ -44,7 +44,7 @@ class CFGExtractor : public PKBWriter {
       WriteToNext(cfg.GetFirstChild(node), cfg, last_line);
     }
     if (node.HasSecondChild()) {
-      WriteToNext(cfg.GetFirstChild(node), cfg, last_line);
+      WriteToNext(cfg.GetSecondChild(node), cfg, last_line);
     }
   }
 

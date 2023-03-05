@@ -23,8 +23,8 @@ ArgumentPtr Query::CreateArgument(std::string token) {
     // Remove first and last quotation marks
     // or first and last wildcard + quotation marks
     token = is_exact
-        ? token.substr(1, token.size() - 2)
-        : token.substr(2, token.size() - 4);
+            ? token.substr(1, token.size() - 2)
+            : token.substr(2, token.size() - 4);
 
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
@@ -34,8 +34,6 @@ ArgumentPtr Query::CreateArgument(std::string token) {
       throw PqlSyntaxErrorException("Invalid expression");
     }
   }
-
-
 
   auto syn_arg = std::make_unique<SynonymArg>(token);
   if (is_synonym_name_declared(token)) {

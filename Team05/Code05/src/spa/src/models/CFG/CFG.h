@@ -61,8 +61,9 @@ class CFG {
   /// node. If the child of this node is empty,
   /// we will traverse the first child of the empty node.
   /// This is under the assumption that if a node is empty, it can only
-  /// have one child. This is because an if-node and a while node
-  /// cannot be empty.
+  /// have one child. This is because if-nodes and while nodes
+  /// are the only nodes with two children, and they are guaranteed
+  /// to be non-empty.
   ///
   /// </summary>
   /// <param name="node">The node of which we are obtaining the

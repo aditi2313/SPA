@@ -1,6 +1,7 @@
 #include <exception>
 #include <catch.hpp>
 
+#include "QPS/factories/MasterClauseFactory.h"
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/models/PQL.h"
 
@@ -20,6 +21,19 @@ QueryPtr BuildQuery(
   }
 
   return query;
+}
+
+// Helper method for testing
+void TestNoThrows(std::string query_string) {
+  SelectClParser parser;
+  REQUIRE_NOTHROW(parser.ParseQuery(query_string));
+}
+
+// Helper method for testing
+void TestThrows(std::string query_string) {
+  SelectClParser parser;
+  REQUIRE_THROWS_AS(
+      parser.ParseQuery(query_string), PqlSyntaxErrorException);
 }
 
 TEST_CASE("Test SelectClParser methods") {
@@ -43,6 +57,16 @@ TEST_CASE("Test SelectClParser methods") {
 
 TEST_CASE("Test ParseQuery") {
   SelectClParser parser;
+  MasterClauseFactory master_clause_factory;
+
+  SECTION("Query with no declarations should not throw SyntaxError") {
+    // It needs to throw SemanticError
+    std::string query_string = "Select p";
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery({}, {"p"});
+
+    REQUIRE(*actual_query == *expected_query);
+  }
 
   SECTION("Query with no clauses should parse correctly") {
     std::string query_string = "procedure p; Select p";
@@ -61,9 +85,9 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName}},
         {"v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("6"),
-            expected_query->CreateArgument("v")));
+        master_clause_factory.Create(PQL::kModifiesRelName,
+                                     expected_query->CreateArgument("6"),
+                                     expected_query->CreateArgument("v")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -77,9 +101,9 @@ TEST_CASE("Test ParseQuery") {
          {"s", PQL::kStmtEntityName}},
         {"s", "v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
-            expected_query->CreateArgument("s"),
-            expected_query->CreateArgument("v")));
+        master_clause_factory.Create(PQL::kModifiesRelName,
+                                     expected_query->CreateArgument("s"),
+                                     expected_query->CreateArgument("v")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -91,13 +115,27 @@ TEST_CASE("Test ParseQuery") {
         {{"a", PQL::kAssignEntityName}},
         {"a"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
+
+    REQUIRE(*actual_query == *expected_query);
+  }
+
+  SECTION("Query with one with clause should parse correctly") {
+    std::string query_string = "assign a; Select a with a.stmt# = 12";
+    QueryPtr actual_query = parser.ParseQuery(query_string);
+    QueryPtr expected_query = BuildQuery(
+        {{"a", PQL::kAssignEntityName}},
+        {"a"});
+
+    // TODO(JL): Update after creating WITH clause
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -114,28 +152,35 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
+
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("6"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"variable\"")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_\"x\"_")));
 
@@ -157,43 +202,128 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("6"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("3"),
             expected_query->CreateArgument("v")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x+y\"")));
     expected_query->add_clause(
-        std::make_unique<ModifiesClause>(
+        master_clause_factory.Create(
+            PQL::kModifiesRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("_")));
     expected_query->add_clause(
-        std::make_unique<PatternClause>(
+        master_clause_factory.Create(
+            PQL::kPatternRelName,
             expected_query->CreateArgument("a"),
             expected_query->CreateArgument("\"x\"")));
 
     REQUIRE(*actual_query == *expected_query);
   }
 
-    // TODO(JL): outdated, update, should parse correctly for Milestone2
-  SECTION("Query with wrong order of states should "
-          "throw PqlSyntaxErrorException") {
-    // Pattern should not be before such-that
-    std::string query_string = "variable v; procedure p; "
-                               "Select v, p pattern a(_, \"x + y\") "
+    // In the following testcases, it is too verbose to create the
+    // full expected clause as the queries are much longer,
+    // so will just be testing NoThrows or Throws.
+    // The previous testcases cover whether the expected query has the
+    // correct clauses.
+  SECTION("Query with pattern before such-that should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v)";
 
-    REQUIRE_THROWS_AS(
-        parser.ParseQuery(query_string),
-        PqlSyntaxErrorException);
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with interleaving clauses of different types"
+          "should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "pattern a(v, _\"x\"_) "
+                               "with 12 = \"test\" "
+                               "such that Uses(6, v) "
+                               "with a.stmt# = c.value "
+                               "pattern a(_, _)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with mix of using 'and' and no 'and' "
+          "should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "and Uses(6, v) "
+                               "such that Parent(6, 7)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with interleaving clauses of different types"
+          "and with 'and' should parse correctly") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "pattern a(v, _\"x\"_) "
+                               "and pattern a(_, \"x\") "
+                               "such that Uses(6, v) "
+                               "and Parent(6, 7)";
+
+    TestNoThrows(query_string);
+  }
+
+    /* ============ ERROR CASES =============== */
+  SECTION("Query with both 'and' and 'such-that'"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "such that Modifies(6, v) "
+                               "and such that Uses(6, v)";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between such-that and pattern"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v such that Modifies(6, v) "
+                               "and pattern a(v, _\"x\"_)";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between pattern and with"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v pattern a(_, \"x + y\") "
+                               "and with a.stmt# = c.value";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with using 'and' to connect "
+          "between such-that and with"
+          "should throw error") {
+    std::string query_string = "variable v;"
+                               "Select v such that Modifies(6, v) "
+                               "and with a.stmt# = c.value";
+
+    TestThrows(query_string);
   }
 }

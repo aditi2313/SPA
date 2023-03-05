@@ -57,13 +57,17 @@ class Lexer {
   bool IsDoubleCond();
 
   std::string get_ident() { return data_.get_ident(); }
+  std::string get_current_procedure() { return data_.get_current_procedure(); }
   int get_integer() { return data_.get_int(); }
+
+  void set_current_procedure(std::string proc) {
+    data_.set_current_procedure(proc);
+  }
 
  private:
   LexerData data_;
 
-  // storing program in here to improve effeciency
-  // of peek
+  // storing program here to improve efficiency of Peek()
   std::string program_;
   std::list<std::unique_ptr<LexerHandler>> handlers;
 };

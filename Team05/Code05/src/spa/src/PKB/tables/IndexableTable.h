@@ -36,6 +36,8 @@ class IndexableTable {
 
   inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
 
+  inline const T &get_row(IntOrStringVariant v) const { return table.at(v); }
+
   inline const std::unordered_set<IntOrStringVariant> &get_indexes() const {
     return indexes_;
   }
@@ -49,8 +51,7 @@ class IndexableTable {
   friend bool operator==(const IndexableTable &LHS, const IndexableTable &RHS) {
     if (LHS.get_indexes() != RHS.get_indexes()) return false;
     for (auto &index : LHS.get_indexes()) {
-      if (!(LHS.get_row(index) == RHS.get_row(index)))
-        return false;
+      if (!(LHS.get_row(index) == RHS.get_row(index))) return false;
     }
     return true;
   }

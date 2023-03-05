@@ -61,9 +61,12 @@ class DeclarationParseState : public RecursiveParseState {
  public:
   DeclarationParseState()
       : RecursiveParseState("",
-                            {PQL::kDesignEntityGrammar, PQL::kSynGrammar,
-                             PQL::kRecurseGrammar, ";"},
-                            ",") {
+                            {
+                                PQL::kDesignEntityGrammar,
+                                PQL::kSynGrammar,
+                                PQL::kRecurseGrammar,
+                                PQL::kSemicolonToken},
+                            PQL::kCommaToken) {
     kExceptionMessage = "Invalid PQL syntax in declaration";
     kRecurseBegin = next(grammar_.begin());
   }
@@ -77,10 +80,11 @@ class TupleParseState : public RecursiveParseState {
  public:
   TupleParseState() :
       RecursiveParseState(PQL::kTupleSelectOpen,
-                          {PQL::kTupleSelectOpen,
-                           PQL::kSynGrammar,
-                           PQL::kRecurseGrammar,
-                           PQL::kTupleSelectClose},
+                          {
+                              PQL::kTupleSelectOpen,
+                              PQL::kSynGrammar,
+                              PQL::kRecurseGrammar,
+                              PQL::kTupleSelectClose},
                           ",") {
     kExceptionMessage = "Invalid PQL syntax in tuple";
     kRecurseBegin = next(grammar_.begin());
@@ -93,7 +97,10 @@ class TupleParseState : public RecursiveParseState {
 // tuple | BOOLEAN
 class SelectParseState : public ParseState {
  public:
-  SelectParseState() : ParseState("Select", {"Select", PQL::kSelectGrammar}) {
+  SelectParseState() : ParseState(PQL::kSelectToken,
+                                  {
+                                      PQL::kSelectToken,
+                                      PQL::kSelectGrammar}) {
     kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
 
@@ -108,13 +115,18 @@ class SelectParseState : public ParseState {
 class SuchThatParseState : public RecursiveParseState {
  public:
   SuchThatParseState()
-      : RecursiveParseState("such",
-                            {"such", "that", PQL::kRelRefGrammar,
-                             "(",
-                             PQL::kArgumentGrammar, ",", PQL::kArgumentGrammar,
-                             ")",
-                             PQL::kRecurseGrammar},
-                            "and") {
+      : RecursiveParseState(PQL::kSuchToken,
+                            {
+                                PQL::kSuchToken,
+                                PQL::kThatToken,
+                                PQL::kRelRefGrammar,
+                                PQL::kOpenBktToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCommaToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCloseBktToken,
+                                PQL::kRecurseGrammar},
+                            PQL::kAndToken) {
     kExceptionMessage = "Invalid PQL syntax in such-that clause";
     kRecurseBegin = next(grammar_.begin(), 2);
     // Allow state to end on PQL::kRecurseGrammar
@@ -130,12 +142,17 @@ class SuchThatParseState : public RecursiveParseState {
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
-      : RecursiveParseState("pattern",
-                            {"pattern", PQL::kSynGrammar,
-                             "(",
-                             PQL::kArgumentGrammar, ",", PQL::kExprGrammar,
-                             ")",
-                             PQL::kRecurseGrammar}, "and") {
+      : RecursiveParseState(PQL::kPatternToken,
+                            {
+                                PQL::kPatternToken,
+                                PQL::kSynGrammar,
+                                PQL::kOpenBktToken,
+                                PQL::kArgumentGrammar,
+                                PQL::kCommaToken,
+                                PQL::kExprGrammar,
+                                PQL::kCloseBktToken,
+                                PQL::kRecurseGrammar},
+                            PQL::kAndToken) {
     kExceptionMessage = "Invalid PQL syntax in pattern clause";
     kRecurseBegin = grammar_.begin();
     // Allow state to end on PQL::kRecurseGrammar

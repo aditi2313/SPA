@@ -54,7 +54,7 @@ class CFG {
   CFGNode& GetFirstChild(CFGNode& node);
   CFGNode& GetSecondChild(CFGNode& node);
 
-  CFGNode& get_root() { return nodes_[0]; }
+  CFGNode& get_root() { return nodes_.at(0); }
 
   /// <summary>
   /// Function for obtaining the non empty children of the provided

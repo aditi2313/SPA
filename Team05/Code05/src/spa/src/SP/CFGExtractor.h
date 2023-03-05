@@ -21,9 +21,6 @@ class CFGExtractor : public PKBWriter {
   }
 
   void WriteNext(cfg::CFGNode& node, cfg::CFG& cfg) {
-    if (node.is_empty() && !node.HasFirstChild() && !node.HasSecondChild()) {
-      return;
-    }
     if (node.is_empty()) {
       if (node.HasFirstChild()) WriteNext(cfg.GetFirstChild(node), cfg);
       return;

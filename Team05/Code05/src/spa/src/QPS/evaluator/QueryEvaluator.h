@@ -12,20 +12,13 @@ namespace qps {
 class QueryEvaluator {
  public:
   explicit QueryEvaluator(pkb::PKBReadPtr &pkb)
-      : pkb_(pkb),
-        master_entity_factory_(std::make_unique<MasterEntityFactory>(pkb)) {}
+      : pkb_(pkb) {}
 
   QueryResultPtr EvaluateQuery(
       QueryPtr &query);
 
  private:
-  void InitializeEntitiesFromArgument(
-      ArgumentPtr &arg,
-      EntityName entity_name,
-      EntitySet &result);
-
   pkb::PKBReadPtr &pkb_;
-  std::unique_ptr<MasterEntityFactory> master_entity_factory_;
   Table table_;
 };
 }  // namespace qps

@@ -16,10 +16,5 @@ class Validator {
   static void ValidateClauseArguments(QueryPtr &query);
   static void ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query);
   static void ValidateSynonymsUsedAreDeclared(QueryPtr &query);
-  static void ValidateArgumentSynonymDeclared(
-      QueryPtr &query, ArgumentPtr &arg);
-  static void ValidateArgumentSynonymType(ArgumentPtr &arg,
-                                          EntityName expected_entity_name,
-                                          bool is_exact_match);
 };
 }  // namespace qps

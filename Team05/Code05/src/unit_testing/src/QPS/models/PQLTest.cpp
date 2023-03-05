@@ -20,7 +20,7 @@ TEST_CASE("Test PQL") {
     REQUIRE(PQL::is_pattern_wildcard("\"x\"_") == false);
     REQUIRE(PQL::is_pattern_wildcard("_\"x\"") == false);
 
-    REQUIRE(PQL::is_rel_ref("Modifies") == true);
+    REQUIRE(PQL::is_rel_name("Modifies") == true);
   };
 }
 

@@ -67,9 +67,7 @@ class Entity {
   }
 
   inline bool WeakEqual(const Entity &other) const {
-    return value_ == other.value_
-        && PQL::get_base_entity_name(entity_name_)
-            == PQL::get_base_entity_name(other.entity_name_);
+    return value_ == other.value_;
   }
 
   inline std::size_t hash() const {

@@ -1,0 +1,5 @@
+1 - 2 args
+procedure p, q;
+Select <p, q> such that Affects (p, q)
+2 3
+5000

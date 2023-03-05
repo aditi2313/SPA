@@ -18,7 +18,7 @@ CFGNode& CFG::AddChild(CFGNode& parent, int start_line, int end_line) {
 CFGNode& CFG::AddNode() {
   int id = program_->GetAndIncrementId();
   id_to_indexes_[id] = nodes_.size();
-  nodes_.push_back(CFGNode(id));
+  nodes_.push_back(CFGNode(id, *this));
   return nodes_.at(id);
 }
 

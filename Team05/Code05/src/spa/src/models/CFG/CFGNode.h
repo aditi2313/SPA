@@ -20,7 +20,7 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline const std::vector<int>& get_lines() const {
+  inline std::vector<int>& get_lines() {
     if (lines_.size() != 0) {
       return lines_;
     }

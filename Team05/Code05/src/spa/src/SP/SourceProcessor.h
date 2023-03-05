@@ -78,8 +78,6 @@ class SourceProcessor {
     cfg_extractor.WriteCFG(*cfg);
     writer = cfg_extractor.EndVisit();
 
-    
-
     pkb_relation = writer->ProcessTableAndEndWrite();
   }
 };

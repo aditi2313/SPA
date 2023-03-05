@@ -50,12 +50,11 @@ TEST_CASE("Test generation of next for program") {
 TEST_CASE("Deep while nest") {
   test_next({{1, 2}, {2, 1}, {2, 3}, {3, 2}, {4, 5}, {6, 4}, {5, 6}, {7, 8}},
             "procedure proc {"
-            "while (x > 1000) {"                    // 1
-            "while (x < 1000) {"                    // 2
-            "while (k > 21) {"                      // 3
-            "while (k < 2) {"                       // 4
-            "read x;"                               // 5
-            "print x; }}}}}"                        // 6
-            "procedure extra { read x; print x; }"  // 7, 8
-  );
+            "while (x > 1000) {"                      // 1
+            "while (x < 1000) {"                      // 2
+            "while (k > 21) {"                        // 3
+            "while (k < 2) {"                         // 4
+            "read x;"                                 // 5
+            "print x; }}}}}"                          // 6
+            "procedure extra { read x; print x; }");  // 7, 8
 }

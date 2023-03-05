@@ -113,6 +113,21 @@ class PQL {
         && is_pattern_exact(str.substr(1, str.size() - 2));
   }
 
+  inline static std::string kSemicolonToken = ";";
+  inline static std::string kCommaToken = ",";
+  inline static std::string kSelectToken = "Select";
+  inline static std::string kSuchToken = "such";
+  inline static std::string kThatToken = "that";
+  inline static std::string kOpenBktToken = "(";
+  inline static std::string kCloseBktToken = ")";
+  inline static std::string kAndToken = "and";
+  // It is the same string but it is possible for it to change
+  // so these are two separate constants
+  inline static std::string kPatternToken = kPatternRelName;
+
+  // Grammars are tokens with special meaning and actions
+  // attached to them. They are not meant to be compared
+  // literally.
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";

@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 
+#include "common/Utiity.h"
+
 namespace cfg {
 
 class CFGNode;
@@ -23,14 +25,13 @@ class CFGNode {
   }
   inline std::vector<int>& get_lines() { return lines_; }
 
-  inline util::BoundedInt end() {
+  inline util::BoundedInt back() {
     return util::BoundedInt(end_line_, end_line_, start_line_);
   }
 
-  inline util::BoundedInt begin() {
+  inline util::BoundedInt front() {
     return util::BoundedInt(start_line_, end_line_, start_line_);
   }
-
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
     return LHS.id_ == RHS.id_ && LHS.end_line_ == RHS.end_line_ &&

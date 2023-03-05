@@ -66,21 +66,31 @@ class BoundedInt {
   int operator*() const { return val_; }
 
   BoundedInt &operator++() {
-    if (val_ == max_) return *this;
     val_++;
     return *this;
   }
 
   BoundedInt operator++(int) {
-    if (val_ == max_) return *this;
     BoundedInt tmp = *this;
     ++(*this);
     return tmp;
   }
 
-  friend bool operator==(const BoundedInt &LHS, const BoundedInt &RHS) {
-    return LHS.val_ == RHS.val_;
+  BoundedInt operator+(int v) {
+    BoundedInt other = *this;
+    other.val_ += v;
+    return other;
   }
+
+  friend bool operator==(const BoundedInt &LHS, const BoundedInt &RHS) {
+    return LHS.val_ == RHS.val_ && RHS.min_ == LHS.min_ && RHS.max_ == LHS.max_;
+  }
+
+  friend bool operator!=(const BoundedInt &LHS, const BoundedInt &RHS) {
+    return !(RHS == LHS);
+  }
+
+  inline bool ExceedBound() { return val_ > max_ || val_ < min_; }
 
   inline bool IsMax() { return val_ == max_; }
 

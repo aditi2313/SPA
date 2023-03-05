@@ -22,7 +22,7 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
   }
 
   for (auto& proc : topological_order) {
-    auto merged_uses = direct_uses_[proc];
+    auto& merged_uses = direct_uses_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_uses.merge(direct_uses_[called_proc]);
     }

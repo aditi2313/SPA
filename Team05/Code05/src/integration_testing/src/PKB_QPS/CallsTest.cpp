@@ -23,9 +23,9 @@ std::unique_ptr<PKBRead> InitializePKBForCalls(
   PKBWrite pkb_write(std::move(table));
 
   // Seed testing data
-  for (auto [caller, calls] : data) {
+  for (auto [caller, callees] : data) {
     pkb_write.add_procedure(caller);
-    for (auto callee : calls) {
+    for (auto callee : callees) {
       pkb_write.add_procedure(callee);
       pkb_write.AddCallsData(caller, callee);
     }

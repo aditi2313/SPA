@@ -124,6 +124,14 @@ TEST_CASE("Test synonym types for each clause are valid") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
+  SECTION("Valid synonym types for Next Clause") {
+    std::string query_str = "stmt s1, s2; "
+                            "Select s1 such that Next(s1, s2)";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
   SECTION("Invalid synonym types for Modifies Clause should throw error") {
     std::string query_str = "variable v; "
                             "Select v such that Modifies(v, \"var\")";
@@ -144,6 +152,15 @@ TEST_CASE("Test synonym types for each clause are valid") {
   SECTION("Invalid synonym types for Calls Clause should throw error") {
     std::string query_str = "procedure p1; variable p2;"
                             " Select p1 such that Calls(p1, p2)";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid synonym types for Next Clause should throw error") {
+    std::string query_str = "stmt s1; constant s2;"
+                            "Select s1 such that Next(s1, s2)";
     QueryPtr query = parser.ParseQuery(query_str);
 
     REQUIRE_THROWS_AS(Validator::Validate(query),

@@ -47,19 +47,10 @@ class IndexableTable {
   inline bool empty() { return table_.empty(); }
 
   friend bool operator==(const IndexableTable &LHS, const IndexableTable &RHS) {
-    for (auto &[key, value] : LHS.table_) {
-      if (!RHS.exists(key)) {
+    if (LHS.get_indexes() != RHS.get_indexes()) return false;
+    for (auto &index : LHS.get_indexes()) {
+      if (!(LHS.get_row(index) == RHS.get_row(index)))
         return false;
-      }
-      const T val = RHS.table_.at(key);
-      if (!(val == value)) return false;
-    }
-    for (auto &[key, value] : RHS.table_) {
-      if (!LHS.exists(key)) {
-        return false;
-      }
-      const T val = LHS.table_.at(key);
-      if (!(val == value)) return false;
     }
     return true;
   }

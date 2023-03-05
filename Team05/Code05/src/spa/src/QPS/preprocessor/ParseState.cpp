@@ -128,7 +128,8 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// pattern ( 'and' pattern )*
+// pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
 void PatternParseState::Parse(const std::vector<std::string> &tokens,
                               parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
@@ -159,6 +160,29 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
           std::move(arg1),
           std::move(arg3)));
     }
+
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
+    }
+    itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
+}
+
+// 'with' attrCompare '(' and ',' attrCompare ')'
+void WithParseState::Parse(const std::vector<std::string> &tokens,
+                           parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  std::string rel_ident;
+  ArgumentPtr arg1, arg2;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    // TODO(JL): Add logic for creating With Clauses
 
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);

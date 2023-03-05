@@ -63,7 +63,12 @@ class BoundedInt {
     assert(val <= max && val >= min);
   }
 
-  int operator*() const { return val_; }
+  int operator*() const {
+    if (ExceedBound()) {
+      throw std::out_of_range("Bound exceeded in bounded int.");
+    }
+    return val_;
+  }
 
   BoundedInt &operator++() {
     val_++;
@@ -90,11 +95,11 @@ class BoundedInt {
     return !(RHS == LHS);
   }
 
-  inline bool ExceedBound() { return val_ > max_ || val_ < min_; }
+  inline bool ExceedBound() const { return val_ > max_ || val_ < min_; }
 
-  inline bool IsMax() { return val_ == max_; }
+  inline bool IsMax() const { return val_ == max_; }
 
-  inline bool IsMin() { return val_ == min_; }
+  inline bool IsMin() const { return val_ == min_; }
 
  private:
   int val_;

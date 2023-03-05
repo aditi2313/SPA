@@ -6,9 +6,7 @@ namespace cfg {
 
 CFG::CFG(ProgramCFG* program) {
   program_ = program;
-  int id = program->GetAndIncrementId();
-  nodes_.push_back(CFGNode(id));
-  id_to_indexes_[id] = 0;
+  AddNode();
 }
 
 CFGNode& CFG::AddChild(CFGNode& parent, int start_line, int end_line) {

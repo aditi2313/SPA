@@ -4,21 +4,14 @@
 #include <memory>
 #include <vector>
 
-#include "common/Utiity.h"
-
-namespace sp {
-class CFGVisitor;
-}
-
 namespace cfg {
 
 class CFGNode;
+class CFG;
 
 typedef int CFGNodeId;
 const CFGNodeId kEmptyId = -1;
 const int kInvalidLine = -1;
-
-typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
@@ -28,6 +21,7 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
+  inline std::vector<int>& get_lines() { return lines_; }
 
   inline util::BoundedInt end() {
     return util::BoundedInt(end_line_, end_line_, start_line_);
@@ -37,14 +31,6 @@ class CFGNode {
     return util::BoundedInt(start_line_, end_line_, start_line_);
   }
 
-  inline std::vector<int> get_lines() const {
-    if (is_empty()) return std::vector<int>(0, 0);
-    std::vector<int> result(end_line_ - start_line_ + 1, 0);
-    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
-      result[j] = i;
-    }
-    return result;
-  }
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
     return LHS.id_ == RHS.id_ && LHS.end_line_ == RHS.end_line_ &&
@@ -58,10 +44,22 @@ class CFGNode {
   }
 
  private:
-  explicit CFGNode(int id) : id_(id) {}
-  CFGNode(int start, int end, int id)
-      : id_(id), start_line_(start), end_line_(end) {
+  inline void InitialiseLines() {
+    if (lines_.size() != 0) {
+      return;
+    }
+    if (is_empty()) return;
+    lines_.assign(end_line_ - start_line_ + 1, 0);
+
+    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
+      lines_[j] = i;
+    }
+  }
+  explicit CFGNode(int id, CFG& cfg) : id_(id), cfg_(cfg) {}
+  CFGNode(int start, int end, int id, CFG& cfg)
+      : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
+    InitialiseLines();
   }
   void add_child(CFGNode& child) {
     if (first_child_ == kEmptyId) {
@@ -75,10 +73,12 @@ class CFGNode {
   int get_first_child() const { return first_child_; }
   int get_second_child() const { return second_child_; }
   int id_;
+  std::vector<int> lines_;
   int start_line_ = kInvalidLine;
   int end_line_ = kInvalidLine;
   CFGNodeId first_child_ = kEmptyId;
   CFGNodeId second_child_ = kEmptyId;
+  CFG& cfg_;
   friend class CFG;
 };
 

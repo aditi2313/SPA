@@ -74,19 +74,19 @@ class CFG {
     }
     std::vector<CFGNode*> result;
     if (node.HasFirstChild()) {
-      auto& curr = GetFirstChild(node);
-      while (curr.is_empty()) {
-        curr = GetFirstChild(curr);
+      auto* curr = &GetFirstChild(node);
+      while (curr->is_empty()) {
+        curr = &GetFirstChild(*curr);
       }
-      result.push_back(&curr);
+      result.push_back(curr);
     }
 
     if (node.HasSecondChild()) {
-      auto& curr = GetSecondChild(node);
-      while (curr.is_empty()) {
-        curr = GetFirstChild(curr);
+      auto* curr = &GetSecondChild(node);
+      while (curr->is_empty()) {
+        curr = &GetFirstChild(*curr);
       }
-      result.push_back(&curr);
+      result.push_back(curr);
     }
     return result;
   }

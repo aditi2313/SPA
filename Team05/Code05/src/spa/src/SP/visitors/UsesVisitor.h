@@ -20,9 +20,9 @@ class UsesVisitor : public PKBWritingVisitor {
 
   void Process(ast::PrintNode* print_node) override;
 
-  void Process(ast::IfNode* if_node) override;
+  void ProcessAft(ast::IfNode* if_node) override;
 
-  void Process(ast::WhileNode* while_node) override;
+  void ProcessAft(ast::WhileNode* while_node) override;
 
  private:
   void AddVariablesFromStmtList(ast::StmtLstNode& node,

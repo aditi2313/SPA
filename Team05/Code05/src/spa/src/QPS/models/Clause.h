@@ -29,7 +29,8 @@ class Clause {
   static void Index(
       const Entity &index,
       std::function
-          <std::unique_ptr<pkb::IndexableTable<Data>>(int)> pkb_read_function,
+          <std::unique_ptr<pkb::IndexableTable<Data>>(
+              Entity::Value)> pkb_read_function,
       std::function<void(EntitySet &, Data)> add_function,
       EntitySet &results);
 

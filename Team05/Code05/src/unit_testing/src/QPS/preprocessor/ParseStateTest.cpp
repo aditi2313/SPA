@@ -272,20 +272,32 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+  SECTION("Such that clause with 'and' should parse correctly") {
+    std::vector<std::string> tokens{"such", "that",
+                                    "Uses", "(", "6", ",", "v", ")",
+                                    "and",
+                                    "Modifies", "(", "6", ",", "v", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    std::vector<ClausePtr> expected_clauses;
+    expected_clauses.push_back(std::make_unique<UsesClause>(
+        query->CreateArgument("6"), query->CreateArgument("v")));
+    expected_clauses.push_back(std::make_unique<ModifiesClause>(
+        query->CreateArgument("6"), query->CreateArgument("v")));
+
+    REQUIRE(util::CompareVectorOfPointers(
+        expected_clauses, query->get_clauses()));
+    REQUIRE(itr == tokens.end());
+  };
+
+
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"such", "that", "MODIFIES", "(", "6", ",", "v", ")"});
   }
 
   SECTION("Empty tokens should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {});
-  }
-
-  SECTION("Missing semi-colon should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"Modifies", "(", "6", ",", "v", ")"});
-  }
-
-  SECTION("Missing bracket should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"Modifies", "(", "6", ",", "v", ";"});
   }
 }
 
@@ -345,6 +357,30 @@ TEST_CASE("Test PatternParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+  SECTION("Pattern clause with 'and' should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "a", "(", "_", ",", "\"x + y\"", ")",
+        "and",
+        "pattern", "a1", "(", "variable", ",", "_\"x\"_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    std::vector<ClausePtr> expected_clauses;
+    expected_clauses.push_back(std::make_unique<ModifiesClause>(
+        query->CreateArgument("a"), query->CreateArgument("_")));
+    expected_clauses.push_back(std::make_unique<PatternClause>(
+        query->CreateArgument("a"), query->CreateArgument("\"x + y\"")));
+    expected_clauses.push_back(std::make_unique<ModifiesClause>(
+        query->CreateArgument("a1"), query->CreateArgument("variable")));
+    expected_clauses.push_back(std::make_unique<PatternClause>(
+        query->CreateArgument("a1"), query->CreateArgument("_\"x\"_")));
+
+    REQUIRE(util::CompareVectorOfPointers(
+        expected_clauses, query->get_clauses()));
+    REQUIRE(itr == tokens.end());
+  };
+
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"PATTERN", "a", "(", "_", ",", "x + y", ")"});
   };
@@ -365,4 +401,3 @@ TEST_CASE("Test PatternParseState") {
     TestErrorCase(state, {"pattern", "a", "(", "_", ",", "_\" +temp\"_"});
   }
 }
-

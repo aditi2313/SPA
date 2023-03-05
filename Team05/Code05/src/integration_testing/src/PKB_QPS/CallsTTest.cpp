@@ -115,7 +115,8 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
 
     std::list<std::string> expected_results{
         "proc1 proc2", "proc1 proc3", "proc1 proc4",
-        "proc2 proc3", "proc2 proc4", "proc3 proc4"};
+        "proc2 proc3", "proc2 proc4",
+        "proc3 proc4"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 

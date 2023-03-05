@@ -7,9 +7,9 @@
 #include "data/AssignData.h"
 #include "data/FollowsData.h"
 #include "data/ModifiesData.h"
+#include "data/NextData.h"
 #include "data/ParentData.h"
 #include "data/UsesData.h"
-#include "data/NextData.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "tables/IndexableTable.h"
 
@@ -43,6 +43,23 @@ class PKBRelationTable {
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
 
+  friend bool operator==(const PKBRelationTable& LHS,
+                         const PKBRelationTable& RHS) {
+    return LHS.modifies_table_ == RHS.modifies_table_ &&
+           LHS.follows_table_ == RHS.follows_table_ &&
+           LHS.parent_table_ == RHS.parent_table_ &&
+           LHS.uses_table_ == RHS.uses_table_ &&
+           LHS.assign_table_ == RHS.assign_table_ &&
+           LHS.calls_table_ == RHS.calls_table_ &&
+           LHS.next_table_ == RHS.next_table_ &&
+           LHS.constants_ == RHS.constants_ && LHS.whiles_ == RHS.whiles_ &&
+           LHS.stmts_ == RHS.stmts_ && LHS.calls_ == RHS.calls_ &&
+           LHS.assign_ == RHS.assign_ && LHS.read_ == RHS.read_ &&
+           LHS.print_ == RHS.print_ && LHS.if_ == RHS.if_ &&
+           LHS.variables_ == RHS.variables_ &&
+           LHS.procedures_ == RHS.procedures_;
+  }
+
   void add_modifies_data(const std::variant<int, std::string> line,
                          const std::unordered_set<std::string>& variables) {
     modifies_table_.add_row(line, ModifiesData(line, variables));
@@ -71,19 +88,18 @@ class PKBRelationTable {
     parent_table_.get_row(line).add_direct_child(child_line);
   }
 
-  void add_calls_data(const std::string caller,
-                      const std::string callee) {
-      if (!calls_table_.exists(caller)) {
-          calls_table_.add_row(caller, CallsData(caller));
-      }
-      calls_table_.get_row(caller).add_to_direct_calls(callee);
+  void add_calls_data(const std::string caller, const std::string callee) {
+    if (!calls_table_.exists(caller)) {
+      calls_table_.add_row(caller, CallsData(caller));
+    }
+    calls_table_.get_row(caller).add_to_direct_calls(callee);
   }
 
   void add_next_data(const int line, const int next) {
-      if (!next_table_.exists(line)) {
-          next_table_.add_row(line, NextData(line));
-      }
-      next_table_.get_row(line).add_to_next_im_list(next);
+    if (!next_table_.exists(line)) {
+      next_table_.add_row(line, NextData(line));
+    }
+    next_table_.get_row(line).add_to_next_im_list(next);
   }
 };
 }  // namespace pkb

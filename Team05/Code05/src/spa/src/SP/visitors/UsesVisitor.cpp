@@ -30,12 +30,10 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
   }
 }
 
-// Collects the vars that the procedure uses directly
 void UsesVisitor::Process(ast::ProcNode* proc_node) {
-  VarCollector var_collector;
-  proc_node->AcceptVisitor(&var_collector);
-  std::unordered_set<std::string> vars = var_collector.get_vars();
-  direct_uses_.insert({proc_node->get_name(), vars});
+  // Set the current procedure name so that we can insert variables
+  // used directly by the procedure
+  current_procedure_ = proc_node->get_name();
 }
 
 void UsesVisitor::Process(ast::AssignNode* assign_node) {
@@ -44,11 +42,13 @@ void UsesVisitor::Process(ast::AssignNode* assign_node) {
   expr_node->AcceptVisitor(&var_collector);
   std::unordered_set<std::string> vars = var_collector.get_vars();
   pkb_ptr_->AddUsesData(assign_node->get_line(), vars);
+  direct_uses_[current_procedure_].merge(vars);
 }
 
 void UsesVisitor::Process(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
+  direct_uses_[current_procedure_].merge(vars);
 }
 
 void UsesVisitor::Process(ast::IfNode* if_node) {
@@ -62,6 +62,7 @@ void UsesVisitor::Process(ast::IfNode* if_node) {
   AddVariablesFromStmtList(*(if_node->get_else()), vars);
 
   pkb_ptr_->AddUsesData(if_node->get_line(), vars);
+  direct_uses_[current_procedure_].merge(vars);
 }
 
 void UsesVisitor::Process(ast::WhileNode* while_node) {
@@ -73,6 +74,7 @@ void UsesVisitor::Process(ast::WhileNode* while_node) {
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
   pkb_ptr_->AddUsesData(while_node->get_line(), vars);
+  direct_uses_[current_procedure_].merge(vars);
 }
 
 void UsesVisitor::Process(ast::CallNode* call_node) {

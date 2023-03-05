@@ -41,5 +41,6 @@ class UsesVisitor : public PKBWritingVisitor {
   std::unordered_map<std::string, std::unordered_set<std::string>> called_by_;
   // Mapping from a procedure to the calls within the procedure
   std::unordered_map<std::string, std::unordered_set<std::string>> proc_calls_;
+  std::string current_procedure_;
 };
 }  // namespace sp

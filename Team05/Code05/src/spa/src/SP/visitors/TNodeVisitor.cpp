@@ -7,6 +7,7 @@ void TNodeVisitor::VisitProgram(ast::ProgramNode* program_node) {
   for (auto& child : program_node->get_children()) {
     child->AcceptVisitor(this);
   }
+  ProcessAfter(program_node);
 }
 
 void TNodeVisitor::VisitProc(ast::ProcNode* proc_node) {

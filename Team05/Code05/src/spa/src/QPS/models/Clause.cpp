@@ -170,5 +170,59 @@ void PatternClause::Index(
       results);
 }
 
+void CallsClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::CallsData>(
+      index,
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<CallsIndexFilter>(key);
+        return std::move(pkb->Calls(std::move(filter))->get_result());
+      },
+      [&](EntitySet &result, pkb::CallsData data) {
+        for (auto child : data.get_direct_calls()) {
+          result.insert(Entity(child));
+        }
+      },
+      results);
+}
+
+void CallsTClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::CallsData>(
+      index,
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<CallsIndexFilter>(key);
+        return std::move(pkb->Calls(std::move(filter))->get_result());
+      },
+      [&](EntitySet &result, pkb::CallsData data) {
+        for (auto child : data.get_total_calls()) {
+          result.insert(Entity(child));
+        }
+      },
+      results);
+}
+
+void NextClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::NextData>(
+      index,
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<NextIndexFilter>(key);
+        return std::move(pkb->Next(std::move(filter))->get_result());
+      },
+      [&](EntitySet &result, pkb::NextData data) {
+        for (auto child : data.get_next_im_list()) {
+          result.insert(Entity(child));
+        }
+      },
+      results);
+}
+
 Clause::~Clause() = default;
 }  // namespace qps

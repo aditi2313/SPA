@@ -184,6 +184,30 @@ class ParentTClause : public Clause {
              EntitySet &results) override;
 };
 
+class CallsClause : public Clause {
+ public:
+  CallsClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {
+    rel_name_ = PQL::kCallsRelName;
+  }
+
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
+};
+
+class CallsTClause : public Clause {
+ public:
+  CallsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {
+    rel_name_ = PQL::kCallsTRelName;
+  }
+
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
+};
+
 using ClausePtr = std::unique_ptr<Clause>;
 
 }  // namespace qps

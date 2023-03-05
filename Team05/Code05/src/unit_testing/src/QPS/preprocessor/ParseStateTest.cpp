@@ -269,6 +269,36 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+  SECTION("Such that clause for Calls should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Calls",
+                                    "(", "\"proc1\"", ",", "\"proc2\"", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kCallsRelName,
+        query->CreateArgument("\"proc1\""),
+        query->CreateArgument("\"proc2\""));
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Such that clause for CallsT should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Calls*",
+                                    "(", "\"proc1\"", ",", "\"proc2\"", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kCallsTRelName,
+        query->CreateArgument("\"proc1\""),
+        query->CreateArgument("\"proc2\""));
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
   SECTION("Such that clause with 'and' should parse correctly") {
     std::vector<std::string> tokens{"such", "that",
                                     "Uses", "(", "6", ",", "v", ")",

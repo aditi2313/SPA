@@ -34,8 +34,8 @@ class CFGExtractor : public PKBWriter {
     if (visited.count(last_line)) {
       return;
     }
-    for (int i = 0, j = 1; j < lines.size(); ++j, ++i) {
-      pkb_ptr_->AddNextData(lines[i], lines[j]);
+    for (int i = 0; i < lines.size() - 1; ++i) {
+      pkb_ptr_->AddNextData(lines[i], lines[i + 1]);
     }
 
     visited.insert(last_line);
@@ -53,6 +53,7 @@ class CFGExtractor : public PKBWriter {
   void WriteToNext(cfg::CFGNode& node, cfg::CFG& cfg, int last_line) {
     cfg::CFGNode* curr = &node;
     while (curr->is_empty()) {
+      if (!curr->HasFirstChild()) return;
       curr = &cfg.GetFirstChild(*curr);
     }
     pkb_ptr_->AddNextData(last_line, curr->get_lines().at(0));

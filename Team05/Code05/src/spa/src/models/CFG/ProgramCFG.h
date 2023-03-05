@@ -1,8 +1,8 @@
 #pragma once
 
+#include <cassert>
 #include <string>
 #include <unordered_map>
-#include <cassert>
 
 #include "CFG.h"
 
@@ -17,7 +17,7 @@ class ProgramCFG {
   /// <param name="proc">The procedure name to add.</param>
   /// <returns></returns>
   CFG& add_procedure(std::string proc) {
-    procedure_to_cfg_map_[proc] = CFG(this);
+    procedure_to_cfg_map_.insert(std::make_pair(proc, CFG(this)));
     return procedure_to_cfg_map_.at(proc);
   }
 
@@ -26,9 +26,7 @@ class ProgramCFG {
   /// </summary>
   /// <param name="proc">The procedure to add.</param>
   /// <returns></returns>
-  CFG& get_cfg(std::string proc) {
-    return procedure_to_cfg_map_.at(proc);
-  }
+  CFG& get_cfg(std::string proc) { return procedure_to_cfg_map_.at(proc); }
 
   /// <summary>
   /// Gets the cfg node that contains the given line number.

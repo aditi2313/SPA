@@ -19,7 +19,7 @@ CFGNode& CFG::AddNode() {
   int id = program_->GetAndIncrementId();
   id_to_indexes_[id] = nodes_.size();
   nodes_.push_back(CFGNode(id, *this));
-  return nodes_.at(id);
+  return get_node_from_id(id);
 }
 
 CFGNode& CFG::AddNode(int start_line, int end_line) {
@@ -27,10 +27,11 @@ CFGNode& CFG::AddNode(int start_line, int end_line) {
   id_to_indexes_[id] = nodes_.size();
   nodes_.push_back(CFGNode(start_line, end_line, id, *this));
   if (start_line == -1 && end_line == -1) return nodes_.at(id);
+  CFGNode* node = &get_node_from_id(id);
   for (int i = start_line; i <= end_line; ++i) {
-    program_->AddLineToCfg(i, &(nodes_.at(id)));
+    program_->AddLineToCfg(i, node);
   }
-  return nodes_.at(id);
+  return *node;
 }
 
 CFGNode& CFG::GetFirstChild(CFGNode& node) {

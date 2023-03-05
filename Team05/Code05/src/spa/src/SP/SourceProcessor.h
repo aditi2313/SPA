@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "../models/AST/factor_node/FactorNode.h"
+#include "SP/CFGExtractor.h"
 #include "SP/parser/ProgramParser.h"
 #include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
@@ -17,7 +18,6 @@
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
 #include "visitors/CFGGeneratingVisitor.h"
-#include "SP/CFGExtractor.h"
 
 namespace sp {
 
@@ -69,6 +69,16 @@ class SourceProcessor {
     sp::FollowsVisitor fv(std::move(writer));
     root->AcceptVisitor(&fv);
     writer = fv.EndVisit();
+
+    sp::CFGGeneratingVisitor cfg_generator;
+    cfg_generator.VisitProgram(root.get());
+    auto cfg = cfg_generator.CreateCFG();
+
+    sp::CFGExtractor cfg_extractor(std::move(writer));
+    cfg_extractor.WriteCFG(*cfg);
+    writer = cfg_extractor.EndVisit();
+
+    
 
     pkb_relation = writer->ProcessTableAndEndWrite();
   }

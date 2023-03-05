@@ -16,6 +16,7 @@
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
+#include "visitors/CFGGeneratingVisitor.h"
 #include "SP/CFGExtractor.h"
 
 namespace sp {
@@ -40,7 +41,8 @@ class SourceProcessor {
     return root;
   }
 
-  static void ExtractRelationships(std::unique_ptr<ast::ProgramNode> &root,
+  static void ExtractRelationships(
+      std::unique_ptr<ast::ProgramNode> &root,
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 

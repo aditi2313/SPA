@@ -12,10 +12,10 @@
 using namespace pkb;  // NOLINT
 using namespace qps;  // NOLINT
 
-using uses_data = std::pair<int, std::unordered_set<std::string>>;
+using usesS_data = std::pair<int, std::unordered_set<std::string>>;
 
 // Helper method for testing
-std::unique_ptr<PKBRead> InitializePKBForUses(std::vector<uses_data> data) {
+std::unique_ptr<PKBRead> InitializePKBForUsesS(std::vector<usesS_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -35,7 +35,7 @@ std::unique_ptr<PKBRead> InitializePKBForUses(std::vector<uses_data> data) {
 // NOTE: first argument for Uses cannot be wildcard
 TEST_CASE("Test PKB and QPS integration for UsesS clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKBForUses(
+  std::unique_ptr<PKBRead> pkb = InitializePKBForUsesS(
       {
           {10, {"a", "b", "c"}},
           {20, {"d", "e"}},

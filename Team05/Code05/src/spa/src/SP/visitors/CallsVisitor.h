@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+#include <utility>
 #include "PKBWritingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
 

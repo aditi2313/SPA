@@ -170,5 +170,41 @@ void PatternClause::Index(
       results);
 }
 
+void CallsClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::CallsData>(
+      index,
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<CallsIndexFilter>(key);
+        return std::move(pkb->Calls(std::move(filter))->get_result());
+      },
+      [&](EntitySet &result, pkb::CallsData data) {
+        for (auto child : data.get_direct_calls()) {
+          result.insert(Entity(child));
+        }
+      },
+      results);
+}
+
+void CallsTClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  Clause::Index<pkb::CallsData>(
+      index,
+      [&](Entity::Value key) {
+        auto filter = std::make_unique<CallsIndexFilter>(key);
+        return std::move(pkb->Calls(std::move(filter))->get_result());
+      },
+      [&](EntitySet &result, pkb::CallsData data) {
+        for (auto child : data.get_total_calls()) {
+          result.insert(Entity(child));
+        }
+      },
+      results);
+}
+
 Clause::~Clause() = default;
 }  // namespace qps

@@ -54,10 +54,13 @@ class PQL {
   inline static RelName kUsesRelName = "Uses";
   inline static RelName kParentRelName = "Parent";
   inline static RelName kParentTRelName = "Parent*";
+  inline static RelName kCallsRelName = "Calls";
+  inline static RelName kCallsTRelName = "Calls*";
 
   inline static std::unordered_set<std::string> kAllRelNames{
       kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
-      kParentTRelName, kUsesRelName, kPatternRelName
+      kParentTRelName, kUsesRelName, kPatternRelName,
+      kCallsRelName, kCallsTRelName
   };
 
   inline static bool is_rel_name(std::string const token) {

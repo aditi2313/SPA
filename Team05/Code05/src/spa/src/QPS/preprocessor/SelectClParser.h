@@ -16,11 +16,14 @@ class SelectClParser {
  public:
   SelectClParser() {
     // Initialize constants
-    int num_states = 4;
+    int num_states = 5;
+
     int kDeclarationIndex = 0;
     int kSelectIndex = 1;
     int kSuchThatIndex = 2;
     int kPatternIndex = 3;
+    int kWithIndex = 4;
+
 
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
@@ -30,13 +33,24 @@ class SelectClParser {
     states_.emplace_back(std::make_unique<SelectParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
     states_.emplace_back(std::make_unique<PatternParseState>());
+    states_.emplace_back(std::make_unique<WithParseState>());
 
     transition_table_.assign(num_states, std::vector<int>());
-    for (int i = 0; i < num_states - 1; ++i) {
-      transition_table_[i].push_back(i + 1);
-    }
-    transition_table_[kSelectIndex].push_back(kPatternIndex);
-    transition_table_[kPatternIndex].push_back(kSuchThatIndex);
+
+    transition_table_[kDeclarationIndex] =
+        {kSelectIndex};
+
+    transition_table_[kSelectIndex] =
+        {kSuchThatIndex, kPatternIndex, kWithIndex};
+
+    transition_table_[kSuchThatIndex] =
+        {kPatternIndex, kWithIndex};
+
+    transition_table_[kPatternIndex] =
+        {kSuchThatIndex, kWithIndex};
+
+    transition_table_[kWithIndex] =
+        {kSuchThatIndex, kPatternIndex};
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

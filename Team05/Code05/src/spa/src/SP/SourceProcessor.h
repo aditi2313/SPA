@@ -13,6 +13,7 @@
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
 #include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/CallsVisitor.h"
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
@@ -68,6 +69,10 @@ class SourceProcessor {
     sp::FollowsVisitor fv(std::move(writer));
     root->AcceptVisitor(&fv);
     writer = fv.EndVisit();
+
+    sp::CallsVisitor cv(std::move(writer));
+    root->AcceptVisitor(&cv);
+    writer = cv.EndVisit();
 
     pkb_relation = writer->ProcessTableAndEndWrite();
   }

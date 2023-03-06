@@ -9,12 +9,13 @@
 #include "SP/parser/ProgramParser.h"
 #include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
+#include "SP/visitors/CallsVisitor.h"
 #include "SP/visitors/DataVisitor.h"
 #include "SP/visitors/FollowsVisitor.h"
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
 #include "SP/visitors/UsesVisitor.h"
-#include "SP/visitors/CallsVisitor.h"
+#include "common/logging/Logger.h"
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
@@ -32,12 +33,14 @@ class SourceProcessor {
   }
 
   static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
+    logging::Logger::Start();
     sp::Lexer lxr(std::move(program));
     sp::ProgramParser program_parser;
     auto root = program_parser.parse(lxr);
 
     auto validator = ProgramValidator(root);
     validator.Validate();
+    logging::Logger::LogAndStop("End parsing program");
 
     return root;
   }
@@ -45,6 +48,7 @@ class SourceProcessor {
   static void ExtractRelationships(
       std::unique_ptr<ast::ProgramNode> &root,
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
+    logging::Logger::Start();
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 
     sp::AssignVisitor av(std::move(writer));
@@ -84,6 +88,7 @@ class SourceProcessor {
     writer = cfg_extractor.EndVisit();
 
     pkb_relation = writer->ProcessTableAndEndWrite();
+    logging::Logger::LogAndStop("End pkb writing");
   }
 };
 

@@ -98,8 +98,9 @@ class SourceProcessor {
     writer = cfg_extractor.EndVisit();
     logging::Logger::LogAndStop("Cfg extraction finished");
 
+    logging::Logger::EnterSection("Pkb Processing");
     pkb_relation = writer->ProcessTableAndEndWrite();
-    logging::Logger::LogAndStop("End pkb processing");
+    logging::Logger::ExitSection("Pkb Processing");
     logging::Logger::ExitSection("Extract Relationships");
   }
 };

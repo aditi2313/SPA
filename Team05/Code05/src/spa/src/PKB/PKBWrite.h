@@ -114,6 +114,7 @@ class PKBWrite {
   }
 
   inline std::unique_ptr<PKBRelationTable> ProcessTableAndEndWrite() {
+    logging::Logger::ResetClock();
     ProcessFollows();
     logging::Logger::LogAndStop("Processed follows");
     ProcessParent();

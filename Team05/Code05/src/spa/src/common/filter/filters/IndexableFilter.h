@@ -14,7 +14,7 @@ class IndexableFilter {
   /// Filters the given table and returns a vector of the results.
   /// </summary>
   /// <returns>The table with the filtered results</returns>
-  virtual pkb::IndexableTablePtr<T> FilterTable(pkb::IndexableTablePtr<T>) = 0;
+  virtual pkb::IndexableTablePtr<T> FilterTable(const pkb::IndexableTable<T> &) = 0;
 
   virtual ~IndexableFilter() = default;
 };

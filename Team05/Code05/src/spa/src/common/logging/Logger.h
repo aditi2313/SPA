@@ -5,7 +5,7 @@
 #include <stack>
 #include <string>
 
-using Clock = std::chrono::high_resolution_clock;
+using Clock = std::chrono::system_clock;
 using Duration = std::chrono::duration<double>;
 
 namespace logging {
@@ -24,15 +24,14 @@ class Logger {
     if (disabled) return;
     auto curr = Clock::now();
     std::chrono::duration<double> interval = curr - times_.top();
-    std::cout << desc << " " << interval.count() << " s" << std::endl;
+    std::cout << desc << " time: " << interval.count() << " s" << std::endl;
     times_.pop();
   }
 
 
- private:
-  
-  inline static bool disabled = true;
-  static std::stack<Clock::time_point> times_;
+ private:  
+  inline static bool disabled = false;
+  inline static std::stack<Clock::time_point> times_;
 };
 
 }  // namespace logging

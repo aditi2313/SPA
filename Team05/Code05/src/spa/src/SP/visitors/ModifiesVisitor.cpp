@@ -1,9 +1,6 @@
 #include "ModifiesVisitor.h"
-#include "SP/utils/TopologicalSorter.h"
 
-#include <memory>
-#include <unordered_set>
-#include <utility>
+#include "SP/utils/TopologicalSorter.h"
 
 namespace sp {
 
@@ -28,7 +25,7 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
   }
 }
 
-void ModifiesVisitor::Process(ast::ProcNode* proc_node){
+void ModifiesVisitor::Process(ast::ProcNode* proc_node) {
   // Set the current procedure name so that we can insert variables
   // used directly by the procedure
   current_procedure_ = proc_node->get_name();

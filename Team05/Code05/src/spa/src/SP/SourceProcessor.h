@@ -108,7 +108,6 @@ class SourceProcessor {
     pkb_relation = writer->ProcessTableAndEndWrite();
     logging::Logger::LogAndStop("End pkb writing");
   }
- 
 };
 
 using ExprNodePtr = std::unique_ptr<ast::ExprNode>;

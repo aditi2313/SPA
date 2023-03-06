@@ -1,6 +1,6 @@
 #pragma once
 
-#include <chrono>
+#include <chrono>  // NOLINT [build/c++ 11]
 #include <iostream>
 #include <stack>
 #include <string>
@@ -28,8 +28,7 @@ class Logger {
     times_.pop();
   }
 
-
- private:  
+ private:
   inline static bool disabled = false;
   inline static std::stack<Clock::time_point> times_;
 };

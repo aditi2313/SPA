@@ -21,7 +21,7 @@ class Logger {
   }
 
   // TODO(Gab) consider removal of desc as it creates unnecessary overhead
-  
+
   /// <summary>
   /// Function writes the interval from the previous log,
   /// or the previous reset, or the start of the current section

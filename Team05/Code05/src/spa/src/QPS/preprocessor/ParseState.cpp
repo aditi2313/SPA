@@ -3,12 +3,15 @@
 #include <memory>
 #include <utility>
 
+#include "QPS/factories/MasterClauseFactory.h"
+#include "QPS/models/Entity.h"
 #include "QPS/models/PQL.h"
-#include "models/Entity.h"
 
 namespace qps {
+extern MasterClauseFactory master_clause_factory_;
+
 // design-entity synonym (',' synonym)* ';'
-void DeclarationParseState::parse(const std::vector<std::string> &tokens,
+void DeclarationParseState::Parse(const std::vector<std::string> &tokens,
                                   parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   EntityName entity_name;
@@ -23,7 +26,36 @@ void DeclarationParseState::parse(const std::vector<std::string> &tokens,
       query->declare_synonym(*itr, entity_name);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
-      recurse(itr, grammar_itr);
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
+    }
+    itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
+}
+
+// tuple | BOOLEAN
+void SelectParseState::Parse(const std::vector<std::string> &tokens,
+                             parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    if (*grammar_itr == PQL::kSelectGrammar) {
+      // if BOOLEAN is a declared synonym name,
+      // we treat it as a synonym (synonym takes precedence)
+      if (*itr == PQL::kBooleanSelect &&
+          !query->is_synonym_name_declared(*itr)) {
+        query->set_boolean_query_to_true();
+      } else if (*itr == PQL::kTupleSelectOpen) {
+        tuple_parse_state_.Parse(tokens, itr, query);
+        itr--;
+      } else {
+        query->add_selected_synonym(*itr);
+      }
     }
     itr++;
     grammar_itr++;
@@ -32,9 +64,9 @@ void DeclarationParseState::parse(const std::vector<std::string> &tokens,
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// synonym | tuple | BOOLEAN
-void SelectParseState::parse(const std::vector<std::string> &tokens,
-                             parse_position &itr, QueryPtr &query) {
+// '<' elem ( ',' elem )* '>'
+void TupleParseState::Parse(const std::vector<std::string> &tokens,
+                            parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
@@ -43,20 +75,25 @@ void SelectParseState::parse(const std::vector<std::string> &tokens,
     if (*grammar_itr == PQL::kSynGrammar) {
       query->add_selected_synonym(*itr);
     }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
+    }
     itr++;
-    grammar_itr++;
   }
 
   if (!IsComplete(grammar_itr)) ThrowException();
 }
 
-// 'such' 'that' relRef
+// 'such' 'that' relCond
+// relCond: relRef ( 'and' relRef )*
 // e.g. relRef = Modifies(6, v)
-void SuchThatParseState::parse(const std::vector<std::string> &tokens,
+void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
                                parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   std::string rel_ident;
-  std::vector<ArgumentPtr> arguments;
+  ArgumentPtr arg1, arg2;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
@@ -65,47 +102,93 @@ void SuchThatParseState::parse(const std::vector<std::string> &tokens,
       rel_ident = *itr;
     }
     if (*grammar_itr == PQL::kArgumentGrammar) {
-      arguments.push_back(query->CreateArgument(*itr));
+      if (arg1 == nullptr) {
+        arg1 = query->CreateArgument(*itr);
+      } else {
+        arg2 = query->CreateArgument(*itr);
+      }
+    }
+    if (grammar_itr + 1 != grammar_.end() &&
+        *(grammar_itr + 1) == PQL::kRecurseGrammar) {
+      if (arg1 == nullptr || arg2 == nullptr) {
+        ThrowException();
+      }
+      query->add_clause(master_clause_factory_.Create(
+          rel_ident, std::move(arg1), std::move(arg2)));
+    }
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
     }
     itr++;
-    grammar_itr++;
   }
 
   if (!IsComplete(grammar_itr)) ThrowException();
-
-  query->add_clause(Clause::CreateClause(rel_ident, std::move(arguments.at(0)),
-                                         std::move(arguments.at(1))));
 }
 
-// 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-void PatternParseState::parse(const std::vector<std::string> &tokens,
+// pattern ( 'and' pattern )*
+// pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+void PatternParseState::Parse(const std::vector<std::string> &tokens,
                               parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
-  std::vector<ArgumentPtr> arguments;
+  ArgumentPtr arg1, arg2, arg3;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    if (*grammar_itr == PQL::kSynGrammar ||
-        *grammar_itr == PQL::kArgumentGrammar ||
-        *grammar_itr == PQL::kExprGrammar) {
-      arguments.push_back(query->CreateArgument(*itr));
+    if (*grammar_itr == PQL::kSynGrammar) {
+      arg1 = query->CreateArgument(*itr);
+    }
+    if (*grammar_itr == PQL::kArgumentGrammar) {
+      arg2 = query->CreateArgument(*itr);
+    }
+    if (*grammar_itr == PQL::kExprGrammar) {
+      arg3 = query->CreateArgument(*itr);
+    }
+    if (grammar_itr + 1 != grammar_.end() &&
+        *(grammar_itr + 1) == PQL::kRecurseGrammar) {
+      if (arg1 == nullptr || arg2 == nullptr || arg3 == nullptr) {
+        ThrowException();
+      }
+      query->add_clause(master_clause_factory_.Create(
+          PQL::kModifiesRelName, std::move(arg1->Copy()), std::move(arg2)));
+      query->add_clause(master_clause_factory_.Create(
+          PQL::kPatternRelName, std::move(arg1), std::move(arg3)));
+    }
+
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
     }
     itr++;
-    grammar_itr++;
   }
 
   if (!IsComplete(grammar_itr)) ThrowException();
+}
 
-  query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
-                                         std::move(arguments.at(0)->Copy()),
-                                         std::move(arguments.at(1)->Copy())));
-  query->add_clause(Clause::CreateClause(PQL::kPatternRelId,
-                                         std::move(arguments.at(0)->Copy()),
-                                         std::move(arguments.at(2))));
-  query->add_clause(Clause::CreateClause(PQL::kModifiesRelId,
-                                         std::move(arguments.at(0)),
-                                         std::move(arguments.at(1))));
+// 'with' attrCompare '(' and ',' attrCompare ')'
+void WithParseState::Parse(const std::vector<std::string> &tokens,
+                           parse_position &itr, QueryPtr &query) {
+  auto grammar_itr = grammar_.begin();
+  std::string rel_ident;
+  ArgumentPtr arg1, arg2;
+  while (itr != tokens.end() && grammar_itr != grammar_.end()) {
+    if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
+      ThrowException();
+    }
+    // TODO(JL): Add logic for creating With Clauses
+
+    if (*grammar_itr == PQL::kRecurseGrammar) {
+      Recurse(itr, grammar_itr);
+    } else {
+      grammar_itr++;
+    }
+    itr++;
+  }
+
+  if (!IsComplete(grammar_itr)) ThrowException();
 }
 
 ParseState::~ParseState() = default;

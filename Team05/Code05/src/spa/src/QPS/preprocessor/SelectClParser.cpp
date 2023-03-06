@@ -24,16 +24,17 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
   // First insert whitespaces around special characters
   // (e.g. semicolons and brackets) for easier delimitation
   std::string new_query = "";
-  std::string special_characters = ";(),";
+  std::string special_characters = ";(),<>";
   for (auto itr = query_string.begin(); itr != query_string.end(); ++itr) {
     if (special_characters.find(*itr) != std::string::npos) {
       new_query += " " + std::string(1, *itr) + " ";
     } else if (*itr == '\"') {
-      // This removes whitespace in the pattern match arg
+      // This removes whitespace and tabs in the
+      // pattern match arg
       // e.g "x + y" such that it is treated as one token.
       new_query += *itr++;
       while (*itr != '\"') {
-        if (*itr == ' ') {
+        if (isspace(*itr)) {
           itr++;
           continue;
         }
@@ -66,7 +67,7 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
   auto itr = tokens.begin();
   while (itr != tokens.end()) {
     current_state_index = NextState(current_state_index, *itr);
-    states_.at(current_state_index)->parse(
+    states_.at(current_state_index)->Parse(
         tokens, itr, query);
   }
 

@@ -9,7 +9,7 @@
 
 #include "Clause.h"
 #include "common/Utiity.h"
-#include "models/Entity.h"
+#include "Entity.h"
 #include "Synonym.h"
 #include "PQL.h"
 
@@ -26,24 +26,17 @@ class Query {
   }
 
   // Returns true if `token` is a synonym that has been declared
-  inline bool is_declared_synonym_name(std::string token) {
+  inline bool is_synonym_name_declared(std::string token) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_name() == token) return true;
     }
     return false;
   }
 
-  // Returns true if `syn` has been declared
-  inline bool does_synonym_exist(Synonym syn) {
-    for (auto &declared_syn : synonym_declarations_) {
-      if (syn == *declared_syn) return true;
-    }
-    return false;
-  }
-
-  inline SynonymPtr &get_synonym(std::string token) {
+  inline EntityName get_declared_synonym_entity_name(SynonymName syn_name) {
     for (auto &syn : synonym_declarations_) {
-      if (syn->get_syn_name() == token) return syn;
+      if (syn->get_syn_name() == syn_name)
+        return syn->get_entity_name();
     }
     throw std::runtime_error("Synonym has not been declared");
   }
@@ -62,6 +55,14 @@ class Query {
   // A selected synonym is a synonym that comes after `Select`
   inline std::vector<std::string> get_selected_synonyms() {
     return selected_synonyms_;
+  }
+
+  inline void set_boolean_query_to_true() {
+    is_boolean_query_ = true;
+  }
+
+  inline bool is_boolean_query() {
+    return is_boolean_query_;
   }
 
   inline std::vector<std::unique_ptr<Clause>> &get_clauses() {
@@ -84,6 +85,7 @@ class Query {
   ArgumentPtr CreateArgument(std::string token);
 
  private:
+  bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;
   std::vector<SynonymName> selected_synonyms_;
   std::vector<ClausePtr> clauses_;

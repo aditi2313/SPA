@@ -21,7 +21,7 @@ TEST_CASE("Test AssignData") {
     AssignData assign_data("v", 3, std::move(plus1));
 
     SECTION("Retrieving AssignData line") {
-        REQUIRE(assign_data.get_line() == 3);
+        REQUIRE(assign_data.get_index() == 3);
     };
 
     SECTION("Retrieving AssignData variable") {

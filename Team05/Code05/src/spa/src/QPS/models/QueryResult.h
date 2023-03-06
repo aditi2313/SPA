@@ -1,48 +1,53 @@
 #pragma once
 
+#include <algorithm>
 #include <set>
 #include <vector>
 #include <utility>
-#include <algorithm>
 #include <memory>
 
-#include "models/Entity.h"
-#include "QPS/evaluator/EntityFactory.h"
+#include "Entity.h"
+#include "QPS/factories/EntityFactory.h"
 
 namespace qps {
 class QueryResult {
  public:
-  QueryResult() {}
+  virtual inline bool is_boolean() {
+    return false;
+  }
+  virtual ~QueryResult() = default;
+};
 
-  explicit QueryResult(EntityPtrList &entities): QueryResult() {
-    for (auto &entity : entities) {
-      query_results_.push_back(std::move(entity));
-    }
+class BooleanQueryResult : public QueryResult {
+ public:
+  explicit BooleanQueryResult(bool is_true)
+      : QueryResult(), is_true_(is_true) {}
+
+  inline bool is_boolean() override {
+    return true;
   }
 
-  inline EntityPtrList &get_query_results() {
-    return query_results_;
-  }
-
-  inline void add_query_result(EntityPtr &&entity) {
-    query_results_.push_back(std::move(entity));
-  }
-
-  inline bool is_empty() { return query_results_.empty(); }
-
-  inline void clear() { query_results_.clear(); }
-
-  void IntersectWith(QueryResult &other_result);
-
-  inline void Sort() {
-    std::sort(query_results_.begin(), query_results_.end(),
-              [](EntityPtr const &LHS, EntityPtr const &RHS) {
-                return *LHS < *RHS;
-              });
+  inline bool is_true() {
+    return is_true_;
   }
 
  private:
-  EntityPtrList query_results_;
+  bool is_true_;
+};
+
+class ListQueryResult : public QueryResult {
+ public:
+  ListQueryResult() : QueryResult() {}
+
+  explicit ListQueryResult(std::vector<std::vector<Entity>> &results)
+      : QueryResult(), query_results_(results) {}
+
+  std::vector<std::vector<Entity>> &get_query_results() {
+    return query_results_;
+  }
+
+ private:
+  std::vector<std::vector<Entity>> query_results_;
 };
 
 using QueryResultPtr = std::unique_ptr<QueryResult>;

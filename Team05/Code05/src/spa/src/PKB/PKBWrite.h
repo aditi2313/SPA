@@ -23,7 +23,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(int line,
+  void AddModifiesData(std::variant<int, std::string> line,
                        const std::unordered_set<std::string>& variables);
 
   /// <summary>
@@ -41,7 +41,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
-  void AddUsesData(int line,
+  void AddUsesData(const std::variant<int, std::string> line,
                    const std::unordered_set<std::string>& variable_names);
 
   /// <summary>
@@ -59,6 +59,22 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="parent_line"></param>
   void AddParentData(int line, const int parent_line);
+
+  /// <summary>
+  /// Adds a calls row.
+  ///
+  /// </summary>
+  /// <param name="caller"></param>
+  /// <param name="callee"></param>
+  void AddCallsData(std::string caller, std::string callee);
+
+  /// <summary>
+  /// Adds a next row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="next"></param>
+  void AddNextData(int line, const int next);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
@@ -99,6 +115,7 @@ class PKBWrite {
   inline std::unique_ptr<PKBRelationTable> ProcessTableAndEndWrite() {
     ProcessFollows();
     ProcessParent();
+    ProcessCalls();
     return std::move(pkb_relation_table_);
   }
 
@@ -115,6 +132,12 @@ class PKBWrite {
   /// parent table to obtain all the Parent* lines.
   /// </summary>
   void ProcessParent();
+
+  /// <summary>
+  /// Processes the current
+  /// calls table to obtain all the Calls* lines.
+  /// </summary>
+  void ProcessCalls();
 
   std::unique_ptr<PKBRelationTable> pkb_relation_table_;
 };

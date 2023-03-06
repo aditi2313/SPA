@@ -8,30 +8,49 @@
 #include "../models/Query.h"
 #include "../models/Clause.h"
 #include "ParseState.h"
-#include "models/Entity.h"
-#include "models/Stmt.h"
+#include "QPS/models/Entity.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class SelectClParser {
  public:
   SelectClParser() {
-    int num_states = 4;
+    // Initialize constants
+    int num_states = 5;
+
+    int kDeclarationIndex = 0;
+    int kSelectIndex = 1;
+    int kSuchThatIndex = 2;
+    int kPatternIndex = 3;
+    int kWithIndex = 4;
+
+
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
     // State Order is defined as
-    // Declaration -> Synonym -> Such-That -> Pattern
+    // Declaration -> Select -> (Such-That | Pattern | With)*
     states_.emplace_back(std::make_unique<DeclarationParseState>());
     states_.emplace_back(std::make_unique<SelectParseState>());
     states_.emplace_back(std::make_unique<SuchThatParseState>());
     states_.emplace_back(std::make_unique<PatternParseState>());
+    states_.emplace_back(std::make_unique<WithParseState>());
 
     transition_table_.assign(num_states, std::vector<int>());
-    for (int i = 0; i < num_states - 1; ++i) {
-      transition_table_[i].push_back(i + 1);
-    }
-    // Can go to Pattern without passing through Such-That
-    transition_table_[1].push_back(3);
+
+    transition_table_[kDeclarationIndex] =
+        {kSelectIndex};
+
+    transition_table_[kSelectIndex] =
+        {kSuchThatIndex, kPatternIndex, kWithIndex};
+
+    transition_table_[kSuchThatIndex] =
+        {kPatternIndex, kWithIndex};
+
+    transition_table_[kPatternIndex] =
+        {kSuchThatIndex, kWithIndex};
+
+    transition_table_[kWithIndex] =
+        {kSuchThatIndex, kPatternIndex};
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

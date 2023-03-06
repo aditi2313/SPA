@@ -6,10 +6,15 @@
 #include <utility>
 #include <vector>
 #include <functional>
+#include <variant>
 
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
 #include "PKB/data/ParentData.h"
+#include "PKB/data/CallsData.h"
+#include "PKB/data/UsesData.h"
+#include "PKB/data/ModifiesData.h"
+#include "PKB/data/FollowsData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/exceptions/QPSExceptions.h"
 
@@ -27,7 +32,7 @@ class PredicateFilter
         pkb::IndexableTablePtr<T> result =
                 std::make_unique<pkb::IndexableTable<T>>();
 
-        for (int line : table->get_indexes()) {
+        for (std::variant<int, std::string> line : table->get_indexes()) {
             auto data = table->get_row(line);
             if (predicate_(data)) {
                 result->add_row(line, data);
@@ -45,4 +50,6 @@ using UsesPredicateFilter = PredicateFilter<pkb::UsesData>;
 using FollowsPredicateFilter = PredicateFilter<pkb::FollowsData>;
 using ParentPredicateFilter = PredicateFilter<pkb::ParentData>;
 using AssignPredicateFilter = PredicateFilter<pkb::AssignData>;
+using CallsPredicateFilter = PredicateFilter<pkb::CallsData>;
+using NextPredicateFilter = PredicateFilter<pkb::NextData>;
 }  // namespace filter

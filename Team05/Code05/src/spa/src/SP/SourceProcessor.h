@@ -5,6 +5,7 @@
 #include <utility>
 
 #include "../models/AST/factor_node/FactorNode.h"
+#include "SP/CFGExtractor.h"
 #include "SP/parser/ProgramParser.h"
 #include "SP/validators/ProgramValidator.h"
 #include "SP/visitors/AssignVisitor.h"
@@ -13,9 +14,11 @@
 #include "SP/visitors/ModifiesVisitor.h"
 #include "SP/visitors/ParentVisitor.h"
 #include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/CallsVisitor.h"
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"
 #include "parser/expression/ExpressionParser.h"
+#include "visitors/CFGGeneratingVisitor.h"
 
 namespace sp {
 
@@ -39,7 +42,8 @@ class SourceProcessor {
     return root;
   }
 
-  static void ExtractRelationships(std::unique_ptr<ast::ProgramNode> &root,
+  static void ExtractRelationships(
+      std::unique_ptr<ast::ProgramNode> &root,
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
 
@@ -67,7 +71,21 @@ class SourceProcessor {
     root->AcceptVisitor(&fv);
     writer = fv.EndVisit();
 
+    sp::CallsVisitor cv(std::move(writer));
+    root->AcceptVisitor(&cv);
+    writer = cv.EndVisit();
+
+    sp::CFGGeneratingVisitor cfg_generator;
+    cfg_generator.VisitProgram(root.get());
+    auto cfg = cfg_generator.CreateCFG();
+
+    sp::CFGExtractor cfg_extractor(std::move(writer));
+    cfg_extractor.WriteCFG(*cfg);
+    writer = cfg_extractor.EndVisit();
+
     pkb_relation = writer->ProcessTableAndEndWrite();
   }
 };
+
+using ExprNodePtr = std::unique_ptr<ast::ExprNode>;
 }  // namespace sp

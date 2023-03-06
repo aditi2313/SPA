@@ -17,6 +17,7 @@ std::unique_ptr<ast::ProcNode> ProcedureParser::parse(Lexer& lxr) {
   }
 
   std::string proc_name = lxr.get_ident();
+  lxr.set_current_procedure(proc_name);
   lxr.Increment();
 
   AssertExpectedToken(

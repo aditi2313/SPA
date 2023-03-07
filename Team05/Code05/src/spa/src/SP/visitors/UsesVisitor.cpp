@@ -95,9 +95,7 @@ void UsesVisitor::AddVariablesFromStmtList(
             ->get_result();
     if (result->empty()) continue;
     auto variables = result->get_row(child->get_line()).get_variables();
-    for (auto& var : variables) {
-      vars.insert(var);
-    }
+    vars.merge(variables);
   }
   pkb = reader.EndRead();
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));

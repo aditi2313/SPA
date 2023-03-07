@@ -31,7 +31,7 @@ TEST_CASE("Test Calls by callee Filter") {
                 }
                 return false;
             });
-    auto new_table = callee_filter.FilterTable(std::move(table));
+    auto new_table = callee_filter.FilterTable(*table);
     auto expected = InitialiseCallsTestTable(result_callees);
     REQUIRE(*expected == *new_table);
 }
@@ -44,7 +44,7 @@ TEST_CASE("Test Calls by Caller filter") {
     auto table = InitialiseCallsTestTable(direct_callees);
     filter::CallsIndexFilter caller_filter("x");
 
-    auto new_table = caller_filter.FilterTable(std::move(table));
+    auto new_table = caller_filter.FilterTable(*table);
     auto expected = InitialiseCallsTestTable(result_callees);
 
     REQUIRE(*expected == *new_table);

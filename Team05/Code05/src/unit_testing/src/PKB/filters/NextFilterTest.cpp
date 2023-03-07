@@ -29,7 +29,7 @@ TEST_CASE("Test Next by next lines Filter") {
                 }
                 return false;
             });
-    auto new_table = next_lines_filter.FilterTable(std::move(table));
+    auto new_table = next_lines_filter.FilterTable(*table);
     auto expected = InitialiseNextTestTable(result_lines);
     REQUIRE(*expected == *new_table);
 }
@@ -41,7 +41,7 @@ TEST_CASE("Test Next by line filter") {
     auto table = InitialiseNextTestTable(next_im_lines);
     filter::NextIndexFilter caller_filter(0);
 
-    auto new_table = caller_filter.FilterTable(std::move(table));
+    auto new_table = caller_filter.FilterTable(*table);
     auto expected = InitialiseNextTestTable(result_lines);
 
     REQUIRE(*expected == *new_table);

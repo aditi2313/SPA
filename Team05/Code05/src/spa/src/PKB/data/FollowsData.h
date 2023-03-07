@@ -18,9 +18,11 @@ class FollowsData {
 
   inline std::unordered_set<int>& get_follows_list() { return follows_list_; }
 
-  inline void add_to_list(int v) { follows_list_.insert(v); }
-
-  inline void add_to_list(std::unordered_set<int> v) { follows_list_.merge(v); }
+  inline void AddData(FollowsData& data) {
+    for (int v : data.follows_list_) {
+      follows_list_.insert(v);
+    }
+  }
 
  private:
   int line_;

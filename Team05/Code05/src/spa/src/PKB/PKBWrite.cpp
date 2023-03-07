@@ -39,17 +39,14 @@ void ProcessIndexableTable(
 template <class Data>
 void ProcessIndexableTableInt(
     IndexableTable<Data>& table,
-    std::function<void(Data&, IntOrStringVariant)> alt_adding_function,
-    std::function<void(Data& add_to, Data& to_add)> adding_function,
-    std::function<std::unordered_set<IntOrStringVariant>(Data&)> get_children) {
+    std::function<std::unordered_set<int>(Data&)> get_children) {
   std::sort(table.get_indexes().begin(), table.get_indexes().end());
   for (int i = table.get_indexes().size() - 1; i >= 0; --i) {
     auto id = table.get_indexes().at(i);
     Data& data_to_update = table.get_row(id);
     for (auto& child : get_children(data_to_update)) {
-      alt_adding_function(data_to_update, child);
       if (!table.exists(child)) continue;
-      adding_function(data_to_update, table.get_row(child));
+      data_to_update.AddData(table.get_row(child));
     }
   }
 }
@@ -89,36 +86,15 @@ void PKBWrite::AddNextData(int line, int next) {
 
 void PKBWrite::ProcessFollows() {
   ProcessIndexableTableInt<FollowsData>(
-      pkb_relation_table_->follows_table_,
-      [](FollowsData& data, IntOrStringVariant v) {
-        data.add_to_list(std::get<int>(v));
-      },
-      [](FollowsData& data, FollowsData& other) {
-        data.add_to_list(other.get_follows_list());
-      },
-      [](FollowsData& data) {
-        return std::unordered_set<IntOrStringVariant>{data.get_follows()};
+      pkb_relation_table_->follows_table_, [&](FollowsData& data) {
+        return std::unordered_set<int>{data.get_follows()};
       });
 }
 
 void PKBWrite::ProcessParent() {
   ProcessIndexableTableInt<ParentData>(
       pkb_relation_table_->parent_table_,
-
-      [](ParentData& data, IntOrStringVariant v) {
-        data.add_to_all_children(std::get<int>(v));
-      },
-      [](ParentData& data, ParentData& other) {
-        data.add_to_all_children(other.get_all_children());
-      },
-      [](ParentData& data) {
-        std::unordered_set<int> direct_child_set = data.get_direct_children();
-        std::unordered_set<IntOrStringVariant> variant_set;
-        for (const auto& i : direct_child_set) {
-          variant_set.emplace(i);
-        }
-        return variant_set;
-      });
+      [&](ParentData& data) { return data.get_direct_children(); });
 }
 
 void PKBWrite::ProcessCalls() {

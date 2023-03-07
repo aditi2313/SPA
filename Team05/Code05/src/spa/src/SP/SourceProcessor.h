@@ -53,7 +53,6 @@ class SourceProcessor {
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
     logging::Logger::EnterSection("Extract Relationships");
-    
 
     sp::DataVisitor dv(std::move(writer));
     root->AcceptVisitor(&dv);

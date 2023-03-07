@@ -27,6 +27,10 @@ class ParentData {
       total_children_.insert(child);
   }
 
+  inline void add_to_all_children(std::unordered_set<int> child) {
+      total_children_.merge(child);
+  }
+
   inline void add_direct_child(int child) {
       direct_children_.insert(child);
   }

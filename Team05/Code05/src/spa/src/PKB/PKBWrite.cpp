@@ -1,6 +1,8 @@
 #include "PKBWrite.h"
 
+#include <algorithm>
 #include <functional>
+#include <iostream>
 #include <stack>
 #include <string>
 #include <unordered_set>
@@ -34,6 +36,24 @@ void ProcessIndexableTable(
   }
 }
 
+template <class Data>
+void ProcessIndexableTableInt(
+    IndexableTable<Data>& table,
+    std::function<void(Data&, IntOrStringVariant)> alt_adding_function,
+    std::function<void(Data& add_to, Data& to_add)> adding_function,
+    std::function<std::unordered_set<IntOrStringVariant>(Data&)> get_children) {
+  std::sort(table.get_indexes().begin(), table.get_indexes().end());
+  for (int i = table.get_indexes().size() - 1; i >= 0; --i) {
+    auto id = table.get_indexes().at(i);
+    Data& data_to_update = table.get_row(id);
+    for (auto& child : get_children(data_to_update)) {
+      alt_adding_function(data_to_update, child);
+      if (!table.exists(child)) continue;
+      adding_function(data_to_update, table.get_row(child));
+    }
+  }
+}
+
 void PKBWrite::AddModifiesData(
     const std::variant<int, std::string> line,
     const std::unordered_set<std::string>& variables) {
@@ -60,51 +80,62 @@ void PKBWrite::AddParentData(const int parent, const int child_line) {
 }
 
 void PKBWrite::AddCallsData(std::string caller, std::string callee) {
-    pkb_relation_table_->add_calls_data(caller, callee);
+  pkb_relation_table_->add_calls_data(caller, callee);
 }
 
 void PKBWrite::AddNextData(int line, int next) {
-    pkb_relation_table_->add_next_data(line, next);
+  pkb_relation_table_->add_next_data(line, next);
 }
 
 void PKBWrite::ProcessFollows() {
-  ProcessIndexableTable<FollowsData>(
+  ProcessIndexableTableInt<FollowsData>(
       pkb_relation_table_->follows_table_,
       [](FollowsData& data, IntOrStringVariant v) {
-          data.add_to_list(std::get<int>(v)); },
+        data.add_to_list(std::get<int>(v));
+      },
+      [](FollowsData& data, FollowsData& other) {
+        data.add_to_list(other.get_follows_list());
+      },
       [](FollowsData& data) {
         return std::unordered_set<IntOrStringVariant>{data.get_follows()};
       });
 }
 
 void PKBWrite::ProcessParent() {
-  ProcessIndexableTable<ParentData>(
+  ProcessIndexableTableInt<ParentData>(
       pkb_relation_table_->parent_table_,
+
       [](ParentData& data, IntOrStringVariant v) {
-          data.add_to_all_children(std::get<int>(v)); },
+        data.add_to_all_children(std::get<int>(v));
+      },
+      [](ParentData& data, ParentData& other) {
+        data.add_to_all_children(other.get_all_children());
+      },
       [](ParentData& data) {
-          std::unordered_set<int> direct_child_set = data.get_direct_children();
-          std::unordered_set<IntOrStringVariant> variant_set;
-          for (const auto& i : direct_child_set) {
-              variant_set.emplace(i);
-          }
-          return variant_set;
+        std::unordered_set<int> direct_child_set = data.get_direct_children();
+        std::unordered_set<IntOrStringVariant> variant_set;
+        for (const auto& i : direct_child_set) {
+          variant_set.emplace(i);
+        }
+        return variant_set;
       });
 }
 
 void PKBWrite::ProcessCalls() {
-    ProcessIndexableTable<CallsData>(
-            pkb_relation_table_->calls_table_,
-            [](CallsData& data, IntOrStringVariant v) {
-                data.add_to_total_calls(std::get<std::string>(v));},
-            [](CallsData& data) {
-                std::unordered_set<std::string> direct_calls_set =
-                        data.get_direct_calls();
-                std::unordered_set<IntOrStringVariant> variant_set;
-                for (const auto& i : direct_calls_set) {
-                    variant_set.emplace(i);
-                }
-                return variant_set;;
-            });
+  ProcessIndexableTable<CallsData>(
+      pkb_relation_table_->calls_table_,
+      [](CallsData& data, IntOrStringVariant v) {
+        data.add_to_total_calls(std::get<std::string>(v));
+      },
+      [](CallsData& data) {
+        std::unordered_set<std::string> direct_calls_set =
+            data.get_direct_calls();
+        std::unordered_set<IntOrStringVariant> variant_set;
+        for (const auto& i : direct_calls_set) {
+          variant_set.emplace(i);
+        }
+        return variant_set;
+        ;
+      });
 }
 }  // namespace pkb

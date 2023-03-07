@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <string>
+#include <catch.hpp>
 
 #include "PKB/data/FollowsData.h"
 

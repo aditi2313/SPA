@@ -111,7 +111,6 @@ void PKBWrite::ProcessCalls() {
           variant_set.emplace(i);
         }
         return variant_set;
-        ;
       });
 }
 }  // namespace pkb

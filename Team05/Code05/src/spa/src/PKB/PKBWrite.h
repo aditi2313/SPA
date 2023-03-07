@@ -7,6 +7,7 @@
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
+#include "common/logging/Logger.h"
 #include "models/AST/factor_node/FactorNode.h"
 
 namespace pkb {
@@ -113,9 +114,13 @@ class PKBWrite {
   }
 
   inline std::unique_ptr<PKBRelationTable> ProcessTableAndEndWrite() {
+    logging::Logger::ResetClock();
     ProcessFollows();
+    logging::Logger::LogAndStop("Processed follows");
     ProcessParent();
+    logging::Logger::LogAndStop("Processed parent");
     ProcessCalls();
+    logging::Logger::LogAndStop("Processed calls");
     return std::move(pkb_relation_table_);
   }
 

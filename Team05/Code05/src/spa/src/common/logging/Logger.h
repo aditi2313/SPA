@@ -31,7 +31,7 @@ class Logger {
   static void LogAndStop(std::string desc) {
     if (disabled_) return;
     Clock::time_point curr = Clock::now();
-    std::chrono::duration<double> interval = curr - times_.top();
+    Duration interval = curr - times_.top();
     times_.pop();
     times_.push(curr);
     std::cout << desc << " time: " << interval.count() << " s" << std::endl;
@@ -48,7 +48,7 @@ class Logger {
     if (disabled_) return;
     times_.pop();
     auto curr = Clock::now();
-    std::chrono::duration<double> interval = curr - times_.top();
+    Duration interval = curr - times_.top();
     times_.pop();
     std::cout << kSection << "Exit Section: " << desc
               << " With interval: " << interval.count() << kSection

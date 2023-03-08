@@ -34,8 +34,8 @@ pkb::FollowsTable InitializeEmptyExpectedResult() {
 }
 
 TEST_CASE("Test SP and PKB integration for Follows data") {
-  SECTION("There should be no data if there is only one statement") {
-    std::string program = "procedure readfollows { read x; }";
+  SECTION("One statement - empty table") {
+    std::string program = "procedure follows { read x; }";
 
     auto actual_results = InitializeActualResult(program);
 
@@ -44,8 +44,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Follows(s1, s2) holds for two read statements") {
-    std::string program = "procedure readfollows { read x; read y; }";
+  SECTION("Two read statements - relationship holds") {
+    std::string program = "procedure follows { read x; read y; }";
 
     auto actual_results = InitializeActualResult(program);
 
@@ -64,8 +64,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Follows(s1, s2) holds for two assign statements") {
-    std::string program = "procedure readfollows { x = 5; y = 3; }";
+  SECTION("Two assign statements - relationship holds") {
+    std::string program = "procedure follows { x = 5; y = 3; }";
     auto actual_results = InitializeActualResult(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
@@ -83,9 +83,9 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Follows(s1, s3) holds for two while loops") {
+  SECTION("Two while loops - relationship does not hold for their stmtlsts") {
     std::string program =
-        "procedure readfollows { while (i > 0) { i = i - 1; } while (j < 0) { "
+        "procedure follows { while (i > 0) { i = i - 1; } while (j < 0) { "
         "j = j + 1; } }";
     auto actual_results = InitializeActualResult(program);
 
@@ -104,9 +104,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Follows(s1, s2) does not hold at different nesting levels") {
-    std::string program =
-        "procedure readfollows { while (x != 0) { y = y + 1; } }";
+  SECTION("While loop - relationship does not hold") {
+    std::string program = "procedure follows { while (x != 0) { y = y + 1; } }";
 
     auto actual_results = InitializeActualResult(program);
 
@@ -115,10 +114,9 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION(
-      "Follows(s1, s2) holds at the same nesting level in an if statement") {
+  SECTION("If statement - relationship only holds in same stmtlst") {
     std::string program =
-        "procedure readfollows { if (x < 0) then { read x; read y; } else { "
+        "procedure follows { if (x < 0) then { read x; read y; } else { "
         "read z; } "
         "}";
     auto actual_results = InitializeActualResult(program);
@@ -138,13 +136,65 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Follows(s1, s2) does not hold in different procedures") {
+  SECTION("Two procedures - relationship does not hold") {
     std::string program =
-        "procedure readfollows { x = 5; } procedure readfollows2 { y = 3; }";
+        "procedure follows { x = 5; } procedure readfollows2 { y = 3; }";
 
     auto actual_results = InitializeActualResult(program);
 
     auto expected_results = InitializeEmptyExpectedResult();
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Three read statements - transitive relationship holds") {
+    std::string program = "procedure follows { read x; read y; read z; }";
+
+    auto actual_results = InitializeActualResult(program);
+
+    std::unique_ptr<pkb::PKBRelationTable> expected_table =
+        std::make_unique<pkb::PKBRelationTable>();
+
+    pkb::PKBWrite expected_writer(std::move(expected_table));
+    expected_writer.AddFollowsData(1, 2);
+    expected_writer.AddFollowsData(2, 3);
+    expected_table = expected_writer.ProcessTableAndEndWrite();
+
+    pkb::PKBRead expected_reader(std::move(expected_table));
+
+    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
+        [](pkb::FollowsData data) { return true; });
+    auto expected_results_ptr =
+        expected_reader.Follows(std::move(expected_ftr));
+
+    auto expected_results = *(expected_results_ptr->get_result());
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Double nested loop - relationship only holds in same stmtlst") {
+    std::string program =
+        "procedure follows { while (x > 5) { print x; while (y > 3) { read y; "
+        "print y; } } }";
+
+    auto actual_results = InitializeActualResult(program);
+
+    std::unique_ptr<pkb::PKBRelationTable> expected_table =
+        std::make_unique<pkb::PKBRelationTable>();
+
+    pkb::PKBWrite expected_writer(std::move(expected_table));
+    expected_writer.AddFollowsData(2, 3);
+    expected_writer.AddFollowsData(4, 5);
+    expected_table = expected_writer.ProcessTableAndEndWrite();
+
+    pkb::PKBRead expected_reader(std::move(expected_table));
+
+    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
+        [](pkb::FollowsData data) { return true; });
+    auto expected_results_ptr =
+        expected_reader.Follows(std::move(expected_ftr));
+
+    auto expected_results = *(expected_results_ptr->get_result());
 
     REQUIRE(actual_results == expected_results);
   }

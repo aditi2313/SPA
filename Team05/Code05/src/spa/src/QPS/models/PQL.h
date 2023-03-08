@@ -10,14 +10,14 @@
 #include "SP/SourceProcessor.h"
 #include "models/types.h"
 
-using models::EntityName;
-
 namespace qps {
+using EntityName = std::string;
+using SynonymName = std::string;
+using RelName = std::string;
+using AttrName = std::string;
+
 class PQL {
  public:
-  using RelName = std::string;
-  using AttrName = std::string;
-
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
   inline static std::string kPrintEntityName = "print";

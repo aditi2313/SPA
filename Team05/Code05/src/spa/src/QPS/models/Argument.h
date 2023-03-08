@@ -13,8 +13,6 @@
 #include "QPS/factories/MasterEntityFactory.h"
 #include "models/types.h"
 
-using models::SynonymName;
-
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
@@ -134,7 +132,7 @@ class SynonymArg : public Argument {
     entity_name_ = entity_name;
   }
 
-  inline void set_attr_name(PQL::AttrName attr_name) {
+  inline void set_attr_name(AttrName attr_name) {
     attr_name_ = attr_name;
   }
 
@@ -196,7 +194,7 @@ class SynonymArg : public Argument {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
-  PQL::AttrName attr_name_;
+  AttrName attr_name_;
 };
 
 class IdentArg : public Argument {

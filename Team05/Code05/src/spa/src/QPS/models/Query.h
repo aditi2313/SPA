@@ -13,14 +13,12 @@
 #include "Synonym.h"
 #include "PQL.h"
 
-using models::SynonymName;
-
 namespace qps {
 class Query {
  public:
   // Set a synonym declaration
   inline void declare_synonym(
-      SynonymName syn_id, models::EntityName entity_name) {
+      SynonymName syn_id, EntityName entity_name) {
     synonym_declarations_.push_back(
         std::make_unique<Synonym>(syn_id, entity_name));
   }

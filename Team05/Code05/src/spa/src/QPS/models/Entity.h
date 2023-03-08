@@ -10,9 +10,8 @@
 #include "models/types.h"
 #include "PQL.h"
 
-using models::EntityName;
-
 namespace qps {
+
 // Represents a:
 // Procedure | Stmt (Read | Print | Assign | Call | While | If)
 // Variable | Constant

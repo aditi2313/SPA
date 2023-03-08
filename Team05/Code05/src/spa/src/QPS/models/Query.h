@@ -43,16 +43,16 @@ class Query {
     return synonym_declarations_;
   }
 
-  // A selected synonym is a synonym that comes after `Select`
-  // (Note: to support Advanced SPA requirements, currently
-  // it will always be just one selected synonym)
-  inline void add_selected_synonym(std::string synonym) {
-    selected_synonyms_.push_back(synonym);
+  // A selected elem is an elem that comes after `Select`
+  // Elem: Synonym | AttrRef
+  inline void add_selected_elem(Elem elem) {
+    selected_elems_.push_back(elem);
   }
 
-  // A selected synonym is a synonym that comes after `Select`
-  inline std::vector<std::string> get_selected_synonyms() {
-    return selected_synonyms_;
+  // A selected elem is an elem that comes after `Select`
+  // Elem: Synonym | AttrRef
+  inline std::vector<std::string> get_selected_elems() {
+    return selected_elems_;
   }
 
   inline void set_boolean_query_to_true() {
@@ -81,7 +81,7 @@ class Query {
         synonym_declarations_, other.synonym_declarations_))
       return false;
 
-    return selected_synonyms_ == other.selected_synonyms_;
+    return selected_elems_ == other.selected_elems_;
   }
 
   ArgumentPtr CreateArgument(std::string token);
@@ -89,7 +89,8 @@ class Query {
  private:
   bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;
-  std::vector<SynonymName> selected_synonyms_;
+  // Elem = Synonym | AttrRef
+  std::vector<Elem> selected_elems_;
   std::vector<ClausePtr> clauses_;
 };
 

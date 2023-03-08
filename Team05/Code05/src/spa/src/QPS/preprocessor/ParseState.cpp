@@ -54,7 +54,7 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
         tuple_parse_state_.Parse(tokens, itr, query);
         itr--;
       } else {
-        query->add_selected_synonym(*itr);
+        query->add_selected_elem(*itr);
       }
     }
     itr++;

@@ -15,6 +15,7 @@ using EntityName = std::string;
 using SynonymName = std::string;
 using RelName = std::string;
 using AttrName = std::string;
+using Elem = std::string;
 
 class PQL {
  public:

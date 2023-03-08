@@ -224,7 +224,7 @@ class WithClause : public Clause {
  public:
   WithClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kNextRelName;
+    rel_name_ = PQL::kWithRelName;
   }
 
   void Index(const Entity &index,

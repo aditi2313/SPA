@@ -114,9 +114,7 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
         ThrowException();
       }
       query->add_clause(master_clause_factory_.Create(
-          rel_ident,
-          std::move(arg1),
-          std::move(arg2)));
+          rel_ident, std::move(arg1), std::move(arg2)));
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);
@@ -154,13 +152,9 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
         ThrowException();
       }
       query->add_clause(master_clause_factory_.Create(
-          PQL::kModifiesRelName,
-          std::move(arg1->Copy()),
-          std::move(arg2)));
+          PQL::kModifiesRelName, std::move(arg1->Copy()), std::move(arg2)));
       query->add_clause(master_clause_factory_.Create(
-          PQL::kPatternRelName,
-          std::move(arg1),
-          std::move(arg3)));
+          PQL::kPatternRelName, std::move(arg1), std::move(arg3)));
     }
 
     if (*grammar_itr == PQL::kRecurseGrammar) {
@@ -175,16 +169,52 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
 }
 
 // 'with' attrCompare '(' and ',' attrCompare ')'
+// attrCompare: attrRef = attrRef
+// attrRef: "IDENT" | INTEGER | synonym.attrName
+// attrName: varName | procName | value | stmt#
 void WithParseState::Parse(const std::vector<std::string> &tokens,
                            parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
-  std::string rel_ident;
   ArgumentPtr arg1, arg2;
+  PQL::AttrName LHS_attr_name, RHS_attr_name;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    // TODO(JL): Add logic for creating With Clauses
+
+    if (*grammar_itr == PQL::kRefGrammar) {
+      std::string arg = *itr;
+      if (PQL::is_attr_ref(*itr)) {
+        auto [syn, attr_name] = PQL::split_rel_ref(*itr);
+        arg = syn;
+        if (arg1 == nullptr) {
+          LHS_attr_name = attr_name;
+        } else {
+          RHS_attr_name = attr_name;
+        }
+      }
+
+      if (arg1 == nullptr) {
+        arg1 = query->CreateArgument(arg);
+      } else {
+        arg2 = query->CreateArgument(arg);
+      }
+    }
+
+    if (*(grammar_itr + 1) == PQL::kRecurseGrammar) {
+      if (arg1 == nullptr || arg2 == nullptr) {
+        ThrowException();
+      }
+      auto with_clause = master_clause_factory_.Create(
+          PQL::kWithRelName,
+          std::move(arg1),
+          std::move(arg2));
+      query->add_clause(with_clause);
+
+      // Reset attr_name
+      LHS_attr_name.clear();
+      RHS_attr_name.clear();
+    }
 
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);

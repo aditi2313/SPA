@@ -69,6 +69,10 @@ class Query {
     return clauses_;
   }
 
+  inline void add_clause(std::unique_ptr<Clause> &clause) {
+    clauses_.push_back(std::move(clause));
+  }
+
   inline void add_clause(std::unique_ptr<Clause> &&clause) {
     clauses_.push_back(std::move(clause));
   }

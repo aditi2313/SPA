@@ -66,6 +66,9 @@ class PQL {
       kCallsRelName, kCallsTRelName, kNextRelName
   };
 
+  // Returns true if the string is a relationship that appears
+  // after such-that.
+  // Examples of non such-that rel names are 'pattern' and 'with'
   inline static bool is_such_that_rel_name(std::string const token) {
     return kAllSuchThatRelNames.count(token);
   }
@@ -135,8 +138,7 @@ class PQL {
     auto index = str.find('.');
     // "." doesn't exist
     if (index == std::string::npos) return false;
-    std::string syn = str.substr(0, index);
-    std::string attr_name = str.substr(index + 1);
+    auto [syn, attr_name] = split_rel_ref(str);
     return CheckGrammar(syn, kSynGrammar)
         && is_attr_name(attr_name);
   }
@@ -149,13 +151,36 @@ class PQL {
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
-  // It is the same string but it is possible for it to change
+  // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
 
   // Grammars are tokens with special meaning and actions
   // attached to them. They are not meant to be compared
   // literally.
+  inline static std::pair<std::string, std::string> split_rel_ref(
+      std::string str) {
+    auto index = str.find('.');
+    std::string syn = str.substr(0, index);
+    std::string attr_name = str.substr(index + 1);
+    return {syn, attr_name};
+  }
+
+  inline static std::unordered_set<EntityName> get_entities_from_attr_name(
+      AttrName attr_name) {
+    std::unordered_set<std::string> entities;
+    if (attr_name == PQL::kProcedureAttrName) {
+      entities.insert(kProcedureEntityName);
+    } else if (attr_name == PQL::kValueAttrName) {
+      entities.insert(kConstantEntityName);
+    } else if (attr_name == PQL::kVariableAttrName) {
+      entities.insert(kVariableAttrName);
+    } else if (attr_name == PQL::kStmtAttrName) {
+      entities = kAllStmtEntityNames;
+    }
+    return entities;
+  }
+
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";

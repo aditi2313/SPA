@@ -206,6 +206,7 @@ class PQL {
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";
+  inline static std::string kElemGrammar = "elem";
   inline static std::string kExprGrammar = "exp";
   inline static std::string kRefGrammar = "ref";
   inline static std::string kDesignEntityGrammar = "designEntity";
@@ -240,6 +241,10 @@ class PQL {
       // "IDENT" | INTEGER | attrRef
       return is_ident_arg(token)
           || is_integer(token)
+          || is_attr_ref(token);
+    } else if (grammar == kElemGrammar) {
+      // synonym | attrRef
+      return CheckGrammar(token, kSynGrammar)
           || is_attr_ref(token);
     } else {
       return token == grammar;

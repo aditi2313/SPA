@@ -82,7 +82,7 @@ class TupleParseState : public RecursiveParseState {
       RecursiveParseState(PQL::kTupleSelectOpen,
                           {
                               PQL::kTupleSelectOpen,
-                              PQL::kSynGrammar,
+                              PQL::kElemGrammar,
                               PQL::kRecurseGrammar,
                               PQL::kTupleSelectClose},
                           ",") {

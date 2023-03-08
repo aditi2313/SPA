@@ -169,7 +169,7 @@ class PQL {
   inline static std::unordered_set<EntityName> get_entities_from_attr_name(
       AttrName attr_name) {
     std::unordered_set<std::string> entities;
-    if (attr_name == PQL::kProcedureAttrName) {
+    if (attr_name == kProcedureAttrName) {
       // Procedure and Call
       entities.insert(kProcedureEntityName);
       entities.insert(kCallEntityName);
@@ -186,6 +186,16 @@ class PQL {
       entities = kAllStmtEntityNames;
     }
     return entities;
+  }
+
+  inline static bool is_attr_name_ident(AttrName attr_name) {
+    return attr_name == kProcedureAttrName
+        || attr_name == kVariableAttrName;
+  }
+
+  inline static bool is_attr_name_integer(AttrName attr_name) {
+    return attr_name == kValueAttrName
+        || attr_name == kStmtAttrName;
   }
 
   inline static std::string kRelRefGrammar = "relRef";

@@ -139,9 +139,7 @@ TEST_CASE("Test ParseQuery") {
         master_clause_factory.Create(
             PQL::kWithRelName,
             expected_query->CreateArgument("a.stmt#"),
-            expected_query->CreateArgument("12")
-        )
-    );
+            expected_query->CreateArgument("12")));
 
     REQUIRE(*actual_query == *expected_query);
   }

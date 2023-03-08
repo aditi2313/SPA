@@ -32,6 +32,13 @@ class Argument {
   virtual bool IsSynonym() { return false; }
   virtual bool IsExpression() { return false; }
 
+  // IdentArg and IntegerArg are IdentType and IntegerType
+  // respectively.
+  // SynonymArg can also be either Ident or Integer depending
+  // on which entity it represents.
+  virtual bool IsIdentType() { return false; }
+  virtual bool IsIntegerType() { return false; }
+
   virtual bool operator==(Argument &other) = 0;
 
   virtual std::unique_ptr<Argument> Copy() = 0;
@@ -108,6 +115,20 @@ class SynonymArg : public Argument {
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
 
+  inline bool IsIdentType() override {
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty())
+      return PQL::is_attr_name_ident(attr_name_);
+    return master_entity_factory_.is_ident(entity_name_);
+  }
+
+  inline bool IsIntegerType() override {
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty())
+      return PQL::is_attr_name_integer(attr_name_);
+    return master_entity_factory_.is_integer(entity_name_);
+  }
+
   inline SynonymName get_syn_name() { return syn_name_; }
   inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
@@ -183,6 +204,7 @@ class IdentArg : public Argument {
   explicit IdentArg(std::string ident) : Argument(), ident_(ident) {}
 
   inline bool IsEntRef() override { return true; }
+  inline bool IsIdentType() override { return true; }
 
   inline std::string get_ident() { return ident_; }
 
@@ -228,6 +250,7 @@ class IntegerArg : public Argument {
   explicit IntegerArg(int number) : Argument(), number_(number) {}
 
   inline bool IsStmtRef() override { return true; }
+  inline bool IsIntegerType() override { return true; }
 
   inline int get_number() { return number_; }
 

@@ -25,14 +25,13 @@ class CFGExtractor : public PKBWriter {
       if (node.HasFirstChild()) WriteNext(cfg.GetFirstChild(node), cfg);
       return;
     }
-    auto& lines = node.get_lines();
     // TODO(Gab): Consider using id to remember visited instead
-    int last_line = lines[lines.size() - 1];
+    int last_line = *(node.back());
     if (visited.count(last_line)) {
       return;
     }
-    for (int i = 0; i < lines.size() - 1; ++i) {
-      pkb_ptr_->AddNextData(lines[i], lines[i + 1]);
+    for (auto start = node.front(); !start.IsMax(); start++) {
+      pkb_ptr_->AddNextData(*start, *(start + 1));
     }
 
     visited.insert(last_line);
@@ -53,7 +52,7 @@ class CFGExtractor : public PKBWriter {
       if (!curr->HasFirstChild()) return;
       curr = &cfg.GetFirstChild(*curr);
     }
-    pkb_ptr_->AddNextData(last_line, curr->get_lines().at(0));
+    pkb_ptr_->AddNextData(last_line, *(curr->front()));
     WriteNext(*curr, cfg);
   }
 };

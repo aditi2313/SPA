@@ -290,6 +290,20 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
+  SECTION("Query with Select attrRef should parse correctly") {
+    std::string query_string = "stmt s;"
+                               "Select s.stmt#";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with Select <attrRef, attrRef> should parse correctly") {
+    std::string query_string = "stmt s; procedure p;"
+                               "Select <s.stmt#, p.procName>";
+
+    TestNoThrows(query_string);
+  }
+
     /* ============ ERROR CASES =============== */
   SECTION("Query with both 'and' and 'such-that'"
           "should throw error") {
@@ -327,6 +341,14 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "variable v;"
                                "Select v such that Modifies(6, v) "
                                "and with a.stmt# = c.value";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with Select attrRef, attrRef should throw error") {
+    // Missing diamond braces
+    std::string query_string = "stmt s; procedure p;"
+                               "Select s.stmt#, p.procName";
 
     TestThrows(query_string);
   }

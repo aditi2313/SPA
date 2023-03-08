@@ -166,11 +166,6 @@ class PQL {
   inline static std::string kPatternToken = kPatternRelName;
   inline static std::string kWithToken = kWithRelName;
 
-
-  // Grammars are tokens with special meaning and actions
-  // attached to them. They are not meant to be compared
-  // literally.
-
   // Splits a rel_ref (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
@@ -206,6 +201,9 @@ class PQL {
         || attr_name == kStmtAttrName;
   }
 
+  // Grammars are tokens with special meaning and actions
+  // attached to them. They are not meant to be compared
+  // literally.
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";
@@ -239,6 +237,7 @@ class PQL {
       // tuple | BOOLEAN
       return CheckGrammar(token, kSynGrammar)
           || CheckGrammar(token, kBooleanGrammar)
+          || is_attr_ref(token)
           || token == kTupleSelectOpen;
     } else if (grammar == kRefGrammar) {
       // "IDENT" | INTEGER | attrRef

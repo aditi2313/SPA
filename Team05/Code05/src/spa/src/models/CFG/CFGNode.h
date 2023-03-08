@@ -4,18 +4,16 @@
 #include <memory>
 #include <vector>
 
-namespace sp {
-class CFGVisitor;
-}
+#include "common/Utiity.h"
 
 namespace cfg {
+
 class CFGNode;
+class CFG;
 
 typedef int CFGNodeId;
 const CFGNodeId kEmptyId = -1;
 const int kInvalidLine = -1;
-
-typedef std::unique_ptr<CFGNode> CFGNodePtr;
 
 class CFGNode {
  public:
@@ -25,13 +23,27 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline std::vector<int> get_lines() const {
-    if (is_empty()) return std::vector<int>(0, 0);
-    std::vector<int> result(end_line_ - start_line_ + 1, 0);
-    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
-      result[j] = i;
+  inline std::vector<int> get_lines() {
+    std::vector<int> res;
+    for (auto s = front(); !s.ExceedBound(); ++s) {
+      res.push_back(*s);
     }
-    return result;
+    return res;
+  }
+
+  inline util::BoundedInt back() {
+    // if empty return an out of bounds object
+    if (is_empty()) {
+      return util::BoundedInt(0, -1, -1);
+    }
+    return util::BoundedInt(end_line_, end_line_, start_line_);
+  }
+
+  inline util::BoundedInt front() {
+    if (is_empty()) {
+      return util::BoundedInt(0, -1, -1);
+    }
+    return util::BoundedInt(start_line_, end_line_, start_line_);
   }
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
@@ -46,9 +58,9 @@ class CFGNode {
   }
 
  private:
-  explicit CFGNode(int id) : id_(id) {}
-  CFGNode(int start, int end, int id)
-      : id_(id), start_line_(start), end_line_(end) {
+  explicit CFGNode(int id, CFG& cfg) : id_(id), cfg_(cfg) {}
+  CFGNode(int start, int end, int id, CFG& cfg)
+      : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
   }
   void add_child(CFGNode& child) {
@@ -67,6 +79,7 @@ class CFGNode {
   int end_line_ = kInvalidLine;
   CFGNodeId first_child_ = kEmptyId;
   CFGNodeId second_child_ = kEmptyId;
+  CFG& cfg_;
   friend class CFG;
 };
 

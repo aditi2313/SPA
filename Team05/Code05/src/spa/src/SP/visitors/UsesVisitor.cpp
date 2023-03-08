@@ -3,8 +3,8 @@
 #include <unordered_set>
 
 #include "PKB/PKBRead.h"
-#include "SP/visitors/VarCollector.h"
 #include "SP/utils/TopologicalSorter.h"
+#include "SP/visitors/VarCollector.h"
 #include "common/filter/filters/IndexFilter.h"
 
 namespace sp {
@@ -16,8 +16,8 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
   auto topological_order = sp::TopologicalSorter::Sort(called_by_);
   // Assert that all procedures are in the topological order vector
   for (auto& proc_nodes : program_node->get_children()) {
-    assert(std::find(topological_order.begin(),
-                     topological_order.end(),
+    assert(proc_calls_.count(proc_nodes->get_name()) == 0 ||
+           std::find(topological_order.begin(), topological_order.end(),
                      proc_nodes->get_name()) != topological_order.end());
   }
 
@@ -95,9 +95,7 @@ void UsesVisitor::AddVariablesFromStmtList(
             ->get_result();
     if (result->empty()) continue;
     auto variables = result->get_row(child->get_line()).get_variables();
-    for (auto& var : variables) {
-      vars.insert(var);
-    }
+    vars.merge(variables);
   }
   pkb = reader.EndRead();
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));

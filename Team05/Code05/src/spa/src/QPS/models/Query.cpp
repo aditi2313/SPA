@@ -35,9 +35,19 @@ ArgumentPtr Query::CreateArgument(std::string token) {
     }
   }
 
-  auto syn_arg = std::make_unique<SynonymArg>(token);
-  if (is_synonym_name_declared(token)) {
-    syn_arg->set_entity_name(get_declared_synonym_entity_name(token));
+  std::string syn_name = token;
+  std::string attr_name = "";
+  // AttrRef: example, s.stmt#, v.varName, p.procName, constant.value
+  if (PQL::is_attr_ref(token)) {
+    std::tie(syn_name, attr_name) = PQL::split_rel_ref(token);
+  }
+
+  auto syn_arg = std::make_unique<SynonymArg>(syn_name);
+  if (is_synonym_name_declared(syn_name)) {
+    syn_arg->set_entity_name(get_declared_synonym_entity_name(syn_name));
+  }
+  if (!attr_name.empty()) {
+    syn_arg->set_attr_name(attr_name);
   }
   return syn_arg;
 }

@@ -48,6 +48,7 @@ class Argument {
   inline virtual std::ostream &dump(std::ostream &str) const {
     return str << "Argument";
   }
+
   friend inline std::ostream &operator<<(std::ostream &o, Argument &base) {
     return base.dump(o);
   }
@@ -112,8 +113,13 @@ class SynonymArg : public Argument {
     entity_name_ = entity_name;
   }
 
+  inline void set_attr_name(PQL::AttrName attr_name) {
+    attr_name_ = attr_name;
+  }
+
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_name_;
+    str << "Synonym: " << syn_name_ << "->" << entity_name_
+        << (attr_name_.empty() ? "" : " with: " + attr_name_);
     return str;
   }
   inline std::unique_ptr<Argument> Copy() override {
@@ -136,9 +142,18 @@ class SynonymArg : public Argument {
 
   inline bool Validate(
       std::unordered_set<EntityName> &entity_names) override {
-    // If syn_name is empty, it hasn't been declared
-    return !syn_name_.empty()
-        && entity_names.count(entity_name_);
+    // Synonym has not been declared
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty()) {
+      // This is an attrRef: e.g s.stmt#
+      // Validate if the synonym type matches the attrName
+      // e.g s must match with stmt#
+      auto attr_name_types = PQL::get_entities_from_attr_name(attr_name_);
+      return attr_name_types.count(entity_name_);
+    }
+    // Else just verify that the synonym type matches the
+    // context of the clause, e.g Modifies(stmt, var)
+    return entity_names.count(entity_name_);
   }
 
   inline void InitializeEntities(
@@ -160,6 +175,7 @@ class SynonymArg : public Argument {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
+  PQL::AttrName attr_name_;
 };
 
 class IdentArg : public Argument {
@@ -195,6 +211,7 @@ class IdentArg : public Argument {
     }
     return false;
   }
+
   inline void InitializeEntities(
       Table &table,
       pkb::PKBReadPtr &pkb,

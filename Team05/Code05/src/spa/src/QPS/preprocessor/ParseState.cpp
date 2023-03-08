@@ -176,28 +176,16 @@ void WithParseState::Parse(const std::vector<std::string> &tokens,
                            parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
   ArgumentPtr arg1, arg2;
-  PQL::AttrName LHS_attr_name, RHS_attr_name;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
 
     if (*grammar_itr == PQL::kRefGrammar) {
-      std::string arg = *itr;
-      if (PQL::is_attr_ref(*itr)) {
-        auto [syn, attr_name] = PQL::split_rel_ref(*itr);
-        arg = syn;
-        if (arg1 == nullptr) {
-          LHS_attr_name = attr_name;
-        } else {
-          RHS_attr_name = attr_name;
-        }
-      }
-
       if (arg1 == nullptr) {
-        arg1 = query->CreateArgument(arg);
+        arg1 = query->CreateArgument(*itr);
       } else {
-        arg2 = query->CreateArgument(arg);
+        arg2 = query->CreateArgument(*itr);
       }
     }
 
@@ -210,10 +198,6 @@ void WithParseState::Parse(const std::vector<std::string> &tokens,
           std::move(arg1),
           std::move(arg2));
       query->add_clause(with_clause);
-
-      // Reset attr_name
-      LHS_attr_name.clear();
-      RHS_attr_name.clear();
     }
 
     if (*grammar_itr == PQL::kRecurseGrammar) {

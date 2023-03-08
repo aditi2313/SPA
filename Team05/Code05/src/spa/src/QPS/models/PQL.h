@@ -170,12 +170,19 @@ class PQL {
       AttrName attr_name) {
     std::unordered_set<std::string> entities;
     if (attr_name == PQL::kProcedureAttrName) {
+      // Procedure and Call
       entities.insert(kProcedureEntityName);
+      entities.insert(kCallEntityName);
     } else if (attr_name == PQL::kValueAttrName) {
+      // Constant
       entities.insert(kConstantEntityName);
     } else if (attr_name == PQL::kVariableAttrName) {
-      entities.insert(kVariableAttrName);
+      // Variable, Read, Print
+      entities.insert(kVariableEntityName);
+      entities.insert(kReadEntityName);
+      entities.insert(kPrintEntityName);
     } else if (attr_name == PQL::kStmtAttrName) {
+      // All statements
       entities = kAllStmtEntityNames;
     }
     return entities;

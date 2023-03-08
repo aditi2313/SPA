@@ -123,3 +123,14 @@ ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,
   }
   return std::move(prev);
 }
+
+TEST_CASE("Parsing of string expression") {
+  Lexer lxr(
+      "Lemon + orange / 1000 + 10 - (11111 * 21312 - 23940) / applesauce + "
+      "galatica");
+
+  VectorLexer v_lxr(lxr);
+  ExpressionParser parser;
+  auto& res = parser.ParseStringExpr(v_lxr);
+  std::cout << res << std::endl;
+}

@@ -29,4 +29,23 @@ ast::ExprNodePtr ExpressionParser::parse(VectorLexer& lxr) {
   }
   return std::move(term);
 }
+
+ast::StringExpr& ExpressionParser::ParseStringExpr(VectorLexer& lxr) {
+  auto& result = ast::StringExpr::of();
+  ParseStringExpr(lxr, result);
+  return result;
+}
+void ExpressionParser::ParseStringExpr(VectorLexer& lxr,
+                                       ast::StringExpr& expr) {
+  expr.add_close();
+  TermParser term_parser;
+  term_parser.ParseStringExpr(lxr, expr);
+  if (lxr.get_tok() == Token::kTokPlus || lxr.get_tok() == Token::kTokMinus) {
+    auto op = lxr.get_tok();
+    lxr.Decrement();
+    expr.add_token(op);
+    ParseStringExpr(lxr, expr);
+  }
+  expr.add_open();
+}
 }  // namespace sp

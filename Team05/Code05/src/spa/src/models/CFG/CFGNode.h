@@ -4,7 +4,10 @@
 #include <memory>
 #include <vector>
 
+#include "common/Utiity.h"
+
 namespace cfg {
+
 class CFGNode;
 class CFG;
 
@@ -20,7 +23,28 @@ class CFGNode {
   inline bool is_empty() const {
     return start_line_ == kInvalidLine || end_line_ == kInvalidLine;
   }
-  inline std::vector<int>& get_lines() { return lines_; }
+  inline std::vector<int> get_lines() {
+    std::vector<int> res;
+    for (auto s = front(); !s.ExceedBound(); ++s) {
+      res.push_back(*s);
+    }
+    return res;
+  }
+
+  inline util::BoundedInt back() {
+    // if empty return an out of bounds object
+    if (is_empty()) {
+      return util::BoundedInt(0, -1, -1);
+    }
+    return util::BoundedInt(end_line_, end_line_, start_line_);
+  }
+
+  inline util::BoundedInt front() {
+    if (is_empty()) {
+      return util::BoundedInt(0, -1, -1);
+    }
+    return util::BoundedInt(start_line_, end_line_, start_line_);
+  }
 
   friend bool operator==(const CFGNode& LHS, const CFGNode& RHS) {
     return LHS.id_ == RHS.id_ && LHS.end_line_ == RHS.end_line_ &&
@@ -34,22 +58,10 @@ class CFGNode {
   }
 
  private:
-  inline void InitialiseLines() {
-    if (lines_.size() != 0) {
-      return;
-    }
-    if (is_empty()) return;
-    lines_.assign(end_line_ - start_line_ + 1, 0);
-
-    for (int i = start_line_, j = 0; i <= end_line_; ++i, ++j) {
-      lines_[j] = i;
-    }
-  }
   explicit CFGNode(int id, CFG& cfg) : id_(id), cfg_(cfg) {}
   CFGNode(int start, int end, int id, CFG& cfg)
       : cfg_(cfg), id_(id), start_line_(start), end_line_(end) {
     assert(end >= start);
-    InitialiseLines();
   }
   void add_child(CFGNode& child) {
     if (first_child_ == kEmptyId) {
@@ -63,7 +75,6 @@ class CFGNode {
   int get_first_child() const { return first_child_; }
   int get_second_child() const { return second_child_; }
   int id_;
-  std::vector<int> lines_;
   int start_line_ = kInvalidLine;
   int end_line_ = kInvalidLine;
   CFGNodeId first_child_ = kEmptyId;

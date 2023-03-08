@@ -42,7 +42,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
   // Join with selected synonyms at the end
   // instead of the beginning as a slight optimisation
-  for (SynonymName syn : query->get_selected_elems()) {
+  for (SynonymName syn : query->get_selected_synonyms()) {
     EntityName entity_name = query->get_declared_synonym_entity_name(
         syn);
     EntitySet initial_entities = master_entity_factory_.GetAllFromPKB(
@@ -53,7 +53,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   }
 
   std::vector<std::vector<Entity>> results;
-  table_.Select(query->get_selected_elems(), results);
+  table_.Select(query->get_selected_synonyms(), results);
 
   return std::make_unique<ListQueryResult>(
       results);

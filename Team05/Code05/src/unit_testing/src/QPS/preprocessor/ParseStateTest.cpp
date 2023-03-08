@@ -153,7 +153,7 @@ TEST_CASE("Test TupleParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    REQUIRE(query->get_selected_synonyms().at(0) == "s.stmt#");
+    REQUIRE(query->get_selected_elems().at(0) == "s.stmt#");
     REQUIRE(itr == tokens.end());
   }
 
@@ -178,9 +178,9 @@ TEST_CASE("Test TupleParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
-    std::vector<SynonymName> expected_selected_synonyms{
+    std::vector<SynonymName> expected_selected_elems{
         "s.stmt#", "v.varName", "p.procName"};
-    REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
+    REQUIRE(query->get_selected_elems() == expected_selected_elems);
     REQUIRE(itr == tokens.end());
   }
 

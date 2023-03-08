@@ -17,7 +17,7 @@ QueryPtr BuildQuery(
     query->declare_synonym(syn, entity);
   }
   for (auto selected_syn : selected_synonyms) {
-    query->add_selected_synonym(selected_syn);
+    query->add_selected_elem(selected_syn);
   }
 
   return query;

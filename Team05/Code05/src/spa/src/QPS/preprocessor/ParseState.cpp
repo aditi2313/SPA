@@ -74,7 +74,7 @@ void TupleParseState::Parse(const std::vector<std::string> &tokens,
       ThrowException();
     }
     if (*grammar_itr == PQL::kElemGrammar) {
-      query->add_selected_synonym(*itr);
+      query->add_selected_elem(*itr);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);

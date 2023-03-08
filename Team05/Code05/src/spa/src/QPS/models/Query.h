@@ -55,6 +55,22 @@ class Query {
     return selected_elems_;
   }
 
+  // Iterate through selected elems
+  // If elem is a Synonym, just add elem
+  // Else elem is an attrRef, and we split attrRef to
+  // add the synonym portion
+  inline std::vector<std::string> get_selected_synonyms() {
+    std::vector<std::string> synonyms;
+    for (auto &elem : selected_elems_) {
+      if (PQL::is_attr_ref(elem)) {
+        synonyms.push_back(PQL::split_rel_ref(elem).first);
+      } else {
+        synonyms.push_back(elem);
+      }
+    }
+    return synonyms;
+  }
+
   inline void set_boolean_query_to_true() {
     is_boolean_query_ = true;
   }

@@ -189,8 +189,12 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Two if statements - relationship only holds for same branch and statement") {
-    std::string program = "procedure parent { if (x == 0) then { read x; } else { read y; } if (y == x) then { read y; } else { read x; } }";
+  SECTION(
+      "Two if statements - relationship only holds for same branch and "
+      "statement") {
+    std::string program =
+        "procedure parent { if (x == 0) then { read x; } else { read y; } if "
+        "(y == x) then { read y; } else { read x; } }";
 
     auto actual_results = InitializeActualResult(program);
 

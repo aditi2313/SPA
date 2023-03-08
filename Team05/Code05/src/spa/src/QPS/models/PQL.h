@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <memory>
 #include <utility>
 
@@ -124,6 +125,14 @@ class PQL {
   inline static AttrName kVariableAttrName = "varName";
   inline static AttrName kValueAttrName = "value";
   inline static AttrName kStmtAttrName = "stmt#";
+  inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
+      kAttrNameToEntitiesMap{
+      {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
+      {kVariableAttrName,
+       {kVariableEntityName, kReadEntityName, kPrintEntityName}},
+      {kValueAttrName, {kConstantEntityName}},
+      {kStmtAttrName, kAllStmtEntityNames}
+  };
 
   inline static std::unordered_set<std::string> kAllAttrName{
       kProcedureAttrName, kVariableAttrName,
@@ -158,41 +167,37 @@ class PQL {
   // Grammars are tokens with special meaning and actions
   // attached to them. They are not meant to be compared
   // literally.
+
+  // Splits a rel_ref (e.g s.stmt#) by the '.' delimiter
+  // Returns a pair of strings [ syn_name, attr_name ]
+  // that is before and after the delimiter respectively.
   inline static std::pair<std::string, std::string> split_rel_ref(
       std::string str) {
     auto index = str.find('.');
-    std::string syn = str.substr(0, index);
+    std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
-    return {syn, attr_name};
+    return {syn_name, attr_name};
   }
 
+  // Given an AttrName (e.g stmt#), return a hashset of all
+  // entities that can be paired with that AttrName.
+  // e.g. varName will return { variable, read, print }
   inline static std::unordered_set<EntityName> get_entities_from_attr_name(
       AttrName attr_name) {
-    std::unordered_set<std::string> entities;
-    if (attr_name == kProcedureAttrName) {
-      // Procedure and Call
-      entities.insert(kProcedureEntityName);
-      entities.insert(kCallEntityName);
-    } else if (attr_name == PQL::kValueAttrName) {
-      // Constant
-      entities.insert(kConstantEntityName);
-    } else if (attr_name == PQL::kVariableAttrName) {
-      // Variable, Read, Print
-      entities.insert(kVariableEntityName);
-      entities.insert(kReadEntityName);
-      entities.insert(kPrintEntityName);
-    } else if (attr_name == PQL::kStmtAttrName) {
-      // All statements
-      entities = kAllStmtEntityNames;
-    }
-    return entities;
+    return kAttrNameToEntitiesMap.at(attr_name);
   }
 
+  // Give an AttrName, return true if its type is IDENT.
+  // Note that this does not have to correspond to the type of
+  // the synonym.
+  // E.g read.varName is IDENT even though read is a stmt
+  // and stmt is an INTEGER type.
   inline static bool is_attr_name_ident(AttrName attr_name) {
     return attr_name == kProcedureAttrName
         || attr_name == kVariableAttrName;
   }
 
+  // Give an AttrName, return true if its type is INTEGER.
   inline static bool is_attr_name_integer(AttrName attr_name) {
     return attr_name == kValueAttrName
         || attr_name == kStmtAttrName;

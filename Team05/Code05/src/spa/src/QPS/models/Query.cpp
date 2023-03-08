@@ -36,8 +36,8 @@ ArgumentPtr Query::CreateArgument(std::string token) {
   }
 
   std::string syn_name = token;
-  std::string attr_name = "";
-  // AttrRef: example, s.stmt#, v.varName, p.procName, constant.value
+  std::string attr_name;
+  // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
   if (PQL::is_attr_ref(token)) {
     std::tie(syn_name, attr_name) = PQL::split_rel_ref(token);
   }

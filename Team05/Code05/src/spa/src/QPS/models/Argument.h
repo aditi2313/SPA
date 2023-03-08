@@ -34,8 +34,8 @@ class Argument {
 
   // IdentArg and IntegerArg are IdentType and IntegerType
   // respectively.
-  // SynonymArg can also be either Ident or Integer depending
-  // on which entity it represents.
+  // SynonymArg can also be either IdentType or IntegerType
+  // depending on which entity it represents.
   virtual bool IsIdentType() { return false; }
   virtual bool IsIntegerType() { return false; }
 

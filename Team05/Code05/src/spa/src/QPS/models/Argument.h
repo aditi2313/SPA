@@ -167,8 +167,8 @@ class SynonymArg : public Argument {
       // This is an attrRef: e.g s.stmt#
       // Validate if the synonym type matches the attrName
       // e.g s must match with stmt#
-      auto attr_name_types = PQL::get_entities_from_attr_name(attr_name_);
-      return attr_name_types.count(entity_name_);
+      return PQL::ValidateAttrRef(
+          attr_name_, entity_name_);
     }
     // Else just verify that the synonym type matches the
     // context of the clause, e.g Modifies(stmt, var)

@@ -15,6 +15,7 @@ using EntityName = std::string;
 using SynonymName = std::string;
 using RelName = std::string;
 using AttrName = std::string;
+using AttrRef = std::string;
 using Elem = std::string;
 
 class PQL {
@@ -126,6 +127,9 @@ class PQL {
   inline static AttrName kVariableAttrName = "varName";
   inline static AttrName kValueAttrName = "value";
   inline static AttrName kStmtAttrName = "stmt#";
+  // Maps an AttrName (e.g stmt#) to a hashset of all
+  // entities that can be paired with that AttrName.
+  // e.g. varName is mapped to { variable, read, print }
   inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
       kAttrNameToEntitiesMap{
       {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
@@ -148,9 +152,15 @@ class PQL {
     auto index = str.find('.');
     // "." doesn't exist
     if (index == std::string::npos) return false;
-    auto [syn, attr_name] = split_rel_ref(str);
+    auto [syn, attr_name] = split_attr_ref(str);
     return CheckGrammar(syn, kSynGrammar)
         && is_attr_name(attr_name);
+  }
+
+  inline static bool ValidateAttrRef(
+      AttrName attr_name, EntityName entity_name) {
+    auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
+    return attr_name_types.count(entity_name);
   }
 
   inline static std::string kSemicolonToken = ";";
@@ -167,23 +177,15 @@ class PQL {
   inline static std::string kPatternToken = kPatternRelName;
   inline static std::string kWithToken = kWithRelName;
 
-  // Splits a rel_ref (e.g s.stmt#) by the '.' delimiter
+  // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
-  inline static std::pair<std::string, std::string> split_rel_ref(
+  inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
     auto index = str.find('.');
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};
-  }
-
-  // Given an AttrName (e.g stmt#), return a hashset of all
-  // entities that can be paired with that AttrName.
-  // e.g. varName will return { variable, read, print }
-  inline static std::unordered_set<EntityName> get_entities_from_attr_name(
-      AttrName attr_name) {
-    return kAttrNameToEntitiesMap.at(attr_name);
   }
 
   // Give an AttrName, return true if its type is IDENT.

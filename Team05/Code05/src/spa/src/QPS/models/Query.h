@@ -63,7 +63,7 @@ class Query {
     std::vector<std::string> synonyms;
     for (auto &elem : selected_elems_) {
       if (PQL::is_attr_ref(elem)) {
-        synonyms.push_back(PQL::split_rel_ref(elem).first);
+        synonyms.push_back(PQL::split_attr_ref(elem).first);
       } else {
         synonyms.push_back(elem);
       }

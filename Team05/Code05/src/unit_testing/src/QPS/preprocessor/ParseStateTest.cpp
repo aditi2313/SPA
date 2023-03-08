@@ -106,7 +106,7 @@ TEST_CASE("Test SelectParseState") {
     REQUIRE(itr == tokens.end());
   }
 
-  SECTION("Select elem should parse correctly") {
+  SECTION("Select <elem> should parse correctly") {
     std::vector<std::string> tokens{"Select", "<", "v", ">"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
 

@@ -92,6 +92,50 @@ TEST_CASE("Test that synonyms are declared exactly once") {
   }
 }
 
+TEST_CASE("Test that selected attrRefs are semantically correct") {
+  SelectClParser parser;
+
+  SECTION("Select attrRef with correct types should pass") {
+    std::string query_str =
+        "stmt s;"
+        "Select s.stmt#";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Select multiple attrRef with correct types should pass") {
+    std::string query_str =
+        "stmt s; variable v; procedure p; constant c;"
+        "Select <s.stmt#, v.varName, p.procName, c.value>";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Select attrRef with incorrect types should throw error") {
+    std::string query_str =
+        "stmt s;"
+        "Select s.value";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Select multiple attrRef with only one incorrect type "
+          "should throw error") {
+    // c.varName is incorrect
+    std::string query_str =
+        "stmt s; variable v; procedure p; constant c;"
+        "Select <s.stmt#, v.varName, p.procName, c.varName>";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+}
+
 TEST_CASE("Test synonym types for each clause are valid") {
   SelectClParser parser;
 

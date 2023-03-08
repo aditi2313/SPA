@@ -77,8 +77,6 @@ class PKBWrite {
   /// <param name="next"></param>
   void AddNextData(int line, const int next);
 
-  void AddWithData(int line, std::string name);
-
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
   }
@@ -104,6 +102,15 @@ class PKBWrite {
   void add_read(int r) { pkb_relation_table_->read_.insert(r); }
 
   void add_if(int i) { pkb_relation_table_->if_.insert(i); }
+
+  void set_var_name_to_line(int line, std::string var_name) {
+    pkb_relation_table_->line_to_var_name_[line] = var_name;
+  }
+
+  void set_proc_name_to_line(int line, std::string proc_name) {
+    pkb_relation_table_->line_to_proc_name_[line] = proc_name;
+  }
+
 
   /// <summary>
   /// Ends the writing.

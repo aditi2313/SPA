@@ -83,6 +83,15 @@ class PKBRead {
     return relation_table_->procedures_;
   }
 
+  const std::string get_var_name_from_line(int line) {
+    return relation_table_->line_to_var_name_[line];
+  }
+
+  const std::string get_proc_name_from_line(int line) {
+    return relation_table_->line_to_proc_name_[line];
+  }
+
+
  private:
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;

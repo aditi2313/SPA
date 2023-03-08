@@ -27,7 +27,6 @@ class PKBRelationTable {
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
   IndexableTable<NextData> next_table_;
-  IndexableTable<WithData> with_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -38,6 +37,9 @@ class PKBRelationTable {
   std::unordered_set<int> if_;
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
+  std::unordered_map<int, std::string> line_to_var_name_;
+  std::unordered_map<int, std::string> line_to_proc_name_;
+
 
   friend bool operator==(const PKBRelationTable& LHS,
                          const PKBRelationTable& RHS) {
@@ -98,8 +100,11 @@ class PKBRelationTable {
     next_table_.get_row(line).add_to_next_im_list(next);
   }
 
-  void add_with_data(const int line, std::string name) {
-    with_table_.add_row(line, WithData(line, name));
+  void add_var_name_to_line(const int line, std::string var_name) {
+    if (!next_table_.exists(line)) {
+      next_table_.add_row(line, NextData(line));
+    }
+    next_table_.get_row(line).add_to_next_im_list(next);
   }
 };
 }  // namespace pkb

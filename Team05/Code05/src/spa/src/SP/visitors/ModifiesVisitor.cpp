@@ -14,7 +14,7 @@ void ModifiesVisitor::Process(ast::AssignNode* assign_node) {
 void ModifiesVisitor::Process(ast::ReadNode* read_node) {
   std::unordered_set<std::string> vars = {read_node->get_var_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
-  pkb_ptr_->AddWithData(read_node->get_line(), read_node->get_var_name());
+  pkb_ptr_->set_var_name_to_line(read_node->get_line(), read_node->get_var_name());
 }
 
 void ModifiesVisitor::ProcessAft(ast::IfNode* if_node) {

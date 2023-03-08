@@ -15,6 +15,8 @@ class EntityFactory {
  public:
   EntityFactory() {}
   virtual EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) = 0;
+  virtual Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) = 0;
+
   virtual bool is_integer() { return false; }
   virtual bool is_ident() { return false; }
 
@@ -64,6 +66,11 @@ class ProcedureEntityFactory : public IdentEntityFactory {
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_procedures());
   }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on a procedure");
+  }
 };
 
 class VariableEntityFactory : public IdentEntityFactory {
@@ -72,6 +79,11 @@ class VariableEntityFactory : public IdentEntityFactory {
 
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_variables());
+  }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on a variable");
   }
 };
 
@@ -82,6 +94,11 @@ class ConstantEntityFactory : public IntEntityFactory {
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_constants());
   }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on a constant");
+  }
 };
 
 class StmtEntityFactory : public IntEntityFactory {
@@ -90,6 +107,11 @@ class StmtEntityFactory : public IntEntityFactory {
 
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_stmts());
+  }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on a stmt");
   }
 };
 
@@ -100,6 +122,10 @@ class ReadEntityFactory : public IntEntityFactory {
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_read());
   }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    return Entity(pkb->get_var_name_from_line(index.get_int()));
+  }
 };
 
 class PrintEntityFactory : public IntEntityFactory {
@@ -108,6 +134,10 @@ class PrintEntityFactory : public IntEntityFactory {
 
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_print());
+  }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    return Entity(pkb->get_var_name_from_line(index.get_int()));
   }
 };
 
@@ -118,6 +148,11 @@ class AssignEntityFactory : public IntEntityFactory {
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_assign());
   }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on an assign");
+  }
 };
 
 class CallEntityFactory : public IntEntityFactory {
@@ -126,6 +161,10 @@ class CallEntityFactory : public IntEntityFactory {
 
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_calls());
+  }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    return Entity(pkb->get_proc_name_from_line(index.get_int()));
   }
 };
 
@@ -136,6 +175,11 @@ class WhileEntityFactory : public IntEntityFactory {
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_whiles());
   }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on a while");
+  }
 };
 
 class IfEntityFactory : public IntEntityFactory {
@@ -144,6 +188,11 @@ class IfEntityFactory : public IntEntityFactory {
 
   inline EntitySet GetAllFromPKB(pkb::PKBReadPtr &pkb) override {
     return CreateInstanceList(pkb->get_if());
+  }
+
+  inline Entity GetAttrValue(Entity &index, pkb::PKBReadPtr &pkb) override {
+    throw QpsEvaluatorException(
+        "Tried to get attrValue on an if");
   }
 };
 

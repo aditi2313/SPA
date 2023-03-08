@@ -38,6 +38,11 @@ class MasterEntityFactory {
     return entity_factories_.at(entity_name)->GetAllFromPKB(pkb);
   }
 
+  inline Entity GetAttrValue(
+      EntityName entity_name, Entity &index, pkb::PKBReadPtr &pkb) {
+    return entity_factories_.at(entity_name)->GetAttrValue(index, pkb);
+  }
+
   inline bool is_integer(EntityName entity_name) {
     return entity_factories_.at(entity_name)->is_integer();
   }

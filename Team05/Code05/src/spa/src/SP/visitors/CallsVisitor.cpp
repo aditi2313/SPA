@@ -7,7 +7,7 @@ void sp::CallsVisitor::Process(ast::CallNode *call_node) {
   auto callee_name = var->get_name();
   pkb_ptr_->AddCallsData(call_node->get_parent_proc(),
                          callee_name);
-  pkb_ptr_->AddWithData(call_node->get_line(), callee_name);
+  pkb_ptr_->set_proc_name_to_line(call_node->get_line(), callee_name);
 }
 
 }  // namespace sp

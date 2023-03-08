@@ -13,8 +13,6 @@
 #include "QPS/factories/MasterEntityFactory.h"
 #include "models/types.h"
 
-using models::SynonymName;
-
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
@@ -32,6 +30,13 @@ class Argument {
   virtual bool IsSynonym() { return false; }
   virtual bool IsExpression() { return false; }
 
+  // IdentArg and IntegerArg are IdentType and IntegerType
+  // respectively.
+  // SynonymArg can also be either IdentType or IntegerType
+  // depending on which entity it represents.
+  virtual bool IsIdentType() { return false; }
+  virtual bool IsIntegerType() { return false; }
+
   virtual bool operator==(Argument &other) = 0;
 
   virtual std::unique_ptr<Argument> Copy() = 0;
@@ -48,6 +53,7 @@ class Argument {
   inline virtual std::ostream &dump(std::ostream &str) const {
     return str << "Argument";
   }
+
   friend inline std::ostream &operator<<(std::ostream &o, Argument &base) {
     return base.dump(o);
   }
@@ -107,13 +113,32 @@ class SynonymArg : public Argument {
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
 
+  inline bool IsIdentType() override {
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty())
+      return PQL::is_attr_name_ident(attr_name_);
+    return master_entity_factory_.is_ident(entity_name_);
+  }
+
+  inline bool IsIntegerType() override {
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty())
+      return PQL::is_attr_name_integer(attr_name_);
+    return master_entity_factory_.is_integer(entity_name_);
+  }
+
   inline SynonymName get_syn_name() { return syn_name_; }
   inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
 
+  inline void set_attr_name(AttrName attr_name) {
+    attr_name_ = attr_name;
+  }
+
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_name_;
+    str << "Synonym: " << syn_name_ << "->" << entity_name_
+        << (attr_name_.empty() ? "" : " with: " + attr_name_);
     return str;
   }
   inline std::unique_ptr<Argument> Copy() override {
@@ -136,9 +161,18 @@ class SynonymArg : public Argument {
 
   inline bool Validate(
       std::unordered_set<EntityName> &entity_names) override {
-    // If syn_name is empty, it hasn't been declared
-    return !syn_name_.empty()
-        && entity_names.count(entity_name_);
+    // Synonym has not been declared
+    if (entity_name_.empty()) return false;
+    if (!attr_name_.empty()) {
+      // This is an attrRef: e.g s.stmt#
+      // Validate if the synonym type matches the attrName
+      // e.g s must match with stmt#
+      return PQL::ValidateAttrRef(
+          attr_name_, entity_name_);
+    }
+    // Else just verify that the synonym type matches the
+    // context of the clause, e.g Modifies(stmt, var)
+    return entity_names.count(entity_name_);
   }
 
   inline void InitializeEntities(
@@ -160,6 +194,7 @@ class SynonymArg : public Argument {
  private:
   SynonymName syn_name_;
   EntityName entity_name_;
+  AttrName attr_name_;
 };
 
 class IdentArg : public Argument {
@@ -167,6 +202,7 @@ class IdentArg : public Argument {
   explicit IdentArg(std::string ident) : Argument(), ident_(ident) {}
 
   inline bool IsEntRef() override { return true; }
+  inline bool IsIdentType() override { return true; }
 
   inline std::string get_ident() { return ident_; }
 
@@ -195,6 +231,7 @@ class IdentArg : public Argument {
     }
     return false;
   }
+
   inline void InitializeEntities(
       Table &table,
       pkb::PKBReadPtr &pkb,
@@ -211,6 +248,7 @@ class IntegerArg : public Argument {
   explicit IntegerArg(int number) : Argument(), number_(number) {}
 
   inline bool IsStmtRef() override { return true; }
+  inline bool IsIntegerType() override { return true; }
 
   inline int get_number() { return number_; }
 

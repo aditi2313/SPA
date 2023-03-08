@@ -77,12 +77,12 @@ class Clause {
 
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
-  inline PQL::RelName get_rel_name() { return rel_name_; }
+  inline RelName get_rel_name() { return rel_name_; }
 
  protected:
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
-  PQL::RelName rel_name_;
+  RelName rel_name_;
 };
 
 // RS between a Statement/Procedure and a Variable
@@ -213,6 +213,18 @@ class NextClause : public Clause {
   NextClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(std::move(arg1), std::move(arg2)) {
     rel_name_ = PQL::kNextRelName;
+  }
+
+  void Index(const Entity &index,
+             const pkb::PKBReadPtr &pkb,
+             EntitySet &results) override;
+};
+
+class WithClause : public Clause {
+ public:
+  WithClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(std::move(arg1), std::move(arg2)) {
+    rel_name_ = PQL::kWithRelName;
   }
 
   void Index(const Entity &index,

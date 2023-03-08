@@ -168,9 +168,9 @@ class WithParseState : public RecursiveParseState {
  public:
   WithParseState()
       : RecursiveParseState("with",
-                            {"with",
+                            {PQL::kWithToken,
                              PQL::kRefGrammar,
-                             "=",
+                             PQL::kEqualToken,
                              PQL::kRefGrammar,
                              PQL::kRecurseGrammar},
                             "and") {

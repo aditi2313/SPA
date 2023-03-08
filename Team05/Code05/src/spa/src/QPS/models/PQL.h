@@ -154,6 +154,7 @@ class PQL {
 
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
+  inline static std::string kEqualToken = "=";
   inline static std::string kSelectToken = "Select";
   inline static std::string kSuchToken = "such";
   inline static std::string kThatToken = "that";
@@ -163,6 +164,8 @@ class PQL {
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
+  inline static std::string kWithToken = kWithRelName;
+
 
   // Grammars are tokens with special meaning and actions
   // attached to them. They are not meant to be compared

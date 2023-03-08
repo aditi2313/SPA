@@ -67,6 +67,10 @@ void PKBWrite::AddNextData(int line, int next) {
     pkb_relation_table_->add_next_data(line, next);
 }
 
+void PKBWrite::AddWithData(int line, std::string name) {
+  pkb_relation_table_->add_with_data(line, name);
+}
+
 void PKBWrite::ProcessFollows() {
   ProcessIndexableTable<FollowsData>(
       pkb_relation_table_->follows_table_,

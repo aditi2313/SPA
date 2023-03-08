@@ -4,12 +4,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include "data/AssignData.h"
-#include "data/FollowsData.h"
-#include "data/ModifiesData.h"
-#include "data/NextData.h"
-#include "data/ParentData.h"
-#include "data/UsesData.h"
+#include "data/Export.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "tables/IndexableTable.h"
 
@@ -32,6 +27,7 @@ class PKBRelationTable {
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
   IndexableTable<NextData> next_table_;
+  IndexableTable<WithData> with_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -100,6 +96,10 @@ class PKBRelationTable {
       next_table_.add_row(line, NextData(line));
     }
     next_table_.get_row(line).add_to_next_im_list(next);
+  }
+
+  void add_with_data(const int line, std::string name) {
+    with_table_.add_row(line, WithData(line, name));
   }
 };
 }  // namespace pkb

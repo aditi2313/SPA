@@ -76,6 +76,7 @@ typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 typedef IndexableTable<CallsData> CallsTable;
 typedef IndexableTable<NextData> NextTable;
+typedef IndexableTable<WithData> WithTable;
 
 template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

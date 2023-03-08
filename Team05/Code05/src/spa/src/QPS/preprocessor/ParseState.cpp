@@ -3,9 +3,9 @@
 #include <memory>
 #include <utility>
 
-#include "QPS/models/PQL.h"
-#include "QPS/models/Entity.h"
 #include "QPS/factories/MasterClauseFactory.h"
+#include "QPS/models/Entity.h"
+#include "QPS/models/PQL.h"
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
@@ -47,8 +47,8 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
     if (*grammar_itr == PQL::kSelectGrammar) {
       // if BOOLEAN is a declared synonym name,
       // we treat it as a synonym (synonym takes precedence)
-      if (*itr == PQL::kBooleanSelect
-          && !query->is_synonym_name_declared(*itr)) {
+      if (*itr == PQL::kBooleanSelect &&
+          !query->is_synonym_name_declared(*itr)) {
         query->set_boolean_query_to_true();
       } else if (*itr == PQL::kTupleSelectOpen) {
         tuple_parse_state_.Parse(tokens, itr, query);
@@ -108,7 +108,8 @@ void SuchThatParseState::Parse(const std::vector<std::string> &tokens,
         arg2 = query->CreateArgument(*itr);
       }
     }
-    if (*(grammar_itr + 1) == PQL::kRecurseGrammar) {
+    if (grammar_itr + 1 != grammar_.end() &&
+        *(grammar_itr + 1) == PQL::kRecurseGrammar) {
       if (arg1 == nullptr || arg2 == nullptr) {
         ThrowException();
       }
@@ -147,7 +148,8 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
     if (*grammar_itr == PQL::kExprGrammar) {
       arg3 = query->CreateArgument(*itr);
     }
-    if (*(grammar_itr + 1) == PQL::kRecurseGrammar) {
+    if (grammar_itr + 1 != grammar_.end() &&
+        *(grammar_itr + 1) == PQL::kRecurseGrammar) {
       if (arg1 == nullptr || arg2 == nullptr || arg3 == nullptr) {
         ThrowException();
       }

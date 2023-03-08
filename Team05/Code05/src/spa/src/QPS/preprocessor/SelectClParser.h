@@ -15,7 +15,16 @@ namespace qps {
 class SelectClParser {
  public:
   SelectClParser() {
+    // Initialize constants
     int num_states = 5;
+
+    int kDeclarationIndex = 0;
+    int kSelectIndex = 1;
+    int kSuchThatIndex = 2;
+    int kPatternIndex = 3;
+    int kWithIndex = 4;
+
+
     // Have to initialize them here as using the
     // {} constructor for unique pointers does not work.
     // State Order is defined as
@@ -28,11 +37,20 @@ class SelectClParser {
 
     transition_table_.assign(num_states, std::vector<int>());
 
-    transition_table_[0] = {1};  // Declare -> Select
-    transition_table_[1] = {2, 3, 4};  // Select -> (Such-that | Pattern | With)
-    transition_table_[2] = {3, 4};  // Such-that -> (Pattern | With)
-    transition_table_[3] = {2, 4};  // Pattern -> (Such-that | With)
-    transition_table_[4] = {2, 3};  // With -> (Such-that | Pattern)
+    transition_table_[kDeclarationIndex] =
+        {kSelectIndex};
+
+    transition_table_[kSelectIndex] =
+        {kSuchThatIndex, kPatternIndex, kWithIndex};
+
+    transition_table_[kSuchThatIndex] =
+        {kPatternIndex, kWithIndex};
+
+    transition_table_[kPatternIndex] =
+        {kSuchThatIndex, kWithIndex};
+
+    transition_table_[kWithIndex] =
+        {kSuchThatIndex, kPatternIndex};
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

@@ -9,34 +9,33 @@
 #include "IndexableFilter.h"
 #include "PKB/data/AssignData.h"
 #include "PKB/data/CallsData.h"
-#include "PKB/data/UsesData.h"
+#include "PKB/data/FollowsData.h"
 #include "PKB/data/ModifiesData.h"
 #include "PKB/data/ParentData.h"
-#include "PKB/data/FollowsData.h"
+#include "PKB/data/UsesData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace filter {
 
-template<class T>
-class IndexFilter
-        : public IndexableFilter<T> {
+template <class T>
+class IndexFilter : public IndexableFilter<T> {
  public:
-    explicit IndexFilter(std::variant<int, std::string> line) : line_(line) {}
+  explicit IndexFilter(std::variant<int, std::string> line) : line_(line) {}
 
-    inline pkb::IndexableTablePtr<T>
-            FilterTable(pkb::IndexableTablePtr<T> table) override {
-        pkb::IndexableTablePtr<T> result =
-                std::make_unique<pkb::IndexableTable<T>>();
-        if (table->exists(line_)) {
-            auto row = table->get_row(line_);
-            result->add_row(row.get_index(), row);
-        }
-        return result;
+  inline pkb::IndexableTablePtr<T> FilterTable(
+      const pkb::IndexableTable<T>& table) override {
+    pkb::IndexableTablePtr<T> result =
+        std::make_unique<pkb::IndexableTable<T>>();
+    if (table.exists(line_)) {
+      auto row = table.get_row(line_);
+      result->add_row(row.get_index(), row);
     }
+    return result;
+  }
 
  private:
-    std::variant<int, std::string> line_;
+  std::variant<int, std::string> line_;
 };
 
 using ModifiesIndexFilter = IndexFilter<pkb::ModifiesData>;

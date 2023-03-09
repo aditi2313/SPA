@@ -1,5 +1,5 @@
-#include <unordered_set>
 #include <catch.hpp>
+#include <unordered_set>
 
 #include "../../spa/src/SP/SourceProcessor.h"
 #include "PKB/PKBRead.h"
@@ -45,7 +45,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     pkb::PKBWrite expected_writer(std::move(expected_table));
     std::unordered_set<std::string> vars({"x"});
     expected_writer.AddUsesData(1, vars);
-    //expected_writer.AddUsesData("uses", vars);
+    // expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -77,7 +77,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     REQUIRE(actual_results == expected_results);
   }
 
-    SECTION("Read statement - relationship does not hold") {
+  SECTION("Read statement - relationship does not hold") {
     std::string program = "procedure uses { read x; }";
 
     auto actual_results = InitializeUses(program);
@@ -86,4 +86,33 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
 
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION("Print statement - relationship holds") {
+    std::string program = "procedure uses { print x; }";
+
+    auto actual_results = InitializeUses(program);
+
+    std::unique_ptr<pkb::PKBRelationTable> expected_table =
+        std::make_unique<pkb::PKBRelationTable>();
+    pkb::PKBWrite expected_writer(std::move(expected_table));
+    std::unordered_set<std::string> vars({"x"});
+    expected_writer.AddUsesData(1, vars);
+    // expected_writer.AddUsesData("uses", vars);
+    expected_table = expected_writer.ProcessTableAndEndWrite();
+    pkb::PKBRead expected_reader(std::move(expected_table));
+    auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
+        [](pkb::UsesData data) { return true; });
+    auto expected_results_ptr = expected_reader.Uses(std::move(expected_ftr));
+    auto expected_results = *(expected_results_ptr->get_result());
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("If statement - relationship holds for cond") {}
+
+  SECTION("If statement with more complex condition") {}
+
+  SECTION("") {}
+
+  SECTION("Calls statement") {}
 }

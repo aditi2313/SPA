@@ -4,9 +4,9 @@ Select s1 such that Next(s1, s2) and Next(s2, s1)
 5, 6
 5000
 2 - s1 -> s2 -> c , a procedure that calls n3
-stmt s1, s2; calls c; procedure p;
-Select <s1, p> such that Next(s1, s2) and Next(s2, c) and Calls(p, "n3")
-4 n1, 6 n1
+stmt s1, s2; call c; procedure p;
+Select <s1, p> such that Next(s1, s2) and Next(s2, c) such that Calls(p, "n3")
+4 n2, 6 n2
 5000
 3 - s1 -> s2 -> s3 -> s4
 stmt s1, s2, s3, s4;

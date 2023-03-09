@@ -39,7 +39,7 @@ class StringExpr {
   inline void add_const(int v) {
     auto v_str = std::to_string(v);
     push_back(v_str);
-    constants_.insert(mac buiv);
+    constants_.insert(v);
   }
 
   inline void add_var(std::string& var) {

@@ -37,8 +37,9 @@ class StringExpr {
     push_back(tok);
   }
   inline void add_const(int v) {
-    push_back(std::to_string(v));
-    constants_.push_back(v);
+    auto v_str = std::to_string(v);
+    push_back(v_str);
+    constants_.insert(mac buiv);
   }
 
   inline void add_var(std::string& var) {
@@ -98,7 +99,7 @@ class StringExpr {
   // of string expr will change when the vector resizes.
   inline static std::vector<std::unique_ptr<StringExpr>> expressions_;
   std::vector<std::string> tokens_;
-  std::vector<int> constants_;
+  std::unordered_set<int> constants_;
   inline static const char kEmpty[] = "";
 
   std::unordered_set<std::string> variables_;

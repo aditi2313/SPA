@@ -30,7 +30,6 @@ procedure third{
 				x = x + 1;
 			}
 			read aircon;
-			}
 		}
 	} else {
 		y = y + 1;

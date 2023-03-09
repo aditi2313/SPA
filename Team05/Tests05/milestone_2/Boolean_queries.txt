@@ -1,0 +1,34 @@
+1 - Boolean query for Follows
+stmt s;
+Select BOOLEAN such that Follows(s, _)
+TRUE
+5000
+2 - Boolean query for Uses
+stmt s;
+Select BOOLEAN such that Uses(s, _)
+TRUE
+5000
+3 - Boolean query for Parent
+stmt s;
+Select BOOLEAN such that Parent(s, _)
+TRUE
+5000
+4 - Boolean query for Modifies
+stmt s; variable v;
+Select BOOLEAN such that Modifies(s, v)
+TRUE
+5000
+5 - Boolean query for Calls
+procedure p, q;
+Select BOOLEAN such that Calls(p,q)
+TRUE
+5000
+6 - Boolean query for Next
+stmt s1, s2;
+Select BOOLEAN such that Next(s1,s2)
+TRUE
+5000
+7 - Boolean query for Affects
+Select BOOLEAN such that Affects(12, _)
+TRUE
+5000

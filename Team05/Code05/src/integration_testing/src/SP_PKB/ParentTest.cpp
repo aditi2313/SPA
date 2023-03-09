@@ -57,7 +57,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
   SECTION("While loop - relationship holds") {
     std::string program = "procedure parent { while (x != 0) { y = y + 1; } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();

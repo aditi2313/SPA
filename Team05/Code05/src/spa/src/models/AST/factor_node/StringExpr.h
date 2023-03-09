@@ -33,7 +33,8 @@ class StringExpr {
   }
 
   inline void add_token(sp::Token token) {
-    push_back(sp::TokenToString(token));
+    std::string tok = sp::TokenToString(token);
+    push_back(tok);
   }
   inline void add_const(int v) {
     push_back(std::to_string(v));

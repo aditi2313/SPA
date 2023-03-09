@@ -138,6 +138,20 @@ void TestEquivalentString(std::string left, std::string right) {
   REQUIRE(other == res);
 }
 
+void TestContainsString(std::string left, std::string right,
+                        bool contains = true) {
+  Lexer lxr(left);
+  Lexer o_lxr(right);
+  VectorLexer v_lxr(lxr);
+  VectorLexer o_v_lxr(o_lxr);
+  ExpressionParser parser;
+  auto& res = parser.ParseStringExpr(v_lxr);
+  auto& other = parser.ParseStringExpr(o_v_lxr);
+  std::cout << res << std::endl;
+  std::cout << other << std::endl;
+  REQUIRE(res.Contains(other) == contains);
+}
+
 TEST_CASE("Parsing of string expression") {
   Lexer lxr(
       "Lemon + orange / 1000 + 10 - (11111 * 21312 - 23940) / applesauce + "
@@ -161,4 +175,20 @@ TEST_CASE("Verify simple equality") { TestEquivalentString("a", "(a)"); }
 
 TEST_CASE("Verify simple equality with addition") {
   TestEquivalentString("a + b", "(a) + b");
+}
+
+TEST_CASE("Test contains string addition") {
+  TestContainsString("a + b", "(a) + b");
+}
+
+TEST_CASE("Test nested contains") {
+  TestContainsString("a + b + c + d + e + f + g", "(a) + b");
+}
+
+TEST_CASE("Test on complex term") {
+  TestContainsString("(((a * b) * c) * d) + (k - b)", "(a*b)");
+}
+
+TEST_CASE("Test on deep term") {
+  TestContainsString("a + (b + c)", "(a + b) + c", false);
 }

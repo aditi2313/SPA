@@ -11,30 +11,31 @@
 namespace ast {
 class StringExpr {
  public:
-  inline void add_token(std::string& token) { tokens_.push_back(token); }
-  inline void add_token(std::string token) { tokens_.push_back(token); }
+  inline void add_token(std::string& token) { push_back(token); }
+  inline void add_token(std::string token) { push_back(token); }
   inline void add_open() { tokens_.push_back("("); }
 
   inline void add_close(int v) {
     tokens_[v] = ")";
-    empt_count_--;
+
+    size_++;
   }
 
   inline int insert_empty() {
-    tokens_.push_back("");
-    empt_count_++;
+    push_back("");
+
     return tokens_.size() - 1;
   }
 
   inline void add_token(sp::Token token) {
-    tokens_.push_back(sp::TokenToString(token));
+    push_back(sp::TokenToString(token));
   }
   inline void add_const(int v) {
-    tokens_.push_back(std::to_string(v));
+    push_back(std::to_string(v));
     constants_.push_back(v);
   }
   inline void add_var(std::string& var) {
-    tokens_.push_back(var);
+    push_back(var);
     variables_.insert(var);
   }
 
@@ -53,12 +54,19 @@ class StringExpr {
       --iter;
       os << *iter;
     }
+    os << " size:" << obj.size_;
     return os;
   }
 
-  int size() const { return tokens_.size() - empt_count_; }
+  int size() const { return size_; }
+
+  bool Contains(const StringExpr& other) const;
 
  private:
+  void push_back(std::string str) {
+    size_ += str.length();
+    tokens_.push_back(str);
+  }
   bool CompareVectors(const StringExpr& other, int i) const {
     auto other_ptr = other.tokens_.begin();
     for (int k = i; k < tokens_.size() && other_ptr != other.tokens_.end();
@@ -78,12 +86,14 @@ class StringExpr {
   }
 
   StringExpr() {}
+  size_t size_ = 0;
   // unique ptr is needed as otherwise, the reference
   // of string expr will change when the vector resizes.
   inline static std::vector<std::unique_ptr<StringExpr>> expressions_;
   std::vector<std::string> tokens_;
   std::vector<int> constants_;
-  int empt_count_ = 0;
+  inline static const char kEmpty[] = "";
+
   std::unordered_set<std::string> variables_;
 };
 

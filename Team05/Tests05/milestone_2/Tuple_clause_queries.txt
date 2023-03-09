@@ -28,3 +28,18 @@ variable v; stmt s; assign a;
 Select<s,v> such that Parent(s, 3) and Modifies(a, v)
 2 finish, 2 me, 2 help, 2 x
 5000
+6 - tuple with none result
+variable v1, v2; stmt s;
+Select<v1, v2, s> such that Modifies(s, v1) and Modifies(s, v2) and Parent(s, 1)
+none
+5000
+7 - tuple with select that are not all synonyms
+assign a; print pn; procedure p, q; variable v;
+Select<p, pn> such that Calls(p, q) and Uses (pn, v) 
+name 12, second 12
+5000
+8 - tuple with synonyms that are unassigned
+assign a;print pn; procedure p; variable v;
+Select<p, pn, x> such that Calls(p, q) and Uses (pn, v) 
+SemanticError
+5000

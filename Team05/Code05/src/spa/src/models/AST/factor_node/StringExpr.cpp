@@ -24,13 +24,14 @@ ll generate_pow(ll n) {
 class StrSlidingWindow {
  public:
   StrSlidingWindow(const std::vector<std::string>& tokens, size_t size)
-      : tokens_(tokens) {
+      : tokens_(tokens), max_size_(size) {
     code_ = 0;
     curr_str_index_ = 0;
     curr_v_index_ = 0;
     start_str_index_ = 0;
     start_v_index_ = 0;
     to_remove_ = generate_pow(size - 1);
+    fill_window();
   }
 
   bool reached_end() { return curr_v_index_ == tokens_.size(); }
@@ -63,6 +64,13 @@ class StrSlidingWindow {
   }
 
  private:
+  void fill_window() {
+    int ctr = 0;
+    while (ctr < max_size_ && !reached_end()) {
+      increment_end();
+      ctr++;
+    }
+  }
   bool compare_vectors(const StrSlidingWindow& other) const {
     if (start_str_index_ != 0) return false;
     auto other_ptr = other.tokens_.begin();
@@ -104,6 +112,7 @@ class StrSlidingWindow {
       }
     }
   }
+  size_t max_size_;
   ll to_remove_;
   ll code_;
   int curr_str_index_;
@@ -118,25 +127,17 @@ class StrSlidingWindow {
 // on a vector of strings
 bool StringExpr::Contains(const StringExpr& other) const {
   StrSlidingWindow reference_window(other.tokens_, other.size());
-  for (int i = 0; i < other.size(); ++i) {
-    reference_window.increment_end();
-  }
 
   // generate the initial sliding window of size other.size
   StrSlidingWindow window(tokens_, other.size());
-  int ctr = 0;
-  while (ctr < other.size()) {
-    window.increment_end();
-    ctr++;
-  }
 
+  if (window.compare_code(reference_window)) return true;
   while (!window.reached_end()) {
-    // compare window
+    window.increment();
     if (window.compare_code(reference_window)) {
       // compare the subvector
       return true;
     }
-    window.increment();
   }
   return false;
 }

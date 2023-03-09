@@ -192,3 +192,40 @@ TEST_CASE("Test on complex term") {
 TEST_CASE("Test on deep term") {
   TestContainsString("a + (b + c)", "(a + b) + c", false);
 }
+
+TEST_CASE("Test on very flat term") {
+  TestContainsString("a + b + c + d + e + f + g", "c + d", false);
+  TestContainsString("a + b + c + d + e + f + g", "f + g", false);
+  TestContainsString("a + b + c + d + e + f + g", "a + b");
+}
+
+TEST_CASE("Test on very flat div term") {
+  TestContainsString("a / b * c + d + e + f + g", "c + d", false);
+  TestContainsString("a / b * c + d + e + f + g", "f + g", false);
+  TestContainsString("a / b * c + d + e + f + g", "a + b", false);
+  TestContainsString("a * b * c + d + e + f + g", "a * b");
+  TestContainsString("a * b * c + d + e + f + g", "b*c", false);
+  TestContainsString("a * b + b * c", "b*c");
+  TestContainsString("a * b + b * c", "a*b");
+  TestContainsString("a * b + b * c", "b+b", false);
+  TestContainsString("a", "b", false);
+}
+
+TEST_CASE("Test on equiv strings") {
+  TestContainsString("a", "a");
+  TestContainsString("a", "(a)");
+  TestContainsString("(a)", "(a)");
+  TestContainsString("(a) / (b) * (c) + (d) + (e) + (f) + (g)",
+                     "a / b * c + d + e + f + g");
+
+  TestContainsString("apple - sauce + 100 * 2000",
+                     "(apple - sauce) + ((100) * (2000))");
+}
+
+TEST_CASE("Test on different strings") {
+  TestContainsString("a", "b", false);
+  TestContainsString("a", "(b)", false);
+  TestContainsString("b", "(a)", false);
+  TestContainsString("(b)", "a", false);
+  TestContainsString("a + B - c", "a + b - c", false);
+}

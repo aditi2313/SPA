@@ -230,4 +230,21 @@ TEST_CASE("Test on different strings") {
   TestContainsString("a + B - c", "a + b - c", false);
 }
 
-TEST_CASE("Test on different chains") { TestContainsString("a + b", "a"); }
+TEST_CASE("Test on massive chain") {
+  std::string massive_chain =
+      "(a + b"
+      "+ c) + (d - e) * k"
+      "+ (((m - g)-k)-l) * k"
+      "* ((j +d)*metal)";
+  TestContainsString(massive_chain, "a+b");
+  TestContainsString(massive_chain, "d-e");
+  TestContainsString(massive_chain, "m-g-k");
+  TestContainsString(massive_chain, "j+d");
+  TestContainsString(massive_chain, "d*metal", false);
+  TestContainsString(massive_chain, massive_chain);
+  TestContainsString(massive_chain, "metal");
+  TestContainsString(massive_chain, "j");
+  TestContainsString(massive_chain, "a");
+  TestContainsString(massive_chain, "d - e * k", false);
+  TestContainsString(massive_chain, "(d - e) * k", true);
+}

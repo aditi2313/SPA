@@ -15,7 +15,7 @@ class StringExpr {
   inline void add_token(std::string& token) { push_back(token); }
   inline void add_token(std::string token) { push_back(token); }
   inline void add_open() {
-    std::string close = ")";
+    std::string close = "(";
     push_back(close);
   }
 

@@ -14,21 +14,15 @@ class StringExpr {
  public:
   inline void add_token(std::string& token) { push_back(token); }
   inline void add_token(std::string token) { push_back(token); }
-  inline void add_open() {
-    std::string close = "(";
-    push_back(close);
-  }
+  inline void add_open() { push_back('('); }
 
   inline void add_close(int v) {
-    tokens_[v] = ")";
-
+    tokens_[v] = ')';
     size_++;
   }
 
   inline int insert_empty() {
-    std::string empt = "";
-    push_back(empt);
-
+    tokens_.push_back(' ');
     return tokens_.size() - 1;
   }
 
@@ -43,7 +37,10 @@ class StringExpr {
   }
 
   inline void add_var(std::string& var) {
+    tokens_.push_back('|');
     push_back(var);
+    tokens_.push_back('|');
+    size_ += 2;
     variables_.insert(var);
   }
 
@@ -60,6 +57,7 @@ class StringExpr {
   friend std::ostream& operator<<(std::ostream& os, const StringExpr& obj) {
     for (auto iter = obj.tokens_.end(); iter != obj.tokens_.begin();) {
       --iter;
+      if (*iter == ' ') continue;
       os << *iter;
     }
     os << " size:" << obj.size_;
@@ -71,18 +69,24 @@ class StringExpr {
   bool Contains(const StringExpr& other) const;
 
  private:
+  void push_back(char c) {
+    tokens_.push_back(c);
+    size_++;
+  }
   void push_back(std::string& str) {
     size_ += str.length();
-    tokens_.push_back(str);
+    for (int i = str.size() - 1; i >= 0; --i) {
+      tokens_.push_back(str[i]);
+    }
   }
   bool CompareVectors(const StringExpr& other, int i) const {
     auto other_ptr = other.tokens_.begin();
     for (int k = i; k < tokens_.size() && other_ptr != other.tokens_.end();
          k++) {
-      if (tokens_[k] == "") {
+      if (tokens_[k] == ' ') {
         continue;
       }
-      while (*other_ptr == "") {
+      while (*other_ptr == ' ') {
         other_ptr++;
       }
       if (*other_ptr != tokens_[k]) {
@@ -98,7 +102,7 @@ class StringExpr {
   // unique ptr is needed as otherwise, the reference
   // of string expr will change when the vector resizes.
   inline static std::vector<std::unique_ptr<StringExpr>> expressions_;
-  std::vector<std::string> tokens_;
+  std::string tokens_ = "";
   std::unordered_set<int> constants_;
   inline static const char kEmpty[] = "";
 

@@ -26,30 +26,24 @@ int64 generate_pow(int64 n) {
 
 class StrSlidingWindow {
  public:
-  StrSlidingWindow(const std::vector<std::string>& tokens, size_t size)
+  StrSlidingWindow(const std::string& tokens, size_t size)
       : tokens_(tokens), max_size_(size) {
     code_ = 0;
-    curr_str_index_ = 0;
-    curr_v_index_ = 0;
-    start_str_index_ = 0;
-    start_v_index_ = 0;
+
     to_remove_ = generate_pow(size - 1);
     fill_window();
   }
 
-  bool reached_end() { return curr_v_index_ == tokens_.size(); }
+  bool reached_end() { return end_index_ == tokens_.size(); }
 
   void increment_end() {
-    auto& curr_str = tokens_.at(curr_v_index_);
-    if (curr_str.size() == 0) {
-      curr_v_index_++;
-      return increment_end();
-    }
-    char c = curr_str.at(curr_str_index_);
+    increment_ptrs(end_index_);
+    char c = tokens_.at(end_index_);
     code_ *= 256;
     code_ += c;
     code_ %= kPrime;
-    increment_ptrs(curr_str_index_, curr_v_index_);
+    end_index_++;
+    increment_ptrs(end_index_);
   }
 
   void increment() {
@@ -74,14 +68,13 @@ class StrSlidingWindow {
     }
   }
   bool compare_vectors(const StrSlidingWindow& other) const {
-    if (start_str_index_ != 0) return false;
     auto other_ptr = other.tokens_.begin();
-    for (int k = start_v_index_;
+    for (int k = start_index_;
          k < tokens_.size() && other_ptr != other.tokens_.end(); k++) {
-      if (tokens_[k] == "") {
+      if (tokens_[k] == ' ') {
         continue;
       }
-      while (*other_ptr == "") {
+      while (*other_ptr == ' ') {
         other_ptr++;
       }
       if (*other_ptr != tokens_.at(k)) {
@@ -92,37 +85,27 @@ class StrSlidingWindow {
     return true;
   }
   void increment_start() {
-    auto& start_str = tokens_.at(start_v_index_);
-    if (start_str.size() == 0) {
-      start_v_index_++;
-      return increment_start();
-    }
-    char c = start_str.at(start_str_index_);
+    increment_ptrs(start_index_);
+    char c = tokens_.at(start_index_);
     int64 to_remove = (c * to_remove_) % kPrime;
     code_ -= to_remove;
     code_ = (code_ + kPrime) % kPrime;
-    increment_ptrs(start_str_index_, start_v_index_);
+    start_index_++;
+    increment_ptrs(start_index_);
   }
-  void increment_ptrs(int& str_index, int& v_index) {
-    str_index++;
-    auto& curr_str = tokens_.at(v_index);
-    if (str_index >= curr_str.size()) {
-      str_index = 0;
-      v_index++;
-      while (v_index != tokens_.size() && tokens_.at(v_index) == "") {
-        v_index++;
-      }
+  void increment_ptrs(int& index) {
+    while (index != tokens_.size() && tokens_.at(index) == ' ') {
+      ++index;
     }
   }
   size_t max_size_;
   int64 to_remove_;
   int64 code_;
-  int curr_str_index_;
-  int curr_v_index_;
-  int start_str_index_;
-  int start_v_index_;
 
-  const std::vector<std::string>& tokens_;
+  int start_index_ = 0;
+  int end_index_ = 0;
+
+  const std::string& tokens_;
 };
 
 // Implementation of a variant of Rabin Karp to work

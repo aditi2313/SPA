@@ -7,7 +7,7 @@
 #include "SP/visitors/ParentVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
-pkb::ParentTable InitializeActualResult(std::string program) {
+pkb::ParentTable InitializeParent(std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
@@ -21,7 +21,7 @@ pkb::ParentTable InitializeActualResult(std::string program) {
   return results;
 }
 
-pkb::ParentTable InitializeEmptyExpectedResult() {
+pkb::ParentTable InitializeEmptyParent() {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   pkb::PKBRead reader(std::move(table));
@@ -37,9 +37,9 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
   SECTION("One statement - empty table") {
     std::string program = "procedure parent { read x; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
-    auto expected_results = InitializeEmptyExpectedResult();
+    auto expected_results = InitializeEmptyParent();
 
     REQUIRE(actual_results == expected_results);
   }
@@ -47,9 +47,9 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
   SECTION("Two read statements - empty table") {
     std::string program = "procedure parent { read x; read y; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
-    auto expected_results = InitializeEmptyExpectedResult();
+    auto expected_results = InitializeEmptyParent();
 
     REQUIRE(actual_results == expected_results);
   }
@@ -77,7 +77,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     std::string program =
         "procedure parent { if (x == 0) then { read x; } else { read y; } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -98,7 +98,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     std::string program =
         "procedure parent { while (y > 5) { while (x < 3) { read z; } } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -120,7 +120,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
         "procedure parent { while (x > 3) { while (x < 3) { while (x == 3) { "
         "read while; } } } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -143,7 +143,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
         "procedure parent { if (x > 5) then { if (z > 5) then { read y; } else "
         "{ read x; } } else { if (y > 5) then { read x; } else { read y; } } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -169,7 +169,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
         "procedure parent { while (y == 2) { if (x == 2) then { read x; } else "
         "{ read y; } while (x > 2) { read z; } } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -196,7 +196,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
         "procedure parent { if (x == 0) then { read x; } else { read y; } if "
         "(y == x) then { read y; } else { read x; } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeParent(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();

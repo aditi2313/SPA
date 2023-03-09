@@ -7,7 +7,7 @@
 #include "SP/visitors/FollowsVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
-pkb::FollowsTable InitializeActualResult(std::string program) {
+pkb::FollowsTable InitializeFollows(std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
@@ -21,7 +21,7 @@ pkb::FollowsTable InitializeActualResult(std::string program) {
   return results;
 }
 
-pkb::FollowsTable InitializeEmptyExpectedResult() {
+pkb::FollowsTable InitializeEmptyFollows() {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   pkb::PKBRead reader(std::move(table));
@@ -37,9 +37,9 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
   SECTION("One statement - empty table") {
     std::string program = "procedure follows { read x; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyExpectedResult();
+    auto expected_results = InitializeEmptyFollows();
 
     REQUIRE(actual_results == expected_results);
   }
@@ -47,7 +47,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
   SECTION("Two read statements - relationship holds") {
     std::string program = "procedure follows { read x; read y; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -66,7 +66,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
   SECTION("Two assign statements - relationship holds") {
     std::string program = "procedure follows { x = 5; y = 3; }";
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -87,7 +87,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     std::string program =
         "procedure follows { while (i > 0) { i = i - 1; } while (j < 0) { "
         "j = j + 1; } }";
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -107,9 +107,9 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
   SECTION("While loop - relationship does not hold") {
     std::string program = "procedure follows { while (x != 0) { y = y + 1; } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyExpectedResult();
+    auto expected_results = InitializeEmptyFollows();
 
     REQUIRE(actual_results == expected_results);
   }
@@ -119,7 +119,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
         "procedure follows { if (x < 0) then { read x; read y; } else { "
         "read z; } "
         "}";
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -140,9 +140,9 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     std::string program =
         "procedure follows { x = 5; } procedure readfollows2 { y = 3; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyExpectedResult();
+    auto expected_results = InitializeEmptyFollows();
 
     REQUIRE(actual_results == expected_results);
   }
@@ -150,7 +150,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
   SECTION("Three read statements - transitive relationship holds") {
     std::string program = "procedure follows { read x; read y; read z; }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();
@@ -177,7 +177,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
         "procedure follows { while (x > 5) { print x; while (y > 3) { read y; "
         "print y; } } }";
 
-    auto actual_results = InitializeActualResult(program);
+    auto actual_results = InitializeFollows(program);
 
     std::unique_ptr<pkb::PKBRelationTable> expected_table =
         std::make_unique<pkb::PKBRelationTable>();

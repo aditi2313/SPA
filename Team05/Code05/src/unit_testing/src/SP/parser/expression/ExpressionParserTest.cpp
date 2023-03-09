@@ -124,6 +124,20 @@ ast::ExprNodePtr CreateChain(std::vector<std::string> variables, Token op,
   return std::move(prev);
 }
 
+void TestEquivalentString(std::string left, std::string right) {
+  Lexer lxr(left);
+  Lexer o_lxr(right);
+  VectorLexer v_lxr(lxr);
+  VectorLexer o_v_lxr(o_lxr);
+  ExpressionParser parser;
+  auto& res = parser.ParseStringExpr(v_lxr);
+  auto& other = parser.ParseStringExpr(o_v_lxr);
+  std::cout << res << std::endl;
+
+  REQUIRE(res == other);
+  REQUIRE(other == res);
+}
+
 TEST_CASE("Parsing of string expression") {
   Lexer lxr(
       "Lemon + orange / 1000 + 10 - (11111 * 21312 - 23940) / applesauce + "
@@ -133,4 +147,18 @@ TEST_CASE("Parsing of string expression") {
   ExpressionParser parser;
   auto& res = parser.ParseStringExpr(v_lxr);
   std::cout << res << std::endl;
+}
+
+TEST_CASE("Verify left associative") {
+  TestEquivalentString("(a + b) + c", "a + b + c");
+}
+
+TEST_CASE("Verify left associative with times") {
+  TestEquivalentString("a * b * c", "(a*b) * c");
+}
+
+TEST_CASE("Verify simple equality") { TestEquivalentString("a", "(a)"); }
+
+TEST_CASE("Verify simple equality with addition") {
+  TestEquivalentString("a + b", "(a) + b");
 }

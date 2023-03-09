@@ -37,15 +37,17 @@ ast::StringExpr& ExpressionParser::ParseStringExpr(VectorLexer& lxr) {
 }
 void ExpressionParser::ParseStringExpr(VectorLexer& lxr,
                                        ast::StringExpr& expr) {
-  expr.add_close();
+  auto v = expr.insert_empty();
   TermParser term_parser;
   term_parser.ParseStringExpr(lxr, expr);
+
   if (lxr.get_tok() == Token::kTokPlus || lxr.get_tok() == Token::kTokMinus) {
+    expr.add_close(v);
     auto op = lxr.get_tok();
     lxr.Decrement();
     expr.add_token(op);
     ParseStringExpr(lxr, expr);
+    expr.add_open();
   }
-  expr.add_open();
 }
 }  // namespace sp

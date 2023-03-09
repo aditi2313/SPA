@@ -12,6 +12,7 @@
 #include "PKBWritingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
 #include "common/filter/filters/IndexFilter.h"
+#include "common/logging/Logger.h"
 
 namespace sp {
 class ModifiesVisitor : public PKBWritingVisitor {
@@ -37,7 +38,6 @@ class ModifiesVisitor : public PKBWritingVisitor {
                                 std::unordered_set<std::string>& vars) {
     auto pkb = pkb_ptr_->EndWrite();
     pkb::PKBRead reader(std::move(pkb));
-
     for (auto& child : node.get_children()) {
       auto result = reader
                         .Modifies(std::make_unique<filter::ModifiesIndexFilter>(
@@ -45,9 +45,7 @@ class ModifiesVisitor : public PKBWritingVisitor {
                         ->get_result();
       if (result->empty()) continue;
       auto variables = result->get_row(child->get_line()).get_variables();
-      for (auto& var : variables) {
-        vars.insert(var);
-      }
+      vars.merge(variables);
     }
     pkb = reader.EndRead();
     pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));

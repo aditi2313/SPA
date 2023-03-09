@@ -1,17 +1,22 @@
-procedure tuple {
-      x = 100;
-      d = a + d * a + d - a * d / d * c;
-      x = d + 2;
-      d = x + y * z;
-      puss = in + boots * (the + last - wish);
-      lobo = in + boots * (the + last - wish);
-      puss = (in + boots) * the + last - wish;
-      lobo = in + (boots * the + last - wish);
-      x = y;
-      if (z > y) then {
-        puss = (in + boots) * the;  
-      } else {
-        puss = wish * (in + boots);  
-      }
-      puss = 100;
+procedure name {
+	help = finish/me;
+	while ((help*finish/finish*finish<me*help+help)||(me+this+finish-me/me-me*this/finish>=help/me-this)){
+		if ((this-this/finish-me*this-finish/finish/help<finish*help/me)||(this/me*help/help*this*this/this>=help-me-this/help*help+this+help*finish)) then {
+			me=this*finish/me/help*me/help+help+help*help/this;
+			finish= apple;
+				read help;
+		} else {
+			read help;
+			me=me-help;
+		}
+	}
+	call second;
+}
+
+procedure second{
+	call third;
+}
+
+procedure third {
+	x = x + 1;
 }

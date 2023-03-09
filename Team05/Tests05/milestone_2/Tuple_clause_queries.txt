@@ -1,5 +1,16 @@
-1 - 2 args
-procedure p, q;
-Select <p, q> such that Affects (p, q)
-2 3
+1 - 2 args with assignment and variable
+assign a; variable v;
+Select <a, v> such that Modifies(a, v)
+1 help, 4 me, 5 finish, 8 me, 11 x
 5000
+2 - 2 args with Uses
+variable v1, v2;
+Select <v1, v2> such that Uses(1, v1) and Uses(5, v2)
+finish apple, me apple
+5000
+3 - tuple with multiple types
+variable v; procedure p, q, r; assign a;
+Select <p, q, r, v> such that Calls(p, q) and Calls(q, r) pattern a(v, _"x"_)
+name second third x
+5000
+4 - tuple with 

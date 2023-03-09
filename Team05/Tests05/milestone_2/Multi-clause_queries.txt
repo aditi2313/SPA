@@ -48,3 +48,13 @@ assign a;
 Select a such that Modifies(a, "b") and Parent* (1,a) pattern a("b", _)
 4
 5000
+11 - Usage of and as shorthand for such that
+assign a;
+Select a such that Modifies(a, "b") such that Parent* (1,a) pattern a("b", _)
+4
+5000
+12 - Usage of and as shorthand for with
+assign a; procecdure p;
+Select a such that Modifies(a, "b") with p.procName = "name" such that Parent* (1,a)
+4
+5000

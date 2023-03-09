@@ -13,7 +13,10 @@ class StringExpr {
  public:
   inline void add_token(std::string& token) { push_back(token); }
   inline void add_token(std::string token) { push_back(token); }
-  inline void add_open() { push_back("("); }
+  inline void add_open() {
+    std::string close = ")";
+    push_back(close);
+  }
 
   inline void add_close(int v) {
     tokens_[v] = ")";
@@ -22,7 +25,8 @@ class StringExpr {
   }
 
   inline int insert_empty() {
-    push_back("");
+    std::string empt = "";
+    push_back(empt);
 
     return tokens_.size() - 1;
   }
@@ -34,6 +38,7 @@ class StringExpr {
     push_back(std::to_string(v));
     constants_.push_back(v);
   }
+
   inline void add_var(std::string& var) {
     push_back(var);
     variables_.insert(var);
@@ -63,7 +68,7 @@ class StringExpr {
   bool Contains(const StringExpr& other) const;
 
  private:
-  void push_back(std::string str) {
+  void push_back(std::string& str) {
     size_ += str.length();
     tokens_.push_back(str);
   }

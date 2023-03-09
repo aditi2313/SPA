@@ -229,3 +229,5 @@ TEST_CASE("Test on different strings") {
   TestContainsString("(b)", "a", false);
   TestContainsString("a + B - c", "a + b - c", false);
 }
+
+TEST_CASE("Test on different chains") { TestContainsString("a + b", "a"); }

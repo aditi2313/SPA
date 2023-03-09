@@ -46,7 +46,6 @@ class StrSlidingWindow {
     code_ *= 256;
     code_ += c;
     code_ %= kPrime;
-    curr_str_index_++;
     increment_ptrs(curr_str_index_, curr_v_index_);
   }
 
@@ -66,7 +65,7 @@ class StrSlidingWindow {
  private:
   void fill_window() {
     int ctr = 0;
-    while (ctr < max_size_ && !reached_end()) {
+    while (ctr < max_size_) {
       increment_end();
       ctr++;
     }
@@ -92,7 +91,7 @@ class StrSlidingWindow {
   void increment_start() {
     auto& start_str = tokens_.at(start_v_index_);
     if (start_str.size() == 0) {
-      start_str_index_++;
+      start_v_index_++;
       return increment_start();
     }
     char c = start_str.at(start_str_index_);
@@ -126,6 +125,7 @@ class StrSlidingWindow {
 // Implementation of a variant of Rabin Karp to work
 // on a vector of strings
 bool StringExpr::Contains(const StringExpr& other) const {
+  if (other.size() > size()) return false;
   StrSlidingWindow reference_window(other.tokens_, other.size());
 
   // generate the initial sliding window of size other.size

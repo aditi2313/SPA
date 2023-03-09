@@ -13,7 +13,7 @@ class StringExpr {
  public:
   inline void add_token(std::string& token) { push_back(token); }
   inline void add_token(std::string token) { push_back(token); }
-  inline void add_open() { tokens_.push_back("("); }
+  inline void add_open() { push_back("("); }
 
   inline void add_close(int v) {
     tokens_[v] = ")";

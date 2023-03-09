@@ -23,10 +23,10 @@ assign a;
 Select a such that Affects(a, 9)
 8
 5000
-6 - no control flow path between assignment that modified and assignment that uses
+6 - no control flow path between assignment that modifies and assignment that uses
 assign a;
 Select a such that Affects(11, a)
-13
+none
 5000
 7 - control flow path between modifier and user blocked by assign modifier
 assign a;
@@ -36,12 +36,12 @@ Select a such that Affect(a, 17)
 8 - control flow path between modifier and user blocked by read modifier
 assign a;
 Select a such that Affect(a, 24)
-21
+none
 5000
 9 - control flow path between modifier and user blocked by procedure call modifier
 assign a;
 Select a such that Affect(a, 27)
-26
+none
 5000
 10 - assignments and conditional variable do not affect each other
 assign a;

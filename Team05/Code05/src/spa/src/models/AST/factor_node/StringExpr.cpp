@@ -1,6 +1,9 @@
 #include "StringExpr.h"
 
-typedef long long ll;
+#include <cstdint>
+#include <vector>
+
+typedef int64_t ll;
 
 const ll kPrime = 195262363;
 

@@ -3,14 +3,14 @@
 #include <cstdint>
 #include <vector>
 
-typedef int64_t ll;
+typedef int64_t int64;
 
-const ll kPrime = 195262363;
+const int64 kPrime = 195262363;
 
 namespace ast {
 
-ll generate_pow(ll n) {
-  long long accu = 1;
+int64 generate_pow(int64 n) {
+  int64 accu = 1;
   if (n == 0) {
     return 1;
   }
@@ -18,7 +18,7 @@ ll generate_pow(ll n) {
     return 256;
   }
   if (n % 2 == 0) {
-    ll half = (generate_pow(n / 2));
+    int64 half = (generate_pow(n / 2));
     return (half * half) % kPrime;
   }
   return (256 * generate_pow(n - 1)) % kPrime;
@@ -57,9 +57,9 @@ class StrSlidingWindow {
     increment_end();
   }
 
-  ll get_code() { return code_; }
+  int64 get_code() { return code_; }
 
-  bool compare_code(ll reference) { return code_ == reference; }
+  bool compare_code(int64 reference) { return code_ == reference; }
 
   bool compare_code(const StrSlidingWindow& other) const {
     return other.code_ == code_ && compare_vectors(other);
@@ -98,7 +98,7 @@ class StrSlidingWindow {
       return increment_start();
     }
     char c = start_str.at(start_str_index_);
-    ll to_remove = (c * to_remove_) % kPrime;
+    int64 to_remove = (c * to_remove_) % kPrime;
     code_ -= to_remove;
     code_ = (code_ + kPrime) % kPrime;
     increment_ptrs(start_str_index_, start_v_index_);
@@ -115,8 +115,8 @@ class StrSlidingWindow {
     }
   }
   size_t max_size_;
-  ll to_remove_;
-  ll code_;
+  int64 to_remove_;
+  int64 code_;
   int curr_str_index_;
   int curr_v_index_;
   int start_str_index_;

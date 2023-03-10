@@ -15,8 +15,8 @@ finish apple,me apple
 5000
 4 - tuple with multiple types
 variable v; procedure p, q, r; assign a;
-Select <p, q, r, v> such that Calls(p, q) and Calls(q, r) pattern a(v, "x")
-name second third x
+Select <p, q, r, v> such that Calls(p,q)and Calls(q,r) pattern a(v, "x")
+none
 5000
 5 - tuple with multiple types
 variable v; procedure p, q, r; assign a;

@@ -54,7 +54,7 @@ Select a such that Modifies(a, "b") such that Parent* (1,a) pattern a("b", _)
 4
 5000
 12 - Usage of and as shorthand for with
-assign a; procecdure p;
+assign a; procedure p;
 Select a such that Modifies(a, "b") with p.procName = "name" such that Parent* (1,a)
 4
 5000

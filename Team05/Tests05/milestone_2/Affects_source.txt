@@ -19,7 +19,7 @@ procedure affects3 {
   } else {
     v3 = v1 + 1;
   }
-  v3 = v3 + v4;
+  v3 = v4 + 1;
   v10 = 5;
   if (v10 != 0) then {
     v5 = v3 + 1;

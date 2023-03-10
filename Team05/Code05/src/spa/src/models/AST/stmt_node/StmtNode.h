@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
-#include <utility>
 #include <string>
+#include <utility>
 
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
@@ -34,6 +34,7 @@ class AssignNode : public StmtNode {
   inline std::string get_var_name() { return var_->get_name(); }
 
   inline std::unique_ptr<ExprNode>& get_expr() { return expr_; }
+  inline std::unique_ptr<ExprNode> move_expr() { return std::move(expr_); }
   inline std::unique_ptr<ExprNode> get_expr_copy() { return expr_->Copy(); }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
@@ -75,8 +76,9 @@ class PrintNode : public StmtNode {
 
 class CallNode : public StmtNode {
  public:
-  explicit CallNode(std::string parent_proc_name,
-                    std::unique_ptr<VarNode> var, int line) : StmtNode(line) {
+  explicit CallNode(std::string parent_proc_name, std::unique_ptr<VarNode> var,
+                    int line)
+      : StmtNode(line) {
     parent_proc_name_ = parent_proc_name;
     var_ = std::move(var);
   }

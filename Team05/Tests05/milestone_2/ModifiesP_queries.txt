@@ -1,0 +1,15 @@
+1 - modifies3 only
+variable v;
+Select v such that Modifies("modifies3", v)
+in5, in6, in7
+5000
+2 - modifies2 should give modifies2 and modifies3 vars
+variable v;
+Select v such that Modifies("modifies2", v)
+in3, in4, in5, in6, in7
+5000
+3 - modifies1 should give modifies1, modifies2 and modifies3 vars
+variable v;
+Select v such that Modifies("modifies1", v)
+in1, in2, in3, in4, in5, in6, in7
+5000

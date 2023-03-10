@@ -13,9 +13,6 @@ TEST_CASE("Test ParentTable") {
     parent_data1.add_direct_child(11);
     parent_data2.add_direct_child(3);
 
-    parent_data1.add_to_all_children(12);
-    parent_data2.add_to_all_children(4);
-
     ParentTable parent_table1, parent_table2;
     parent_table1.add_row(5, parent_data1);
     parent_table2.add_row(5, parent_data2);

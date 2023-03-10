@@ -53,10 +53,6 @@ class SourceProcessor {
       std::unique_ptr<pkb::PKBRelationTable> &pkb_relation) {
     auto writer = std::make_unique<pkb::PKBWrite>(std::move(pkb_relation));
     logging::Logger::EnterSection("Extract Relationships");
-    sp::AssignVisitor av(std::move(writer));
-    root->AcceptVisitor(&av);
-    writer = av.EndVisit();
-    logging::Logger::LogAndStop("Assign visitor finished");
 
     sp::DataVisitor dv(std::move(writer));
     root->AcceptVisitor(&dv);
@@ -77,6 +73,11 @@ class SourceProcessor {
     root->AcceptVisitor(&uv);
     writer = uv.EndVisit();
     logging::Logger::LogAndStop("Uses visitor finished");
+
+    sp::AssignVisitor av(std::move(writer));
+    root->AcceptVisitor(&av);
+    writer = av.EndVisit();
+    logging::Logger::LogAndStop("Assign visitor finished");
 
     sp::FollowsVisitor fv(std::move(writer));
     root->AcceptVisitor(&fv);

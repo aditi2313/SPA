@@ -7,7 +7,7 @@
 using namespace pkb;  // NOLINT
 
 TEST_CASE("Test FollowsTable") {
-    FollowsData follows_data1(11, 10);  
+    FollowsData follows_data1(11, 10);
     FollowsData follows_data2(3, 2);
     FollowsData follows_data3(10, 9);
     follows_data1.AddData(follows_data3);

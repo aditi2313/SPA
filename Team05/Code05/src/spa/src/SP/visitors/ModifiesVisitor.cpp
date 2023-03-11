@@ -7,7 +7,7 @@ namespace sp {
 // Merges the variables modified by a procedure directly with the variables
 // modified indirectly via calls within the procedure in topological order.
 // Then writes the results to PKB.
-void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
+void ModifiesVisitor::ProcessAft(ast::ProgramNode* program_node) {
   auto topological_order = sp::TopologicalSorter::Sort(called_by_);
   // Assert that all procedures are in the topological order vector
   for (auto& proc_nodes : program_node->get_children()) {

@@ -9,8 +9,8 @@ using namespace pkb;  // NOLINT
 TEST_CASE("Test FollowsTable") {
     FollowsData follows_data1(11, 10);
     FollowsData follows_data2(3, 2);
-    follows_data1.add_to_list(9);
-    follows_data2.add_to_list(1);
+    FollowsData follows_data3(10, 9);
+    follows_data1.AddData(follows_data3);
 
     FollowsTable follows_table1, follows_table2;
     follows_table1.add_row(5, follows_data1);

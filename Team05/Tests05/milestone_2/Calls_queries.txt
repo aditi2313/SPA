@@ -1,0 +1,39 @@
+1 - Calls query for the base level procedure
+procedure p; procedure q;
+Select p such that Calls(q, p)
+read, ganesh, skyler, gus, mama, papa, yo, white, jesse, walter
+5000
+2 - Calls query for a particular procedure
+procedure p;
+Select p such that Calls(p, "white")
+jesse, read
+5000
+3 - Calls query for a particular procedure
+procedure procedure;
+Select procedure such that Calls("white", procedure)
+skyler, gus
+5000
+4 - Calls query for the same procedure
+procedure procedure;
+Select procedure such that Calls(procedure, procedure)
+none
+5000
+5 - CallsT procedure for specific procedures
+procedure assign;
+Select assign such that Calls*  (assign, "ganesh")
+read, procedure
+5000
+6 - CallsT procedure for specific procedures
+procedure print;
+Select print such that Calls* (print, "white")
+procedure, read, ganesh, walter, jesse
+5000
+7 - CallsT procedure for specific procedures
+procedure print;
+Select print such that Calls* ("ganesh", print)
+walter, jesse, white, gus, skyler, yo, mama, papa
+5000
+8 - CallsT procedure for specific procedures
+Select print such that Calls* ("white", print)
+skyler, gus, yo, mama, papa
+5000

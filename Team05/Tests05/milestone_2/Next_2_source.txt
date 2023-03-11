@@ -1,0 +1,25 @@
+procedure n1 {
+  read x;
+  call n2;
+}
+
+procedure n2 {
+  call n3;
+  if (x < 2) then {
+    while (x < 3) {
+      call n3;
+    }
+  } else {
+    x = 2;
+  }
+}
+
+procedure n3 {
+  print x;
+}
+
+procedure n4 {
+  call n1;
+}
+
+

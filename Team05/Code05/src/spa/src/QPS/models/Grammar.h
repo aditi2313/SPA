@@ -26,7 +26,6 @@ class Grammar {
   static CheckLambda kTupleCheck;
 
   static ActionLambda kEmptyAction;
-  static ActionLambda kRecurseAction;
 
   inline static CheckLambda CreateTokenCheck(std::string expected_token) {
     return [expected_token](std::string token) {

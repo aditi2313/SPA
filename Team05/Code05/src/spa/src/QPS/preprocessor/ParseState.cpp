@@ -54,7 +54,7 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
         tuple_parse_state_.Parse(tokens, itr, query);
         itr--;
       } else {
-        query->add_selected_synonym(*itr);
+        query->add_selected_elem(*itr);
       }
     }
     itr++;
@@ -65,6 +65,7 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
 }
 
 // '<' elem ( ',' elem )* '>'
+// elem: synonym | attrRef
 void TupleParseState::Parse(const std::vector<std::string> &tokens,
                             parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
@@ -72,8 +73,8 @@ void TupleParseState::Parse(const std::vector<std::string> &tokens,
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    if (*grammar_itr == PQL::kSynGrammar) {
-      query->add_selected_synonym(*itr);
+    if (*grammar_itr == PQL::kElemGrammar) {
+      query->add_selected_elem(*itr);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);

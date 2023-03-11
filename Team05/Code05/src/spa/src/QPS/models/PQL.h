@@ -10,14 +10,16 @@
 #include "SP/SourceProcessor.h"
 #include "models/types.h"
 
-using models::EntityName;
-
 namespace qps {
+using EntityName = std::string;
+using SynonymName = std::string;
+using RelName = std::string;
+using AttrName = std::string;
+using AttrRef = std::string;
+using Elem = std::string;
+
 class PQL {
  public:
-  using RelName = std::string;
-  using AttrName = std::string;
-
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
   inline static std::string kPrintEntityName = "print";
@@ -125,6 +127,9 @@ class PQL {
   inline static AttrName kVariableAttrName = "varName";
   inline static AttrName kValueAttrName = "value";
   inline static AttrName kStmtAttrName = "stmt#";
+  // Maps an AttrName (e.g stmt#) to a hashset of all
+  // entities that can be paired with that AttrName.
+  // e.g. varName is mapped to { variable, read, print }
   inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
       kAttrNameToEntitiesMap{
       {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
@@ -147,13 +152,20 @@ class PQL {
     auto index = str.find('.');
     // "." doesn't exist
     if (index == std::string::npos) return false;
-    auto [syn, attr_name] = split_rel_ref(str);
+    auto [syn, attr_name] = split_attr_ref(str);
     return CheckGrammar(syn, kSynGrammar)
         && is_attr_name(attr_name);
   }
 
+  inline static bool ValidateAttrRef(
+      AttrName attr_name, EntityName entity_name) {
+    auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
+    return attr_name_types.count(entity_name);
+  }
+
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
+  inline static std::string kEqualToken = "=";
   inline static std::string kSelectToken = "Select";
   inline static std::string kSuchToken = "such";
   inline static std::string kThatToken = "that";
@@ -163,28 +175,17 @@ class PQL {
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
+  inline static std::string kWithToken = kWithRelName;
 
-  // Grammars are tokens with special meaning and actions
-  // attached to them. They are not meant to be compared
-  // literally.
-
-  // Splits a rel_ref (e.g s.stmt#) by the '.' delimiter
+  // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
-  inline static std::pair<std::string, std::string> split_rel_ref(
+  inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
     auto index = str.find('.');
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};
-  }
-
-  // Given an AttrName (e.g stmt#), return a hashset of all
-  // entities that can be paired with that AttrName.
-  // e.g. varName will return { variable, read, print }
-  inline static std::unordered_set<EntityName> get_entities_from_attr_name(
-      AttrName attr_name) {
-    return kAttrNameToEntitiesMap.at(attr_name);
   }
 
   // Give an AttrName, return true if its type is IDENT.
@@ -203,9 +204,13 @@ class PQL {
         || attr_name == kStmtAttrName;
   }
 
+  // Grammars are tokens with special meaning and actions
+  // attached to them. They are not meant to be compared
+  // literally.
   inline static std::string kRelRefGrammar = "relRef";
   inline static std::string kArgumentGrammar = "arg";
   inline static std::string kSynGrammar = "syn";
+  inline static std::string kElemGrammar = "elem";
   inline static std::string kExprGrammar = "exp";
   inline static std::string kRefGrammar = "ref";
   inline static std::string kDesignEntityGrammar = "designEntity";
@@ -235,11 +240,16 @@ class PQL {
       // tuple | BOOLEAN
       return CheckGrammar(token, kSynGrammar)
           || CheckGrammar(token, kBooleanGrammar)
+          || is_attr_ref(token)
           || token == kTupleSelectOpen;
     } else if (grammar == kRefGrammar) {
       // "IDENT" | INTEGER | attrRef
       return is_ident_arg(token)
           || is_integer(token)
+          || is_attr_ref(token);
+    } else if (grammar == kElemGrammar) {
+      // synonym | attrRef
+      return CheckGrammar(token, kSynGrammar)
           || is_attr_ref(token);
     } else {
       return token == grammar;

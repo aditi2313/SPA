@@ -35,7 +35,7 @@ class MasterClauseFactory {
   }
 
   inline ClausePtr Create(
-      PQL::RelName rel_name,
+      RelName rel_name,
       ArgumentPtr arg1,
       ArgumentPtr arg2) {
     return clause_factories_.at(rel_name)->Create(
@@ -43,7 +43,7 @@ class MasterClauseFactory {
   }
 
   inline bool Validate(
-      PQL::RelName rel_name,
+      RelName rel_name,
       ArgumentPtr &arg1,
       ArgumentPtr &arg2) {
     return clause_factories_.at(rel_name)->Validate(arg1, arg2);

@@ -13,14 +13,12 @@
 #include "Synonym.h"
 #include "PQL.h"
 
-using models::SynonymName;
-
 namespace qps {
 class Query {
  public:
   // Set a synonym declaration
   inline void declare_synonym(
-      SynonymName syn_id, models::EntityName entity_name) {
+      SynonymName syn_id, EntityName entity_name) {
     synonym_declarations_.push_back(
         std::make_unique<Synonym>(syn_id, entity_name));
   }
@@ -45,16 +43,32 @@ class Query {
     return synonym_declarations_;
   }
 
-  // A selected synonym is a synonym that comes after `Select`
-  // (Note: to support Advanced SPA requirements, currently
-  // it will always be just one selected synonym)
-  inline void add_selected_synonym(std::string synonym) {
-    selected_synonyms_.push_back(synonym);
+  // A selected elem is an elem that comes after `Select`
+  // Elem: Synonym | AttrRef
+  inline void add_selected_elem(Elem elem) {
+    selected_elems_.push_back(elem);
   }
 
-  // A selected synonym is a synonym that comes after `Select`
+  // A selected elem is an elem that comes after `Select`
+  // Elem: Synonym | AttrRef
+  inline std::vector<std::string> get_selected_elems() {
+    return selected_elems_;
+  }
+
+  // Iterate through selected elems
+  // If elem is a Synonym, just add elem
+  // Else elem is an attrRef, and we split attrRef to
+  // add the synonym portion
   inline std::vector<std::string> get_selected_synonyms() {
-    return selected_synonyms_;
+    std::vector<std::string> synonyms;
+    for (auto &elem : selected_elems_) {
+      if (PQL::is_attr_ref(elem)) {
+        synonyms.push_back(PQL::split_attr_ref(elem).first);
+      } else {
+        synonyms.push_back(elem);
+      }
+    }
+    return synonyms;
   }
 
   inline void set_boolean_query_to_true() {
@@ -83,7 +97,7 @@ class Query {
         synonym_declarations_, other.synonym_declarations_))
       return false;
 
-    return selected_synonyms_ == other.selected_synonyms_;
+    return selected_elems_ == other.selected_elems_;
   }
 
   ArgumentPtr CreateArgument(std::string token);
@@ -91,7 +105,8 @@ class Query {
  private:
   bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;
-  std::vector<SynonymName> selected_synonyms_;
+  // Elem = Synonym | AttrRef
+  std::vector<Elem> selected_elems_;
   std::vector<ClausePtr> clauses_;
 };
 

@@ -77,12 +77,12 @@ class Clause {
 
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
-  inline PQL::RelName get_rel_name() { return rel_name_; }
+  inline RelName get_rel_name() { return rel_name_; }
 
  protected:
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
-  PQL::RelName rel_name_;
+  RelName rel_name_;
 };
 
 // RS between a Statement/Procedure and a Variable

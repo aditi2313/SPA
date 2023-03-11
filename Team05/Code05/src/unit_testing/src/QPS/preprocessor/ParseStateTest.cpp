@@ -146,6 +146,17 @@ TEST_CASE("Test TupleParseState") {
     REQUIRE(itr == tokens.end());
   }
 
+  SECTION("<elem> where elem is attrRef should parse correctly") {
+    std::vector<std::string> tokens{"<", "s.stmt#", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    REQUIRE(query->get_selected_elems().at(0) == "s.stmt#");
+    REQUIRE(itr == tokens.end());
+  }
+
   SECTION("<elem, elem, elem> should parse correctly") {
     std::vector<std::string> tokens{"<", "v1", ",", "v2", ",", "v3", ">"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
@@ -155,6 +166,21 @@ TEST_CASE("Test TupleParseState") {
 
     std::vector<SynonymName> expected_selected_synonyms{"v1", "v2", "v3"};
     REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
+    REQUIRE(itr == tokens.end());
+  }
+
+  SECTION("<elem, elem, elem> where elem is attrRef"
+          "should parse correctly") {
+    std::vector<std::string> tokens{
+        "<", "s.stmt#", ",", "v.varName", ",", "p.procName", ">"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+
+    std::vector<SynonymName> expected_selected_elems{
+        "s.stmt#", "v.varName", "p.procName"};
+    REQUIRE(query->get_selected_elems() == expected_selected_elems);
     REQUIRE(itr == tokens.end());
   }
 

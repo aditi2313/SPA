@@ -12,6 +12,11 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
 
   for (auto &clause : query->get_clauses()) {
+    clause->Preprocess(pkb_, table_);
+
+    std::cout << "===========\n";
+    table_.PrintDebug();
+
     ArgumentPtr &arg1 = clause->get_arg1();
     ArgumentPtr &arg2 = clause->get_arg2();
     EntitySet LHS, RHS;
@@ -30,7 +35,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
         return std::make_unique<ListQueryResult>();
       }
     }
-
+    
     if (!clause_table.Empty()) {
       table_ = TableJoiner::Join(table_, clause_table);
     }

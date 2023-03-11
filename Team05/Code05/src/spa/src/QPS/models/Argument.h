@@ -128,6 +128,11 @@ class SynonymArg : public Argument {
   }
 
   inline SynonymName get_syn_name() { return syn_name_; }
+  inline SynonymName get_full_name() {
+    if (attr_name_.empty()) return syn_name_;
+    return PQL::join_attr_ref(syn_name_, attr_name_);
+  }
+
   inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
@@ -154,9 +159,10 @@ class SynonymArg : public Argument {
     return syn_name_ == arg->syn_name_
         && entity_name_ == arg->entity_name_;
   }
-  static inline SynonymName get_syn_name(ArgumentPtr &arg) {
+
+  static inline SynonymName get_full_name(ArgumentPtr &arg) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-    return syn_arg->get_syn_name();
+    return syn_arg->get_full_name();
   }
 
   inline bool Validate(
@@ -175,13 +181,31 @@ class SynonymArg : public Argument {
     return entity_names.count(entity_name_);
   }
 
+  inline bool is_secondary_attr_ref() {
+    return !attr_name_.empty()
+        && PQL::is_attr_ref_secondary(entity_name_, attr_name_);
+  }
+
+  inline Entity get_secondary_attr_value(
+      const pkb::PKBReadPtr &pkb, const Entity &index
+  ) {
+    return master_entity_factory_.GetAttrValue(entity_name_, index, pkb);
+  }
+
   inline void InitializeEntities(
       Table &table,
       pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    bool should_be_attr_value =
-        !attr_name_.empty()
-            && PQL::is_attr_ref_secondary(entity_name_, attr_name_);
+    InitializeEntities(
+        table, pkb, results, this->is_secondary_attr_ref()
+    );
+  }
+
+  inline void InitializeEntities(
+      Table &table,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet &results,
+      bool is_attr_ref) {
     EntitySet indexes;
 
     if (table.HasColumn(syn_name_)) {
@@ -196,9 +220,8 @@ class SynonymArg : public Argument {
     }
 
     for (auto &index : indexes) {
-      if (should_be_attr_value) {
-        results.insert(
-            master_entity_factory_.GetAttrValue(entity_name_, index, pkb));
+      if (is_attr_ref) {
+        results.insert(get_secondary_attr_value(pkb, index));
       } else {
         results.insert(index);
       }

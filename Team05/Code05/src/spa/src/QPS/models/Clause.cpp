@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "SP/SourceProcessor.h"
+#include "QPS/evaluator/TableJoiner.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/PredicateFilter.h"
 using namespace filter;  // NOLINT
@@ -224,11 +225,54 @@ void NextClause::Index(
       results);
 }
 
+void WithClause::Preprocess(
+    const pkb::PKBReadPtr &pkb,
+    Table &query_table) {
+  InitializeSynonymAttrValue(arg1_, pkb, query_table);
+  InitializeSynonymAttrValue(arg2_, pkb, query_table);
+}
+
+void WithClause::InitializeSynonymAttrValue(
+    ArgumentPtr &arg,
+    const pkb::PKBReadPtr &pkb,
+    Table &query_table) {
+  if (!arg->IsSynonym()) return;
+  SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+  bool is_secondary_attr_value =
+      syn_arg->is_secondary_attr_ref();
+
+  // Update query_table with rows mapping from
+  // Index to AttrValue
+  // e.g. calls (line) to calls (procName)
+  EntitySet indexes;
+  syn_arg->InitializeEntities(
+      query_table, pkb, indexes, false);
+  Table::TwoSynonymRows rows;
+
+  for (auto &index : indexes) {
+    if (is_secondary_attr_value) {
+      rows.emplace_back(index, syn_arg->get_secondary_attr_value(pkb, index));
+    } else {
+      rows.emplace_back(index, index);
+    }
+  }
+
+  std::vector<SynonymName> columns;
+  SynonymName col1 = syn_arg->get_syn_name();
+  SynonymName col2 = syn_arg->get_full_name();
+  columns.emplace_back(col1);
+  columns.emplace_back(col2);
+  Table new_table(columns);
+
+  new_table.add_values(col1, col2, rows);
+
+  query_table = TableJoiner::Join(query_table, new_table);
+}
+
 void WithClause::Index(
     const Entity &index,
     const pkb::PKBReadPtr &pkb,
     EntitySet &results) {
-  std::cout << index << "\n";
   // Just return itself
   results.insert(index);
 }

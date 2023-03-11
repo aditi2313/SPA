@@ -20,6 +20,12 @@ class Clause {
       arg1_(std::move(arg1)), arg2_(std::move(arg2)) {}
   virtual ~Clause() = 0;
 
+  virtual void Preprocess(
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table) {
+    return;
+  }
+
   virtual void Index(
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
@@ -227,9 +233,18 @@ class WithClause : public Clause {
     rel_name_ = PQL::kWithRelName;
   }
 
+  void Preprocess(
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table) override;
+
   void Index(const Entity &index,
              const pkb::PKBReadPtr &pkb,
              EntitySet &results) override;
+ private:
+  void InitializeSynonymAttrValue(
+      ArgumentPtr &arg,
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table);
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

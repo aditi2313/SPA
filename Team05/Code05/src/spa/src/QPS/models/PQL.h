@@ -172,20 +172,30 @@ class PQL {
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
+  inline static std::string kPeriodToken = ".";
+
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
   inline static std::string kWithToken = kWithRelName;
+  inline static std::string kAttrRefDelimiter = kPeriodToken;
 
   // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
   inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
-    auto index = str.find('.');
+    auto index = str.find(kAttrRefDelimiter);
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};
+  }
+
+  // Given a syn_name and attr_name, joins attrRef back together
+  inline static std::string join_attr_ref(
+      SynonymName syn_name, AttrName attr_name
+  ) {
+    return syn_name + kAttrRefDelimiter + attr_name;
   }
 
   // Give an AttrName, return true if its type is IDENT.

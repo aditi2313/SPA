@@ -78,7 +78,7 @@ void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
   pkb_ptr_->AddUsesData(
-      while_node->get_line(), cond_vars,vars);
+      while_node->get_line(), cond_vars, vars);
   direct_uses_[current_procedure_].merge(vars);
 }
 

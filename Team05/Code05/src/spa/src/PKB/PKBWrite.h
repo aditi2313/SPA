@@ -53,7 +53,8 @@ class PKBWrite {
   /// <param name="control_variable_names"></param>
   /// <param name="variable_names"></param>
   void AddUsesData(const std::variant<int, std::string> line,
-                   const std::unordered_set<std::string>& control_variable_names,
+                   const std::unordered_set<std::string>&
+                       control_variable_names,
                    const std::unordered_set<std::string>& variable_names);
 
   /// <summary>

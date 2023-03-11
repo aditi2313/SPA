@@ -46,10 +46,6 @@ class PQL {
     return kAllEntityNames.count(str);
   }
 
-  inline static std::string kBooleanSelect = "BOOLEAN";
-  inline static std::string kTupleSelectOpen = "<";
-  inline static std::string kTupleSelectClose = ">";
-
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -172,6 +168,10 @@ class PQL {
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
+  inline static std::string kBooleanToken = "BOOLEAN";
+  inline static std::string kTupleOpenBktToken = "<";
+  inline static std::string kTupleCloseBktToken = ">";
+
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
@@ -202,58 +202,6 @@ class PQL {
   inline static bool is_attr_name_integer(AttrName attr_name) {
     return attr_name == kValueAttrName
         || attr_name == kStmtAttrName;
-  }
-
-  // Grammars are tokens with special meaning and actions
-  // attached to them. They are not meant to be compared
-  // literally.
-  inline static std::string kRelRefGrammar = "relRef";
-  inline static std::string kArgumentGrammar = "arg";
-  inline static std::string kSynGrammar = "syn";
-  inline static std::string kElemGrammar = "elem";
-  inline static std::string kExprGrammar = "exp";
-  inline static std::string kRefGrammar = "ref";
-  inline static std::string kDesignEntityGrammar = "designEntity";
-  inline static std::string kRecurseGrammar = "*";
-  inline static std::string kBooleanGrammar = "boolean";
-  inline static std::string kSelectGrammar = "select";
-
-  inline static bool CheckGrammar(
-      std::string const token, std::string const grammar) {
-    if (grammar == kArgumentGrammar) {
-      return is_argument(token);
-    } else if (grammar == kRelRefGrammar) {
-      return is_such_that_rel_name(token);
-    } else if (grammar == kSynGrammar) {
-      return is_ident(token);
-    } else if (grammar == kDesignEntityGrammar) {
-      return is_entity_name(token);
-    } else if (grammar == kExprGrammar) {
-      return is_pattern_wildcard(token)
-          || is_pattern_exact(token)
-          || is_wildcard(token);
-    } else if (grammar == kRecurseGrammar) {
-      return true;
-    } else if (grammar == kBooleanGrammar) {
-      return token == kBooleanSelect;
-    } else if (grammar == kSelectGrammar) {
-      // tuple | BOOLEAN
-      return CheckGrammar(token, kSynGrammar)
-          || CheckGrammar(token, kBooleanGrammar)
-          || is_attr_ref(token)
-          || token == kTupleSelectOpen;
-    } else if (grammar == kRefGrammar) {
-      // "IDENT" | INTEGER | attrRef
-      return is_ident_arg(token)
-          || is_integer(token)
-          || is_attr_ref(token);
-    } else if (grammar == kElemGrammar) {
-      // synonym | attrRef
-      return CheckGrammar(token, kSynGrammar)
-          || is_attr_ref(token);
-    } else {
-      return token == grammar;
-    }
   }
 };
 }  // namespace qps

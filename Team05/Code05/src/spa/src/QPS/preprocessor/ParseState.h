@@ -6,47 +6,57 @@
 #include <vector>
 
 #include "../models/Query.h"
+#include "../models/Grammar.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class ParseState {
  public:
-  using parse_position = std::vector<std::string>::iterator;
+  using ParseItr = std::vector<std::string>::iterator;
+  using GrammarItr = std::vector<Grammar>::iterator;
+
   std::string kTransitionKeyword;
 
-  explicit ParseState(std::string transition, std::vector<std::string> grammar)
-      : kTransitionKeyword(transition), grammar_(grammar) {
-    end_states_.push_back(grammar_.end());
-  }
+  explicit ParseState(std::string transition)
+      : kTransitionKeyword(transition) {}
 
   virtual void Parse(const std::vector<std::string> &tokens,
-                     parse_position &itr, QueryPtr &query) = 0;
+                     ParseItr &itr, QueryPtr &query) = 0;
   virtual ~ParseState() = 0;
 
  protected:
-  const char *kExceptionMessage;
-  void ThrowException() { throw PqlSyntaxErrorException(kExceptionMessage); }
-  inline virtual bool IsComplete(parse_position grammar_itr) {
+  inline void ThrowException() {
+    throw PqlSyntaxErrorException(kExceptionMessage);
+  }
+
+  inline virtual bool IsComplete(GrammarItr grammar_itr) {
     for (auto &pos : end_states_) {
       if (grammar_itr == pos) return true;
     }
     return false;
   }
-  std::vector<std::string> grammar_;
-  std::vector<parse_position> end_states_;
+
+  inline void InitializeGrammar(std::vector<Grammar> grammar) {
+    grammar_ = grammar;
+    end_states_.push_back(grammar_.end());
+  }
+
+  const char *kExceptionMessage;
+  std::vector<Grammar> grammar_;
+  std::vector<GrammarItr> end_states_;
 };
 
 class RecursiveParseState : public ParseState {
  public:
-  RecursiveParseState(std::string transition, std::vector<std::string> grammar,
+  RecursiveParseState(std::string transition,
                       std::string kRecurseDelimiter)
-      : ParseState(transition, grammar),
+      : ParseState(transition),
         kRecurseDelimiter(kRecurseDelimiter) {}
 
  protected:
   std::string kRecurseDelimiter;
-  parse_position kRecurseBegin;
-  void Recurse(parse_position &itr, parse_position &grammar_itr) {
+  GrammarItr kRecurseBegin;
+  void Recurse(ParseItr &itr, GrammarItr &grammar_itr) {
     if (*itr == kRecurseDelimiter) {
       grammar_itr = kRecurseBegin;
     } else {
@@ -61,17 +71,33 @@ class DeclarationParseState : public RecursiveParseState {
  public:
   DeclarationParseState()
       : RecursiveParseState("",
-                            {
-                                PQL::kDesignEntityGrammar,
-                                PQL::kSynGrammar,
-                                PQL::kRecurseGrammar,
-                                PQL::kSemicolonToken},
                             PQL::kCommaToken) {
     kExceptionMessage = "Invalid PQL syntax in declaration";
+    std::vector<Grammar> grammar;
+
+    // design-entity
+    grammar.emplace_back(
+        Grammar(
+            [](std::string token) { return PQL::is_entity_name(token); },
+            []() {})
+    );
+    // synonym
+    grammar.emplace_back(
+        Grammar(
+            Grammar::syn_check_,
+            [] {})
+    );
+    // (
+    grammar.emplace_back(
+        Grammar(
+            [](std::string token) { return token == PQL::kOpenBktToken; },
+            [] {})
+    );
+
     kRecurseBegin = next(grammar_.begin());
   }
 
-  void Parse(const std::vector<std::string> &tokens, parse_position &itr,
+  void Parse(const std::vector<std::string> &tokens, ParseItr &itr,
              QueryPtr &query) override;
 };
 

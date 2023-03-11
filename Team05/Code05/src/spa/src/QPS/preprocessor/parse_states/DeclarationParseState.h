@@ -19,6 +19,7 @@ class DeclarationParseState : public RecursiveParseState {
         Grammar(
             Grammar::kDesignEntityCheck,
             [&](QueryPtr &query) { declared_entity_name_ = *itr_; }));
+
     // synonym
     grammar_.emplace_back(
         Grammar(
@@ -38,7 +39,6 @@ class DeclarationParseState : public RecursiveParseState {
             Grammar::kEmptyAction));
 
     end_states_.emplace_back(grammar_.end());
-
     kExceptionMessage = "Invalid PQL syntax in declaration";
   }
 

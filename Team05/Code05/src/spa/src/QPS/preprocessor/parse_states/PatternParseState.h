@@ -84,7 +84,7 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(RecursiveParseState::CreateRecurseGrammar(*this));
 
     end_states_.emplace_back(grammar_.end());
-    // Allow state to end on PQL::kRecurseGrammar
+    // Allow state to end without recursing
     end_states_.push_back(prev(grammar_.end()));
     kExceptionMessage = "Invalid PQL syntax in pattern";
   }

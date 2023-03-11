@@ -15,13 +15,15 @@ class ParseState {
   using ParseItr = std::vector<std::string>::iterator;
   using GrammarItr = std::vector<Grammar>::iterator;
 
-  std::string kTransitionKeyword;
-
   explicit ParseState(std::string transition)
       : kTransitionKeyword(transition) {}
 
   void Parse(const std::vector<std::string> &tokens,
              ParseItr &itr, QueryPtr &query);
+
+  inline bool is_transition_keyword(std::string token) {
+    return token == kTransitionKeyword;
+  }
 
   virtual ~ParseState() = default;
 
@@ -38,6 +40,7 @@ class ParseState {
   }
 
   const char *kExceptionMessage;
+  std::string kTransitionKeyword;
 
   std::vector<Grammar> grammar_;
   std::vector<GrammarItr> end_states_;

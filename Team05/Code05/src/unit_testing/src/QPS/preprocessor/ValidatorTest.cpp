@@ -166,6 +166,139 @@ TEST_CASE("Test synonym types for each clause are valid") {
     REQUIRE_THROWS_AS(Validator::Validate(query),
                       PqlSemanticErrorException);
   }
+
+    /* ================ Validation for WITH clauses ============== */
+  SECTION("Invalid synonym with attrName for With Clause should throw error") {
+    std::string query_str = "stmt s;"
+                            "Select s with s.value = 1";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid synonym with attrName for With Clause should throw error") {
+    std::string query_str = "constant c;"
+                            "Select c with c.stmt# = 1";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid synonym with attrName for With Clause should throw error") {
+    std::string query_str = "procedure p;"
+                            "Select p with p.varName = \"procedure\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid synonym with attrName for With Clause should throw error") {
+    std::string query_str = "variable v;"
+                            "Select v with v.procName = \"variable\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "stmt s;"
+                            "Select s with s.stmt# = 1";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "constant c;"
+                            "Select c with c.value = 1";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "procedure p;"
+                            "Select p with p.procName = \"procedure\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "call c;"
+                            "Select c with c.procName = \"callee\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "read r;"
+                            "Select r with r.varName = \"var\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "print p;"
+                            "Select p with p.varName = \"var\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Valid synonym with attrName for With Clause should pass") {
+    std::string query_str = "variable v;"
+                            "Select v with v.varName = \"variable\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
+  SECTION("Invalid types between LHS and RHS for With Clause "
+          "should throw error") {
+    std::string query_str = "stmt s;"
+                            "Select s with s.stmt# = \"ident\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid types between LHS and RHS for With Clause "
+          "should throw error") {
+    std::string query_str = "constant c;"
+                            "Select c with c.value = \"ident\"";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid types between LHS and RHS for With Clause "
+          "should throw error") {
+    std::string query_str = "print p;"
+                            "Select p with p.varName = 12";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
+
+  SECTION("Invalid types between LHS and RHS for With Clause "
+          "should throw error") {
+    std::string query_str = "call c;"
+                            "Select c with c.procName = 12";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_THROWS_AS(Validator::Validate(query),
+                      PqlSemanticErrorException);
+  }
 }
 
 TEST_CASE("Overall Validation") {

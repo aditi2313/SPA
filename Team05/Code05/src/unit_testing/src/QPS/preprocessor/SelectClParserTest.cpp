@@ -135,7 +135,11 @@ TEST_CASE("Test ParseQuery") {
         {{"a", PQL::kAssignEntityName}},
         {"a"});
 
-    // TODO(JL): Update after creating WITH clause
+    expected_query->add_clause(
+        master_clause_factory.Create(
+            PQL::kWithRelName,
+            expected_query->CreateArgument("a.stmt#"),
+            expected_query->CreateArgument("12")));
 
     REQUIRE(*actual_query == *expected_query);
   }

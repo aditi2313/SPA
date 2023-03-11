@@ -17,7 +17,7 @@ class ClauseFactory {
   virtual ClausePtr Create(
       ArgumentPtr arg1, ArgumentPtr arg2) = 0;
 
-  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) {
+  inline virtual bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) {
     if (!is_wildcard_allowed_as_first_arg_ && arg1->IsWildcard()) {
       return false;
     }
@@ -198,6 +198,32 @@ class NextFactory : public ClauseFactory {
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
     return std::make_unique<NextClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
+class WithFactory : public ClauseFactory {
+ public:
+  WithFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllEntityNames;
+    RHS_entity_names_ = PQL::kAllEntityNames;
+  }
+
+  // Also check if the type of the LHS and RHS matches
+  // i.e both numbers (stmt.stmt# = 12) or
+  // both names (var.varName = "var")
+  inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
+    // Mismatched LHS and RHS types (e.g stmt.stmt# = "string")
+    if ((arg1->IsIdentType() && arg2->IsIntegerType())
+        || (arg1->IsIntegerType() && arg2->IsIdentType()))
+      return false;
+
+    return arg1->Validate(LHS_entity_names_)
+        && arg2->Validate(RHS_entity_names_);
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<WithClause>(
         std::move(arg1), std::move(arg2));
   }
 };

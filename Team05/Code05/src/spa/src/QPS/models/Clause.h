@@ -240,11 +240,6 @@ class WithClause : public Clause {
   void Index(const Entity &index,
              const pkb::PKBReadPtr &pkb,
              EntitySet &results) override;
- private:
-  void InitializeSynonymAttrValue(
-      ArgumentPtr &arg,
-      const pkb::PKBReadPtr &pkb,
-      Table &query_table);
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

@@ -14,9 +14,6 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
     clause->Preprocess(pkb_, table_);
 
-    std::cout << "===========\n";
-    table_.PrintDebug();
-
     ArgumentPtr &arg1 = clause->get_arg1();
     ArgumentPtr &arg2 = clause->get_arg2();
     EntitySet LHS, RHS;
@@ -35,11 +32,10 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
         return std::make_unique<ListQueryResult>();
       }
     }
-    
+
     if (!clause_table.Empty()) {
       table_ = TableJoiner::Join(table_, clause_table);
     }
-    table_.PrintDebug();
   }
 
   if (query->is_boolean_query()) {
@@ -48,22 +44,37 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
   // Join with selected synonyms at the end
   // instead of the beginning as a slight optimisation
-  for (SynonymName syn : query->get_selected_synonyms()) {
-    if (table_.HasColumn(syn)) continue;
-
-    EntityName entity_name = query->get_declared_synonym_entity_name(
-        syn);
-    EntitySet initial_entities = master_entity_factory_.GetAllFromPKB(
-        entity_name, pkb_);
-
-    auto synonym_table = Table(syn, initial_entities);
-    table_ = TableJoiner::Join(table_, synonym_table);
+  for (Elem elem : query->get_selected_elems()) {
+    if (table_.HasColumn(elem)) continue;
+    UpdateTableWithElem(query, elem);
   }
 
   std::vector<std::vector<Entity>> results;
-  table_.Select(query->get_selected_synonyms(), results);
+  table_.Select(query->get_selected_elems(), results);
 
   return std::make_unique<ListQueryResult>(
       results);
+}
+
+void QueryEvaluator::UpdateTableWithElem(
+    QueryPtr &query, Elem elem) {
+  if (PQL::is_attr_ref(elem)) {
+    auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
+    EntityName entity_name = query->get_declared_synonym_entity_name(
+        syn_name);
+    SynonymArg syn_arg(syn_name);
+    syn_arg.set_entity_name(entity_name);
+    syn_arg.set_attr_name(attr_name);
+    syn_arg.UpdateTableWithAttrValue(pkb_, table_);
+  } else {
+    SynonymName syn_name = elem;
+    EntityName entity_name = query->get_declared_synonym_entity_name(
+        syn_name);
+    EntitySet initial_entities = master_entity_factory_.GetAllFromPKB(
+        entity_name, pkb_);
+
+    auto synonym_table = Table(syn_name, initial_entities);
+    table_ = TableJoiner::Join(table_, synonym_table);
+  }
 }
 }  // namespace qps

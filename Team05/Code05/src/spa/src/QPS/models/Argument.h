@@ -9,7 +9,6 @@
 
 #include "QPS/models/PQL.h"
 #include "QPS/models/Table.h"
-#include "QPS/models/Synonym.h"
 #include "QPS/factories/MasterEntityFactory.h"
 #include "models/types.h"
 
@@ -227,6 +226,11 @@ class SynonymArg : public Argument {
       }
     }
   }
+
+  void UpdateTableWithAttrValue(
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table
+  );
 
  private:
   SynonymName syn_name_;

@@ -218,7 +218,7 @@ class PQL {
   inline static bool is_attr_ref_secondary(
       EntityName entity_name, AttrName attr_name) {
     if (entity_name == kReadEntityName
-        || entity_name == kProcedureEntityName) {
+        || entity_name == kPrintEntityName) {
       return attr_name == kVariableAttrName;
     }
     if (entity_name == kCallEntityName) {

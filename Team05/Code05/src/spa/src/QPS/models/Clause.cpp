@@ -228,45 +228,17 @@ void NextClause::Index(
 void WithClause::Preprocess(
     const pkb::PKBReadPtr &pkb,
     Table &query_table) {
-  InitializeSynonymAttrValue(arg1_, pkb, query_table);
-  InitializeSynonymAttrValue(arg2_, pkb, query_table);
-}
-
-void WithClause::InitializeSynonymAttrValue(
-    ArgumentPtr &arg,
-    const pkb::PKBReadPtr &pkb,
-    Table &query_table) {
-  if (!arg->IsSynonym()) return;
-  SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-  bool is_secondary_attr_value =
-      syn_arg->is_secondary_attr_ref();
-
-  // Update query_table with rows mapping from
-  // Index to AttrValue
-  // e.g. calls (line) to calls (procName)
-  EntitySet indexes;
-  syn_arg->InitializeEntities(
-      query_table, pkb, indexes, false);
-  Table::TwoSynonymRows rows;
-
-  for (auto &index : indexes) {
-    if (is_secondary_attr_value) {
-      rows.emplace_back(index, syn_arg->get_secondary_attr_value(pkb, index));
-    } else {
-      rows.emplace_back(index, index);
-    }
+  if (arg1_->IsSynonym()) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg1_.get());
+    syn_arg->UpdateTableWithAttrValue(
+        pkb, query_table);
   }
 
-  std::vector<SynonymName> columns;
-  SynonymName col1 = syn_arg->get_syn_name();
-  SynonymName col2 = syn_arg->get_full_name();
-  columns.emplace_back(col1);
-  columns.emplace_back(col2);
-  Table new_table(columns);
-
-  new_table.add_values(col1, col2, rows);
-
-  query_table = TableJoiner::Join(query_table, new_table);
+  if (arg2_->IsSynonym()) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg2_.get());
+    syn_arg->UpdateTableWithAttrValue(
+        pkb, query_table);
+  }
 }
 
 void WithClause::Index(

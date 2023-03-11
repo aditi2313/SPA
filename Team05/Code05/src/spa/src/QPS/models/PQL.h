@@ -204,6 +204,19 @@ class PQL {
         || attr_name == kStmtAttrName;
   }
 
+  // TODO(JL): ADD DOC
+  inline static bool is_attr_ref_secondary(
+      EntityName entity_name, AttrName attr_name) {
+    if (entity_name == kReadEntityName
+        || entity_name == kProcedureEntityName) {
+      return attr_name == kVariableAttrName;
+    }
+    if (entity_name == kCallEntityName) {
+      return attr_name == kProcedureAttrName;
+    }
+    return false;  // False by default.
+  }
+
   // Grammars are tokens with special meaning and actions
   // attached to them. They are not meant to be compared
   // literally.

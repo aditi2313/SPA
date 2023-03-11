@@ -99,12 +99,5 @@ class PKBRelationTable {
     }
     next_table_.get_row(line).add_to_next_im_list(next);
   }
-
-  void add_var_name_to_line(const int line, std::string var_name) {
-    if (!next_table_.exists(line)) {
-      next_table_.add_row(line, NextData(line));
-    }
-    next_table_.get_row(line).add_to_next_im_list(next);
-  }
 };
 }  // namespace pkb

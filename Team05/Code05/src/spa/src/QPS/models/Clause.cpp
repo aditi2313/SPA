@@ -228,6 +228,7 @@ void WithClause::Index(
     const Entity &index,
     const pkb::PKBReadPtr &pkb,
     EntitySet &results) {
+  std::cout << index << "\n";
   // Just return itself
   results.insert(index);
 }

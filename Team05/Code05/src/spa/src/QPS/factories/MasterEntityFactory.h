@@ -39,7 +39,7 @@ class MasterEntityFactory {
   }
 
   inline Entity GetAttrValue(
-      EntityName entity_name, Entity &index, pkb::PKBReadPtr &pkb) {
+      const EntityName entity_name, const Entity &index, pkb::PKBReadPtr &pkb) {
     return entity_factories_.at(entity_name)->GetAttrValue(index, pkb);
   }
 

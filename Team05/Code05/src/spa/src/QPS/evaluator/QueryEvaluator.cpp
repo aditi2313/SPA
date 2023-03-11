@@ -34,6 +34,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
     if (!clause_table.Empty()) {
       table_ = TableJoiner::Join(table_, clause_table);
     }
+    table_.PrintDebug();
   }
 
   if (query->is_boolean_query()) {
@@ -43,6 +44,8 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   // Join with selected synonyms at the end
   // instead of the beginning as a slight optimisation
   for (SynonymName syn : query->get_selected_synonyms()) {
+    if (table_.HasColumn(syn)) continue;
+
     EntityName entity_name = query->get_declared_synonym_entity_name(
         syn);
     EntitySet initial_entities = master_entity_factory_.GetAllFromPKB(

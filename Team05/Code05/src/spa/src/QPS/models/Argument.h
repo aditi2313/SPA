@@ -179,15 +179,29 @@ class SynonymArg : public Argument {
       Table &table,
       pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
+    bool should_be_attr_value =
+        !attr_name_.empty()
+            && PQL::is_attr_ref_secondary(entity_name_, attr_name_);
+    EntitySet indexes;
+
     if (table.HasColumn(syn_name_)) {
       std::vector<std::vector<Entity>> values;
       table.Select({syn_name_}, values);
       for (auto &entities : values) {
-        results.insert(entities.at(0));
+        indexes.insert(entities.at(0));
       }
     } else {
-      results = master_entity_factory_.GetAllFromPKB(
+      indexes = master_entity_factory_.GetAllFromPKB(
           entity_name_, pkb);
+    }
+
+    for (auto &index : indexes) {
+      if (should_be_attr_value) {
+        results.insert(
+            master_entity_factory_.GetAttrValue(entity_name_, index, pkb));
+      } else {
+        results.insert(index);
+      }
     }
   }
 

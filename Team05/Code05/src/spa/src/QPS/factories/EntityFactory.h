@@ -68,9 +68,10 @@ class ProcedureEntityFactory : public IdentEntityFactory {
     return CreateInstanceList(pkb->get_procedures());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on a procedure");
+        "Procedure does not have a secondary attr value");
   }
 };
 
@@ -82,9 +83,10 @@ class VariableEntityFactory : public IdentEntityFactory {
     return CreateInstanceList(pkb->get_variables());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on a variable");
+        "Variable does not have a secondary attr value");
   }
 };
 
@@ -96,9 +98,10 @@ class ConstantEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_constants());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on a constant");
+        "Constant does not have a secondary attr value");
   }
 };
 
@@ -110,9 +113,10 @@ class StmtEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_stmts());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on a stmt");
+        "Stmt does not have a secondary attr value");
   }
 };
 
@@ -124,7 +128,8 @@ class ReadEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_read());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     return Entity(pkb->get_var_name_from_line(index.get_int()));
   }
 };
@@ -137,7 +142,8 @@ class PrintEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_print());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     return Entity(pkb->get_var_name_from_line(index.get_int()));
   }
 };
@@ -150,9 +156,10 @@ class AssignEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_assign());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on an assign");
+        "Assign does not have a secondary attr value");
   }
 };
 
@@ -164,7 +171,8 @@ class CallEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_calls());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     return Entity(pkb->get_proc_name_from_line(index.get_int()));
   }
 };
@@ -177,9 +185,10 @@ class WhileEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_whiles());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on a while");
+        "While does not have a secondary attr value");
   }
 };
 
@@ -191,9 +200,10 @@ class IfEntityFactory : public IntEntityFactory {
     return CreateInstanceList(pkb->get_if());
   }
 
-  inline Entity GetAttrValue(const Entity &index, const pkb::PKBReadPtr &pkb) override {
+  inline Entity GetAttrValue(
+      const Entity &index, const pkb::PKBReadPtr &pkb) override {
     throw QpsEvaluatorException(
-        "Tried to get attrValue on an if");
+        "If does not have a secondary attr value");
   }
 };
 

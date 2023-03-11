@@ -214,7 +214,12 @@ class PQL {
         || attr_name == kStmtAttrName;
   }
 
-  // TODO(JL): ADD DOC
+  // A secondary attr_ref is defined as an attr_ref that is
+  // not the same as its index.
+  // E.g stmt.stmt# is the same as its index, but
+  // call.procName is not the same.
+  // In ADVANCED SPA requirements, only
+  // call, print, and read can have secondary attr_refs.
   inline static bool is_attr_ref_secondary(
       EntityName entity_name, AttrName attr_name) {
     if (entity_name == kReadEntityName
@@ -224,7 +229,7 @@ class PQL {
     if (entity_name == kCallEntityName) {
       return attr_name == kProcedureAttrName;
     }
-    return false;  // False by default.
+    return false;  // False by default
   }
 
   // Grammars are tokens with special meaning and actions

@@ -196,8 +196,7 @@ class SynonymArg : public Argument {
       pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
     InitializeEntities(
-        table, pkb, results, this->is_secondary_attr_ref()
-    );
+        table, pkb, results, this->is_secondary_attr_ref());
   }
 
   inline void InitializeEntities(
@@ -229,8 +228,7 @@ class SynonymArg : public Argument {
 
   void UpdateTableWithAttrValue(
       const pkb::PKBReadPtr &pkb,
-      Table &query_table
-  );
+      Table &query_table);
 
  private:
   SynonymName syn_name_;

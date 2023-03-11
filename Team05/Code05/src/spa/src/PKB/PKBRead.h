@@ -91,7 +91,6 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
-
  private:
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;

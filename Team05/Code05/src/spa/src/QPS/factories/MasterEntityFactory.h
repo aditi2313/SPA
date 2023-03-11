@@ -34,12 +34,15 @@ class MasterEntityFactory {
         {PQL::kConstantEntityName, std::make_unique<ConstantEntityFactory>()});
   }
 
-  inline EntitySet GetAllFromPKB(EntityName entity_name, const pkb::PKBReadPtr &pkb) {
+  inline EntitySet GetAllFromPKB(
+      EntityName entity_name, const pkb::PKBReadPtr &pkb) {
     return entity_factories_.at(entity_name)->GetAllFromPKB(pkb);
   }
 
   inline Entity GetAttrValue(
-      const EntityName entity_name, const Entity &index, const pkb::PKBReadPtr &pkb) {
+      const EntityName entity_name,
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb) {
     return entity_factories_.at(entity_name)->GetAttrValue(index, pkb);
   }
 

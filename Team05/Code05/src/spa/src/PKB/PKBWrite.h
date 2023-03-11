@@ -103,11 +103,11 @@ class PKBWrite {
 
   void add_if(int i) { pkb_relation_table_->if_.insert(i); }
 
-  void set_var_name_to_line(int line, std::string var_name) {
+  void set_var_name_for_line(int line, std::string var_name) {
     pkb_relation_table_->line_to_var_name_[line] = var_name;
   }
 
-  void set_proc_name_to_line(int line, std::string proc_name) {
+  void set_proc_name_for_line(int line, std::string proc_name) {
     pkb_relation_table_->line_to_proc_name_[line] = proc_name;
   }
 

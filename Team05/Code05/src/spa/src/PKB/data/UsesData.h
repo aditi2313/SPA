@@ -31,8 +31,14 @@ class UsesData {
         return variable_names_;
     }
 
+    inline const void add_control_variables(
+        const std::unordered_set<std::string>& control_variable_names) {
+      control_variable_names_ = control_variable_names;
+    }
+
  private:
     std::variant<int, std::string> line_;
+    std::unordered_set<std::string> control_variable_names_;
     std::unordered_set<std::string> variable_names_;
 };
 }  // namespace pkb

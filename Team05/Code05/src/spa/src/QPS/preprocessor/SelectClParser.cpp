@@ -10,7 +10,7 @@ namespace qps {
 int SelectClParser::NextState(
     int current_state_index, std::string token) {
   for (int neighbour : transition_table_[current_state_index]) {
-    if (token == states_.at(neighbour)->kTransitionKeyword) {
+    if (states_.at(neighbour)->is_transition_keyword(token)) {
       return neighbour;
     }
   }

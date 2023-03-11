@@ -1,5 +1,8 @@
 #pragma once
 
+#include <memory>
+#include <utility>
+
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
 

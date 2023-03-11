@@ -67,7 +67,7 @@ class Clause {
       }
     }
   }
-  
+
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
   inline RelName get_rel_name() { return rel_name_; }

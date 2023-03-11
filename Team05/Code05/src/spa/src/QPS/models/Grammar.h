@@ -3,36 +3,47 @@
 #include <functional>
 #include <string>
 
+#include "QPS/models/Query.h"
+
 namespace qps {
 class Grammar {
  public:
   using CheckLambda = std::function<bool(std::string)>;
+  using ActionLambda = std::function<void(QueryPtr &)>;
 
   Grammar(
-      std::function<bool(std::string)> check,
-      std::function<void()> action)
+      CheckLambda check,
+      ActionLambda action)
       : check_(check), action_(action) {}
 
-  static std::function<bool(std::string)> kArgumentCheck;
-  static std::function<bool(std::string)> kBooleanCheck;
-  static std::function<bool(std::string)> kDesignEntityCheck;
-  static std::function<bool(std::string)> kElemCheck;
-  static std::function<bool(std::string)> kExprCheck;
-  static std::function<bool(std::string)> kRefCheck;
-  static std::function<bool(std::string)> kRelRefCheck;
-  static std::function<bool(std::string)> kSelectCheck;
-  static std::function<bool(std::string)> kSynCheck;
-  static std::function<bool(std::string)> kTupleCheck;
+  static CheckLambda kArgumentCheck;
+  static CheckLambda kBooleanCheck;
+  static CheckLambda kDesignEntityCheck;
+  static CheckLambda kElemCheck;
+  static CheckLambda kExprCheck;
+  static CheckLambda kRefCheck;
+  static CheckLambda kRelRefCheck;
+  static CheckLambda kSynCheck;
+  static CheckLambda kTupleCheck;
+
+  static ActionLambda kEmptyAction;
+  static ActionLambda kRecurseAction;
+
+  inline static CheckLambda CreateTokenCheck(std::string expected_token) {
+    return [expected_token](std::string token) {
+      return token == expected_token;
+    };
+  };
 
   inline bool Check(std::string token) {
     return check_(token);
   }
 
-  inline void Action() {
-    action_();
+  inline void Action(QueryPtr &query) {
+    action_(query);
   }
  private:
   CheckLambda check_;
-  std::function<void()> action_;
+  ActionLambda action_;
 };
 }

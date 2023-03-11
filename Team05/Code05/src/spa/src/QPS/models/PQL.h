@@ -81,6 +81,10 @@ class PQL {
         || is_ident_arg(token);
   }
 
+  inline static bool is_synonym(std::string str) {
+    return is_ident(str);
+  }
+
   inline static bool is_ident(std::string str) {
     if (str.empty() || !isalpha(str.at(0))) return false;
     for (char c : str) {
@@ -149,7 +153,7 @@ class PQL {
     // "." doesn't exist
     if (index == std::string::npos) return false;
     auto [syn, attr_name] = split_attr_ref(str);
-    return CheckGrammar(syn, kSynGrammar)
+    return is_synonym(syn)
         && is_attr_name(attr_name);
   }
 

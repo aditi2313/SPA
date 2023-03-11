@@ -1,5 +1,6 @@
 #include "Grammar.h"
 #include "PQL.h"
+#include "Query.h"
 
 namespace qps {
 Grammar::CheckLambda Grammar::kArgumentCheck = [](std::string token) {
@@ -36,14 +37,8 @@ Grammar::CheckLambda Grammar::kRelRefCheck = [](std::string token) {
   return PQL::is_such_that_rel_name(token);
 };
 
-Grammar::CheckLambda Grammar::kSelectCheck = [](std::string token) {
-  // tuple | BOOLEAN
-  return kTupleCheck(token)
-      || kBooleanCheck(token);
-};
-
 Grammar::CheckLambda Grammar::kSynCheck = [](std::string token) {
-  return PQL::is_ident(token);
+  return PQL::is_synonym(token);
 };
 
 Grammar::CheckLambda Grammar::kTupleCheck = [](std::string token) {
@@ -51,5 +46,7 @@ Grammar::CheckLambda Grammar::kTupleCheck = [](std::string token) {
   return kElemCheck(token)
       || token == PQL::kTupleOpenBktToken;
 };
+
+Grammar::ActionLambda Grammar::kEmptyAction = [](QueryPtr &query) {};
 
 }

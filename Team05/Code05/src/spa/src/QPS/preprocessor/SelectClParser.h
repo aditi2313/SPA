@@ -7,7 +7,7 @@
 
 #include "../models/Query.h"
 #include "../models/Clause.h"
-#include "ParseState.h"
+#include "parse_states/Export.h"
 #include "QPS/models/Entity.h"
 #include "common/exceptions/QPSExceptions.h"
 

@@ -77,6 +77,13 @@ class PKBRelationTable {
     uses_table_.add_row(line, UsesData(line, variable_names));
   }
 
+  void add_uses_data(const std::variant<int, std::string> line,
+                     const std::unordered_set<std::string>& control_variable_names,
+                     const std::unordered_set<std::string>& variable_names) {
+    uses_table_.add_row(line,
+                        UsesData(line, control_variable_names, variable_names));
+  }
+
   void add_follows_data(const int line, const int follows) {
     follows_table_.add_row(line, FollowsData(line, follows));
   }

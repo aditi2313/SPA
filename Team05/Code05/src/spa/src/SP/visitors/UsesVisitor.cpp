@@ -55,13 +55,16 @@ void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
   VarCollector var_collector;
   auto& cond_node = if_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);
-  std::unordered_set<std::string> vars = var_collector.get_vars();
+  std::unordered_set<std::string> cond_vars = var_collector.get_vars();
+  std::unordered_set<std::string> vars(cond_vars);
 
   // add the additional variables from the sub statement lists
   AddVariablesFromStmtList(*(if_node->get_then()), vars);
   AddVariablesFromStmtList(*(if_node->get_else()), vars);
 
-  pkb_ptr_->AddUsesData(if_node->get_line(), vars);
+  pkb_ptr_->AddUsesData(
+      if_node->get_line(), cond_vars, vars);
+
   direct_uses_[current_procedure_].merge(vars);
 }
 
@@ -69,11 +72,13 @@ void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
   VarCollector var_collector;
   auto& cond_node = while_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);
-  std::unordered_set<std::string> vars = var_collector.get_vars();
+  std::unordered_set<std::string> cond_vars = var_collector.get_vars();
+  std::unordered_set<std::string> vars(cond_vars);
 
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
-  pkb_ptr_->AddUsesData(while_node->get_line(), vars);
+  pkb_ptr_->AddUsesData(
+      while_node->get_line(), cond_vars,vars);
   direct_uses_[current_procedure_].merge(vars);
 }
 

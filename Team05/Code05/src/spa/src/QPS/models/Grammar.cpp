@@ -48,5 +48,4 @@ Grammar::CheckLambda Grammar::kTupleCheck = [](std::string token) {
 };
 
 Grammar::ActionLambda Grammar::kEmptyAction = [](QueryPtr &query) {};
-
-}
+}  // namespace qps

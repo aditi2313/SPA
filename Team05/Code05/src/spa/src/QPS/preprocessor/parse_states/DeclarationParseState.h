@@ -9,7 +9,6 @@ class DeclarationParseState : public RecursiveParseState {
   DeclarationParseState()
       : RecursiveParseState("",
                             PQL::kCommaToken) {
-
     size_t kNumGrammar = 4;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector
@@ -46,4 +45,4 @@ class DeclarationParseState : public RecursiveParseState {
  private:
   EntityName declared_entity_name_;
 };
-}
+}  // namespace qps

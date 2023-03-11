@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "RecursiveParseState.h"
 
 namespace qps {
@@ -69,9 +71,13 @@ class PatternParseState : public RecursiveParseState {
                 ThrowException();
               }
               query->add_clause(master_clause_factory_.Create(
-                  PQL::kModifiesRelName, std::move(arg1_->Copy()), std::move(arg2_)));
+                  PQL::kModifiesRelName,
+                  std::move(arg1_->Copy()),
+                  std::move(arg2_)));
               query->add_clause(master_clause_factory_.Create(
-                  PQL::kPatternRelName, std::move(arg1_), std::move(arg3_)));
+                  PQL::kPatternRelName,
+                  std::move(arg1_),
+                  std::move(arg3_)));
             }));
 
     // Recurse (if needed)
@@ -88,4 +94,4 @@ class PatternParseState : public RecursiveParseState {
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
 };
-}
+}  // namespace qps

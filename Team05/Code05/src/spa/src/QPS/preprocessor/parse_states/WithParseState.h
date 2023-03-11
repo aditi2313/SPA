@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterClauseFactory.h"
 
@@ -70,4 +72,4 @@ class WithParseState : public RecursiveParseState {
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
 };
-}
+}  // namespace qps

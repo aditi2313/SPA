@@ -23,4 +23,4 @@ void ParseState::Parse(
   if (!IsComplete(grammar_itr_)) ThrowException();
   itr = itr_;
 }
-}
+}  // namespace qps

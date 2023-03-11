@@ -6,5 +6,3 @@
 #include "SuchThatParseState.h"
 #include "PatternParseState.h"
 #include "WithParseState.h"
-
-

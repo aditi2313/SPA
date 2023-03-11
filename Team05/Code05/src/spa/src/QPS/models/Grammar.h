@@ -12,8 +12,7 @@ class Grammar {
   using ActionLambda = std::function<void(QueryPtr &)>;
 
   Grammar(
-      CheckLambda check,
-      ActionLambda action)
+      CheckLambda check, ActionLambda action)
       : check_(check), action_(action) {}
 
   static CheckLambda kArgumentCheck;
@@ -33,7 +32,7 @@ class Grammar {
     return [expected_token](std::string token) {
       return token == expected_token;
     };
-  };
+  }
 
   inline bool Check(std::string token) {
     return check_(token);
@@ -42,8 +41,9 @@ class Grammar {
   inline void Action(QueryPtr &query) {
     action_(query);
   }
+
  private:
   CheckLambda check_;
   ActionLambda action_;
 };
-}
+}  // namespace qps

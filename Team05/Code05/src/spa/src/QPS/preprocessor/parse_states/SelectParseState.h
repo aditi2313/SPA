@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ParseState.h"
 
 namespace qps {
@@ -18,14 +20,14 @@ class SelectParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::CreateTokenCheck(PQL::kSelectToken),
-            Grammar::kEmptyAction
-        ));
+            Grammar::kEmptyAction));
 
     // tuple | BOOLEAN
     grammar_.emplace_back(
         Grammar(
             [](std::string token) {
-              return Grammar::kTupleCheck(token) || Grammar::kBooleanCheck(token);
+              return Grammar::kTupleCheck(token)
+                  || Grammar::kBooleanCheck(token);
             },
             [&](QueryPtr &query) {
               if (Grammar::kBooleanCheck(*itr_) &&
@@ -38,8 +40,7 @@ class SelectParseState : public RecursiveParseState {
                 query->add_selected_elem(*itr_);
                 grammar_itr_ = grammar_.end();
               }
-            }
-        ));
+            }));
 
     // '<'
     grammar_.emplace_back(
@@ -69,4 +70,4 @@ class SelectParseState : public RecursiveParseState {
     kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
 };
-}
+}  // namespace qps

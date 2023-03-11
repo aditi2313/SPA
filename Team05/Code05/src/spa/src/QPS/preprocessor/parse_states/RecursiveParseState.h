@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ParseState.h"
 
 namespace qps {
@@ -15,8 +17,7 @@ class RecursiveParseState : public ParseState {
         [](std::string token) { return true; },
         [&](QueryPtr &query) {
           parse_state.Recurse();
-        }
-    );
+        });
   }
 
  protected:
@@ -30,4 +31,4 @@ class RecursiveParseState : public ParseState {
     }
   }
 };
-}
+}  // namespace qps

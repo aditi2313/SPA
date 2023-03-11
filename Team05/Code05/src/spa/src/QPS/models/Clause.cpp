@@ -224,5 +224,14 @@ void NextClause::Index(
       results);
 }
 
+void WithClause::Index(
+    const Entity &index,
+    const pkb::PKBReadPtr &pkb,
+    EntitySet &results) {
+  // TODO(JL): To be done in `with` clause part 3 PR
+  // Just return itself
+  results.insert(index);
+}
+
 Clause::~Clause() = default;
 }  // namespace qps

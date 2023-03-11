@@ -54,7 +54,7 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
         tuple_parse_state_.Parse(tokens, itr, query);
         itr--;
       } else {
-        query->add_selected_synonym(*itr);
+        query->add_selected_elem(*itr);
       }
     }
     itr++;
@@ -65,6 +65,7 @@ void SelectParseState::Parse(const std::vector<std::string> &tokens,
 }
 
 // '<' elem ( ',' elem )* '>'
+// elem: synonym | attrRef
 void TupleParseState::Parse(const std::vector<std::string> &tokens,
                             parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
@@ -72,8 +73,8 @@ void TupleParseState::Parse(const std::vector<std::string> &tokens,
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    if (*grammar_itr == PQL::kSynGrammar) {
-      query->add_selected_synonym(*itr);
+    if (*grammar_itr == PQL::kElemGrammar) {
+      query->add_selected_elem(*itr);
     }
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);
@@ -169,16 +170,36 @@ void PatternParseState::Parse(const std::vector<std::string> &tokens,
 }
 
 // 'with' attrCompare '(' and ',' attrCompare ')'
+// attrCompare: attrRef = attrRef
+// attrRef: "IDENT" | INTEGER | synonym.attrName
+// attrName: varName | procName | value | stmt#
 void WithParseState::Parse(const std::vector<std::string> &tokens,
                            parse_position &itr, QueryPtr &query) {
   auto grammar_itr = grammar_.begin();
-  std::string rel_ident;
   ArgumentPtr arg1, arg2;
   while (itr != tokens.end() && grammar_itr != grammar_.end()) {
     if (!PQL::CheckGrammar(*itr, *grammar_itr)) {
       ThrowException();
     }
-    // TODO(JL): Add logic for creating With Clauses
+
+    if (*grammar_itr == PQL::kRefGrammar) {
+      if (arg1 == nullptr) {
+        arg1 = query->CreateArgument(*itr);
+      } else {
+        arg2 = query->CreateArgument(*itr);
+      }
+    }
+
+    if (*(grammar_itr + 1) == PQL::kRecurseGrammar) {
+      if (arg1 == nullptr || arg2 == nullptr) {
+        ThrowException();
+      }
+      auto with_clause = master_clause_factory_.Create(
+          PQL::kWithRelName,
+          std::move(arg1),
+          std::move(arg2));
+      query->add_clause(with_clause);
+    }
 
     if (*grammar_itr == PQL::kRecurseGrammar) {
       Recurse(itr, grammar_itr);

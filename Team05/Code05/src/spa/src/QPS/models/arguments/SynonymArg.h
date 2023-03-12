@@ -13,6 +13,16 @@ class SynonymArg : public Argument {
   explicit SynonymArg(SynonymName syn_name)
       : Argument(), syn_name_(syn_name) {}
 
+  static inline SynonymName get_syn_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_syn_name();
+  }
+
+  static inline SynonymName get_entity_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_entity_name();
+  }
+
   inline bool IsSynonym() override { return true; }
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
@@ -32,9 +42,12 @@ class SynonymArg : public Argument {
   }
 
   inline SynonymName get_syn_name() { return syn_name_; }
+  inline EntityName get_entity_name() { return entity_name_; }
+
   inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
+
   inline void set_attr_name(AttrName attr_name) {
     attr_name_ = attr_name;
   }
@@ -88,10 +101,6 @@ class SynonymArg : public Argument {
     auto arg = dynamic_cast<SynonymArg *>(&other);
     return syn_name_ == arg->syn_name_
         && entity_name_ == arg->entity_name_;
-  }
-  static inline SynonymName get_syn_name(ArgumentPtr &arg) {
-    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-    return syn_arg->get_syn_name();
   }
 
  private:

@@ -26,6 +26,7 @@ QueryPtr BuildQuery(
 // Helper method for testing
 void TestNoThrows(std::string query_string) {
   SelectClParser parser;
+  std::cout << query_string << "\n";
   REQUIRE_NOTHROW(parser.ParseQuery(query_string));
 }
 
@@ -147,14 +148,16 @@ TEST_CASE("Test ParseQuery") {
   SECTION(
       "Query with multiple declarations, multiple synonyms "
       "and multiple such-that and pattern clauses should parse correctly") {
-    std::string query_string = "variable v; procedure p; "
+    std::string query_string = "variable v; procedure p; assign a; "
                                "Select v such that Modifies(6, v) "
                                "such that Modifies(3, v) "
                                "pattern a(_, \"x + y\") "
                                "pattern a(\"variable\", _\"x\"_)";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
+        {{"v", PQL::kVariableEntityName},
+         {"p", PQL::kProcedureEntityName},
+         {"a", PQL::kAssignEntityName}},
         {"v"});
 
     expected_query->add_clause(
@@ -196,14 +199,16 @@ TEST_CASE("Test ParseQuery") {
       "and multiple such-that and pattern clauses and "
       "many random whitespaces and tabs"
       "should parse correctly") {
-    std::string query_string = "variable  \t  v;    procedure    p; "
+    std::string query_string = "variable  \t  v;\tprocedure p; assign \t a;"
                                "Select v such  that \t  Modifies(  6, v) "
                                "  such  \t    that    Modifies(3, v) "
                                "pattern a(_, \"x + y   \t  \") "
                                "   \t pattern a(_,  \"   x  \t\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
+        {{"v", PQL::kVariableEntityName},
+         {"p", PQL::kProcedureEntityName},
+         {"a", PQL::kAssignEntityName}},
         {"v"});
     expected_query->add_clause(
         master_clause_factory.Create(

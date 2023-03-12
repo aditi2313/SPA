@@ -4,6 +4,7 @@
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
 
+// assign: syn-assign '(' entRef ',' expression-spec ')'
 void PatternParseState::InitializeAssignGrammar() {
   // '('
   assign_grammar_.emplace_back(
@@ -49,9 +50,100 @@ void PatternParseState::InitializeAssignGrammar() {
                 PQL::kPatternRelName,
                 std::move(arg1_),
                 std::move(arg3_)));
-            
+
             // Return to main grammar_
             grammar_itr_ = saved_grammar_itr_pos_;
           }));
+}
+
+// while: syn-while '(' entRef ',' '_' ')'
+void PatternParseState::InitializeWhileGrammar() {
+  // '('
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kOpenBktToken),
+          Grammar::kEmptyAction));
+
+  // argument
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::kArgumentCheck,
+          [&](QueryPtr &query) {
+            arg2_ = query->CreateArgument(*itr_);
+          }));
+
+  // ','
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kCommaToken),
+          Grammar::kEmptyAction));
+
+  // '_'
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::kWildcardCheck,
+          Grammar::kEmptyAction));
+
+  // ')'
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kCloseBktToken),
+          [&](QueryPtr &query) {
+            // TODO(JL): Create PatternWhile clause
+            // Return to main grammar_
+            grammar_itr_ = saved_grammar_itr_pos_;
+          }));
+}
+
+// if: syn-if '(' entRef ',' '_' ',' '_' ')'
+void PatternParseState::InitializeIfGrammar() {
+  // '('
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kOpenBktToken),
+          Grammar::kEmptyAction));
+
+  // argument
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::kArgumentCheck,
+          [&](QueryPtr &query) {
+            arg2_ = query->CreateArgument(*itr_);
+          }));
+
+  // ','
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kCommaToken),
+          Grammar::kEmptyAction));
+
+  // '_'
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::kWildcardCheck,
+          Grammar::kEmptyAction));
+
+  // ','
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kCommaToken),
+          Grammar::kEmptyAction));
+
+  // '_'
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::kWildcardCheck,
+          Grammar::kEmptyAction));
+
+  // ')'
+  assign_grammar_.emplace_back(
+      Grammar(
+          Grammar::CreateTokenCheck(PQL::kCloseBktToken),
+          [&](QueryPtr &query) {
+            // TODO(JL): Create PatternIf clause
+            // Return to main grammar_
+            grammar_itr_ = saved_grammar_itr_pos_;
+          }));
+
 }
 }  // namespace qps

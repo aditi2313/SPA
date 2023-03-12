@@ -352,6 +352,7 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("a", PQL::kAssignEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
@@ -372,6 +373,8 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
@@ -392,6 +395,8 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("variable", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
@@ -414,6 +419,9 @@ TEST_CASE("Test PatternParseState") {
         "and",
         "pattern", "a1", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("a1", PQL::kAssignEntityName);
+    query->declare_synonym("variable", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
@@ -433,7 +441,7 @@ TEST_CASE("Test PatternParseState") {
   };
 
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"PATTERN", "a", "(", "_", ",", "x + y", ")"});
+    TestErrorCase(state, {"PATTERN", "a", "(", "_", ",", "\"x + y\"", ")"});
   };
 
   SECTION("Empty tokens should throw PqlSyntaxErrorException") {
@@ -441,11 +449,11 @@ TEST_CASE("Test PatternParseState") {
   };
 
   SECTION("Missing syn-assign should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"pattern", "(", "_", ",", "x + y", ")"});
+    TestErrorCase(state, {"pattern", "(", "_", ",", "\"x + y\"", ")"});
   };
 
   SECTION("Missing bracket should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "x + y"});
+    TestErrorCase(state, {"pattern", "a", "(", "_", ",", "\"x + y\""});
   };
 
   SECTION("Invalid expression should throw PqlSyntaxErrorException") {

@@ -19,6 +19,8 @@ class PatternParseState : public RecursiveParseState {
                             PQL::kAndToken) {
 
     InitializeAssignGrammar();
+    InitializeIfGrammar();
+    InitializeWhileGrammar();
 
     size_t kNumGrammar = 3;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
@@ -38,9 +40,18 @@ class PatternParseState : public RecursiveParseState {
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
               arg1_ = query->CreateArgument(*itr_);
-              // Is Assign
-              if (true) {
+              EntityName entity_name = SynonymArg::get_entity_name(arg1_);
+              if (entity_name == PQL::kWhileEntityName) {
+                // Is While
+                grammar_itr_ = while_grammar_.begin();
+              } else if (entity_name == PQL::kIfEntityName) {
+                // Is If
+                grammar_itr_ = if_grammar_.begin();
+              } else {
+                // Is Assign
                 grammar_itr_ = assign_grammar_.begin();
+                // Note: Validator will validate if this is syn-assign
+                // and throw semantic error accordingly
               }
             }));
 
@@ -59,6 +70,8 @@ class PatternParseState : public RecursiveParseState {
 
  private:
   void InitializeAssignGrammar();
+  void InitializeIfGrammar();
+  void InitializeWhileGrammar();
 
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;

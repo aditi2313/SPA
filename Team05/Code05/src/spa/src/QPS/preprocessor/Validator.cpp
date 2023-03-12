@@ -12,6 +12,7 @@ void Validator::Validate(std::unique_ptr<Query> &query) {
   ValidateSynonymsDeclaredExactlyOnce(query);
   ValidateSynonymsUsedAreDeclared(query);
   ValidateClauseArguments(query);
+  ValidateAttrRefs(query);
 }
 
 // Used to ensure that the design entity for synonyms is correct
@@ -47,6 +48,23 @@ void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
   for (auto syn_name : query->get_selected_synonyms()) {
     if (!query->is_synonym_name_declared(syn_name)) {
       throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
+    }
+  }
+}
+
+// Checks if selected attrRefs are semantically correct.
+// E.g s.stmt# and c.value are OK but s.varName and c.procName are not.
+// Note that this check for `with` clauses arguments is also performed
+// in ValidateClauseArguments
+void Validator::ValidateAttrRefs(QueryPtr &query) {
+  for (auto elem : query->get_selected_elems()) {
+    if (PQL::is_attr_ref(elem)) {
+      auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
+      auto entity_name = query->get_declared_synonym_entity_name(syn_name);
+      if (!PQL::ValidateAttrRef(attr_name, entity_name)) {
+        throw PqlSemanticErrorException(
+            "Selected attrRef has mismatched types");
+      }
     }
   }
 }

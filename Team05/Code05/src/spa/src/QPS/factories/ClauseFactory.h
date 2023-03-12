@@ -7,7 +7,7 @@
 #include <memory>
 #include <iostream>
 
-#include "QPS/models/Clause.h"
+#include "QPS/models/clauses/Export.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {

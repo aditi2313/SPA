@@ -5,8 +5,8 @@
 #include <vector>
 #include <unordered_map>
 
-#include "../models/Query.h"
-#include "../models/Clause.h"
+#include "QPS/models/Query.h"
+#include "QPS/models/clauses/Clause.h"
 #include "parse_states/Export.h"
 #include "QPS/models/Entity.h"
 #include "common/exceptions/QPSExceptions.h"

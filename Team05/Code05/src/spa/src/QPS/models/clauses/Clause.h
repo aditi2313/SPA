@@ -5,7 +5,7 @@
 #include <typeinfo>
 #include <utility>
 
-#include "QPS/models/Argument.h"
+#include "QPS/models/arguments/Export.h"
 #include "PKB/PKBRead.h"
 #include "QPS/factories/MasterEntityFactory.h"
 #include "common/filter/filters/PredicateFilter.h"

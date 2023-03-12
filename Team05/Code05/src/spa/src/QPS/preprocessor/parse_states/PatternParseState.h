@@ -5,16 +5,22 @@
 #include "RecursiveParseState.h"
 
 namespace qps {
-extern MasterClauseFactory master_clause_factory_;
 
 // pattern ( 'and' pattern )*
-// pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// pattern: assign | while | if
+// assign: syn-assign '(' entRef ',' expression-spec ')'
+// while: syn-while '(' entRef ',' '_' ')'
+// if: syn-if '(' entRef ',' '_' ',' '_' ')'
+// expression-spec: '"' expr'"' | '_' '"' expr '"' '_' | '_'
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-    size_t kNumGrammar = 8;
+
+    InitializeAssignGrammar();
+
+    size_t kNumGrammar = 3;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector
     grammar_.reserve(kNumGrammar);
@@ -26,62 +32,24 @@ class PatternParseState : public RecursiveParseState {
             Grammar::kEmptyAction));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
-    // syn-assign
+    // syn-assign | syn-while | syn-if
     grammar_.emplace_back(
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
               arg1_ = query->CreateArgument(*itr_);
-            }));
-
-    // '('
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::CreateTokenCheck(PQL::kOpenBktToken),
-            Grammar::kEmptyAction));
-
-    // argument
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::kArgumentCheck,
-            [&](QueryPtr &query) {
-              arg2_ = query->CreateArgument(*itr_);
-            }));
-
-    // ','
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::CreateTokenCheck(PQL::kCommaToken),
-            Grammar::kEmptyAction));
-
-    // expression-spec
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::kExprCheck,
-            [&](QueryPtr &query) {
-              arg3_ = query->CreateArgument(*itr_);
-            }));
-
-    // ')'
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::CreateTokenCheck(PQL::kCloseBktToken),
-            [&](QueryPtr &query) {
-              if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
-                ThrowException();
+              // Is Assign
+              if (true) {
+                grammar_itr_ = assign_grammar_.begin();
               }
-              query->add_clause(master_clause_factory_.Create(
-                  PQL::kModifiesRelName,
-                  std::move(arg1_->Copy()),
-                  std::move(arg2_)));
-              query->add_clause(master_clause_factory_.Create(
-                  PQL::kPatternRelName,
-                  std::move(arg1_),
-                  std::move(arg3_)));
             }));
 
     // Recurse (if needed)
-    grammar_.emplace_back(RecursiveParseState::CreateRecurseGrammar(*this));
+    grammar_.emplace_back(
+        RecursiveParseState::CreateRecurseGrammar(*this));
+
+    // Resume from here after competing assign/while/if grammar_
+    saved_grammar_itr_pos_ = --grammar_.end();
 
     end_states_.emplace_back(grammar_.end());
     // Allow state to end without recursing
@@ -90,8 +58,16 @@ class PatternParseState : public RecursiveParseState {
   }
 
  private:
+  void InitializeAssignGrammar();
+
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
+
+  std::vector<Grammar> assign_grammar_;
+  std::vector<Grammar> while_grammar_;
+  std::vector<Grammar> if_grammar_;
+
+  GrammarItr saved_grammar_itr_pos_;
 };
 }  // namespace qps

@@ -59,13 +59,13 @@ void PatternParseState::InitializeAssignGrammar() {
 // while: syn-while '(' entRef ',' '_' ')'
 void PatternParseState::InitializeWhileGrammar() {
   // '('
-  assign_grammar_.emplace_back(
+  while_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kOpenBktToken),
           Grammar::kEmptyAction));
 
   // argument
-  assign_grammar_.emplace_back(
+  while_grammar_.emplace_back(
       Grammar(
           Grammar::kArgumentCheck,
           [&](QueryPtr &query) {
@@ -73,19 +73,19 @@ void PatternParseState::InitializeWhileGrammar() {
           }));
 
   // ','
-  assign_grammar_.emplace_back(
+  while_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kCommaToken),
           Grammar::kEmptyAction));
 
   // '_'
-  assign_grammar_.emplace_back(
+  while_grammar_.emplace_back(
       Grammar(
           Grammar::kWildcardCheck,
           Grammar::kEmptyAction));
 
   // ')'
-  assign_grammar_.emplace_back(
+  while_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kCloseBktToken),
           [&](QueryPtr &query) {
@@ -98,13 +98,13 @@ void PatternParseState::InitializeWhileGrammar() {
 // if: syn-if '(' entRef ',' '_' ',' '_' ')'
 void PatternParseState::InitializeIfGrammar() {
   // '('
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kOpenBktToken),
           Grammar::kEmptyAction));
 
   // argument
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::kArgumentCheck,
           [&](QueryPtr &query) {
@@ -112,31 +112,31 @@ void PatternParseState::InitializeIfGrammar() {
           }));
 
   // ','
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kCommaToken),
           Grammar::kEmptyAction));
 
   // '_'
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::kWildcardCheck,
           Grammar::kEmptyAction));
 
   // ','
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kCommaToken),
           Grammar::kEmptyAction));
 
   // '_'
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::kWildcardCheck,
           Grammar::kEmptyAction));
 
   // ')'
-  assign_grammar_.emplace_back(
+  if_grammar_.emplace_back(
       Grammar(
           Grammar::CreateTokenCheck(PQL::kCloseBktToken),
           [&](QueryPtr &query) {

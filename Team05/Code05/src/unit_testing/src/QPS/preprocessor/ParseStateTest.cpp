@@ -344,7 +344,7 @@ TEST_CASE("Test SuchThatParseState") {
   }
 }
 
-TEST_CASE("Test PatternParseState") {
+TEST_CASE("Test PatternParseState for Assign") {
   PatternParseState state;
   MasterClauseFactory master_clause_factory;
 
@@ -459,6 +459,75 @@ TEST_CASE("Test PatternParseState") {
   SECTION("Invalid expression should throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"pattern", "a", "(", "_", ",", "_\" +temp\"_"});
   }
+}
+
+TEST_CASE("Test PatternParseState for While") {
+  PatternParseState state;
+  MasterClauseFactory master_clause_factory;
+
+  SECTION("Pattern WHILE wildcard clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern WHILE synonym should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "v", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    query->declare_synonym("v", PQL::kVariableEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern WHILE IDENT should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "\"var\"", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern WHILE clause with 'and' should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "_", ",", "_", ")",
+        "and",
+        "pattern", "w", "(", "v", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    query->declare_synonym("v", PQL::kVariableEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern WHILE clause with non-wildcard in second arg "
+          "should throw error") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "_", ",", "\"x\"", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    auto itr = tokens.begin();
+
+    REQUIRE_THROWS_AS(
+        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
+  };
 }
 
 TEST_CASE("Test WithParseState") {

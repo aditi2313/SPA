@@ -6,7 +6,7 @@
 #include <unordered_map>
 
 #include "../models/Query.h"
-#include "../models/Clause.h"
+#include "QPS/models/clauses/Clause.h"
 #include "ParseState.h"
 #include "QPS/models/Entity.h"
 #include "common/exceptions/QPSExceptions.h"

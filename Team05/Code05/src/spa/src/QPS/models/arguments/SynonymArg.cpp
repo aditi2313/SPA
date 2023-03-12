@@ -1,4 +1,5 @@
-#include "Argument.h"
+#include "SynonymArg.h"
+
 #include "QPS/evaluator/TableJoiner.h"
 
 namespace qps {
@@ -35,6 +36,4 @@ void SynonymArg::UpdateTableWithAttrValue(
 
   query_table = TableJoiner::Join(query_table, new_table);
 }
-
-Argument::~Argument() = default;
 }  // namespace qps

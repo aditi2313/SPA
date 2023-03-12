@@ -53,7 +53,7 @@ class VectorLexer {
     }
     return tokens_[ptr_];
   }
-  std::string get_ident() { return idents_[ptr_]; }
+  std::string& get_ident() { return idents_[ptr_]; }
   int get_integer() { return numbers_[ptr_]; }
   inline void Decrement() { ptr_--; }
   inline void Increment() { ptr_++; }

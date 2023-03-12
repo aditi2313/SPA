@@ -295,6 +295,17 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
+  SECTION("Query with using 'and' to connect different types"
+          "of Pattern clauses should parse correctly") {
+    std::string query_string = "assign a; while w; if ifs;"
+                               "Select <a, w, ifs> "
+                               "pattern a(_, _) and "
+                               "pattern w(_, _) and "
+                               "pattern ifs(_, _, _)";
+
+    TestNoThrows(query_string);
+  }
+
   SECTION("Query with Select attrRef should parse correctly") {
     std::string query_string = "stmt s;"
                                "Select s.stmt#";

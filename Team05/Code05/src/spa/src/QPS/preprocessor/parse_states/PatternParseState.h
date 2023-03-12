@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <utility>
 
 #include "RecursiveParseState.h"
@@ -17,7 +18,6 @@ class PatternParseState : public RecursiveParseState {
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-
     InitializeAssignGrammar();
     InitializeIfGrammar();
     InitializeWhileGrammar();

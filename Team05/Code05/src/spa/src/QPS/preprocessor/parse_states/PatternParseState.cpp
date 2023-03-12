@@ -144,6 +144,5 @@ void PatternParseState::InitializeIfGrammar() {
             // Return to main grammar_
             grammar_itr_ = saved_grammar_itr_pos_;
           }));
-
 }
 }  // namespace qps

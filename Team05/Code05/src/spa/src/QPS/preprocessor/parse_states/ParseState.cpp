@@ -10,9 +10,7 @@ void ParseState::Parse(
 
   while (itr_ != tokens.end() && grammar_itr_ != grammar_.end()) {
     auto &grammar = *grammar_itr_;
-    if (!grammar.Check(*itr_)) {
-      ThrowException();
-    }
+    if (!grammar.Check(*itr_)) ThrowException();
 
     grammar_itr_++;
     // Action needs to be performed AFTER incrementing

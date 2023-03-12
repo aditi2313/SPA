@@ -1,6 +1,6 @@
 #include <catch.hpp>
 #include "QPS/models/Query.h"
-#include "QPS/models/Clause.h"
+#include "QPS/models/clauses/Export.h"
 
 using namespace qps; // NOLINT
 

@@ -530,6 +530,99 @@ TEST_CASE("Test PatternParseState for While") {
   };
 }
 
+TEST_CASE("Test PatternParseState for If") {
+  PatternParseState state;
+  MasterClauseFactory master_clause_factory;
+
+  SECTION("Pattern IF wildcard clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern IF synonym should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "v", ",", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    query->declare_synonym("v", PQL::kVariableEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern IF IDENT should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "\"var\"", ",", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern IF clause with 'and' should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "_", ",", "_", ")",
+        "and",
+        "pattern", "if", "(", "v", ",", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    query->declare_synonym("v", PQL::kVariableEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    // TODO(JL): Add expected clause
+
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern IF clause with non-wildcard in second arg "
+          "should throw error") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "\"x\"", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+
+    REQUIRE_THROWS_AS(
+        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
+  };
+
+  SECTION("Pattern IF clause with non-wildcard in third arg "
+          "should throw error") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "_", ",", "\"x\"", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+
+    REQUIRE_THROWS_AS(
+        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
+  };
+
+  SECTION("Pattern IF clause with only two arguments "
+          "should throw error") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+
+    REQUIRE_THROWS_AS(
+        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
+  };
+}
+
 TEST_CASE("Test WithParseState") {
   WithParseState state;
   SECTION("With clause should parse correctly") {

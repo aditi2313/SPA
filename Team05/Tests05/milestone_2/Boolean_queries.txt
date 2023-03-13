@@ -29,6 +29,27 @@ Select BOOLEAN such that Next(s1,s2)
 TRUE
 5000
 7 - Boolean query for Affects
-Select BOOLEAN such that Affects(12, _)
+
+Select BOOLEAN such that Affects(11, _)
+TRUE
+5000
+8 - Boolean query for Follows with specific line numbers
+stmt s;
+Select BOOLEAN such that Follows(s, 2)
+FALSE
+5000
+9 - Boolean query for Follows with specific line numbers
+stmt s;
+Select BOOLEAN such that Follows(s, 5)
+TRUE
+5000
+10 - Boolean query for Modifies with specific variable
+stmt s;
+Select BOOLEAN such that Modifies(s, "v")
+TRUE
+5000
+11 - Boolean query for Modifies with specific variable
+stmt s; assign a;
+Select BOOLEAN such that Modifies(a, "v")
 TRUE
 5000

@@ -45,7 +45,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     pkb::PKBWrite expected_writer(std::move(expected_table));
     std::unordered_set<std::string> vars({"x"});
     expected_writer.AddUsesData(1, vars);
-    //expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -66,7 +66,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     pkb::PKBWrite expected_writer(std::move(expected_table));
     std::unordered_set<std::string> vars({"y"});
     expected_writer.AddUsesData(1, vars);
-    // expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -97,7 +97,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     pkb::PKBWrite expected_writer(std::move(expected_table));
     std::unordered_set<std::string> vars({"x"});
     expected_writer.AddUsesData(1, vars);
-    // expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -121,7 +121,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     std::unordered_set<std::string> vars2({"v"});
     expected_writer.AddUsesData(1, vars);
     expected_writer.AddUsesData(3, vars2);
-    //expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -145,7 +145,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     std::unordered_set<std::string> vars2({"z"});
     expected_writer.AddUsesData(1, vars);
     expected_writer.AddUsesData(2, vars2);
-    // expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(
@@ -153,7 +153,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     auto expected_results_ptr = expected_reader.Uses(std::move(expected_ftr));
     auto expected_results = *(expected_results_ptr->get_result());
 
-    REQUIRE(actual_results.get_row(2) == expected_results.get_row(2));  
+    REQUIRE(actual_results == expected_results);  
   }
 
   SECTION("Calls statement") {
@@ -173,7 +173,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     expected_writer.AddUsesData(2, vars2);
     expected_writer.AddUsesData(3, vars2);
     expected_writer.AddUsesData(4, vars3);
-    // expected_writer.AddUsesData("uses", vars);
+    expected_writer.AddUsesData("uses", vars);
     expected_table = expected_writer.ProcessTableAndEndWrite();
     pkb::PKBRead expected_reader(std::move(expected_table));
     auto expected_ftr = std::make_unique<filter::UsesPredicateFilter>(

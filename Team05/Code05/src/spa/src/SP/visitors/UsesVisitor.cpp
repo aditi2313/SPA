@@ -25,11 +25,12 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     auto& merged_uses = direct_uses_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_uses.merge(direct_uses_[called_proc]);
-      for (auto& [proc, data] : direct_uses_) {
-        pkb_ptr_->AddUsesData(proc, data);
-      }
     }
     pkb_ptr_->AddUsesData(proc, merged_uses);
+  }
+
+  for (auto& [proc, data] : direct_uses_) {
+    pkb_ptr_->AddUsesData(proc, data);
   }
 }
 

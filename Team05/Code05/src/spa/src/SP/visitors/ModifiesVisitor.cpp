@@ -23,6 +23,10 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     }
     pkb_ptr_->AddModifiesData(proc, merged_modifies);
   }
+
+  for (auto& [proc, data] : direct_modifies_) {
+    pkb_ptr_->AddUsesData(proc, data);
+  }
 }
 
 void ModifiesVisitor::Process(ast::ProcNode* proc_node) {

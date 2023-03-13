@@ -18,7 +18,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeParent(
       [](pkb::ParentData data) { return true; });
   auto results_ptr = reader.Parent(std::move(ftr));
   auto results_table = results_ptr->get_result();
-  
+
   std::unordered_map<int, std::unordered_set<int>> results;
 
   for (auto result : results_table->get_indexes()) {

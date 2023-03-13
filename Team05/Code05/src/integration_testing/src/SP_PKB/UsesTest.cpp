@@ -1,5 +1,4 @@
 #include <catch.hpp>
-#include <unordered_set>
 
 #include "../../spa/src/SP/SourceProcessor.h"
 #include "PKB/PKBRead.h"

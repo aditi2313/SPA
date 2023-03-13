@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <queue>
+#include <cassert>
 
 #include "common/exceptions/QPSExceptions.h"
 

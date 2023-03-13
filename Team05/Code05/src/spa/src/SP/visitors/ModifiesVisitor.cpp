@@ -18,8 +18,12 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
 
   for (auto& proc : topological_order) {
     auto& merged_modifies = direct_modifies_[proc];
+    auto& l_calls = proc_called_by_line_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_modifies.merge(direct_modifies_[called_proc]);
+    }
+    for (auto& line : l_calls) {
+      pkb_ptr_->AddModifiesData(line, merged_modifies);
     }
     pkb_ptr_->AddModifiesData(proc, merged_modifies);
   }

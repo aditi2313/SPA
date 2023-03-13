@@ -23,8 +23,12 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
 
   for (auto& proc : topological_order) {
     auto& merged_uses = direct_uses_[proc];
+    auto& l_calls = proc_called_by_line_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_uses.merge(direct_uses_[called_proc]);
+    }
+    for (auto& line : l_calls) {
+      pkb_ptr_->AddUsesData(line, merged_uses);
     }
     pkb_ptr_->AddUsesData(proc, merged_uses);
   }

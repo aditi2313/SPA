@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <utility>
+#include <string>
 
 #include "RecursiveParseState.h"
 
@@ -18,7 +19,6 @@ class PatternParseState : public RecursiveParseState {
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-
     size_t kNumGrammar = 10;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector

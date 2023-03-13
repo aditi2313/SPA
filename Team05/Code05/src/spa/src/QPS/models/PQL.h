@@ -181,16 +181,24 @@ class PQL {
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
   inline static std::string kWithToken = kWithRelName;
+  inline static std::string kAttrRefDelimiter = kPeriodToken;
 
   // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
   inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
-    auto index = str.find(kPeriodToken);
+    auto index = str.find(kAttrRefDelimiter);
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};
+  }
+
+  // Given a syn_name and attr_name, joins attrRef back together
+  inline static std::string join_attr_ref(
+      SynonymName syn_name, AttrName attr_name
+  ) {
+    return syn_name + kAttrRefDelimiter + attr_name;
   }
 
   // Give an AttrName, return true if its type is IDENT.
@@ -207,6 +215,24 @@ class PQL {
   inline static bool is_attr_name_integer(AttrName attr_name) {
     return attr_name == kValueAttrName
         || attr_name == kStmtAttrName;
+  }
+
+  // A secondary attr_ref is defined as an attr_ref that is
+  // not the same as its index.
+  // E.g stmt.stmt# is the same as its index, but
+  // call.procName is not the same.
+  // In ADVANCED SPA requirements, only
+  // call, print, and read can have secondary attr_refs.
+  inline static bool is_attr_ref_secondary(
+      EntityName entity_name, AttrName attr_name) {
+    if (entity_name == kReadEntityName
+        || entity_name == kPrintEntityName) {
+      return attr_name == kVariableAttrName;
+    }
+    if (entity_name == kCallEntityName) {
+      return attr_name == kProcedureAttrName;
+    }
+    return false;  // False by default
   }
 };
 }  // namespace qps

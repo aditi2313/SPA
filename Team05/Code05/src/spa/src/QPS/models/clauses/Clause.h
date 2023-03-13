@@ -19,6 +19,12 @@ class Clause {
   Clause(ArgumentPtr arg1, ArgumentPtr arg2) :
       arg1_(std::move(arg1)), arg2_(std::move(arg2)) {}
 
+  virtual void Preprocess(
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table) {
+    return;
+  }
+
   virtual void Index(
       const Entity &index,
       const pkb::PKBReadPtr &pkb,

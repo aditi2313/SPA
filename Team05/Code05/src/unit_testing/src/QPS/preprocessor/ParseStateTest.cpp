@@ -373,8 +373,6 @@ TEST_CASE("Test PatternParseState for Assign") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
@@ -395,8 +393,6 @@ TEST_CASE("Test PatternParseState for Assign") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("variable", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
@@ -419,9 +415,6 @@ TEST_CASE("Test PatternParseState for Assign") {
         "and",
         "pattern", "a1", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("a1", PQL::kAssignEntityName);
-    query->declare_synonym("variable", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
@@ -469,7 +462,6 @@ TEST_CASE("Test PatternParseState for While") {
     std::vector<std::string> tokens{
         "pattern", "w", "(", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -481,8 +473,6 @@ TEST_CASE("Test PatternParseState for While") {
     std::vector<std::string> tokens{
         "pattern", "w", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -494,7 +484,6 @@ TEST_CASE("Test PatternParseState for While") {
     std::vector<std::string> tokens{
         "pattern", "w", "(", "\"var\"", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -508,8 +497,6 @@ TEST_CASE("Test PatternParseState for While") {
         "and",
         "pattern", "w", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -526,7 +513,6 @@ TEST_CASE("Test PatternParseState for If") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "_", ",", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -538,8 +524,6 @@ TEST_CASE("Test PatternParseState for If") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "v", ",", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -551,7 +535,6 @@ TEST_CASE("Test PatternParseState for If") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "\"var\"", ",", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -565,8 +548,6 @@ TEST_CASE("Test PatternParseState for If") {
         "and",
         "pattern", "if", "(", "v", ",", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     // TODO(JL): Add expected clause
@@ -579,7 +560,6 @@ TEST_CASE("Test PatternParseState for If") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "_", ",", "\"x\"", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
     auto itr = tokens.begin();
 
     REQUIRE_THROWS_AS(
@@ -591,7 +571,6 @@ TEST_CASE("Test PatternParseState for If") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "_", ",", "_", ",", "\"x\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
     auto itr = tokens.begin();
 
     REQUIRE_THROWS_AS(

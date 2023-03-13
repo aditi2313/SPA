@@ -61,10 +61,8 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   std::unordered_set<int> visited;
   std::unordered_set<int> result;
 
-  // if s is not an assign throw an exception
-  if (!relation_table_->assign_.count(s)) {
-    // todo(gab): throw custom exception
-  }
+  // the assumption is that s is an assignment.
+  assert(relation_table_->assign_.count(s));
 
   frontier.push(s);
 

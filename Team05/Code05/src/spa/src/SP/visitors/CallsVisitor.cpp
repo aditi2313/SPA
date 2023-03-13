@@ -3,8 +3,11 @@
 namespace sp {
 
 void sp::CallsVisitor::Process(ast::CallNode *call_node) {
+  auto &var = call_node->get_var();
+  auto callee_name = var->get_name();
   pkb_ptr_->AddCallsData(call_node->get_parent_proc(),
-                         call_node->get_var()->get_name());
+                         callee_name);
+  pkb_ptr_->set_proc_name_for_line(call_node->get_line(), callee_name);
 }
 
 }  // namespace sp

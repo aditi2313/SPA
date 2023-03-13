@@ -54,6 +54,8 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
   direct_uses_[current_procedure_].merge(vars);
+  pkb_ptr_->set_var_name_for_line(
+      print_node->get_line(), print_node->get_var_name());
 }
 
 void UsesVisitor::ProcessAft(ast::IfNode* if_node) {

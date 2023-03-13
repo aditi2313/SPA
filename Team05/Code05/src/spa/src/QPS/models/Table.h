@@ -13,6 +13,7 @@ namespace qps {
 class Table {
  public:
   using Row = std::vector<std::pair<SynonymName, Entity>>;
+  using TwoSynonymRows = std::vector<std::pair<Entity, Entity>>;
   friend class TableJoiner;
 
   // Empty constructor.

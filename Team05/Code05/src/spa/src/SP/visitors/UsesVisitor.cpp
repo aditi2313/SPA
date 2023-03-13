@@ -86,6 +86,7 @@ void UsesVisitor::Process(ast::CallNode* call_node) {
   auto called_proc = call_node->get_var()->get_name();
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
+  proc_called_by_line_[called_proc].insert(call_node->get_line());
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

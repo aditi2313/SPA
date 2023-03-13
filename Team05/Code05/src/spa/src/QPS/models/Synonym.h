@@ -7,9 +7,6 @@
 #include "Entity.h"
 #include "models/types.h"
 
-using models::EntityName;
-using models::SynonymName;
-
 namespace qps {
 class Synonym {
  public:

@@ -10,7 +10,7 @@ namespace qps {
 int SelectClParser::NextState(
     int current_state_index, std::string token) {
   for (int neighbour : transition_table_[current_state_index]) {
-    if (token == states_.at(neighbour)->kTransitionKeyword) {
+    if (states_.at(neighbour)->is_transition_keyword(token)) {
       return neighbour;
     }
   }
@@ -24,7 +24,7 @@ std::vector<std::string> SelectClParser::PreprocessQueryString(
   // First insert whitespaces around special characters
   // (e.g. semicolons and brackets) for easier delimitation
   std::string new_query = "";
-  std::string special_characters = ";(),<>";
+  std::string special_characters = ";(),<>=";
   for (auto itr = query_string.begin(); itr != query_string.end(); ++itr) {
     if (special_characters.find(*itr) != std::string::npos) {
       new_query += " " + std::string(1, *itr) + " ";

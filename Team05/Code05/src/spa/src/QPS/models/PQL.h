@@ -2,6 +2,7 @@
 
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <memory>
 #include <utility>
 
@@ -9,14 +10,16 @@
 #include "SP/SourceProcessor.h"
 #include "models/types.h"
 
-using models::EntityName;
-
 namespace qps {
+using EntityName = std::string;
+using SynonymName = std::string;
+using RelName = std::string;
+using AttrName = std::string;
+using AttrRef = std::string;
+using Elem = std::string;
+
 class PQL {
  public:
-  using RelName = std::string;
-  using AttrName = std::string;
-
   inline static std::string kStmtEntityName = "stmt";
   inline static std::string kReadEntityName = "read";
   inline static std::string kPrintEntityName = "print";
@@ -43,10 +46,6 @@ class PQL {
     return kAllEntityNames.count(str);
   }
 
-  inline static std::string kBooleanSelect = "BOOLEAN";
-  inline static std::string kTupleSelectOpen = "<";
-  inline static std::string kTupleSelectClose = ">";
-
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -57,15 +56,20 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kWithRelName = "with";
 
-  inline static std::unordered_set<std::string> kAllRelNames{
+  // All relationships that appear after such that
+  inline static std::unordered_set<std::string> kAllSuchThatRelNames{
       kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
       kParentTRelName, kUsesRelName, kPatternRelName,
       kCallsRelName, kCallsTRelName, kNextRelName
   };
 
-  inline static bool is_rel_name(std::string const token) {
-    return kAllRelNames.find(token) != kAllRelNames.end();
+  // Returns true if the string is a relationship that appears
+  // after such-that.
+  // Examples of non such-that rel names are 'pattern' and 'with'
+  inline static bool is_such_that_rel_name(std::string const token) {
+    return kAllSuchThatRelNames.count(token);
   }
 
   inline static bool is_argument(std::string const token) {
@@ -75,6 +79,10 @@ class PQL {
         || is_pattern_exact(token)
         || is_pattern_wildcard(token)
         || is_ident_arg(token);
+  }
+
+  inline static bool is_synonym(std::string str) {
+    return is_ident(str);
   }
 
   inline static bool is_ident(std::string str) {
@@ -119,6 +127,17 @@ class PQL {
   inline static AttrName kVariableAttrName = "varName";
   inline static AttrName kValueAttrName = "value";
   inline static AttrName kStmtAttrName = "stmt#";
+  // Maps an AttrName (e.g stmt#) to a hashset of all
+  // entities that can be paired with that AttrName.
+  // e.g. varName is mapped to { variable, read, print }
+  inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
+      kAttrNameToEntitiesMap{
+      {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
+      {kVariableAttrName,
+       {kVariableEntityName, kReadEntityName, kPrintEntityName}},
+      {kValueAttrName, {kConstantEntityName}},
+      {kStmtAttrName, kAllStmtEntityNames}
+  };
 
   inline static std::unordered_set<std::string> kAllAttrName{
       kProcedureAttrName, kVariableAttrName,
@@ -133,68 +152,60 @@ class PQL {
     auto index = str.find('.');
     // "." doesn't exist
     if (index == std::string::npos) return false;
-    std::string syn = str.substr(0, index);
-    std::string attr_name = str.substr(index + 1);
-    return CheckGrammar(syn, kSynGrammar)
+    auto [syn, attr_name] = split_attr_ref(str);
+    return is_synonym(syn)
         && is_attr_name(attr_name);
+  }
+
+  inline static bool ValidateAttrRef(
+      AttrName attr_name, EntityName entity_name) {
+    auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
+    return attr_name_types.count(entity_name);
   }
 
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
+  inline static std::string kEqualToken = "=";
   inline static std::string kSelectToken = "Select";
   inline static std::string kSuchToken = "such";
   inline static std::string kThatToken = "that";
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
-  // It is the same string but it is possible for it to change
+  inline static std::string kBooleanToken = "BOOLEAN";
+  inline static std::string kTupleOpenBktToken = "<";
+  inline static std::string kTupleCloseBktToken = ">";
+
+  // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
+  inline static std::string kWithToken = kWithRelName;
 
-  // Grammars are tokens with special meaning and actions
-  // attached to them. They are not meant to be compared
-  // literally.
-  inline static std::string kRelRefGrammar = "relRef";
-  inline static std::string kArgumentGrammar = "arg";
-  inline static std::string kSynGrammar = "syn";
-  inline static std::string kExprGrammar = "exp";
-  inline static std::string kRefGrammar = "ref";
-  inline static std::string kDesignEntityGrammar = "designEntity";
-  inline static std::string kRecurseGrammar = "*";
-  inline static std::string kBooleanGrammar = "boolean";
-  inline static std::string kSelectGrammar = "select";
+  // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
+  // Returns a pair of strings [ syn_name, attr_name ]
+  // that is before and after the delimiter respectively.
+  inline static std::pair<std::string, std::string> split_attr_ref(
+      std::string str) {
+    auto index = str.find('.');
+    std::string syn_name = str.substr(0, index);
+    std::string attr_name = str.substr(index + 1);
+    return {syn_name, attr_name};
+  }
 
-  inline static bool CheckGrammar(
-      std::string const token, std::string const grammar) {
-    if (grammar == kArgumentGrammar) {
-      return is_argument(token);
-    } else if (grammar == kRelRefGrammar) {
-      return is_rel_name(token);
-    } else if (grammar == kSynGrammar) {
-      return is_ident(token);
-    } else if (grammar == kDesignEntityGrammar) {
-      return is_entity_name(token);
-    } else if (grammar == kExprGrammar) {
-      return is_pattern_wildcard(token)
-          || is_pattern_exact(token)
-          || is_wildcard(token);
-    } else if (grammar == kRecurseGrammar) {
-      return true;
-    } else if (grammar == kBooleanGrammar) {
-      return token == kBooleanSelect;
-    } else if (grammar == kSelectGrammar) {
-      // tuple | BOOLEAN
-      return CheckGrammar(token, kSynGrammar)
-          || CheckGrammar(token, kBooleanGrammar)
-          || token == kTupleSelectOpen;
-    } else if (grammar == kRefGrammar) {
-      // "IDENT" | INTEGER | attrRef
-      return is_ident_arg(token)
-          || is_integer(token)
-          || is_attr_ref(token);
-    } else {
-      return token == grammar;
-    }
+  // Give an AttrName, return true if its type is IDENT.
+  // Note that this does not have to correspond to the type of
+  // the synonym.
+  // E.g read.varName is IDENT even though read is a stmt
+  // and stmt is an INTEGER type.
+  inline static bool is_attr_name_ident(AttrName attr_name) {
+    return attr_name == kProcedureAttrName
+        || attr_name == kVariableAttrName;
+  }
+
+  // Give an AttrName, return true if its type is INTEGER.
+  inline static bool is_attr_name_integer(AttrName attr_name) {
+    return attr_name == kValueAttrName
+        || attr_name == kStmtAttrName;
   }
 };
 }  // namespace qps

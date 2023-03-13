@@ -61,6 +61,11 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   std::unordered_set<int> visited;
   std::unordered_set<int> result;
 
+  // if s is not an assign throw an exception
+  if (!relation_table_->assign_.count(s)) {
+    // todo(gab): throw custom exception
+  }
+
   frontier.push(s);
 
   auto& modified = relation_table_->assign_table_.get_row(s);
@@ -71,7 +76,9 @@ std::unordered_set<int> PKBRead::Affects(int s) {
     frontier.pop();
     auto& data = relation_table_->uses_table_.get_row(curr);
     if (visited.count(curr)) continue;
-    if (data.get_variables().count(modified_var)) {
+    // check that this assign stmt modifies the variable
+    if (data.get_variables().count(modified_var) &&
+        relation_table_->assign_.count(curr)) {
       result.insert(curr);
     }
     visited.insert(curr);

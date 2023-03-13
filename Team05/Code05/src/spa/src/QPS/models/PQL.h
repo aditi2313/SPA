@@ -165,6 +165,7 @@ class PQL {
 
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
+  inline static std::string kPeriodToken = ".";
   inline static std::string kEqualToken = "=";
   inline static std::string kSelectToken = "Select";
   inline static std::string kSuchToken = "such";
@@ -186,7 +187,7 @@ class PQL {
   // that is before and after the delimiter respectively.
   inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
-    auto index = str.find('.');
+    auto index = str.find(kPeriodToken);
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};

@@ -18,11 +18,8 @@ class PatternParseState : public RecursiveParseState {
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-    InitializeAssignGrammar();
-    InitializeIfGrammar();
-    InitializeWhileGrammar();
 
-    size_t kNumGrammar = 3;
+    size_t kNumGrammar = 10;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector
     grammar_.reserve(kNumGrammar);
@@ -40,27 +37,91 @@ class PatternParseState : public RecursiveParseState {
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
               arg1_ = query->CreateArgument(*itr_);
-              EntityName entity_name = SynonymArg::get_entity_name(arg1_);
-              if (entity_name == PQL::kWhileEntityName) {
-                // Is While
-                grammar_itr_ = while_grammar_.begin();
-              } else if (entity_name == PQL::kIfEntityName) {
-                // Is If
-                grammar_itr_ = if_grammar_.begin();
-              } else {
-                // Is Assign
-                grammar_itr_ = assign_grammar_.begin();
-                // Note: Validator will validate if this is syn-assign
-                // and throw semantic error accordingly
+              pattern_clause_type_ = PatternClauseType::kPatternUndetermined;
+            }));
+
+    // '('
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::CreateTokenCheck(PQL::kOpenBktToken),
+            Grammar::kEmptyAction));
+
+    // argument
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::kArgumentCheck,
+            [&](QueryPtr &query) {
+              arg2_ = query->CreateArgument(*itr_);
+            }));
+
+    // ','
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::CreateTokenCheck(PQL::kCommaToken),
+            Grammar::kEmptyAction));
+
+    // wildcard | expression-spec
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::kExprCheck,
+            [&](QueryPtr &query) {
+              if (!Grammar::kWildcardCheck(*itr_)) {
+                // Not a wildcard, must be pattern-assign
+                pattern_clause_type_ = PatternClauseType::kPatternAssign;
               }
+              arg3_ = query->CreateArgument(*itr_);
+            }));
+
+    // ',' | skip to ')'
+    grammar_.emplace_back(
+        Grammar(
+            [](std::string token) {
+              return token == PQL::kCommaToken || token == PQL::kCloseBktToken;
+            },
+            [&](QueryPtr &query) {
+              if (*itr_ == PQL::kCloseBktToken) {
+                grammar_itr_++;  // Skip to close bkt
+                itr_--;  // Don't consume token
+              } else {
+                // Must be comma
+                if (pattern_clause_type_ == PatternClauseType::kPatternAssign) {
+                  // This means that the second argument was not a wildcard.
+                  // Doesn't syntactically match with syn-if(entRef, _, _)
+                  ThrowException();
+                }
+              }
+            }));
+
+    // '_' (Optional)
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::kWildcardCheck,
+            [&](QueryPtr &query) {
+              // Must be if-type
+              pattern_clause_type_ = PatternClauseType::kPatternIf;
+            }));
+
+    // ')'
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::CreateTokenCheck(PQL::kCloseBktToken),
+            [&](QueryPtr &query) {
+              if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
+                ThrowException();
+              }
+              query->add_clause(master_clause_factory_.Create(
+                  PQL::kModifiesRelName,
+                  std::move(arg1_->Copy()),
+                  std::move(arg2_)));
+              query->add_clause(master_clause_factory_.Create(
+                  PQL::kPatternRelName,
+                  std::move(arg1_),
+                  std::move(arg3_)));
             }));
 
     // Recurse (if needed)
     grammar_.emplace_back(
         RecursiveParseState::CreateRecurseGrammar(*this));
-
-    // Resume from here after competing assign/while/if grammar_
-    saved_grammar_itr_pos_ = --grammar_.end();
 
     end_states_.emplace_back(grammar_.end());
     // Allow state to end without recursing
@@ -69,18 +130,9 @@ class PatternParseState : public RecursiveParseState {
   }
 
  private:
-  void InitializeAssignGrammar();
-  void InitializeIfGrammar();
-  void InitializeWhileGrammar();
-
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
-
-  std::vector<Grammar> assign_grammar_;
-  std::vector<Grammar> while_grammar_;
-  std::vector<Grammar> if_grammar_;
-
-  GrammarItr saved_grammar_itr_pos_;
+  PatternClauseType pattern_clause_type_;
 };
 }  // namespace qps

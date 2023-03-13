@@ -516,18 +516,6 @@ TEST_CASE("Test PatternParseState for While") {
 
     REQUIRE(itr == tokens.end());
   };
-
-  SECTION("Pattern WHILE clause with non-wildcard in second arg "
-          "should throw error") {
-    std::vector<std::string> tokens{
-        "pattern", "w", "(", "_", ",", "\"x\"", ")"};
-    std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
-    auto itr = tokens.begin();
-
-    REQUIRE_THROWS_AS(
-        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
-  };
 }
 
 TEST_CASE("Test PatternParseState for If") {
@@ -602,18 +590,6 @@ TEST_CASE("Test PatternParseState for If") {
           "should throw error") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "_", ",", "_", ",", "\"x\"", ")"};
-    std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
-    auto itr = tokens.begin();
-
-    REQUIRE_THROWS_AS(
-        state.Parse(tokens, itr, query), PqlSyntaxErrorException);
-  };
-
-  SECTION("Pattern IF clause with only two arguments "
-          "should throw error") {
-    std::vector<std::string> tokens{
-        "pattern", "if", "(", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     query->declare_synonym("if", PQL::kIfEntityName);
     auto itr = tokens.begin();

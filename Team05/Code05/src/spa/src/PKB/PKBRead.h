@@ -47,20 +47,17 @@ class PKBRead {
   std::unique_ptr<PKBResult<AssignTable>> Assigns(
       IndexableFilterPtr<AssignData>);
 
-  std::unique_ptr<PKBResult<UsesTable>> Uses(
-          IndexableFilterPtr<UsesData>);
+  std::unique_ptr<PKBResult<UsesTable>> Uses(IndexableFilterPtr<UsesData>);
 
   std::unique_ptr<PKBResult<FollowsTable>> Follows(
-          IndexableFilterPtr<FollowsData>);
+      IndexableFilterPtr<FollowsData>);
 
   std::unique_ptr<PKBResult<ParentTable>> Parent(
-          IndexableFilterPtr<ParentData>);
+      IndexableFilterPtr<ParentData>);
 
-  std::unique_ptr<PKBResult<CallsTable>> Calls(
-          IndexableFilterPtr<CallsData>);
+  std::unique_ptr<PKBResult<CallsTable>> Calls(IndexableFilterPtr<CallsData>);
 
-  std::unique_ptr<PKBResult<NextTable>> Next(
-          IndexableFilterPtr<NextData>);
+  std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);
 
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
@@ -85,6 +82,9 @@ class PKBRead {
   const std::unordered_set<std::string>& get_procedures() {
     return relation_table_->procedures_;
   }
+
+  // todo(gab): consider how to integrate this with Filter
+  std::unordered_set<int> Affects(int);
 
  private:
   bool read_end_;

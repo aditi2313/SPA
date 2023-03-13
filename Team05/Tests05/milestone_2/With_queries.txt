@@ -1,0 +1,30 @@
+1 - with queries for p.procname
+procedure p, q;
+Select p such that Calls*(p,q) with p.procName = "name"
+name
+5000
+2 - with queries for call.procname
+procedure p, q; call cl;
+Select cl such that 
+second
+5000
+3 - with queries for var.varname
+variable v; stmt s;
+Select v such that Modifies(s, v) with v.varName = "v"
+v
+5000
+4 - with queries for read.varname
+read r;
+Select r such that Modifies(r, _) with r.varName = "aircon"
+aircon
+5000
+5 - with queries for print.varname
+print pn;
+Select pn such that Uses(pn, _) with pn.varName = "myname"
+myname
+5000
+6 - with queries for constat.value
+assign a; constant c;
+Select a such that Modifies(a, _) and Uses(a, c)
+smth 
+5000

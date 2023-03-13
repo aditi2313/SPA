@@ -1,7 +1,7 @@
 procedure name {
 	if (x == 2) then {
 		while(y == 4) {
-			x = x + 1;
+			x = x + 1; 
 		}
 		v = 1 + s + s + d;
 		g = 2 * x;

@@ -8,7 +8,9 @@
 #include "SP/visitors/ModifiesVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
-pkb::ModifiesTable InitializeModifies(std::string program) {
+std::unordered_map<std::variant<int, std::string>,
+                   std::unordered_set<std::string>>
+InitializeModifies(std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
@@ -17,42 +19,125 @@ pkb::ModifiesTable InitializeModifies(std::string program) {
   auto ftr = std::make_unique<filter::ModifiesPredicateFilter>(
       [](pkb::ModifiesData data) { return true; });
   auto results_ptr = reader.Modifies(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  auto results_table = results_ptr->get_result();
 
-  return results;
-}
+  std::unordered_map<std::variant<int, std::string>,
+                     std::unordered_set<std::string>>
+      results;
 
-pkb::ModifiesTable InitializeEmptyModifies() {
-  std::unique_ptr<pkb::PKBRelationTable> table =
-      std::make_unique<pkb::PKBRelationTable>();
-  pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::ModifiesPredicateFilter>(
-      [](pkb::ModifiesData data) { return true; });
-  auto results_ptr = reader.Modifies(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  for (auto result : results_table->get_indexes()) {
+    auto data = results_table->get_row(result);
+    for (auto v : data.get_variables()) {
+      results[data.get_index()].insert(v);
+    }
+  }
 
   return results;
 }
 
 TEST_CASE("Test SP and PKB integration for Modifies data") {
-  SECTION("Assign statement - 1 uses x") {
+  SECTION("Assign statement - 1 modifies x") {
     std::string program = "procedure modifies { x = x; }";
 
     auto actual_results = InitializeModifies(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    std::unordered_set<std::string> vars({"x"});
-    expected_writer.AddModifiesData(1, vars);
-    expected_writer.AddModifiesData("uses", vars);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ModifiesPredicateFilter>(
-        [](pkb::ModifiesData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Modifies(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}}, {"modifies", {"x"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Assign statement - 1 modifies x") {
+    std::string program = "procedure modifies { x = y; }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}}, {"modifies", {"x"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Read statement - relationship holds") {
+    std::string program = "procedure modifies { read x; }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}}, {"modifies", {"x"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Print statement - relationship does not hold") {
+    std::string program = "procedure uses { print x; }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("While loop - relationship holds") {
+    std::string program = "procedure modifies { while (x == y) { read z; } }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"z"}}, {2, {"z"}}, {"modifies", {"z"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Double nested loop - transitive condition holds") {
+    std::string program =
+        "procedure modifies { while (x > y) { while (z == 3) { read v; } } }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {
+            {1, {"v"}}, {2, {"v"}}, {3, {"v"}}, {"modifies", {"v"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Double nested loop with print statement - empty table") {
+    std::string program =
+        "procedure modifies { while (x > y) { while (z == 3) { print v; } } }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Calls statement") {
+    std::string program =
+        "procedure modifies { read x; call helper; } procedure helper { while "
+        "(z "
+        "> 5) { read v; } }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}},
+                            {3, {"v"}},
+                            {4, {"v"}},
+                            {"helper", {"v"}},
+                            {"modifies", {"x"}}};
 
     REQUIRE(actual_results == expected_results);
   }

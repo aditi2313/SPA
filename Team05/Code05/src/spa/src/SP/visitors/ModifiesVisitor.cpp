@@ -45,6 +45,8 @@ void ModifiesVisitor::Process(ast::ReadNode* read_node) {
   std::unordered_set<std::string> vars = {read_node->get_var_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
   direct_modifies_[current_procedure_].merge(vars);
+  pkb_ptr_->set_var_name_for_line(
+      read_node->get_line(), read_node->get_var_name());
 }
 
 void ModifiesVisitor::ProcessAft(ast::IfNode* if_node) {

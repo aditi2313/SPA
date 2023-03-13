@@ -51,7 +51,7 @@ bool ClauseEvaluator::EvaluateSynonymClause(
 
   EntitySet RHS_results;
   EntitySet LHS_results;
-  TwoSynonymRows rows;
+  Table::TwoSynonymRows rows;
 
   QueryPKBForSynonymClause(
       clause, LHS, RHS,
@@ -97,7 +97,7 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
     EntitySet &RHS,
     EntitySet &LHS_results,
     EntitySet &RHS_results,
-    TwoSynonymRows &rows) {
+    Table::TwoSynonymRows &rows) {
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
@@ -129,7 +129,7 @@ void ClauseEvaluator::CreateClauseTable(
     Table &clause_table,
     EntitySet &LHS_results,
     EntitySet &RHS_results,
-    TwoSynonymRows &rows) {
+    Table::TwoSynonymRows &rows) {
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_arg1_syn = arg1->IsSynonym();
@@ -140,11 +140,11 @@ void ClauseEvaluator::CreateClauseTable(
   SynonymName arg1_syn_name, arg2_syn_name;
   if (is_arg1_syn)
     columns.emplace_back(
-        arg1_syn_name = SynonymArg::get_syn_name(arg1));
+        arg1_syn_name = SynonymArg::get_full_name(arg1));
 
   if (is_arg2_syn)
     columns.emplace_back(
-        arg2_syn_name = SynonymArg::get_syn_name(arg2));
+        arg2_syn_name = SynonymArg::get_full_name(arg2));
 
   clause_table = Table(columns);
 

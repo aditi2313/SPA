@@ -26,9 +26,21 @@ void TestPKBAffects(
 }
 
 TEST_CASE("Simple affects testcase") {
-  TestPKBAffects({{1, {1, 2}}},
+  TestPKBAffects({{1, {1, 3}}},
                  "procedure name {"
                  "x = x + 1;"
                  "print x;"
+                 "y = y + x;"
+                 "}");
+}
+
+TEST_CASE("Complicated affects testcase") {
+  TestPKBAffects({{2, {2, 3}}},
+                 "procedure name {"
+                 "while (x < 2)"
+                 "{"
+                 "x = x + 1;"
+                 "}"
+                 "y = x + 1;"
                  "}");
 }

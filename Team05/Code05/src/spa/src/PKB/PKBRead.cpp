@@ -76,13 +76,21 @@ std::unordered_set<int> PKBRead::Affects(int s) {
     frontier.pop();
     auto& data = relation_table_->uses_table_.get_row(curr);
     if (visited.count(curr)) continue;
-    // check that this assign stmt modifies the variable
+    // check that this assign stmt uses the variable
     if (data.get_variables().count(modified_var) &&
         relation_table_->assign_.count(curr)) {
       result.insert(curr);
     }
     visited.insert(curr);
-    // find th enext
+    // if this stmt modifies the variable then dont do anything
+    if (relation_table_->modifies_table_.exists(curr) && curr != s &&
+        IsAssignReadOrCall(curr)) {
+      auto& data = relation_table_->modifies_table_.get_row(curr);
+      if (data.get_variables().count(modified_var)) {
+        continue;
+      }
+    }
+
     if (!relation_table_->next_table_.exists(curr)) continue;
     auto& next = relation_table_->next_table_.get_row(curr);
     for (auto& n : next.get_next_im_list()) {

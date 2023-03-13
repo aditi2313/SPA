@@ -16,5 +16,6 @@ class Validator {
   static void ValidateClauseArguments(QueryPtr &query);
   static void ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query);
   static void ValidateSynonymsUsedAreDeclared(QueryPtr &query);
+  static void ValidateAttrRefs(QueryPtr &query);
 };
 }  // namespace qps

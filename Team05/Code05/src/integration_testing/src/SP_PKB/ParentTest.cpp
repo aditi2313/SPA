@@ -7,7 +7,8 @@
 #include "SP/visitors/ParentVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
-pkb::ParentTable InitializeParent(std::string program) {
+std::unordered_map<int, std::unordered_set<int>> InitializeParent(
+    std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
@@ -16,19 +17,16 @@ pkb::ParentTable InitializeParent(std::string program) {
   auto ftr = std::make_unique<filter::ParentPredicateFilter>(
       [](pkb::ParentData data) { return true; });
   auto results_ptr = reader.Parent(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  auto results_table = results_ptr->get_result();
+  
+  std::unordered_map<int, std::unordered_set<int>> results;
 
-  return results;
-}
-
-pkb::ParentTable InitializeEmptyParent() {
-  std::unique_ptr<pkb::PKBRelationTable> table =
-      std::make_unique<pkb::PKBRelationTable>();
-  pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::ParentPredicateFilter>(
-      [](pkb::ParentData data) { return true; });
-  auto results_ptr = reader.Parent(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  for (auto result : results_table->get_indexes()) {
+    auto data = results_table->get_row(result);
+    for (auto v : data.get_all_children()) {
+      results[data.get_index()].insert(v);
+    }
+  }
 
   return results;
 }
@@ -39,7 +37,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    auto expected_results = InitializeEmptyParent();
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -49,7 +47,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    auto expected_results = InitializeEmptyParent();
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -59,16 +57,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -79,17 +69,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(1, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -100,17 +81,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(2, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}, {2, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -122,18 +94,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(2, 3);
-    expected_writer.AddParentData(3, 4);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4}}, {2, {3, 4}}, {3, {4}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -145,21 +107,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(1, 5);
-    expected_writer.AddParentData(2, 3);
-    expected_writer.AddParentData(2, 4);
-    expected_writer.AddParentData(5, 6);
-    expected_writer.AddParentData(5, 7);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4, 5, 6, 7}}, {2, {3, 4}}, {5, {6, 7}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -171,20 +120,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(1, 5);
-    expected_writer.AddParentData(2, 3);
-    expected_writer.AddParentData(2, 4);
-    expected_writer.AddParentData(5, 6);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4, 5, 6}}, {2, {3, 4}}, {5, {6}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -198,19 +135,8 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     auto actual_results = InitializeParent(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddParentData(1, 2);
-    expected_writer.AddParentData(1, 3);
-    expected_writer.AddParentData(4, 5);
-    expected_writer.AddParentData(4, 6);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::ParentPredicateFilter>(
-        [](pkb::ParentData data) { return true; });
-    auto expected_results_ptr = expected_reader.Parent(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}, {4, {5, 6}}};
 
     REQUIRE(actual_results == expected_results);
   }

@@ -7,7 +7,8 @@
 #include "SP/visitors/FollowsVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
-pkb::FollowsTable InitializeFollows(std::string program) {
+std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
+    std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
@@ -16,19 +17,16 @@ pkb::FollowsTable InitializeFollows(std::string program) {
   auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
       [](pkb::FollowsData data) { return true; });
   auto results_ptr = reader.Follows(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  auto results_table = results_ptr->get_result();
 
-  return results;
-}
+  std::unordered_map<int, std::unordered_set<int>> results;
 
-pkb::FollowsTable InitializeEmptyFollows() {
-  std::unique_ptr<pkb::PKBRelationTable> table =
-      std::make_unique<pkb::PKBRelationTable>();
-  pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
-      [](pkb::FollowsData data) { return true; });
-  auto results_ptr = reader.Follows(std::move(ftr));
-  auto results = *(results_ptr->get_result());
+  for (auto result : results_table->get_indexes()) {
+    auto data = results_table->get_row(result);
+    for (auto v : data.get_follows_list()) {
+      results[data.get_index()].insert(v);
+    }
+  }
 
   return results;
 }
@@ -39,7 +37,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyFollows();
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -49,36 +47,19 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(1, 2);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2}}};
 
     REQUIRE(actual_results == expected_results);
   }
 
   SECTION("Two assign statements - relationship holds") {
     std::string program = "procedure follows { x = 5; y = 3; }";
+
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(1, 2);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -89,17 +70,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
         "j = j + 1; } }";
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(1, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -109,7 +81,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyFollows();
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -121,17 +93,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
         "}";
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(2, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-    pkb::PKBRead expected_reader(std::move(expected_table));
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {2, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -142,7 +105,7 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    auto expected_results = InitializeEmptyFollows();
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -152,22 +115,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(1, 2);
-    expected_writer.AddFollowsData(2, 3);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-
-    pkb::PKBRead expected_reader(std::move(expected_table));
-
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}, {2, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -179,22 +128,8 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     auto actual_results = InitializeFollows(program);
 
-    std::unique_ptr<pkb::PKBRelationTable> expected_table =
-        std::make_unique<pkb::PKBRelationTable>();
-
-    pkb::PKBWrite expected_writer(std::move(expected_table));
-    expected_writer.AddFollowsData(2, 3);
-    expected_writer.AddFollowsData(4, 5);
-    expected_table = expected_writer.ProcessTableAndEndWrite();
-
-    pkb::PKBRead expected_reader(std::move(expected_table));
-
-    auto expected_ftr = std::make_unique<filter::FollowsPredicateFilter>(
-        [](pkb::FollowsData data) { return true; });
-    auto expected_results_ptr =
-        expected_reader.Follows(std::move(expected_ftr));
-
-    auto expected_results = *(expected_results_ptr->get_result());
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {2, {3}}, {4, {5}}};
 
     REQUIRE(actual_results == expected_results);
   }

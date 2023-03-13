@@ -1,7 +1,6 @@
 import os
 import platform
 import subprocess
-import glob
 from pathlib import Path
 
 test_dir = Path(__file__).resolve().parent
@@ -13,7 +12,7 @@ output_dir = os.path.join(test_dir, "out")
 autotester_path_mac = \
         "../Code05/cmake-build-debug/src/autotester/autotester"
 autotester_path_windows = \
-        "../Code05/out/build/x64-Debug/src/autotester/autotester.exe"
+        "../../Code05/out/build/x64-Debug/src/autotester/autotester.exe"
 autotester_path =  os.path.join(test_dir, autotester_path_windows) \
             if platform.system() == "Windows" \
             else os.path.join(test_dir, autotester_path_mac)
@@ -33,14 +32,14 @@ def run_testcase(testname):
 
 def find_all_testcases():
     testcases = []
-    # all *_source.txt files in current directory and its subdirectories
-    txt_files = glob.glob(os.path.join(os.getcwd(), "**/*" + source_file_suffix), recursive=True)
-    for f in txt_files:
-        testname = f[:-len(source_file_suffix)]
-        query_file = testname + queries_file_suffix
-        if not os.path.exists(query_file):
-            raise f'Missing queries file for {testname}'
-        testcases.append(testname)
+    # all files in current directory
+    for f in os.listdir("."):
+        if f.endswith(source_file_suffix):
+            testname = f[:-len(source_file_suffix)]
+            query_file = testname + queries_file_suffix
+            if not os.path.exists(query_file):
+                raise f'Missing queries file for {testname}'
+            testcases.append(testname)
     return testcases
 
 if __name__ == "__main__":

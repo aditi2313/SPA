@@ -1,0 +1,10 @@
+procedure name {
+	if ((d-d-d*d+c/a*d-c<c*a+c/d+b*d/c+d-a/c*c) && (d+b/c*c*c-d*a+a/c-c+a>=d/a-c+a/c+c*c-d)) then {
+		read a;
+	} else {
+		c=d*c/d+a/d+c-b/b;
+		b=b*c+d/a-c*b+b*a;
+		print a;
+	}
+}
+		

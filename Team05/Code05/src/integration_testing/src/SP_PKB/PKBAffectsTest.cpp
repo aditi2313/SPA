@@ -59,7 +59,7 @@ TEST_CASE("Complicated affects testcase") {
 }
 
 TEST_CASE("Complicated affects test case in if and while loop") {
-  TestPKBAffects({{1, {4}}, {2, {}}, {5, {7, 8}}},
+  TestPKBAffects({{1, {4}}, {2, {}}, {5, {8}}},
                  "procedure name"
                  "{"
                  "x = 2;"           // 1

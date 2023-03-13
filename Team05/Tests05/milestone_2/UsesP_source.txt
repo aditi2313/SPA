@@ -27,3 +27,18 @@ procedure uses3 {
     }
   } 
 }
+
+procedure use4 {
+  call use5;
+}
+
+procedure use5 {
+  print x;
+  print y;
+  call use6;
+}
+
+procedure use6 {
+  print z;
+}
+

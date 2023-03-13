@@ -49,7 +49,6 @@ class Argument {
   virtual void InitializeEntities(
       Table &table, pkb::PKBReadPtr &pkb, EntitySet &result) = 0;
 
-  virtual ~Argument() = 0;
   inline virtual std::ostream &dump(std::ostream &str) const {
     return str << "Argument";
   }
@@ -57,6 +56,8 @@ class Argument {
   friend inline std::ostream &operator<<(std::ostream &o, Argument &base) {
     return base.dump(o);
   }
+
+  virtual ~Argument() = default;
 };
 
 using ArgumentPtr = std::unique_ptr<Argument>;

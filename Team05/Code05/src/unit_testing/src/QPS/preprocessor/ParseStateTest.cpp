@@ -1,8 +1,7 @@
 #include <catch.hpp>
 
-#include "QPS/preprocessor/ParseState.h"
+#include "QPS/preprocessor/parse_states/Export.h"
 #include "QPS/models/PQL.h"
-#include "QPS/factories/MasterClauseFactory.h"
 #include "common/exceptions/QPSExceptions.h"
 
 using namespace qps; // NOLINT
@@ -130,24 +129,9 @@ TEST_CASE("Test SelectParseState") {
     REQUIRE(itr == tokens.end());
   }
 
-  // TODO(JL): Add some error cases here
-}
-
-TEST_CASE("Test TupleParseState") {
-  TupleParseState state;
-  SECTION("<elem> should parse correctly") {
-    std::vector<std::string> tokens{"<", "v", ">"};
-    std::unique_ptr<Query> query = std::make_unique<Query>();
-
-    auto itr = tokens.begin();
-    state.Parse(tokens, itr, query);
-
-    REQUIRE(query->get_selected_synonyms().at(0) == "v");
-    REQUIRE(itr == tokens.end());
-  }
-
-  SECTION("<elem> where elem is attrRef should parse correctly") {
-    std::vector<std::string> tokens{"<", "s.stmt#", ">"};
+  SECTION("Select <elem> where elem is attrRef "
+          "should parse correctly") {
+    std::vector<std::string> tokens{"Select", "<", "s.stmt#", ">"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
 
     auto itr = tokens.begin();
@@ -157,22 +141,10 @@ TEST_CASE("Test TupleParseState") {
     REQUIRE(itr == tokens.end());
   }
 
-  SECTION("<elem, elem, elem> should parse correctly") {
-    std::vector<std::string> tokens{"<", "v1", ",", "v2", ",", "v3", ">"};
-    std::unique_ptr<Query> query = std::make_unique<Query>();
-
-    auto itr = tokens.begin();
-    state.Parse(tokens, itr, query);
-
-    std::vector<SynonymName> expected_selected_synonyms{"v1", "v2", "v3"};
-    REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
-    REQUIRE(itr == tokens.end());
-  }
-
-  SECTION("<elem, elem, elem> where elem is attrRef"
+  SECTION("Select <elem, elem, elem> where elem is attrRef"
           "should parse correctly") {
     std::vector<std::string> tokens{
-        "<", "s.stmt#", ",", "v.varName", ",", "p.procName", ">"};
+        "Select", "<", "s.stmt#", ",", "v.varName", ",", "p.procName", ">"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
 
     auto itr = tokens.begin();
@@ -185,19 +157,22 @@ TEST_CASE("Test TupleParseState") {
   }
 
   SECTION("Missing comma should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"<", "v1", "v2", ",", "v3", ">"});
+    TestErrorCase(state, {
+        "Select", "<", "v1", "v2", ",", "v3", ">"});
   }
 
   SECTION("Extra comma should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"<", "v1", ",", "v2", ",", "v3", ",", ">"});
+    TestErrorCase(state, {
+        "Select", "<", "v1", ",", "v2", ",", "v3", ",", ">"});
   }
 
   SECTION("Zero elements should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"<", ">"});
+    TestErrorCase(state, {"Select", "<", ">"});
   }
 
   SECTION("Missing bracket should throw PqlSyntaxErrorException") {
-    TestErrorCase(state, {"<", "v1", ",", "v2", ",", "v3"});
+    TestErrorCase(state, {
+        "Select", "<", "v1", ",", "v2", ",", "v3"});
   }
 }
 

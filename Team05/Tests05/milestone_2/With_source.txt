@@ -24,5 +24,4 @@ procedure Third {
       z = 5;
       v = z;
       print v;
-      read z;
 }

@@ -76,6 +76,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
     }
     visited.insert(curr);
     // find th enext
+    if (!relation_table_->next_table_.exists(curr)) continue;
     auto& next = relation_table_->next_table_.get_row(curr);
     for (auto& n : next.get_next_im_list()) {
       frontier.push(n);

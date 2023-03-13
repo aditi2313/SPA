@@ -26,5 +26,9 @@ void TestPKBAffects(
 }
 
 TEST_CASE("Simple affects testcase") {
-
+  TestPKBAffects({{1, {1, 2}}},
+                 "procedure name {"
+                 "x = x + 1;"
+                 "print x;"
+                 "}");
 }

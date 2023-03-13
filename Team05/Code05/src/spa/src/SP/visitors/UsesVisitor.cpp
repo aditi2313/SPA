@@ -49,6 +49,8 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
   direct_uses_[current_procedure_].merge(vars);
+  pkb_ptr_->set_var_name_for_line(
+      print_node->get_line(), print_node->get_var_name());
 }
 
 void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
@@ -95,9 +97,7 @@ void UsesVisitor::AddVariablesFromStmtList(
             ->get_result();
     if (result->empty()) continue;
     auto variables = result->get_row(child->get_line()).get_variables();
-    for (auto& var : variables) {
-      vars.insert(var);
-    }
+    vars.merge(variables);
   }
   pkb = reader.EndRead();
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));

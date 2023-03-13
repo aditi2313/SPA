@@ -10,9 +10,8 @@
 #include "models/types.h"
 #include "PQL.h"
 
-using models::EntityName;
-
 namespace qps {
+
 // Represents a:
 // Procedure | Stmt (Read | Print | Assign | Call | While | If)
 // Variable | Constant
@@ -72,6 +71,14 @@ class Entity {
 
   inline std::size_t hash() const {
     return std::hash<decltype(value_)>{}(value_);
+  }
+
+  friend inline std::ostream &operator<<(
+      std::ostream &o, const Entity &entity) {
+    return o << "Entity: " <<
+             (entity.is_str()
+              ? entity.get_str()
+              : std::to_string(entity.get_int()));
   }
 
   ~Entity() = default;

@@ -18,6 +18,8 @@ class QueryEvaluator {
       QueryPtr &query);
 
  private:
+  void UpdateTableWithElem(QueryPtr &query, Elem elem);
+
   pkb::PKBReadPtr &pkb_;
   Table table_;
 };

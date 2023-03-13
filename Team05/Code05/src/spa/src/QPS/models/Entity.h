@@ -73,6 +73,14 @@ class Entity {
     return std::hash<decltype(value_)>{}(value_);
   }
 
+  friend inline std::ostream &operator<<(
+      std::ostream &o, const Entity &entity) {
+    return o << "Entity: " <<
+             (entity.is_str()
+              ? entity.get_str()
+              : std::to_string(entity.get_int()));
+  }
+
   ~Entity() = default;
 
   friend std::hash<Entity>;

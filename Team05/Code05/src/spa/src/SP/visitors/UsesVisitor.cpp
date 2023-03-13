@@ -23,8 +23,12 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
 
   for (auto& proc : topological_order) {
     auto& merged_uses = direct_uses_[proc];
+    auto& l_calls = proc_called_by_line_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_uses.merge(direct_uses_[called_proc]);
+    }
+    for (auto& line : l_calls) {
+      pkb_ptr_->AddUsesData(line, merged_uses);
     }
     pkb_ptr_->AddUsesData(proc, merged_uses);
     direct_uses_.erase(proc);
@@ -89,6 +93,7 @@ void UsesVisitor::Process(ast::CallNode* call_node) {
   auto called_proc = call_node->get_var()->get_name();
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
+  proc_called_by_line_[called_proc].insert(call_node->get_line());
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

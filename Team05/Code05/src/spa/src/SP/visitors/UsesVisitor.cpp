@@ -35,6 +35,11 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     }
 
     pkb_ptr_->AddUsesData(proc, merged_uses);
+    direct_uses_.erase(proc);
+  }
+
+  for (auto& [proc, data] : direct_uses_) {
+    pkb_ptr_->AddUsesData(proc, data);
   }
 }
 

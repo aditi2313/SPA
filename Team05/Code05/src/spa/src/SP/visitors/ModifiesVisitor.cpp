@@ -29,6 +29,11 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
       direct_modifies_[calling_proc].merge(tmp);
     }
     pkb_ptr_->AddModifiesData(proc, merged_modifies);
+    direct_modifies_.erase(proc);
+  }
+
+  for (auto& [proc, data] : direct_modifies_) {
+    pkb_ptr_->AddModifiesData(proc, data);
   }
 }
 

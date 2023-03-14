@@ -24,7 +24,7 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     }
     for (auto& line : l_calls) {
       pkb_ptr_->AddModifiesData(line, merged_modifies);
-      auto& calling_proc = call_to_proc_[line];
+      auto& calling_proc = call_to_proc_.at(line);
       auto tmp = merged_modifies;
       direct_modifies_[calling_proc].merge(tmp);
     }
@@ -78,6 +78,7 @@ void ModifiesVisitor::Process(ast::CallNode* call_node) {
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
   proc_called_by_line_[called_proc].insert(call_node->get_line());
+  call_to_proc_[call_node->get_line()] = parent_proc;
 }
 
 }  // namespace sp

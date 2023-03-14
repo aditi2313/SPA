@@ -106,7 +106,7 @@ TEST_CASE("Test ParseQuery") {
     auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
     expected_query->add_clause(
         master_clause_factory.Create(
-            PQL::kModifiesRelName,std::move(arg1), std::move(arg2)));
+            PQL::kModifiesRelName, std::move(arg1), std::move(arg2)));
 
     REQUIRE(*actual_query == *expected_query);
   }

@@ -326,9 +326,11 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     std::vector<ClausePtr> expected_clauses;
     expected_clauses.push_back(std::make_unique<UsesClause>(
-        master_argument_factory.CreateEntOrStmtRef("6"), master_argument_factory.CreateEntOrStmtRef("v")));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("v")));
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        master_argument_factory.CreateEntOrStmtRef("6"), master_argument_factory.CreateEntOrStmtRef("v")));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("v")));
 
     REQUIRE(util::CompareVectorOfPointers(
         expected_clauses, query->get_clauses()));
@@ -421,13 +423,17 @@ TEST_CASE("Test PatternParseState") {
 
     std::vector<ClausePtr> expected_clauses;
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        master_argument_factory.CreateEntOrStmtRef("a"), master_argument_factory.CreateEntOrStmtRef("_")));
+        master_argument_factory.CreateEntOrStmtRef("a"),
+        master_argument_factory.CreateEntOrStmtRef("_")));
     expected_clauses.push_back(std::make_unique<PatternClause>(
-        master_argument_factory.CreateSynonym("a"), master_argument_factory.CreateExpressionSpec("\"x + y\"")));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateExpressionSpec("\"x + y\"")));
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        master_argument_factory.CreateEntOrStmtRef("a1"), master_argument_factory.CreateEntOrStmtRef("variable")));
+        master_argument_factory.CreateEntOrStmtRef("a1"),
+        master_argument_factory.CreateEntOrStmtRef("variable")));
     expected_clauses.push_back(std::make_unique<PatternClause>(
-        master_argument_factory.CreateSynonym("a1"), master_argument_factory.CreateExpressionSpec("_\"x\"_")));
+        master_argument_factory.CreateSynonym("a1"),
+        master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(util::CompareVectorOfPointers(
         expected_clauses, query->get_clauses()));

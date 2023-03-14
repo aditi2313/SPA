@@ -54,7 +54,7 @@ class MasterArgumentFactory {
       return CreateWildcard();
     }
 
-    if(PQL::is_pattern_wildcard(token)) {
+    if (PQL::is_pattern_wildcard(token)) {
       return CreateWildcardExpression(token);
     }
 
@@ -62,7 +62,8 @@ class MasterArgumentFactory {
     return CreateExactExpression(token);
   }
 
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(std::string token) {
+  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
+      std::string token) {
     token = token.substr(2, token.size() - 4);
 
     try {
@@ -74,7 +75,8 @@ class MasterArgumentFactory {
     }
   }
 
-  inline std::unique_ptr<ExpressionArg> CreateExactExpression(std::string token) {
+  inline std::unique_ptr<ExpressionArg> CreateExactExpression(
+      std::string token) {
     token = token.substr(1, token.size()- 2);
 
     try {

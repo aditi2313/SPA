@@ -26,10 +26,10 @@ void Validator::InitializeSynonymEntityTypes(QueryPtr &query) {
 
 void Validator::InitializeSynonymEntityTypes(
     QueryPtr &query, ArgumentPtr &arg) {
-  if(!arg->IsSynonym()) return;
+  if (!arg->IsSynonym()) return;
   SynonymArg* syn_arg = dynamic_cast<SynonymArg*>(arg.get());
   SynonymName syn_name = syn_arg->get_syn_name();
-  if(!query->is_synonym_name_declared(syn_name))
+  if (!query->is_synonym_name_declared(syn_name))
     throw PqlSemanticErrorException("Undeclared synonym in clause");
 
   EntityName entity_name = query->get_declared_synonym_entity_name(syn_name);

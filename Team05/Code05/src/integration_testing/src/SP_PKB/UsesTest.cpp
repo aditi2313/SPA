@@ -130,7 +130,7 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
                             {3, vars},
                             {4, {"v"}},
                             {"helper", vars},
-                            {"uses", vars}};
+                            {"uses", vars2}};
 
     REQUIRE(actual_results == expected_results);
   }

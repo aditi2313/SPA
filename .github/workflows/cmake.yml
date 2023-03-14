@@ -39,7 +39,7 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Unit Tests
+    - name: Unit Tests on macOS
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
@@ -47,7 +47,7 @@ jobs:
       run: ./unit_testing       
       shell: bash
 
-    - name: Unit Tests on windows
+    - name: Unit Tests on Windows
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
@@ -55,13 +55,13 @@ jobs:
       run: ./Release/unit_testing.exe       
       shell: bash
 
-    - name: Integration Tests
+    - name: Integration Tests on macOS
       working-directory: ${{github.workspace}}/build/src/integration_testing      
       if: runner.os == 'macOS'
       run: ./integration_testing
       shell: bash
 
-    - name: Integration Tests on windows
+    - name: Integration Tests on Windows
       working-directory: ${{github.workspace}}/build/src/integration_testing      
       if: runner.os == 'Windows'
       run: ./Release/integration_testing.exe
@@ -89,11 +89,3 @@ jobs:
             Write-Host "Program failed with exit code $LASTEXITCODE"
             exit 1
         }
-
-    # cannot run autotester on windows for some odd reason
-    # actions cannot find the executable
-    #- name: Autotester on windows      
-    #  working-directory: Team05/Tests05
-    #  if: runner.os == 'Windows'
-    #  run: ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml                
-    #  shell: bash

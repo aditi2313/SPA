@@ -11,7 +11,6 @@ test_dir = Path(__file__).resolve().parent
 source_file_suffix = "_source.txt"
 queries_file_suffix = "_queries.txt"
 output_file_suffix = "_out.xml"
-output_dir = os.path.join(test_dir, "out")
 
 autotester_path_mac = \
         "../Code05/cmake-build-debug/src/autotester/autotester"
@@ -25,17 +24,21 @@ def run_testcase(testname):
     print(f'Running testcase {testname}')
     source_file = testname + source_file_suffix
     queries_file = testname + queries_file_suffix
-    output_file = os.path.join(output_dir, testname + output_file_suffix)
-    result = subprocess.run([autotester_path, source_file, queries_file, output_file], 
-                   capture_output=True)
-    if result.stderr:
-        return f"Failed: {testname} Error: {result.stderr}"
-    else:
+    output_file = os.path.join(test_dir, testname + output_file_suffix)
+
+    try:
+        subprocess.run([autotester_path, source_file, queries_file, output_file],
+                       check=True, capture_output=True)
         print(f'Ran {testname}')
         total_failed_queries = count_failed_queries(output_file)
         if (total_failed_queries > 0): 
             return f"Failed: {testname} Total failures: {total_failed_queries}"
-    
+    except subprocess.CalledProcessError as e:
+        if platform.system() == "Windows": 
+            # autotester calls abort() so it doesn't show the actual error
+            return f"Failed: {testname} Error: {e.returncode}"
+        else:
+            return f"Failed: {testname} Error: {e.stderr.decode().strip()}"
 
 def find_all_testcases():
     testcases = []
@@ -70,21 +73,18 @@ def print_colour(str, colour: Literal["red", "green", "yellow", "blue"]):
 if __name__ == "__main__":
     if (len(sys.argv) > 1):
         autotester_path = sys.argv[1] # passed in from github actions
+    
     testcases = find_all_testcases()
     errors = []
-    if not os.path.exists(output_dir):
-        os.mkdir(output_dir)
     for tc in testcases:
         error = run_testcase(tc)
         if error:
             errors.append(error)
     
-    for error in errors:
-        print_colour(error, "red")
-    
     if errors:
+        for error in errors:
+            print_colour(error, "red")
         sys.exit(1)
     else:
         print_colour("All system tests run successfully!", "green")
         sys.exit(0)
-

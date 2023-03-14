@@ -21,10 +21,10 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # run a job even if other OS job fails
       matrix:
         os: [macos-latest, windows-latest]
         node-version: [12.x]
-
 
     steps:
     - uses: actions/checkout@v3
@@ -67,11 +67,29 @@ jobs:
       run: ./Release/integration_testing.exe
       shell: bash
 
-    - name: Autotester
-      working-directory: Team05/Tests05
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+        
+    - name: Run system tests on macOS
       if: runner.os == 'macOS'
-      run: ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml          
-      shell: bash
+      run: |
+        python ${{github.workspace}}/Team05/Tests05/test_runner.py ${{github.workspace}}/build/src/autotester/autotester
+        if [ "$?" -ne "0" ]; then
+          echo "Program failed with exit code $?"
+          exit 1
+        fi      
+                
+    - name: Run system tests on Windows
+      if: runner.os == 'Windows'
+      run: |
+        python ${{github.workspace}}\Team05\Tests05\test_runner.py ${{github.workspace}}/build/src/autotester/Release/autotester.exe
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Program failed with exit code $LASTEXITCODE"
+            exit 1
+        }
+
     # cannot run autotester on windows for some odd reason
     # actions cannot find the executable
     #- name: Autotester on windows      

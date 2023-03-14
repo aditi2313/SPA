@@ -5,6 +5,7 @@ import glob
 import xml.etree.ElementTree as ET
 import sys
 from pathlib import Path
+from typing import Literal
 
 test_dir = Path(__file__).resolve().parent
 source_file_suffix = "_source.txt"
@@ -59,10 +60,16 @@ def count_failed_queries(out_file):
     
     return count
 
-def print_red(str):
-    print(f"\033[31m {str} \033[0m")
+def print_colour(str, colour: Literal["red", "green", "yellow", "blue"]):
+    colour_code = 31 if colour == "red" \
+            else 32 if colour == "green" \
+            else 33 if colour == "yellow" \
+            else 34
+    print(f"\033[{colour_code}m {str} \033[0m")
 
 if __name__ == "__main__":
+    if (len(sys.argv) > 1):
+        autotester_path = sys.argv[1] # passed in from github actions
     testcases = find_all_testcases()
     errors = []
     if not os.path.exists(output_dir):
@@ -73,10 +80,11 @@ if __name__ == "__main__":
             errors.append(error)
     
     for error in errors:
-        print_red(error)
+        print_colour(error, "red")
     
     if errors:
         sys.exit(1)
     else:
+        print_colour("All system tests run successfully!", "green")
         sys.exit(0)
 

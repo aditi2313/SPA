@@ -2,6 +2,8 @@ import os
 import platform
 import subprocess
 import glob
+import xml.etree.ElementTree as ET
+import sys
 from pathlib import Path
 
 test_dir = Path(__file__).resolve().parent
@@ -26,9 +28,12 @@ def run_testcase(testname):
     result = subprocess.run([autotester_path, source_file, queries_file, output_file], 
                    capture_output=True)
     if result.stderr:
-        print(result.stderr)
+        return f"Failed: {testname} Error: {result.stderr}"
     else:
-        print(f'{testname} successfully ran')
+        print(f'Ran {testname}')
+        total_failed_queries = count_failed_queries(output_file)
+        if (total_failed_queries > 0): 
+            return f"Failed: {testname} Total failures: {total_failed_queries}"
     
 
 def find_all_testcases():
@@ -43,9 +48,35 @@ def find_all_testcases():
         testcases.append(testname)
     return testcases
 
+def count_failed_queries(out_file):
+    tree = ET.parse(out_file)
+    root = tree.getroot()
+
+    count = 0
+    for query in root.findall('./queries/query'):
+        if query.find('failed'):
+            count += 1
+    
+    return count
+
+def print_red(str):
+    print(f"\033[31m {str} \033[0m")
+
 if __name__ == "__main__":
     testcases = find_all_testcases()
+    errors = []
     if not os.path.exists(output_dir):
         os.mkdir(output_dir)
     for tc in testcases:
-        run_testcase(tc)
+        error = run_testcase(tc)
+        if error:
+            errors.append(error)
+    
+    for error in errors:
+        print_red(error)
+    
+    if errors:
+        sys.exit(1)
+    else:
+        sys.exit(0)
+

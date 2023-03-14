@@ -13,6 +13,8 @@ class Validator {
  public:
   static void Validate(std::unique_ptr<Query> &query);
  private:
+  static void InitializeSynonymEntityTypes(QueryPtr &query);
+
   static void ValidateClauseArguments(QueryPtr &query);
   static void ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query);
   static void ValidateSynonymsUsedAreDeclared(QueryPtr &query);

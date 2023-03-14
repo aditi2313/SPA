@@ -9,10 +9,16 @@ namespace qps {
 extern MasterClauseFactory master_clause_factory_;
 
 void Validator::Validate(std::unique_ptr<Query> &query) {
+  InitializeSynonymEntityTypes(query);
+
   ValidateSynonymsDeclaredExactlyOnce(query);
   ValidateSynonymsUsedAreDeclared(query);
   ValidateClauseArguments(query);
   ValidateAttrRefs(query);
+}
+
+void Validator::InitializeSynonymEntityTypes(QueryPtr &query) {
+  
 }
 
 // Used to ensure that the design entity for synonyms is correct

@@ -7,9 +7,10 @@
 #include "QPS/preprocessor/Validator.h"
 #include "QPS/evaluator/QueryEvaluator.h"
 #include "QPS/evaluator/Formatter.h"
-#include "QPS/factories/MasterClauseFactory.h"
+#include "QPS/factories/Export.h"
 
 namespace qps {
+MasterArgumentFactory master_argument_factory;
 MasterClauseFactory master_clause_factory_;
 MasterEntityFactory master_entity_factory_;
 

@@ -40,17 +40,14 @@ class MasterArgumentFactory {
   }
 
   inline std::unique_ptr<SynonymArg> CreateSynonym(std::string token) {
-    std::string syn_name = token;
-    std::string attr_name;
-    // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
-    if (PQL::is_attr_ref(token)) {
-      std::tie(syn_name, attr_name) = PQL::split_attr_ref(token);
-    }
+    return std::make_unique<SynonymArg>(token);
+  }
 
+  // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
+  inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
+    auto [syn_name, attr_name] = PQL::split_attr_ref(token);
     auto syn_arg = std::make_unique<SynonymArg>(syn_name);
-    if (!attr_name.empty()) {
-      syn_arg->set_attr_name(attr_name);
-    }
+    syn_arg->set_attr_name(attr_name);
     return syn_arg;
   }
 
@@ -64,9 +61,7 @@ class MasterArgumentFactory {
       return CreateWildcard();
     }
 
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
+
 
     return CreateSynonym(token);
   }
@@ -82,6 +77,37 @@ class MasterArgumentFactory {
     }
 
     return CreateSynonym(token);
+  }
+
+  // synonym | _ | INTEGER | "ident"
+  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
+    if (PQL::is_wildcard(token)) {
+      return CreateWildcard();
+    }
+
+    if (PQL::is_ident_arg(token)) {
+      return CreateIdentArg(token);
+    }
+
+    if (PQL::is_integer(token)) {
+      return CreateIntegerArg(token);
+    }
+
+    return CreateSynonym(token);
+  }
+
+  // "ident" | INTEGER | attrRef
+  // attrRef: synonym.attrName
+  inline ArgumentPtr CreateRef(std::string token) {
+    if (PQL::is_ident_arg(token)) {
+      return CreateIdentArg(token);
+    }
+
+    if (PQL::is_integer(token)) {
+      return CreateIdentArg(token);
+    }
+
+    return CreateAttrRef(token);
   }
 };
 }  // namespace qps

@@ -130,13 +130,15 @@ TEST_CASE("Test SP and PKB integration for Modifies data") {
 
     auto actual_results = InitializeModifies(program);
 
+    std::unordered_set<std::string> vars({"v", "x"});
+
     std::unordered_map<std::variant<int, std::string>,
                        std::unordered_set<std::string>>
-        expected_results = {{1, {"x"}},
+        expected_results = {{1, {"x"}}, {2, {"v"}},
                             {3, {"v"}},
                             {4, {"v"}},
                             {"helper", {"v"}},
-                            {"modifies", {"x"}}};
+                            {"modifies", vars}};
 
     REQUIRE(actual_results == expected_results);
   }

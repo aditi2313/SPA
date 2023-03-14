@@ -126,10 +126,11 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
     std::unordered_map<std::variant<int, std::string>,
                        std::unordered_set<std::string>>
         expected_results = {{1, {"x"}},
+                            {2, vars},
                             {3, vars},
                             {4, {"v"}},
                             {"helper", vars},
-                            {"uses", {"x"}}};
+                            {"uses", vars}};
 
     REQUIRE(actual_results == expected_results);
   }

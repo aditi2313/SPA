@@ -29,7 +29,11 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     }
     for (auto& line : l_calls) {
       pkb_ptr_->AddUsesData(line, merged_uses);
+      auto& calling_proc = call_to_proc_[line];
+      auto tmp = merged_uses;
+      direct_uses_[calling_proc].merge(tmp);
     }
+
     pkb_ptr_->AddUsesData(proc, merged_uses);
     direct_uses_.erase(proc);
   }
@@ -58,8 +62,8 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
   direct_uses_[current_procedure_].merge(vars);
-  pkb_ptr_->set_var_name_for_line(
-      print_node->get_line(), print_node->get_var_name());
+  pkb_ptr_->set_var_name_for_line(print_node->get_line(),
+                                  print_node->get_var_name());
 }
 
 void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
@@ -94,6 +98,7 @@ void UsesVisitor::Process(ast::CallNode* call_node) {
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
   proc_called_by_line_[called_proc].insert(call_node->get_line());
+  call_to_proc_[call_node->get_line()] = parent_proc;
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

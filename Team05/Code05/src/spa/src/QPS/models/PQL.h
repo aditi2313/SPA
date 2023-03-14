@@ -159,6 +159,7 @@ class PQL {
 
   inline static bool ValidateAttrRef(
       AttrName attr_name, EntityName entity_name) {
+    std::cout << attr_name << " " << entity_name << "\n";
     auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
     return attr_name_types.count(entity_name);
   }

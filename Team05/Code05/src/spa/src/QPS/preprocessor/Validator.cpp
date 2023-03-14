@@ -20,7 +20,7 @@ void Validator::Validate(std::unique_ptr<Query> &query) {
 void Validator::InitializeSynonymEntityTypes(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
     InitializeSynonymEntityTypes(query, clause->get_arg1());
-    InitializeSynonymEntityTypes(query, clause->get_arg1());
+    InitializeSynonymEntityTypes(query, clause->get_arg2());
   }
 }
 

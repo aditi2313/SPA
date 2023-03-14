@@ -178,6 +178,7 @@ TEST_CASE("Test SelectParseState") {
 
 TEST_CASE("Test SuchThatParseState") {
   SuchThatParseState state;
+  MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
   SECTION("Such that clause for Modifies should parse correctly") {
@@ -188,8 +189,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kModifiesRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("v"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("v"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -203,8 +204,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kFollowsRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("7"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("7"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -218,8 +219,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kFollowsTRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("10"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("10"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -233,8 +234,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kParentRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("7"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("7"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -248,8 +249,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kParentTRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("7"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("7"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -263,8 +264,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kUsesRelName,
-        query->CreateArgument("6"),
-        query->CreateArgument("v"));
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("v"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -278,8 +279,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kCallsRelName,
-        query->CreateArgument("\"proc1\""),
-        query->CreateArgument("\"proc2\""));
+        master_argument_factory.CreateEntOrStmtRef("\"proc1\""),
+        master_argument_factory.CreateEntOrStmtRef("\"proc2\""));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -293,8 +294,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kCallsTRelName,
-        query->CreateArgument("\"proc1\""),
-        query->CreateArgument("\"proc2\""));
+        master_argument_factory.CreateEntOrStmtRef("\"proc1\""),
+        master_argument_factory.CreateEntOrStmtRef("\"proc2\""));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -308,8 +309,8 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
         PQL::kNextRelName,
-        query->CreateArgument("1"),
-        query->CreateArgument("2"));
+        master_argument_factory.CreateEntOrStmtRef("1"),
+        master_argument_factory.CreateEntOrStmtRef("2"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_clause);
     REQUIRE(itr == tokens.end());
@@ -325,9 +326,9 @@ TEST_CASE("Test SuchThatParseState") {
     state.Parse(tokens, itr, query);
     std::vector<ClausePtr> expected_clauses;
     expected_clauses.push_back(std::make_unique<UsesClause>(
-        query->CreateArgument("6"), query->CreateArgument("v")));
+        master_argument_factory.CreateEntOrStmtRef("6"), master_argument_factory.CreateEntOrStmtRef("v")));
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        query->CreateArgument("6"), query->CreateArgument("v")));
+        master_argument_factory.CreateEntOrStmtRef("6"), master_argument_factory.CreateEntOrStmtRef("v")));
 
     REQUIRE(util::CompareVectorOfPointers(
         expected_clauses, query->get_clauses()));
@@ -346,6 +347,7 @@ TEST_CASE("Test SuchThatParseState") {
 
 TEST_CASE("Test PatternParseState") {
   PatternParseState state;
+  MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
   SECTION("Pattern clause should parse correctly") {
@@ -356,12 +358,12 @@ TEST_CASE("Test PatternParseState") {
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         PQL::kModifiesRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("_"));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateEntOrStmtRef("_"));
     auto expected_pattern_clause = master_clause_factory.Create(
         PQL::kPatternRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("\"x + y\""));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateExpressionSpec("\"x + y\""));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
     REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
@@ -376,12 +378,12 @@ TEST_CASE("Test PatternParseState") {
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         PQL::kModifiesRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("v"));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateEntOrStmtRef("v"));
     auto expected_pattern_clause = master_clause_factory.Create(
         PQL::kPatternRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("_"));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateExpressionSpec("_"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
     REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
@@ -396,12 +398,12 @@ TEST_CASE("Test PatternParseState") {
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         PQL::kModifiesRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("variable"));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateEntOrStmtRef("variable"));
     auto expected_pattern_clause = master_clause_factory.Create(
         PQL::kPatternRelName,
-        query->CreateArgument("a"),
-        query->CreateArgument("_\"x\"_"));
+        master_argument_factory.CreateSynonym("a"),
+        master_argument_factory.CreateExpressionSpec("_\"x\"_"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
     REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
@@ -419,13 +421,13 @@ TEST_CASE("Test PatternParseState") {
 
     std::vector<ClausePtr> expected_clauses;
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        query->CreateArgument("a"), query->CreateArgument("_")));
+        master_argument_factory.CreateEntOrStmtRef("a"), master_argument_factory.CreateEntOrStmtRef("_")));
     expected_clauses.push_back(std::make_unique<PatternClause>(
-        query->CreateArgument("a"), query->CreateArgument("\"x + y\"")));
+        master_argument_factory.CreateSynonym("a"), master_argument_factory.CreateExpressionSpec("\"x + y\"")));
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
-        query->CreateArgument("a1"), query->CreateArgument("variable")));
+        master_argument_factory.CreateEntOrStmtRef("a1"), master_argument_factory.CreateEntOrStmtRef("variable")));
     expected_clauses.push_back(std::make_unique<PatternClause>(
-        query->CreateArgument("a1"), query->CreateArgument("_\"x\"_")));
+        master_argument_factory.CreateSynonym("a1"), master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(util::CompareVectorOfPointers(
         expected_clauses, query->get_clauses()));

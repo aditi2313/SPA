@@ -10,6 +10,7 @@ extern MasterArgumentFactory master_argument_factory_;
 
 // pattern ( 'and' pattern )*
 // pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// expression-spec: "expr" | _"expr"_ | _
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
@@ -60,7 +61,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kExprCheck,
             [&](QueryPtr &query) {
-              arg3_ = master_argument_factory_.CreateExpressionArg(*itr_);
+              arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
             }));
 
     // ')'

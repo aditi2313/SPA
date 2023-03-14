@@ -10,7 +10,7 @@
 #include "QPS/factories/Export.h"
 
 namespace qps {
-MasterArgumentFactory master_argument_factory;
+MasterArgumentFactory master_argument_factory_;
 MasterClauseFactory master_clause_factory_;
 MasterEntityFactory master_entity_factory_;
 

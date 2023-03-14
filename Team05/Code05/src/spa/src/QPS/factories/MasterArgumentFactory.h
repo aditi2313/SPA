@@ -12,18 +12,75 @@
 namespace qps {
 class MasterArgumentFactory {
  public:
-  inline std::unique_ptr<ExpressionArg> CreateExpressionArg(std::string token) {
-    bool is_exact = PQL::is_pattern_exact(token);
-    // Remove first and last quotation marks
-    // or first and last wildcard + quotation marks
-    token = is_exact
-            ? token.substr(1, token.size() - 2)
-            : token.substr(2, token.size() - 4);
+  inline std::unique_ptr<SynonymArg> CreateSynonym(std::string token) {
+    return std::make_unique<SynonymArg>(token);
+  }
+
+  // synonym | _ | INTEGER | "ident"
+  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
+    if (PQL::is_wildcard(token)) {
+      return CreateWildcard();
+    }
+
+    if (PQL::is_ident_arg(token)) {
+      return CreateIdentArg(token);
+    }
+
+    if (PQL::is_integer(token)) {
+      return CreateIntegerArg(token);
+    }
+
+    assert(PQL::is_synonym(token));
+    return CreateSynonym(token);
+  }
+
+  // "ident" | INTEGER | attrRef
+  // attrRef: synonym.attrName
+  inline ArgumentPtr CreateRef(std::string token) {
+    if (PQL::is_ident_arg(token)) {
+      return CreateIdentArg(token);
+    }
+
+    if (PQL::is_integer(token)) {
+      return CreateIntegerArg(token);
+    }
+
+    assert(PQL::is_attr_ref(token));
+    return CreateAttrRef(token);
+  }
+
+  inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
+    if (PQL::is_wildcard(token)) {
+      return CreateWildcard();
+    }
+
+    if(PQL::is_pattern_wildcard(token)) {
+      return CreateWildcardExpression(token);
+    }
+
+    assert(PQL::is_pattern_exact(token));
+    return CreateExactExpression(token);
+  }
+
+  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(std::string token) {
+    token = token.substr(2, token.size() - 4);
 
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
-          std::move(AST), is_exact);
+          std::move(AST), false);
+    } catch (std::exception _) {
+      throw PqlSyntaxErrorException("Invalid expression");
+    }
+  }
+
+  inline std::unique_ptr<ExpressionArg> CreateExactExpression(std::string token) {
+    token = token.substr(1, token.size()- 2);
+
+    try {
+      auto AST = sp::SourceProcessor::ParseExpression(token);
+      return std::make_unique<ExpressionArg>(
+          std::move(AST), true);
     } catch (std::exception _) {
       throw PqlSyntaxErrorException("Invalid expression");
     }
@@ -39,9 +96,6 @@ class MasterArgumentFactory {
     return std::make_unique<IntegerArg>(stoi(token));
   }
 
-  inline std::unique_ptr<SynonymArg> CreateSynonym(std::string token) {
-    return std::make_unique<SynonymArg>(token);
-  }
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
   inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
@@ -61,8 +115,11 @@ class MasterArgumentFactory {
       return CreateWildcard();
     }
 
+    if (PQL::is_ident_arg(token)) {
+      return CreateIdentArg(token);
+    }
 
-
+    assert(PQL::is_synonym(token));
     return CreateSynonym(token);
   }
 
@@ -73,41 +130,11 @@ class MasterArgumentFactory {
     }
 
     if (PQL::is_integer(token)) {
-      return CreateIdentArg(token);
-    }
-
-    return CreateSynonym(token);
-  }
-
-  // synonym | _ | INTEGER | "ident"
-  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
       return CreateIntegerArg(token);
     }
 
+    assert(PQL::is_synonym(token));
     return CreateSynonym(token);
-  }
-
-  // "ident" | INTEGER | attrRef
-  // attrRef: synonym.attrName
-  inline ArgumentPtr CreateRef(std::string token) {
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIdentArg(token);
-    }
-
-    return CreateAttrRef(token);
   }
 };
 }  // namespace qps

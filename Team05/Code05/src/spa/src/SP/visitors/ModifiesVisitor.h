@@ -59,6 +59,9 @@ class ModifiesVisitor : public PKBWritingVisitor {
   // Mapping from a procedure to the calls within the procedure
   std::unordered_map<std::string, std::unordered_set<std::string>> proc_calls_;
 
+  // Mapping from call to procedure that it is in
+  std::unordered_map<int, std::string> call_to_proc_;
+
   // mapping from procedure to lines that call said procedure
   std::unordered_map<std::string, std::unordered_set<int>> proc_called_by_line_;
   std::string current_procedure_;

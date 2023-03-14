@@ -24,6 +24,9 @@ void ModifiesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
     }
     for (auto& line : l_calls) {
       pkb_ptr_->AddModifiesData(line, merged_modifies);
+      auto& calling_proc = call_to_proc_[line];
+      auto tmp = merged_modifies;
+      direct_modifies_[calling_proc].merge(tmp);
     }
     pkb_ptr_->AddModifiesData(proc, merged_modifies);
   }
@@ -45,8 +48,8 @@ void ModifiesVisitor::Process(ast::ReadNode* read_node) {
   std::unordered_set<std::string> vars = {read_node->get_var_name()};
   pkb_ptr_->AddModifiesData(read_node->get_line(), vars);
   direct_modifies_[current_procedure_].merge(vars);
-  pkb_ptr_->set_var_name_for_line(
-      read_node->get_line(), read_node->get_var_name());
+  pkb_ptr_->set_var_name_for_line(read_node->get_line(),
+                                  read_node->get_var_name());
 }
 
 void ModifiesVisitor::ProcessAft(ast::IfNode* if_node) {

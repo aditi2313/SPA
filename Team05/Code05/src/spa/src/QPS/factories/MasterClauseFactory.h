@@ -36,18 +36,13 @@ class MasterClauseFactory {
         {PQL::kWithRelName, std::make_unique<WithFactory>()});
   }
 
-  inline ClausePtr Create(
-      RelName rel_name,
-      ArgumentPtr arg1,
-      ArgumentPtr arg2) {
-    return clause_factories_.at(rel_name)->Create(
-        std::move(arg1), std::move(arg2));
+  inline ClausePtr Create(RelName rel_name, ArgumentPtr arg1,
+                          ArgumentPtr arg2) {
+    return clause_factories_.at(rel_name)->Create(std::move(arg1),
+                                                  std::move(arg2));
   }
 
-  inline bool Validate(
-      RelName rel_name,
-      ArgumentPtr &arg1,
-      ArgumentPtr &arg2) {
+  inline bool Validate(RelName rel_name, ArgumentPtr &arg1, ArgumentPtr &arg2) {
     return clause_factories_.at(rel_name)->Validate(arg1, arg2);
   }
 
@@ -55,5 +50,3 @@ class MasterClauseFactory {
   std::unordered_map<std::string, ClauseFactoryPtr> clause_factories_;
 };
 }  // namespace qps
-
-

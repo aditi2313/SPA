@@ -29,10 +29,14 @@ class NextTClause : public Clause {
             result.insert(Entity(l));
           }
           while (!frontier.empty()) {
-            int c = frontier.top();
+            int c = frontier.front();
             frontier.pop();
+            if (visited.count(c)) continue;
+            visited.insert(c);
             auto d = pkb->Next(NextIndexFilter::of(c));
-            for (auto& l : d.get_next_im_list()) {
+            auto res = d->get_result();
+            if (!res->exists(c)) continue;
+            for (auto& l : res->get_row(c).get_next_im_list()) {
               frontier.push(l);
               result.insert(Entity(l));
             }

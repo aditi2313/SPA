@@ -56,13 +56,14 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
 
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{
       kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
       kParentTRelName, kUsesRelName, kPatternRelName,
-      kCallsRelName, kCallsTRelName, kNextRelName
+      kCallsRelName, kCallsTRelName, kNextRelName, kNextTRelName
   };
 
   // Returns true if the string is a relationship that appears

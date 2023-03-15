@@ -46,10 +46,6 @@ class PQL {
     return kAllEntityNames.count(str);
   }
 
-  inline static std::string kBooleanSelect = "BOOLEAN";
-  inline static std::string kTupleSelectOpen = "<";
-  inline static std::string kTupleSelectClose = ">";
-
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -83,6 +79,10 @@ class PQL {
         || is_pattern_exact(token)
         || is_pattern_wildcard(token)
         || is_ident_arg(token);
+  }
+
+  inline static bool is_synonym(std::string str) {
+    return is_ident(str);
   }
 
   inline static bool is_ident(std::string str) {
@@ -153,7 +153,7 @@ class PQL {
     // "." doesn't exist
     if (index == std::string::npos) return false;
     auto [syn, attr_name] = split_attr_ref(str);
-    return CheckGrammar(syn, kSynGrammar)
+    return is_synonym(syn)
         && is_attr_name(attr_name);
   }
 
@@ -172,20 +172,33 @@ class PQL {
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
+  inline static std::string kPeriodToken = ".";
+  inline static std::string kBooleanToken = "BOOLEAN";
+  inline static std::string kTupleOpenBktToken = "<";
+  inline static std::string kTupleCloseBktToken = ">";
+
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
   inline static std::string kPatternToken = kPatternRelName;
   inline static std::string kWithToken = kWithRelName;
+  inline static std::string kAttrRefDelimiter = kPeriodToken;
 
   // Splits an attrRef (e.g s.stmt#) by the '.' delimiter
   // Returns a pair of strings [ syn_name, attr_name ]
   // that is before and after the delimiter respectively.
   inline static std::pair<std::string, std::string> split_attr_ref(
       std::string str) {
-    auto index = str.find('.');
+    auto index = str.find(kAttrRefDelimiter);
     std::string syn_name = str.substr(0, index);
     std::string attr_name = str.substr(index + 1);
     return {syn_name, attr_name};
+  }
+
+  // Given a syn_name and attr_name, joins attrRef back together
+  inline static std::string join_attr_ref(
+      SynonymName syn_name, AttrName attr_name
+  ) {
+    return syn_name + kAttrRefDelimiter + attr_name;
   }
 
   // Give an AttrName, return true if its type is IDENT.
@@ -204,56 +217,22 @@ class PQL {
         || attr_name == kStmtAttrName;
   }
 
-  // Grammars are tokens with special meaning and actions
-  // attached to them. They are not meant to be compared
-  // literally.
-  inline static std::string kRelRefGrammar = "relRef";
-  inline static std::string kArgumentGrammar = "arg";
-  inline static std::string kSynGrammar = "syn";
-  inline static std::string kElemGrammar = "elem";
-  inline static std::string kExprGrammar = "exp";
-  inline static std::string kRefGrammar = "ref";
-  inline static std::string kDesignEntityGrammar = "designEntity";
-  inline static std::string kRecurseGrammar = "*";
-  inline static std::string kBooleanGrammar = "boolean";
-  inline static std::string kSelectGrammar = "select";
-
-  inline static bool CheckGrammar(
-      std::string const token, std::string const grammar) {
-    if (grammar == kArgumentGrammar) {
-      return is_argument(token);
-    } else if (grammar == kRelRefGrammar) {
-      return is_such_that_rel_name(token);
-    } else if (grammar == kSynGrammar) {
-      return is_ident(token);
-    } else if (grammar == kDesignEntityGrammar) {
-      return is_entity_name(token);
-    } else if (grammar == kExprGrammar) {
-      return is_pattern_wildcard(token)
-          || is_pattern_exact(token)
-          || is_wildcard(token);
-    } else if (grammar == kRecurseGrammar) {
-      return true;
-    } else if (grammar == kBooleanGrammar) {
-      return token == kBooleanSelect;
-    } else if (grammar == kSelectGrammar) {
-      // tuple | BOOLEAN
-      return CheckGrammar(token, kSynGrammar)
-          || CheckGrammar(token, kBooleanGrammar)
-          || is_attr_ref(token)
-          || token == kTupleSelectOpen;
-    } else if (grammar == kRefGrammar) {
-      // "IDENT" | INTEGER | attrRef
-      return is_ident_arg(token)
-          || is_integer(token)
-          || is_attr_ref(token);
-    } else if (grammar == kElemGrammar) {
-      // synonym | attrRef
-      return CheckGrammar(token, kSynGrammar)
-          || is_attr_ref(token);
-    } else {
-      return token == grammar;
+  // A secondary attr_ref is defined as an attr_ref that is
+  // not the same as its index.
+  // E.g stmt.stmt# is the same as its index, but
+  // call.procName is not the same.
+  // In ADVANCED SPA requirements, only
+  // call, print, and read can have secondary attr_refs.
+  inline static bool is_attr_ref_secondary(
+      EntityName entity_name, AttrName attr_name) {
+    if (entity_name == kReadEntityName
+        || entity_name == kPrintEntityName) {
+      return attr_name == kVariableAttrName;
     }
+    if (entity_name == kCallEntityName) {
+      return attr_name == kProcedureAttrName;
+    }
+    return false;  // False by default
   }
 };
 }  // namespace qps

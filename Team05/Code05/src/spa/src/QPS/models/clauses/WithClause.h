@@ -17,6 +17,10 @@ class WithClause : public Clause {
     rel_name_ = PQL::kWithRelName;
   }
 
+  void Preprocess(
+      const pkb::PKBReadPtr &pkb,
+      Table &query_table) override;
+
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {

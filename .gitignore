@@ -692,4 +692,4 @@ FodyWeavers.xsd
 /.vscode/
 
 # Autotester output
-Team05/Tests05/out.xml
+Team05/Tests05/**/*out.xml

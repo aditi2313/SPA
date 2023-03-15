@@ -54,6 +54,9 @@ void ProcessIndexableTableInt(
 void PKBWrite::AddModifiesData(
     const std::variant<int, std::string> line,
     const std::unordered_set<std::string>& variables) {
+  if (variables.empty()) {
+    return;
+  }
   pkb_relation_table_->add_modifies_data(line, variables);
 }
 

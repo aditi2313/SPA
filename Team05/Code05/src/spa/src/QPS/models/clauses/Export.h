@@ -10,5 +10,7 @@
 #include "ParentClause.h"
 #include "ParentTClause.h"
 #include "PatternAssignClause.h"
+#include "PatternIfClause.h"
+#include "PatternWhileClause.h"
 #include "UsesClause.h"
 #include "WithClause.h"

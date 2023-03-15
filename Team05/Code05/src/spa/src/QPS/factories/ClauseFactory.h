@@ -147,9 +147,33 @@ class PatternAssignFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    InitializeWildcard(arg1, PQL::kAssignEntityName);
-
     return std::make_unique<PatternAssignClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
+class PatternIfFactory : public ClauseFactory {
+ public:
+  PatternIfFactory() : ClauseFactory() {
+    LHS_entity_names_.insert(PQL::kIfEntityName);  // If only
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<PatternIfClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
+class PatternWhileFactory : public ClauseFactory {
+ public:
+  PatternWhileFactory() : ClauseFactory() {
+    LHS_entity_names_.insert(PQL::kWhileEntityName);  // While only
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kWhileEntityName);
+
+    return std::make_unique<PatternWhileClause>(
         std::move(arg1), std::move(arg2));
   }
 };

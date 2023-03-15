@@ -27,7 +27,11 @@ class MasterClauseFactory {
     clause_factories_.insert(
         {ClauseType::kPatternAssign, std::make_unique<PatternAssignFactory>()});
     clause_factories_.insert(
-        {PQL::kCallsRelName, std::make_unique<CallsFactory>()});
+        {ClauseType::kPatternIf, std::make_unique<PatternIfFactory>()});
+    clause_factories_.insert(
+        {ClauseType::kPatternWhile, std::make_unique<PatternWhileFactory>()});
+    clause_factories_.insert(
+        {ClauseType::kCalls, std::make_unique<CallsFactory>()});
     clause_factories_.insert(
         {PQL::kCallsTRelName, std::make_unique<CallsTFactory>()});
     clause_factories_.insert(

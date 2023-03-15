@@ -15,7 +15,7 @@ in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12, in13, in14, in15
 5000
 4 - basic calls test case
 variable v;
-Select v such that Uses("uses4", v)
+Select v such that Uses("use4", v)
 x, y, z
 5000
 5 - calls test case for synonym procedure

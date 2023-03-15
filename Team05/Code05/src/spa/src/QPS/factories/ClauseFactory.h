@@ -140,16 +140,16 @@ class UsesFactory : public ClauseFactory {
   }
 };
 
-class PatternFactory : public ClauseFactory {
+class PatternAssignFactory : public ClauseFactory {
  public:
-  PatternFactory() : ClauseFactory() {
+  PatternAssignFactory() : ClauseFactory() {
     LHS_entity_names_.insert(PQL::kAssignEntityName);  // Assign only
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
     InitializeWildcard(arg1, PQL::kAssignEntityName);
 
-    return std::make_unique<PatternClause>(
+    return std::make_unique<PatternAssignClause>(
         std::move(arg1), std::move(arg2));
   }
 };
@@ -217,7 +217,6 @@ class WithFactory : public ClauseFactory {
     if ((arg1->IsIdentType() && arg2->IsIntegerType())
         || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
-
 
     return arg1->Validate(LHS_entity_names_)
         && arg2->Validate(RHS_entity_names_);

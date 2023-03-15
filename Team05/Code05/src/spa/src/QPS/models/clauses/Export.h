@@ -9,6 +9,6 @@
 #include "NextClause.h"
 #include "ParentClause.h"
 #include "ParentTClause.h"
-#include "PatternClause.h"
+#include "PatternAssignClause.h"
 #include "UsesClause.h"
 #include "WithClause.h"

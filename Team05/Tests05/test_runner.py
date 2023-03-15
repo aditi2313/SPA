@@ -11,6 +11,7 @@ test_dir = Path(__file__).resolve().parent
 source_file_suffix = "_source.txt"
 queries_file_suffix = "_queries.txt"
 output_file_suffix = "_out.xml"
+output_dir = os.path.join(test_dir, "out")
 
 autotester_path_mac = \
         "../Code05/cmake-build-debug/src/autotester/autotester"
@@ -66,6 +67,14 @@ def count_failed_queries(out_file):
     
     return count
 
+def move_out_xmls():
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+    out_xmls = glob.glob(os.path.join(os.getcwd(), "**/*" + output_file_suffix), recursive=True)
+    for out_xml in out_xmls:
+        file_name = os.path.basename(out_xml)
+        os.rename(out_xml, os.path.join(output_dir, file_name))
+
 def print_colour(str, colour: Literal["red", "green", "yellow", "blue"]):
     colour_code = 31 if colour == "red" \
             else 32 if colour == "green" \
@@ -84,6 +93,8 @@ if __name__ == "__main__":
         if error:
             errors.append(error)
     
+    move_out_xmls()
+
     if errors:
         for error in errors:
             print_colour(error, "red")

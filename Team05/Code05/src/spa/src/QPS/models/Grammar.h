@@ -24,7 +24,6 @@ class Grammar {
   static CheckLambda kRelRefCheck;
   static CheckLambda kSynCheck;
   static CheckLambda kTupleCheck;
-  static CheckLambda kWildcardCheck;
 
   static ActionLambda kEmptyAction;
 

@@ -166,7 +166,6 @@ class PQL {
 
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
-  inline static std::string kPeriodToken = ".";
   inline static std::string kEqualToken = "=";
   inline static std::string kSelectToken = "Select";
   inline static std::string kSuchToken = "such";
@@ -174,6 +173,7 @@ class PQL {
   inline static std::string kOpenBktToken = "(";
   inline static std::string kCloseBktToken = ")";
   inline static std::string kAndToken = "and";
+  inline static std::string kPeriodToken = ".";
   inline static std::string kBooleanToken = "BOOLEAN";
   inline static std::string kTupleOpenBktToken = "<";
   inline static std::string kTupleCloseBktToken = ">";

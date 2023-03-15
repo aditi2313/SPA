@@ -18,9 +18,9 @@ class Query {
  public:
   // Set a synonym declaration
   inline void declare_synonym(
-      SynonymName syn_name, EntityName entity_name) {
+      SynonymName syn_id, EntityName entity_name) {
     synonym_declarations_.push_back(
-        std::make_unique<Synonym>(syn_name, entity_name));
+        std::make_unique<Synonym>(syn_id, entity_name));
   }
 
   // Returns true if `token` is a synonym that has been declared

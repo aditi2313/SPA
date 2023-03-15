@@ -10,28 +10,12 @@ using filter::AssignIndexFilter;
 using filter::AssignPredicateFilter;
 
 namespace qps {
-
-enum class PatternClauseType {
-  kPatternAssign,
-  kPatternIf,
-  kPatternWhile,
-  kPatternUndetermined
-};
-
 // RS between a statement and a list of variables
 class PatternClause : public Clause {
  public:
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(std::move(arg1), std::move(arg2)) {
     rel_name_ = PQL::kPatternRelName;
-  }
-
-  inline void set_pattern_clause_type(PatternClauseType type) {
-    pattern_clause_type_ = type;
-  }
-
-  inline PatternClauseType get_pattern_clause_type() {
-    return pattern_clause_type_;
   }
 
   inline void Index(
@@ -71,9 +55,6 @@ class PatternClause : public Clause {
 
     results.insert(Entity(line));
   }
-
- private:
-  PatternClauseType pattern_clause_type_;
 };
 
 }  // namespace qps

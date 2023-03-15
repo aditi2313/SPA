@@ -1,6 +1,8 @@
 #pragma once
 
+#include <vector>
 #include <utility>
+#include <string>
 
 #include "RecursiveParseState.h"
 
@@ -9,14 +11,17 @@ extern MasterClauseFactory master_clause_factory_;
 extern MasterArgumentFactory master_argument_factory_;
 
 // pattern ( 'and' pattern )*
-// pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
-// expression-spec: "expr" | _"expr"_ | _
+// pattern: assign | while | if
+// assign: syn-assign '(' entRef ',' expression-spec ')'
+// while: syn-while '(' entRef ',' '_' ')'
+// if: syn-if '(' entRef ',' '_' ',' '_' ')'
+// expression-spec: '"' expr'"' | '_' '"' expr '"' '_' | '_'
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-    size_t kNumGrammar = 8;
+    size_t kNumGrammar = 10;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector
     grammar_.reserve(kNumGrammar);
@@ -28,12 +33,13 @@ class PatternParseState : public RecursiveParseState {
             Grammar::kEmptyAction));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
-    // syn-assign
+    // syn-assign | syn-while | syn-if
     grammar_.emplace_back(
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
               arg1_ = master_argument_factory_.CreateSynonym(*itr_);
+              pattern_clause_type_ = PatternClauseType::kPatternUndetermined;
             }));
 
     // '('
@@ -56,12 +62,45 @@ class PatternParseState : public RecursiveParseState {
             Grammar::CreateTokenCheck(PQL::kCommaToken),
             Grammar::kEmptyAction));
 
-    // expression-spec
+    // wildcard | expression-spec
     grammar_.emplace_back(
         Grammar(
             Grammar::kExprCheck,
             [&](QueryPtr &query) {
               arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
+              if (!Grammar::kWildcardCheck(*itr_)) {
+                // Not a wildcard, must be pattern-assign
+                pattern_clause_type_ = PatternClauseType::kPatternAssign;
+              }
+            }));
+
+    // ',' | skip to ')'
+    grammar_.emplace_back(
+        Grammar(
+            [](std::string token) {
+              return token == PQL::kCommaToken || token == PQL::kCloseBktToken;
+            },
+            [&](QueryPtr &query) {
+              if (*itr_ == PQL::kCloseBktToken) {
+                grammar_itr_++;  // Skip to close bkt
+                itr_--;  // Don't consume token
+              } else {
+                // Must be comma
+                if (pattern_clause_type_ == PatternClauseType::kPatternAssign) {
+                  // This means that the second argument was not a wildcard.
+                  // Doesn't syntactically match with syn-if(entRef, _, _)
+                  ThrowException();
+                }
+              }
+            }));
+
+    // '_' (Optional)
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::kWildcardCheck,
+            [&](QueryPtr &query) {
+              // Must be if-type
+              pattern_clause_type_ = PatternClauseType::kPatternIf;
             }));
 
     // ')'
@@ -83,7 +122,8 @@ class PatternParseState : public RecursiveParseState {
             }));
 
     // Recurse (if needed)
-    grammar_.emplace_back(RecursiveParseState::CreateRecurseGrammar(*this));
+    grammar_.emplace_back(
+        RecursiveParseState::CreateRecurseGrammar(*this));
 
     end_states_.emplace_back(grammar_.end());
     // Allow state to end without recursing
@@ -95,5 +135,6 @@ class PatternParseState : public RecursiveParseState {
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
+  PatternClauseType pattern_clause_type_;
 };
 }  // namespace qps

@@ -35,8 +35,11 @@ def run_testcase(testname):
             return f"Failed: {testname} Total failures: {total_failed_queries}"
     except subprocess.CalledProcessError as e:
         if platform.system() == "Windows": 
-            # autotester calls abort() so it doesn't show the actual error
-            return f"Failed: {testname} Error: {e.returncode}"
+            # on windows, autotester calls abort() and the error isn't captured 
+            # in stderror. hence, we need to use try-except to know that the 
+            # subprocess did not complete, otherwise the code tries to open
+            # a non-existent out.xml file
+            return f"Failed: {testname} Program aborted with return code: {e.returncode}"
         else:
             return f"Failed: {testname} Error: {e.stderr.decode().strip()}"
 

@@ -57,6 +57,7 @@ TEST_CASE("Test SelectClParser methods") {
 
 TEST_CASE("Test ParseQuery") {
   SelectClParser parser;
+  MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
   SECTION("Query with no declarations should not throw SyntaxError") {
@@ -84,10 +85,11 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}},
         {"v"});
+    auto arg1 = master_argument_factory.CreateEntOrStmtRef("6");
+    auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
     expected_query->add_clause(
-        master_clause_factory.Create(PQL::kModifiesRelName,
-                                     expected_query->CreateArgument("6"),
-                                     expected_query->CreateArgument("v")));
+        master_clause_factory.Create(
+            PQL::kModifiesRelName, std::move(arg1), std::move(arg2)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -100,10 +102,11 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName},
          {"s", PQL::kStmtEntityName}},
         {"s", "v"});
+    auto arg1 = master_argument_factory.CreateEntOrStmtRef("s");
+    auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
     expected_query->add_clause(
-        master_clause_factory.Create(PQL::kModifiesRelName,
-                                     expected_query->CreateArgument("s"),
-                                     expected_query->CreateArgument("v")));
+        master_clause_factory.Create(
+            PQL::kModifiesRelName, std::move(arg1), std::move(arg2)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -117,13 +120,13 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("v")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateEntRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kPatternRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"x+y\"")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -138,8 +141,8 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kWithRelName,
-            expected_query->CreateArgument("a.stmt#"),
-            expected_query->CreateArgument("12")));
+            master_argument_factory.CreateRef("a.stmt#"),
+            master_argument_factory.CreateRef("12")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -160,33 +163,33 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("6"),
-            expected_query->CreateArgument("v")));
+            master_argument_factory.CreateEntOrStmtRef("6"),
+            master_argument_factory.CreateEntOrStmtRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("3"),
-            expected_query->CreateArgument("v")));
+            master_argument_factory.CreateEntOrStmtRef("3"),
+            master_argument_factory.CreateEntOrStmtRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateEntRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kPatternRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"x+y\"")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"variable\"")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateEntRef("\"variable\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kPatternRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_\"x\"_")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -208,33 +211,33 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("6"),
-            expected_query->CreateArgument("v")));
+            master_argument_factory.CreateEntOrStmtRef("6"),
+            master_argument_factory.CreateEntOrStmtRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("3"),
-            expected_query->CreateArgument("v")));
+            master_argument_factory.CreateEntOrStmtRef("3"),
+            master_argument_factory.CreateEntOrStmtRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
+            master_argument_factory.CreateEntOrStmtRef("a"),
+            master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kPatternRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"x+y\"")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kModifiesRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("_")));
+            master_argument_factory.CreateEntOrStmtRef("a"),
+            master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             PQL::kPatternRelName,
-            expected_query->CreateArgument("a"),
-            expected_query->CreateArgument("\"x\"")));
+            master_argument_factory.CreateSynonym("a"),
+            master_argument_factory.CreateExpressionSpec("\"x\"")));
 
     REQUIRE(*actual_query == *expected_query);
   }

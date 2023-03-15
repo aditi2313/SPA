@@ -35,7 +35,7 @@ procedure affects3 {
   }
   read v18;
   v11 = 0;
-  while (cond5 || cond6) {
+  while ((cond5 < 5) || (cond6 > 10)) {
     v6 = v18 + 1;
     v19 = v6 + 1;
     v11 = v20 + 1;

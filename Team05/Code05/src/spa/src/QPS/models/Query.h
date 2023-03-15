@@ -100,8 +100,6 @@ class Query {
     return selected_elems_ == other.selected_elems_;
   }
 
-  ArgumentPtr CreateArgument(std::string token);
-
  private:
   bool is_boolean_query_ = false;
   std::vector<SynonymPtr> synonym_declarations_;

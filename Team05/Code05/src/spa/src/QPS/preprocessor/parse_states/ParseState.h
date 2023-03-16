@@ -21,7 +21,7 @@ class ParseState {
   void Parse(const std::vector<std::string> &tokens,
              ParseItr &itr, QueryPtr &query);
 
-  inline bool is_transition_keyword(std::string token) {
+  inline virtual bool is_transition_keyword(std::string token) {
     return token == kTransitionKeyword;
   }
 

@@ -6,9 +6,11 @@
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
+extern MasterArgumentFactory master_argument_factory_;
 
 // pattern ( 'and' pattern )*
 // pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// expression-spec: "expr" | _"expr"_ | _
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
@@ -31,7 +33,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
-              arg1_ = query->CreateArgument(*itr_);
+              arg1_ = master_argument_factory_.CreateSynonym(*itr_);
             }));
 
     // '('
@@ -45,7 +47,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query) {
-              arg2_ = query->CreateArgument(*itr_);
+              arg2_ = master_argument_factory_.CreateEntRef(*itr_);
             }));
 
     // ','
@@ -59,7 +61,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kExprCheck,
             [&](QueryPtr &query) {
-              arg3_ = query->CreateArgument(*itr_);
+              arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
             }));
 
     // ')'

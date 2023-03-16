@@ -26,11 +26,6 @@ QueryPtr BuildQuery(
 // Helper method for testing
 void TestNoThrows(std::string query_string) {
   SelectClParser parser;
-  try {
-    parser.ParseQuery(query_string);
-  } catch (PqlSyntaxErrorException e) {
-    std::cout << query_string << "\n";
-  }
   REQUIRE_NOTHROW(parser.ParseQuery(query_string));
 }
 
@@ -340,7 +335,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-//    TestThrows(query_string);
+    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

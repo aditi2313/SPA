@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility>
+#include <string>
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterArgumentFactory.h"

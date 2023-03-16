@@ -40,9 +40,9 @@ class MasterClauseFactory {
   }
 
   inline ClausePtr Create(
-    RelName rel_name, 
-    ArgumentPtr arg1,
-    ArgumentPtr arg2) {
+      RelName rel_name, 
+      ArgumentPtr arg1,
+      ArgumentPtr arg2) {
     if (!clause_factories_.count(rel_name)) {
       throw PqlSyntaxErrorException("No such relation");
     }
@@ -51,9 +51,9 @@ class MasterClauseFactory {
   }
 
   inline bool Validate(
-    RelName rel_name, 
-    ArgumentPtr &arg1, 
-    ArgumentPtr &arg2) {
+      RelName rel_name,
+      ArgumentPtr &arg1,
+      ArgumentPtr &arg2) {
     return clause_factories_.at(rel_name)->Validate(arg1, arg2);
   }
 

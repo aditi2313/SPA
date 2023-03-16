@@ -21,10 +21,10 @@ jobs:
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false # run a job even if other OS job fails
       matrix:
         os: [macos-latest, windows-latest]
         node-version: [12.x]
-
 
     steps:
     - uses: actions/checkout@v3
@@ -39,7 +39,7 @@ jobs:
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
-    - name: Unit Tests
+    - name: Unit Tests on macOS
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
@@ -47,7 +47,7 @@ jobs:
       run: ./unit_testing       
       shell: bash
 
-    - name: Unit Tests on windows
+    - name: Unit Tests on Windows
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
@@ -55,27 +55,37 @@ jobs:
       run: ./Release/unit_testing.exe       
       shell: bash
 
-    - name: Integration Tests
+    - name: Integration Tests on macOS
       working-directory: ${{github.workspace}}/build/src/integration_testing      
       if: runner.os == 'macOS'
       run: ./integration_testing
       shell: bash
 
-    - name: Integration Tests on windows
+    - name: Integration Tests on Windows
       working-directory: ${{github.workspace}}/build/src/integration_testing      
       if: runner.os == 'Windows'
       run: ./Release/integration_testing.exe
       shell: bash
 
-    - name: Autotester
-      working-directory: Team05/Tests05
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+        
+    - name: Run system tests on macOS
       if: runner.os == 'macOS'
-      run: ${{github.workspace}}/build/src/autotester/autotester Basic_source.txt Basic_queries.txt output.xml          
-      shell: bash
-    # cannot run autotester on windows for some odd reason
-    # actions cannot find the executable
-    #- name: Autotester on windows      
-    #  working-directory: Team05/Tests05
-    #  if: runner.os == 'Windows'
-    #  run: ${{github.workspace}}/build/src/autotester/Release/autotester.exe Basic_source.txt Basic_queries.txt output.xml                
-    #  shell: bash
+      run: |
+        python ${{github.workspace}}/Team05/Tests05/test_runner.py ${{github.workspace}}/build/src/autotester/autotester
+        if [ "$?" -ne "0" ]; then
+          echo "Program failed with exit code $?"
+          exit 1
+        fi      
+                
+    - name: Run system tests on Windows
+      if: runner.os == 'Windows'
+      run: |
+        python ${{github.workspace}}\Team05\Tests05\test_runner.py ${{github.workspace}}/build/src/autotester/Release/autotester.exe
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "Program failed with exit code $LASTEXITCODE"
+            exit 1
+        }

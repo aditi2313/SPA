@@ -40,7 +40,7 @@ class MasterClauseFactory {
   }
 
   inline ClausePtr Create(
-      RelName rel_name, 
+      RelName rel_name,
       ArgumentPtr arg1,
       ArgumentPtr arg2) {
     if (!clause_factories_.count(rel_name)) {

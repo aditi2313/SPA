@@ -22,7 +22,7 @@ class ClauseFactory {
       return false;
     }
 
-    return arg1->Validate(LHS_entity_names_) 
+    return arg1->Validate(LHS_entity_names_)
         && arg2->Validate(RHS_entity_names_);
   }
 
@@ -230,7 +230,7 @@ class WithFactory : public ClauseFactory {
   // both names (var.varName = "var")
   inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
     // Mismatched LHS and RHS types (e.g stmt.stmt# = "string")
-    if ((arg1->IsIdentType() && arg2->IsIntegerType()) 
+    if ((arg1->IsIdentType() && arg2->IsIntegerType())
       || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
 

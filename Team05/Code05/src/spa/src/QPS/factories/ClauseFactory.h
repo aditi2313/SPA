@@ -14,15 +14,16 @@ namespace qps {
 class ClauseFactory {
  public:
   ClauseFactory() {}
-  virtual ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) = 0;
+  virtual ClausePtr Create(
+    ArgumentPtr arg1, ArgumentPtr arg2) = 0;
 
   inline virtual bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) {
     if (!is_wildcard_allowed_as_first_arg_ && arg1->IsWildcard()) {
       return false;
     }
 
-    return arg1->Validate(LHS_entity_names_) &&
-           arg2->Validate(RHS_entity_names_);
+    return arg1->Validate(LHS_entity_names_) 
+      && arg2->Validate(RHS_entity_names_);
   }
 
   virtual ~ClauseFactory() = default;
@@ -52,7 +53,8 @@ class ModifiesFactory : public ClauseFactory {
     // Note: arg1 cannot be wildcard
     InitializeWildcard(arg2, PQL::kVariableEntityName);
 
-    return std::make_unique<ModifiesClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<ModifiesClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -67,7 +69,8 @@ class FollowsFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<FollowsClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<FollowsClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -82,7 +85,8 @@ class FollowsTFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<FollowsTClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<FollowsTClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -97,7 +101,8 @@ class ParentFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<ParentClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<ParentClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -112,7 +117,8 @@ class ParentTFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<ParentTClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<ParentTClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -129,7 +135,8 @@ class UsesFactory : public ClauseFactory {
     // Note: arg1 cannot be wildcard
     InitializeWildcard(arg2, PQL::kVariableEntityName);
 
-    return std::make_unique<UsesClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<UsesClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -142,7 +149,8 @@ class PatternFactory : public ClauseFactory {
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
     InitializeWildcard(arg1, PQL::kAssignEntityName);
 
-    return std::make_unique<PatternClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<PatternClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -157,7 +165,8 @@ class CallsFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kProcedureEntityName);
     InitializeWildcard(arg2, PQL::kProcedureEntityName);
 
-    return std::make_unique<CallsClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<CallsClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -172,7 +181,8 @@ class CallsTFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kProcedureEntityName);
     InitializeWildcard(arg2, PQL::kProcedureEntityName);
 
-    return std::make_unique<CallsTClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<CallsTClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -187,7 +197,8 @@ class NextFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<NextClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<NextClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -202,7 +213,8 @@ class NextTFactory : public ClauseFactory {
     InitializeWildcard(arg1, PQL::kStmtEntityName);
     InitializeWildcard(arg2, PQL::kStmtEntityName);
 
-    return std::make_unique<NextTClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<NextTClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 
@@ -218,8 +230,8 @@ class WithFactory : public ClauseFactory {
   // both names (var.varName = "var")
   inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
     // Mismatched LHS and RHS types (e.g stmt.stmt# = "string")
-    if ((arg1->IsIdentType() && arg2->IsIntegerType()) ||
-        (arg1->IsIntegerType() && arg2->IsIdentType()))
+    if ((arg1->IsIdentType() && arg2->IsIntegerType()) 
+      || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
 
 
@@ -228,7 +240,8 @@ class WithFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    return std::make_unique<WithClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<WithClause>(
+      std::move(arg1), std::move(arg2));
   }
 };
 

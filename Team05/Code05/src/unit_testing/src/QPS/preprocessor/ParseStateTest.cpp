@@ -10,7 +10,8 @@ using namespace qps;  // NOLINT
 void TestErrorCase(ParseState &state, std::vector<std::string> tokens) {
   std::unique_ptr<Query> query = std::make_unique<Query>();
   auto itr = tokens.begin();
-  REQUIRE_THROWS_AS(state.Parse(tokens, itr, query), PqlSyntaxErrorException);
+  REQUIRE_THROWS_AS(
+    state.Parse(tokens, itr, query), PqlSyntaxErrorException);
 }
 
 TEST_CASE("Test DeclarationParseState") {
@@ -23,34 +24,33 @@ TEST_CASE("Test DeclarationParseState") {
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v"));
-    REQUIRE(query->get_declared_synonym_entity_name("v") ==
-            PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_name("v")
+      == PQL::kVariableEntityName);
     REQUIRE(itr == tokens.end());
   };
 
   SECTION("Multiple declarations should parse correctly") {
     std::vector<std::string> tokens{"variable", "v1", ",", "v2",
-                                    ",",        "v3", ";"};
+        ",", "v3", ";"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v1"));
-    REQUIRE(query->get_declared_synonym_entity_name("v1") ==
-            PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_name("v1") 
+      == PQL::kVariableEntityName);
     REQUIRE(query->is_synonym_name_declared("v2"));
-    REQUIRE(query->get_declared_synonym_entity_name("v2") ==
-            PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_name("v2") 
+      == PQL::kVariableEntityName);
     REQUIRE(query->is_synonym_name_declared("v3"));
-    REQUIRE(query->get_declared_synonym_entity_name("v3") ==
-            PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_name("v3") 
+      == PQL::kVariableEntityName);
 
     REQUIRE(itr == tokens.end());
   };
 
-  SECTION(
-      "Invalid design entity identifier should "
-      "throw PqlSyntaxErrorException") {
+  SECTION("Invalid design entity identifier should "
+          "throw PqlSyntaxErrorException") {
     TestErrorCase(state, {"var", "v", ";"});
   }
 

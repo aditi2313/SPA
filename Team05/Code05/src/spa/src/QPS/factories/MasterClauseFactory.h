@@ -39,8 +39,10 @@ class MasterClauseFactory {
         {PQL::kWithRelName, std::make_unique<WithFactory>()});
   }
 
-  inline ClausePtr Create(RelName rel_name, ArgumentPtr arg1,
-                          ArgumentPtr arg2) {
+  inline ClausePtr Create(
+    RelName rel_name, 
+    ArgumentPtr arg1,
+    ArgumentPtr arg2) {
     if (!clause_factories_.count(rel_name)) {
       throw PqlSyntaxErrorException("No such relation");
     }
@@ -48,7 +50,10 @@ class MasterClauseFactory {
                                                   std::move(arg2));
   }
 
-  inline bool Validate(RelName rel_name, ArgumentPtr &arg1, ArgumentPtr &arg2) {
+  inline bool Validate(
+    RelName rel_name, 
+    ArgumentPtr &arg1, 
+    ArgumentPtr &arg2) {
     return clause_factories_.at(rel_name)->Validate(arg1, arg2);
   }
 

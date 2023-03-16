@@ -120,7 +120,7 @@ TEST_CASE("If then and else modify the variable") {
 }
 
 TEST_CASE("Not an assign statement") {
-  TestPKBAffects({{1, {}}},
+  TestPKBAffects({{1, {}}, {2, {}}},
                  "procedure proc {"
                  "read x;"
                  "print x;"

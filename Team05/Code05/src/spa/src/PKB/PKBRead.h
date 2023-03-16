@@ -91,7 +91,13 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
+  std::unordered_set<int> Affects(int);
+
  private:
+  inline bool IsContainerStmt(int v) {
+    return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);
+  }
+
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;
 };

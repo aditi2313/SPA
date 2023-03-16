@@ -13,9 +13,7 @@ namespace qps {
 class WithClause : public Clause {
  public:
   WithClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kWithRelName;
-  }
+      : Clause(ClauseType::kWith, std::move(arg1), std::move(arg2)) {}
 
   void Preprocess(
       const pkb::PKBReadPtr &pkb,

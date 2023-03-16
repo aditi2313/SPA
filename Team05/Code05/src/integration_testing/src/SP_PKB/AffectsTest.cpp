@@ -1,7 +1,7 @@
+#include <catch.hpp>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <catch.hpp>
 
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
@@ -74,5 +74,47 @@ TEST_CASE("Complicated affects test case in if and while loop") {
                  "} else {"
                  "y = z + x;"  // 8
                  "}"
+                 "}");
+}
+
+TEST_CASE("While which doesn't occur will mean prev line will affect") {
+  TestPKBAffects({{1, {3, 5}}, {3, {3, 5}}},
+                 "procedure name"
+                 "{"
+                 "x = 5;"
+                 "while (x < 10000)"
+                 "{"
+                 "x = x + 1;"
+                 "}"
+                 "while (x > 1000)"
+                 "{"
+                 "k = x - 2;"
+                 "}"
+                 "}");
+}
+
+TEST_CASE("If which doesn't occur will mean prev line will affect") {
+  TestPKBAffects({{1, {3, 5}}, {3, {3, 5}}},
+                 "procedure name {"
+                 "x = 100;"
+                 "if (x < 10) then {"
+                 "x = x + 1;"
+                 "} else {"
+                 "y = 100;"
+                 "}"
+                 "x = x + 1;"
+                 "}");
+}
+
+TEST_CASE("If then and else modify the variable") {
+  TestPKBAffects({{1, {}}, {3, {5}}, {4, {5}}},
+                 "procedure proc {"
+                 "x = 100;"
+                 "if (x == 10) then {"
+                 "x = 1000;"
+                 "} else {"
+                 "x = 10;"
+                 "}"
+                 "y = x + 1;"
                  "}");
 }

@@ -301,8 +301,8 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+
   SECTION("Such that clause for Next should parse correctly") {
-   SECTION("Such that clause for Next should parse correctly") {
     std::vector<std::string> tokens{"such", "that", "Next", "(",
                                     "1",    ",",    "2",    ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();

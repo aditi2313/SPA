@@ -1,5 +1,6 @@
 #include "PKBRead.h"
 
+#include <cassert>
 #include <memory>
 #include <queue>
 #include <unordered_set>
@@ -55,6 +56,55 @@ std::unique_ptr<PKBResult<NextTable>> PKBRead::Next(
   auto result_table = filter->FilterTable(relation_table_->next_table_);
   return create_result(std::move(result_table));
 }
+
+std::unordered_set<int> PKBRead::Affects(int s) {
+  // bfs to find the variables that this stmt
+
+  std::queue<int> frontier;
+  std::unordered_set<int> visited;
+  std::unordered_set<int> result;
+
+  if (!relation_table_->assign_.count(s)) {
+    return {};
+  }
+
+  frontier.push(s);
+
+  auto& modified = relation_table_->assign_table_.get_row(s);
+  auto& modified_var = modified.get_variable();
+
+  while (!frontier.empty()) {
+    int curr = frontier.front();
+    frontier.pop();
+    if (visited.count(curr)) continue;
+    if (relation_table_->uses_table_.exists(curr)) {
+      auto& data = relation_table_->uses_table_.get_row(curr);
+      // check that this assign stmt uses the variable
+      if (data.get_variables().count(modified_var) &&
+          relation_table_->assign_.count(curr)) {
+        result.insert(curr);
+      }
+    }
+
+    visited.insert(curr);
+    // if this stmt modifies the variable then dont do anything
+    if (relation_table_->modifies_table_.exists(curr) && curr != s &&
+        !IsContainerStmt(curr)) {
+      auto& data = relation_table_->modifies_table_.get_row(curr);
+      if (data.get_variables().count(modified_var)) {
+        continue;
+      }
+    }
+
+    if (!relation_table_->next_table_.exists(curr)) continue;
+    auto& next = relation_table_->next_table_.get_row(curr);
+    for (auto& n : next.get_next_im_list()) {
+      frontier.push(n);
+    }
+  }
+  return result;
+}
+
 
 std::unordered_set<int> PKBRead::NextT(int v) {
   std::unordered_set<int> visited;

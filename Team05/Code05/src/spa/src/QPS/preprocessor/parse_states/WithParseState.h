@@ -6,6 +6,7 @@
 #include "QPS/factories/MasterClauseFactory.h"
 
 namespace qps {
+extern MasterArgumentFactory master_argument_factory_;
 extern MasterClauseFactory master_clause_factory_;
 
 // 'with' attrCompare '(' and ',' attrCompare ')'
@@ -33,7 +34,7 @@ class WithParseState : public RecursiveParseState {
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query) {
-              arg1_ = query->CreateArgument(*itr_);
+              arg1_ = master_argument_factory_.CreateRef(*itr_);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -49,10 +50,10 @@ class WithParseState : public RecursiveParseState {
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query) {
-              arg2_ = query->CreateArgument(*itr_);
+              arg2_ = master_argument_factory_.CreateRef(*itr_);
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               auto with_clause = master_clause_factory_.Create(
-                  PQL::kWithRelName,
+                  ClauseType::kWith,
                   std::move(arg1_),
                   std::move(arg2_));
               query->add_clause(with_clause);

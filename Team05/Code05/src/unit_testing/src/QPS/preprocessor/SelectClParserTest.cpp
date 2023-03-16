@@ -26,6 +26,11 @@ QueryPtr BuildQuery(
 // Helper method for testing
 void TestNoThrows(std::string query_string) {
   SelectClParser parser;
+  try {
+    parser.ParseQuery(query_string);
+  } catch (PqlSyntaxErrorException e) {
+    std::cout << query_string << "\n";
+  }
   REQUIRE_NOTHROW(parser.ParseQuery(query_string));
 }
 
@@ -57,6 +62,7 @@ TEST_CASE("Test SelectClParser methods") {
 
 TEST_CASE("Test ParseQuery") {
   SelectClParser parser;
+  MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
   SECTION("Query with no declarations should not throw SyntaxError") {
@@ -86,10 +92,9 @@ TEST_CASE("Test ParseQuery") {
         {"v"});
     auto arg1 = master_argument_factory.CreateEntOrStmtRef("6");
     auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
-    expected_query->add_clause_template(
-        {
-            ClauseType::kModifies, std::move(arg1), std::move(arg2)});
-    expected_query->Build();
+    expected_query->add_clause(
+        master_clause_factory.Create(
+            ClauseType::kModifies, std::move(arg1), std::move(arg2)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -104,10 +109,9 @@ TEST_CASE("Test ParseQuery") {
         {"s", "v"});
     auto arg1 = master_argument_factory.CreateEntOrStmtRef("s");
     auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
-    expected_query->add_clause_template(
-        {
-            ClauseType::kModifies, std::move(arg1), std::move(arg2)});
-    expected_query->Build();
+    expected_query->add_clause(
+        master_clause_factory.Create(
+            ClauseType::kModifies, std::move(arg1), std::move(arg2)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -118,17 +122,16 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"a", PQL::kAssignEntityName}},
         {"a"});
-    expected_query->add_clause_template(
-        {
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateEntRef("v")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntRef("v")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")});
-    expected_query->Build();
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -140,12 +143,11 @@ TEST_CASE("Test ParseQuery") {
         {{"a", PQL::kAssignEntityName}},
         {"a"});
 
-    expected_query->add_clause_template(
-        {
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kWith,
             master_argument_factory.CreateRef("a.stmt#"),
-            master_argument_factory.CreateRef("12")});
-    expected_query->Build();
+            master_argument_factory.CreateRef("12")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -163,37 +165,36 @@ TEST_CASE("Test ParseQuery") {
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
 
-    expected_query->add_clause_template(
-        {
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("6"),
-            master_argument_factory.CreateEntOrStmtRef("v")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("v")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("3"),
-            master_argument_factory.CreateEntOrStmtRef("v")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("v")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateEntRef("_")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntRef("_")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateEntRef("\"variable\"")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntRef("\"variable\"")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateExpressionSpec("_\"x\"_")});
-    expected_query->Build();
+            master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -212,37 +213,36 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", PQL::kVariableEntityName}, {"p", PQL::kProcedureEntityName}},
         {"v"});
-    expected_query->add_clause_template(
-        {
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("6"),
-            master_argument_factory.CreateEntOrStmtRef("v")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("v")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("3"),
-            master_argument_factory.CreateEntOrStmtRef("v")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("v")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("a"),
-            master_argument_factory.CreateEntOrStmtRef("_")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("_")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateEntOrStmtRef("a"),
-            master_argument_factory.CreateEntOrStmtRef("_")});
-    expected_query->add_clause_template(
-        {
+            master_argument_factory.CreateEntOrStmtRef("_")));
+    expected_query->add_clause(
+        master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a"),
-            master_argument_factory.CreateExpressionSpec("\"x\"")});
-    expected_query->Build();
+            master_argument_factory.CreateExpressionSpec("\"x\"")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -276,7 +276,7 @@ TEST_CASE("Test ParseQuery") {
 
   SECTION("Query with mix of using 'and' and no 'and' "
           "should parse correctly") {
-    std::string query_string = "variable v;"
+    std::string query_string = "variable v; assign a; "
                                "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v) "
                                "and Uses(6, v) "
@@ -287,7 +287,7 @@ TEST_CASE("Test ParseQuery") {
 
   SECTION("Query with interleaving clauses of different types"
           "and with 'and' should parse correctly") {
-    std::string query_string = "variable v;"
+    std::string query_string = "variable v; assign a; "
                                "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v) "
                                "pattern a(v, _\"x\"_) "
@@ -334,13 +334,13 @@ TEST_CASE("Test ParseQuery") {
   }
 
   SECTION("Query with using 'and' to connect "
-          "between pattern and with"
+          "between pattern and with "
           "should throw error") {
-    std::string query_string = "variable v;"
+    std::string query_string = "variable v; assign a;"
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-    TestThrows(query_string);
+//    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

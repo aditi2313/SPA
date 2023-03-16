@@ -3,10 +3,11 @@
 #include <utility>
 
 #include "RecursiveParseState.h"
-#include "QPS/factories/MasterClauseFactory.h"
+#include "QPS/factories/Export.h"
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
+extern MasterArgumentFactory master_argument_factory_;
 
 // 'such' 'that' relCond
 // relCond: relRef ('and' relRef)*
@@ -52,7 +53,7 @@ class SuchThatParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query) {
-              arg1_ = query->CreateArgument(*itr_);
+              arg1_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
             }));
 
     // ','
@@ -66,7 +67,7 @@ class SuchThatParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query) {
-              arg2_ = query->CreateArgument(*itr_);
+              arg2_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
             }));
 
     // ')'

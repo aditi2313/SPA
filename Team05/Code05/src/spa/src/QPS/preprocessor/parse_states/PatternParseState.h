@@ -11,12 +11,13 @@ extern MasterArgumentFactory master_argument_factory_;
 
 // pattern ( 'and' pattern )*
 // pattern: 'pattern' syn-assign '(' entRef ',' expression-spec ')'
+// expression-spec: "expr" | _"expr"_ | _
 class PatternParseState : public RecursiveParseState {
  public:
   PatternParseState()
       : RecursiveParseState(PQL::kPatternToken,
                             PQL::kAndToken) {
-    size_t kNumGrammar = 8;
+    size_t kNumGrammar = 10;
     // Need to do reserve to ensure that iterators (i.e kRecurseBegin)
     // are not invalidated after modifying the vector
     grammar_.reserve(kNumGrammar);
@@ -48,7 +49,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query) {
-              arg2_ = query->CreateArgument(*itr_);
+              arg2_ = master_argument_factory_.CreateEntRef(*itr_);
             }));
 
     // ','
@@ -96,6 +97,7 @@ class PatternParseState : public RecursiveParseState {
             [&](QueryPtr &query) {
               // Must be if-type
               pattern_clause_type_ = ClauseType::kPatternIf;
+              arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
             }));
 
     // ')'
@@ -107,11 +109,11 @@ class PatternParseState : public RecursiveParseState {
                 ThrowException();
               }
               query->add_clause(master_clause_factory_.Create(
-                  PQL::kModifiesRelName,
+                  ClauseType::kModifies,
                   std::move(arg1_->Copy()),
                   std::move(arg2_)));
               query->add_clause(master_clause_factory_.Create(
-                  PQL::kPatternRelName,
+                  ClauseType::kPatternAssign,
                   std::move(arg1_),
                   std::move(arg3_)));
             }));

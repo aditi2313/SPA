@@ -9,10 +9,31 @@ namespace qps {
 extern MasterClauseFactory master_clause_factory_;
 
 void Validator::Validate(std::unique_ptr<Query> &query) {
+  InitializeSynonymEntityTypes(query);
+
   ValidateSynonymsDeclaredExactlyOnce(query);
   ValidateSynonymsUsedAreDeclared(query);
   ValidateClauseArguments(query);
   ValidateAttrRefs(query);
+}
+
+void Validator::InitializeSynonymEntityTypes(QueryPtr &query) {
+  for (auto &clause : query->get_clauses()) {
+    InitializeSynonymEntityTypes(query, clause->get_arg1());
+    InitializeSynonymEntityTypes(query, clause->get_arg2());
+  }
+}
+
+void Validator::InitializeSynonymEntityTypes(
+    QueryPtr &query, ArgumentPtr &arg) {
+  if (!arg->IsSynonym()) return;
+  SynonymArg* syn_arg = dynamic_cast<SynonymArg*>(arg.get());
+  SynonymName syn_name = syn_arg->get_syn_name();
+  if (!query->is_synonym_name_declared(syn_name))
+    throw PqlSemanticErrorException("Undeclared synonym in clause");
+
+  EntityName entity_name = query->get_declared_synonym_entity_name(syn_name);
+  syn_arg->set_entity_name(entity_name);
 }
 
 // Used to ensure that the design entity for synonyms is correct

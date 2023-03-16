@@ -59,13 +59,7 @@ def find_all_testcases():
 def count_failed_queries(out_file):
     tree = ET.parse(out_file)
     root = tree.getroot()
-
-    count = 0
-    for query in root.findall('./queries/query'):
-        if query.find('failed'):
-            count += 1
-    
-    return count
+    return len(root.findall('.//timeout')) + len(root.findall('.//failed'))
 
 def move_out_xmls():
     if not os.path.exists(output_dir):

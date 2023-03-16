@@ -76,7 +76,7 @@ class SuchThatParseState : public RecursiveParseState {
             [&](QueryPtr &query) {
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               query->add_clause(master_clause_factory_.Create(
-                  rel_name_, std::move(arg1_), std::move(arg2_)));
+                  PQL::get_clause_type(rel_name_), std::move(arg1_), std::move(arg2_)));
             }));
 
     // Recurse (if needed)

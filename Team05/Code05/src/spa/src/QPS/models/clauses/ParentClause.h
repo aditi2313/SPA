@@ -13,9 +13,8 @@ namespace qps {
 class ParentClause : public Clause {
  public:
   ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kParentRelName;
-  }
+      : Clause(
+      ClauseType::kParent, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,

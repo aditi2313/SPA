@@ -12,8 +12,13 @@
 namespace qps {
 class MasterArgumentFactory {
  public:
-  inline std::unique_ptr<SynonymArg> CreateSynonym(std::string token) {
-    return std::make_unique<SynonymArg>(token);
+  inline std::unique_ptr<SynonymArg> CreateSynonym(SynonymName syn_name) {
+    return std::make_unique<SynonymArg>(syn_name);
+  }
+
+  inline std::unique_ptr<SynonymArg> CreateSynonym(
+      SynonymName syn_name, EntityName entity_name) {
+    return std::make_unique<SynonymArg>(syn_name, entity_name);
   }
 
   // synonym | _ | INTEGER | "ident"
@@ -77,7 +82,7 @@ class MasterArgumentFactory {
 
   inline std::unique_ptr<ExpressionArg> CreateExactExpression(
       std::string token) {
-    token = token.substr(1, token.size()- 2);
+    token = token.substr(1, token.size() - 2);
 
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
@@ -97,7 +102,6 @@ class MasterArgumentFactory {
   inline std::unique_ptr<IntegerArg> CreateIntegerArg(std::string token) {
     return std::make_unique<IntegerArg>(stoi(token));
   }
-
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
   inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {

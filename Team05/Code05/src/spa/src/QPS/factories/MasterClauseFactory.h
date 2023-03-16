@@ -13,46 +13,50 @@ class MasterClauseFactory {
  public:
   MasterClauseFactory() {
     clause_factories_.insert(
-        {PQL::kModifiesRelName, std::make_unique<ModifiesFactory>()});
+        {ClauseType::kModifies, std::make_unique<ModifiesFactory>()});
     clause_factories_.insert(
-        {PQL::kFollowsRelName, std::make_unique<FollowsFactory>()});
+        {ClauseType::kFollows, std::make_unique<FollowsFactory>()});
     clause_factories_.insert(
-        {PQL::kFollowsTRelName, std::make_unique<FollowsTFactory>()});
+        {ClauseType::kFollowsT, std::make_unique<FollowsTFactory>()});
     clause_factories_.insert(
-        {PQL::kParentRelName, std::make_unique<ParentFactory>()});
+        {ClauseType::kParent, std::make_unique<ParentFactory>()});
     clause_factories_.insert(
-        {PQL::kParentTRelName, std::make_unique<ParentTFactory>()});
+        {ClauseType::kParentT, std::make_unique<ParentTFactory>()});
     clause_factories_.insert(
-        {PQL::kUsesRelName, std::make_unique<UsesFactory>()});
+        {ClauseType::kUses, std::make_unique<UsesFactory>()});
     clause_factories_.insert(
-        {PQL::kPatternRelName, std::make_unique<PatternFactory>()});
+        {ClauseType::kPatternAssign, std::make_unique<PatternAssignFactory>()});
     clause_factories_.insert(
-        {PQL::kCallsRelName, std::make_unique<CallsFactory>()});
+        {ClauseType::kPatternIf, std::make_unique<PatternIfFactory>()});
     clause_factories_.insert(
-        {PQL::kCallsTRelName, std::make_unique<CallsTFactory>()});
+        {ClauseType::kPatternWhile, std::make_unique<PatternWhileFactory>()});
     clause_factories_.insert(
-        {PQL::kNextRelName, std::make_unique<NextFactory>()});
+        {ClauseType::kCalls, std::make_unique<CallsFactory>()});
     clause_factories_.insert(
-        {PQL::kWithRelName, std::make_unique<WithFactory>()});
+        {ClauseType::kCallsT, std::make_unique<CallsTFactory>()});
+    clause_factories_.insert(
+        {ClauseType::kNext, std::make_unique<NextFactory>()});
+    clause_factories_.insert(
+        {ClauseType::kWith, std::make_unique<WithFactory>()});
   }
 
   inline ClausePtr Create(
-      RelName rel_name,
+      ClauseType clause_type,
       ArgumentPtr arg1,
       ArgumentPtr arg2) {
-    return clause_factories_.at(rel_name)->Create(
+    return clause_factories_.at(clause_type)->Create(
         std::move(arg1), std::move(arg2));
   }
 
   inline bool Validate(
-      RelName rel_name,
+      ClauseType clause_type,
       ArgumentPtr &arg1,
       ArgumentPtr &arg2) {
-    return clause_factories_.at(rel_name)->Validate(arg1, arg2);
+    return clause_factories_.at(clause_type)->Validate(arg1, arg2);
   }
 
  private:
-  std::unordered_map<std::string, ClauseFactoryPtr> clause_factories_;
+  std::unordered_map<ClauseType, ClauseFactoryPtr> clause_factories_;
 };
 }  // namespace qps
 

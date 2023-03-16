@@ -13,9 +13,8 @@ namespace qps {
 class UsesClause : public Clause {
  public:
   UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kUsesRelName;
-  }
+      : Clause(
+      ClauseType::kUses, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,

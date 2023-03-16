@@ -1,8 +1,8 @@
 #include "PKBRead.h"
 
+#include <cassert>
 #include <memory>
 #include <queue>
-#include <cassert>
 
 #include "common/exceptions/QPSExceptions.h"
 
@@ -63,7 +63,9 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   std::unordered_set<int> result;
 
   // the assumption is that s is an assignment.
-  assert(relation_table_->assign_.count(s));
+  if (!relation_table_->assign_.count(s)) {
+    return {};
+  }
 
   frontier.push(s);
 

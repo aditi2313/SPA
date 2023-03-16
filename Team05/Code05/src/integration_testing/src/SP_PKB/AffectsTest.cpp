@@ -118,3 +118,55 @@ TEST_CASE("If then and else modify the variable") {
                  "y = x + 1;"
                  "}");
 }
+
+TEST_CASE("Not an assign statement") {
+  TestPKBAffects({{1, {}}},
+                 "procedure proc {"
+                 "read x;"
+                 "print x;"
+                 "}");
+}
+
+TEST_CASE("Calls modifies variable tested") {
+  TestPKBAffects({{1, {}}},
+                 "procedure proc {"
+                 "x = 1;"
+                 "call p;"
+                 "y = x;"
+                 "}"
+                 "procedure p {"
+                 "x = 10;"
+                 "}");
+}
+
+TEST_CASE("Calls modifies variable tested in if branch") {
+  TestPKBAffects({{1, {}}},
+                 "procedure proc {"
+                 "x = 1;"
+                 "call p;"
+                 "y = x;"
+                 "}"
+                 "procedure p {"
+                 "if (10 > 100) then {"
+                 "x = 10;"
+                 "} else {"
+                 "print x;"
+                 "}"
+                 "}");
+}
+
+TEST_CASE("Calls does not modify variable tested in if branch") {
+  TestPKBAffects({{1, {3}}},
+                 "procedure proc {"
+                 "x = 1;"
+                 "call p;"
+                 "y = x;"
+                 "}"
+                 "procedure p {"
+                 "if (10 > 100) then {"
+                 "print y;"
+                 "} else {"
+                 "print x;"
+                 "}"
+                 "}");
+}

@@ -4,17 +4,11 @@
 #include <string>
 #include <utility>
 
-#include "../models/AST/factor_node/FactorNode.h"
+#include "models/AST/factor_node/FactorNode.h"
 #include "SP/CFGExtractor.h"
 #include "SP/parser/ProgramParser.h"
 #include "SP/validators/ProgramValidator.h"
-#include "SP/visitors/AssignVisitor.h"
-#include "SP/visitors/CallsVisitor.h"
-#include "SP/visitors/DataVisitor.h"
-#include "SP/visitors/FollowsVisitor.h"
-#include "SP/visitors/ModifiesVisitor.h"
-#include "SP/visitors/ParentVisitor.h"
-#include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/Export.h"
 #include "common/logging/Logger.h"
 #include "lexer/Lexer.h"
 #include "models/AST/ProgramNode.h"

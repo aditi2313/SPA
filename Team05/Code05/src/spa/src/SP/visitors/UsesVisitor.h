@@ -17,7 +17,7 @@ class UsesVisitor : public PKBWritingVisitor {
   explicit UsesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : PKBWritingVisitor(std::move(pkb_ptr)) {}
 
-  void ProcessAfter(ast::ProgramNode* program_node) override;
+  void ProcessAft(ast::ProgramNode* program_node) override;
 
   void Process(ast::ProcNode* proc_node) override;
 

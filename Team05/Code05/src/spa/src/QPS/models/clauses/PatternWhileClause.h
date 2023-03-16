@@ -7,7 +7,7 @@
 #include "common/filter/filters/IndexFilter.h"
 
 namespace qps {
-// RS between a statement and a list of variables
+// RS between a statement and a list of (control) variables
 class PatternWhileClause : public Clause {
  public:
   PatternWhileClause(ArgumentPtr arg1, ArgumentPtr arg2)

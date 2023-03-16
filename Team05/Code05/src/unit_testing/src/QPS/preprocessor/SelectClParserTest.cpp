@@ -317,6 +317,17 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
+  SECTION("Query with interleaving different types of Pattern clauses "
+          "using 'and' should parse correctly") {
+    std::string query_string = "variable v; assign a; if ifs; while w; "
+                               "Select <v, a, ifs, w> "
+                               "pattern a(v, _) and "
+                               "pattern ifs(v, _, _) and "
+                               "pattern w(v, _)";
+
+    TestNoThrows(query_string);
+  }
+
     /* ============ ERROR CASES =============== */
   SECTION("Query with both 'and' and 'such-that'"
           "should throw error") {
@@ -364,5 +375,31 @@ TEST_CASE("Test ParseQuery") {
                                "Select s.stmt#, p.procName";
 
     TestThrows(query_string);
+  }
+
+  SECTION("Query with incorrect syn entity type for Pattern If"
+          "should throw SemanticError") {
+    std::string query_string = "while w;"
+                               "Select w pattern w(_, _, _)";
+
+    REQUIRE_THROWS_AS(
+        parser.ParseQuery(query_string), PqlSemanticErrorException);
+  }
+
+  SECTION("Query with incorrect syntax for Pattern If"
+          "should throw SyntaxError") {
+    std::string query_string = "if ifs; "
+                               "Select ifs pattern ifs(_, \"x\", _)";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with incorrect syn entity type for Pattern Assign|While"
+          "should throw SemanticError") {
+    std::string query_string = "if ifs;"
+                               "Select ifs pattern ifs(_, _)";
+
+    REQUIRE_THROWS_AS(
+        parser.ParseQuery(query_string), PqlSemanticErrorException);
   }
 }

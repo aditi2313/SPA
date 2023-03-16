@@ -171,8 +171,6 @@ class PatternWhileFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    InitializeWildcard(arg1, PQL::kWhileEntityName);
-
     return std::make_unique<PatternWhileClause>(
         std::move(arg1), std::move(arg2));
   }

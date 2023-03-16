@@ -362,7 +362,7 @@ TEST_CASE("Test PatternParseState") {
   MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
-  SECTION("Pattern clause should parse correctly") {
+  SECTION("Pattern Assign clause should parse correctly") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
@@ -382,6 +382,40 @@ TEST_CASE("Test PatternParseState") {
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
     REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern While clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "w", "(", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("w", PQL::kWhileEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_pattern_clause = master_clause_factory.Create(
+        ClauseType::kPatternWhile,
+        master_argument_factory.CreateSynonym(
+            "w", PQL::kWhileEntityName),
+        master_argument_factory.CreateWildcard());
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_pattern_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Pattern If clause should parse correctly") {
+    std::vector<std::string> tokens{
+        "pattern", "if", "(", "_", ",", "_", ",", "_", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    query->declare_synonym("if", PQL::kIfEntityName);
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_pattern_clause = master_clause_factory.Create(
+        ClauseType::kPatternIf,
+        master_argument_factory.CreateSynonym(
+            "if", PQL::kIfEntityName),
+        master_argument_factory.CreateWildcard());
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_pattern_clause);
     REQUIRE(itr == tokens.end());
   };
 

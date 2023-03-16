@@ -116,19 +116,25 @@ class PatternParseState : public RecursiveParseState {
               if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
                 ThrowException();
               }
+              EntityName entity_name = SynonymArg::get_entity_name(arg1_);
+              if (pattern_clause_type_ == ClauseType::kPatternIf
+                  && entity_name != PQL::kIfEntityName)
+                throw PqlSemanticErrorException(
+                    "Pattern-if clause does not start with a syn-if");
 
-              if (pattern_clause_type_ == ClauseType::kPatternIf) {
-                query->add_clause(master_clause_factory_.Create(
-                    ClauseType::kPatternIf,
-                    std::move(arg1_),
-                    std::move(arg2_)));
+              if (entity_name == PQL::kAssignEntityName)
+                pattern_clause_type_ = ClauseType::kPatternAssign;
 
-                return;
+              if (entity_name == PQL::kWhileEntityName)
+                pattern_clause_type_ = ClauseType::kPatternWhile;
+
+              if (pattern_clause_type_ == ClauseType::kPatternUndetermined) {
+                throw PqlSemanticErrorException(
+                    "Unsupported synonym in Pattern clause");
               }
 
-              // Either PatternAssign or PatternWhile
-              EntityName entity_name = SynonymArg::get_entity_name(arg1_);
               if (entity_name == PQL::kAssignEntityName) {
+                // Need to create two clauses
                 query->add_clause(master_clause_factory_.Create(
                     ClauseType::kModifies,
                     std::move(arg1_->Copy()),
@@ -139,15 +145,11 @@ class PatternParseState : public RecursiveParseState {
                     std::move(arg3_)));
                 return;
               }
-              if (entity_name == PQL::kWhileEntityName) {
-                query->add_clause(master_clause_factory_.Create(
-                    ClauseType::kPatternWhile,
-                    std::move(arg1_),
-                    std::move(arg2_)));
-                return;
-              }
-              throw PqlSemanticErrorException(
-                  "Mismatched synonym in pattern clause");
+
+              query->add_clause(master_clause_factory_.Create(
+                  pattern_clause_type_,
+                  std::move(arg1_),
+                  std::move(arg2_)));
             }));
 
     // Recurse (if needed)

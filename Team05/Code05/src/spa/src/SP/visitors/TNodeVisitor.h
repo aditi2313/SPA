@@ -22,7 +22,7 @@ class TNodeVisitor {
  public:
   void VisitProgram(ast::ProgramNode* program_node);
   virtual void Process(ast::ProgramNode* program_node) {}
-  virtual void ProcessAfter(ast::ProgramNode* program_node) {}
+  virtual void ProcessAft(ast::ProgramNode* program_node) {}
 
   void VisitProc(ast::ProcNode* proc_node);
   virtual void Process(ast::ProcNode* proc_node) {}

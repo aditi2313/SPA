@@ -9,6 +9,7 @@
 #include "models/AST/ProgramNode.h"
 #include "models/AST/relations/CondExprNode.h"
 #include "models/AST/relations/RelExprNode.h"
+#include "models/AST/stmt_node/Export.h"
 
 namespace sp {
 /*

@@ -52,7 +52,7 @@ def find_all_testcases():
         testname = f[:-len(source_file_suffix)]
         query_file = testname + queries_file_suffix
         if not os.path.exists(query_file):
-            raise f'Missing queries file for {testname}'
+            raise RuntimeError(f'Missing queries file for {testname}')
         testcases.append(testname)
     return testcases
 

@@ -2,7 +2,7 @@ procedure working {
 	read x;
 	read y;
 	print x;
-	call working2;
+	read x; 
 	x = a + b;
 	if (x > b) then {
 		while (x != 2) {

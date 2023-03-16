@@ -71,6 +71,14 @@ void PKBWrite::AddUsesData(
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
+void PKBWrite::AddUsesData(
+    const std::variant<int, std::string> line,
+    const std::unordered_set<std::string>& control_variable_names,
+    const std::unordered_set<std::string>& variable_names) {
+  pkb_relation_table_->add_uses_data(
+      line, control_variable_names, variable_names);
+}
+
 void PKBWrite::AddFollowsData(const int line, const int follows) {
   pkb_relation_table_->add_follows_data(line, follows);
 }

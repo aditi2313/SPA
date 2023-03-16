@@ -105,12 +105,14 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   return result;
 }
 
-
 std::unordered_set<int> PKBRead::NextT(int v) {
   std::unordered_set<int> visited;
   std::queue<int> frontier;
   std::unordered_set<int> result;
   auto& next_table = relation_table_->next_table_;
+  if (!relation_table_->next_table_.exists(v)) {
+    return {};
+  }
   auto& data = relation_table_->next_table_.get_row(v);
   for (auto& l : data.get_next_im_list()) {
     frontier.push(l);

@@ -2,14 +2,10 @@
 #include <memory>
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <utility>
 
-#include "data/AssignData.h"
-#include "data/FollowsData.h"
-#include "data/ModifiesData.h"
-#include "data/NextData.h"
-#include "data/ParentData.h"
-#include "data/UsesData.h"
+#include "data/Export.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "tables/IndexableTable.h"
 
@@ -42,6 +38,9 @@ class PKBRelationTable {
   std::unordered_set<int> if_;
   std::unordered_set<std::string> variables_;
   std::unordered_set<std::string> procedures_;
+  std::unordered_map<int, std::string> line_to_var_name_;
+  std::unordered_map<int, std::string> line_to_proc_name_;
+
 
   friend bool operator==(const PKBRelationTable& LHS,
                          const PKBRelationTable& RHS) {
@@ -75,6 +74,14 @@ class PKBRelationTable {
   void add_uses_data(const std::variant<int, std::string> line,
                      const std::unordered_set<std::string>& variable_names) {
     uses_table_.add_row(line, UsesData(line, variable_names));
+  }
+
+  void add_uses_data(const std::variant<int, std::string> line,
+                     const std::unordered_set<std::string>&
+                         control_variable_names,
+                     const std::unordered_set<std::string>& variable_names) {
+    uses_table_.add_row(line,
+                        UsesData(line, control_variable_names, variable_names));
   }
 
   void add_follows_data(const int line, const int follows) {

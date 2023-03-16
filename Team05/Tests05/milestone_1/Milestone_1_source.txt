@@ -2,12 +2,14 @@ procedure working {
 	read x;
 	read y;
 	print x;
-	call test;
+	read x; 
 	x = a + b;
 	if (x > b) then {
 		while (x != 2) {
 			print y;
 		}
+	} else {
+		read x;
 	}
 }
 procedure working2 {
@@ -25,14 +27,7 @@ procedure working3 {
 		y = 2;
 	}
 }
-procedure not_working1 {
-	read x;
-	read y;
 
-	if (x != 2) {
-		print z;
-	}
-}
 procedure working4 {
 	read read;
 	read print;
@@ -44,11 +39,7 @@ procedure working4 {
 	print procedure;
 	print call;
 }
-// TODO() check to see if this would find both errors
-procuedure not_working2 {
-	Read x;
-	rEad y;
-}
+
 procedure brackets {
 	x = 2 * (1 + 2);
 	x = (1 + 2) + (2 + 3);

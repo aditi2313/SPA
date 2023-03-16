@@ -6,22 +6,22 @@ none
 2 - Parent on stmt ref arg2
 stmt s;
 Select s such that Parent(3,s)
-4
+4, 6
 5000
 3 - Parent on wildcard to return all stmts
 stmt s;
 Select s such that Parent(3,_)
-1,2,3,4,5,6,7
+1,2,3,4,5,6,7,8
 5000
 4 - Parent on wildcard as arg1
 stmt s;
 Select s such that Parent(_,s)
-4,5
+4,5,6,7,8
 5000
 5 - Parent on both wildcard
 stmt s;
 Select s such that Parent(_,_)
-1,2,3,4,5
+1,2,3,4,5,6,7,8
 5000
 6 - Parent* on stmt ref
 stmt s;
@@ -31,7 +31,7 @@ Select s such that Parent*(s, 5)
 7 - Parent* on stmt ref and wildcard
 stmt s;
 Select s such that Parent*(_,s)
-3,4,5,6
+4,5,6,7,8
 5000
 8 - Parent* on no Parents
 stmt s;

@@ -12,7 +12,7 @@ namespace sp {
 // Merges the variables used by a procedure directly with the variables used
 // indirectly via calls within the procedure in topological order. Then writes
 // the results to PKB.
-void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
+void UsesVisitor::ProcessAft(ast::ProgramNode* program_node) {
   auto topological_order = sp::TopologicalSorter::Sort(called_by_);
   // Assert that all procedures are in the topological order vector
   for (auto& proc_nodes : program_node->get_children()) {
@@ -23,10 +23,23 @@ void UsesVisitor::ProcessAfter(ast::ProgramNode* program_node) {
 
   for (auto& proc : topological_order) {
     auto& merged_uses = direct_uses_[proc];
+    auto& l_calls = proc_called_by_line_[proc];
     for (auto& called_proc : proc_calls_[proc]) {
       merged_uses.merge(direct_uses_[called_proc]);
     }
+    for (auto& line : l_calls) {
+      pkb_ptr_->AddUsesData(line, merged_uses);
+      auto& calling_proc = call_to_proc_.at(line);
+      auto tmp = merged_uses;
+      direct_uses_[calling_proc].merge(tmp);
+    }
+
     pkb_ptr_->AddUsesData(proc, merged_uses);
+    direct_uses_.erase(proc);
+  }
+
+  for (auto& [proc, data] : direct_uses_) {
+    pkb_ptr_->AddUsesData(proc, data);
   }
 }
 
@@ -49,19 +62,24 @@ void UsesVisitor::Process(ast::PrintNode* print_node) {
   std::unordered_set<std::string> vars = {print_node->get_var_name()};
   pkb_ptr_->AddUsesData(print_node->get_line(), vars);
   direct_uses_[current_procedure_].merge(vars);
+  pkb_ptr_->set_var_name_for_line(print_node->get_line(),
+                                  print_node->get_var_name());
 }
 
 void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
   VarCollector var_collector;
   auto& cond_node = if_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);
-  std::unordered_set<std::string> vars = var_collector.get_vars();
+  std::unordered_set<std::string> cond_vars = var_collector.get_vars();
+  std::unordered_set<std::string> vars(cond_vars);
 
   // add the additional variables from the sub statement lists
   AddVariablesFromStmtList(*(if_node->get_then()), vars);
   AddVariablesFromStmtList(*(if_node->get_else()), vars);
 
-  pkb_ptr_->AddUsesData(if_node->get_line(), vars);
+  pkb_ptr_->AddUsesData(
+      if_node->get_line(), cond_vars, vars);
+
   direct_uses_[current_procedure_].merge(vars);
 }
 
@@ -69,11 +87,13 @@ void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
   VarCollector var_collector;
   auto& cond_node = while_node->get_cond();
   cond_node->AcceptVisitor(&var_collector);
-  std::unordered_set<std::string> vars = var_collector.get_vars();
+  std::unordered_set<std::string> cond_vars = var_collector.get_vars();
+  std::unordered_set<std::string> vars(cond_vars);
 
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
-  pkb_ptr_->AddUsesData(while_node->get_line(), vars);
+  pkb_ptr_->AddUsesData(
+      while_node->get_line(), cond_vars, vars);
   direct_uses_[current_procedure_].merge(vars);
 }
 
@@ -82,6 +102,8 @@ void UsesVisitor::Process(ast::CallNode* call_node) {
   auto called_proc = call_node->get_var()->get_name();
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
+  proc_called_by_line_[called_proc].insert(call_node->get_line());
+  call_to_proc_[call_node->get_line()] = parent_proc;
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

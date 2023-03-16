@@ -19,8 +19,6 @@ class ClauseEvaluator {
       EntitySet &RHS);
 
  private:
-  using TwoSynonymRows = std::vector<std::pair<Entity, Entity>>;
-
   // Clauses where neither argument is a synonym
   bool EvaluateExactClause(
       ClausePtr &clause,
@@ -54,14 +52,14 @@ class ClauseEvaluator {
       EntitySet &RHS,
       EntitySet &LHS_results,
       EntitySet &RHS_results,
-      TwoSynonymRows &rows);
+      Table::TwoSynonymRows &rows);
 
   void CreateClauseTable(
       ClausePtr &clause,
       Table &clause_table,
       EntitySet &LHS_results,
       EntitySet &RHS_results,
-      TwoSynonymRows &rows);
+      Table::TwoSynonymRows &rows);
 
   pkb::PKBReadPtr &pkb_;
 };

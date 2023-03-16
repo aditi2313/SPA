@@ -23,6 +23,15 @@ class PqlSemanticErrorException : public InvalidPqlException {
       : InvalidPqlException(msg) {}
 };
 
+class QpsEvaluatorException : public std::exception {
+ public:
+  explicit QpsEvaluatorException(const char *msg) : message(msg) {}
+  const char *what() const throw() override { return message; }
+
+ private:
+  const char *message;
+};
+
 class NotImplementedException : public std::exception {
  public:
   char *what() { return const_cast<char *>("Not Implemented"); }

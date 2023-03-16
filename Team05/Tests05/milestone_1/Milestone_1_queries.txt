@@ -11,33 +11,35 @@ y
 3 - comment
 assign a; 
 Select a pattern a(_, "a + b")
-7
+5
 5000
 4 - comment
 assign a; 
 Select a pattern a(_, "a - b")
-none
+11
 5000
 5 - comment
 stmt s;
-Select s such that Parent(s, 10);
-9
+Select s such that Parent(s, 9)
+6
 5000
 6 - comment
 stmt s;
-Select s such that Uses(s, b);
-7, 9
+Select s such that Uses(s, _)
+3,5,6,7,8,11,14,15,21,22,23,24
 5000
 7 - comment
 variable v;
-Select v such that Uses(19, v);
-a, b
+Select v such that Uses(21, v)
+read
 5000
 8 - comment
 stmt s;
-Select s such that Parent*(s, 11);
-9, 10
+Select s such that Parent*(s, 8)
+6, 7
 5000
 9 - comment
 stmt s;
-Select s such that Follows(s, )
+Select s such that Follows(s, _)
+1,2,3,4,5,10,12,13,17,18,19,20,21,22,23,25
+5000

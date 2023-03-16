@@ -218,6 +218,7 @@ class WithFactory : public ClauseFactory {
         || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
 
+
     return arg1->Validate(LHS_entity_names_)
         && arg2->Validate(RHS_entity_names_);
   }

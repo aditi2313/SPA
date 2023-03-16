@@ -46,6 +46,7 @@ class SynonymArg : public Argument {
   inline void set_entity_name(EntityName entity_name) {
     entity_name_ = entity_name;
   }
+
   inline void set_attr_name(AttrName attr_name) {
     attr_name_ = attr_name;
   }

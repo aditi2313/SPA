@@ -304,6 +304,15 @@ TEST_CASE("Test synonym types for each clause are valid") {
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
 
+
+  SECTION("Exact expression for Pattern should pass") {
+    std::string query_str = "assign a; variable v;"
+                            "Select a pattern a(v, \"quota\")";
+    QueryPtr query = parser.ParseQuery(query_str);
+
+    REQUIRE_NOTHROW(Validator::Validate(query));
+  }
+
   SECTION("Invalid types between LHS and RHS for With Clause "
           "should throw error") {
     std::string query_str = "stmt s;"

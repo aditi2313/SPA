@@ -91,7 +91,6 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
-  // todo(gab): consider how to integrate this with Filter
   std::unordered_set<int> Affects(int);
 
  private:

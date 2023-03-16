@@ -57,12 +57,11 @@ std::unique_ptr<PKBResult<NextTable>> PKBRead::Next(
 
 std::unordered_set<int> PKBRead::Affects(int s) {
   // bfs to find the variables that this stmt
-  // affects --> assuming that this statement is an assign statement
+
   std::queue<int> frontier;
   std::unordered_set<int> visited;
   std::unordered_set<int> result;
 
-  // the assumption is that s is an assignment.
   if (!relation_table_->assign_.count(s)) {
     return {};
   }

@@ -95,10 +95,10 @@ class PKBRead {
   std::unordered_set<int> Affects(int);
 
  private:
-  inline bool IsAssignReadOrCall(int v) {
-    return relation_table_->assign_.count(v) ||
-           relation_table_->read_.count(v) || relation_table_->calls_.count(v);
+  inline bool IsContainerStmt(int v) {
+    return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);
   }
+
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;
 };

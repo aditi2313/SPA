@@ -7,13 +7,7 @@
 #include <variant>
 #include <vector>
 
-#include "PKB/data/AssignData.h"
-#include "PKB/data/CallsData.h"
-#include "PKB/data/FollowsData.h"
-#include "PKB/data/ModifiesData.h"
-#include "PKB/data/NextData.h"
-#include "PKB/data/ParentData.h"
-#include "PKB/data/UsesData.h"
+#include "PKB/data/Export.h"
 
 namespace pkb {
 

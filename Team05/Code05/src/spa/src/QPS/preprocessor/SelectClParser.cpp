@@ -9,13 +9,13 @@ namespace qps {
 // to determine if the machine should go to next state
 int SelectClParser::NextState(
     int current_state_index, std::string token) {
-  for (int neighbour : transition_table_[current_state_index]) {
-    if (states_.at(neighbour)->is_transition_keyword(token)) {
-      return neighbour;
+  for (int next_state : transition_table_.at(current_state_index)) {
+    if (states_.at(next_state)->is_transition_keyword(token)) {
+      return next_state;
     }
   }
 
-  return current_state_index;  // Stay in same state
+  throw PqlSyntaxErrorException("Invalid PQL syntax");
 }
 
 // Returns a vector of tokens retrieved from query_string

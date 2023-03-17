@@ -40,6 +40,22 @@ class ClauseFactory {
   bool is_wildcard_allowed_as_first_arg_ = true;
 };
 
+class AffectsFactory : public ClauseFactory {
+ public:
+  AffectsFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllStmtEntityNames;
+    RHS_entity_names_ = PQL::kAllStmtEntityNames;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kStmtEntityName);
+    InitializeWildcard(arg2, PQL::kStmtEntityName);
+
+    return std::make_unique<AffectsClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 class ModifiesFactory : public ClauseFactory {
  public:
   ModifiesFactory() : ClauseFactory() {

@@ -355,4 +355,11 @@ TEST_CASE("Test ParseQuery") {
 
     TestThrows(query_string);
   }
+
+  SECTION("Query with double Select should throw error") {
+    std::string query_string = "stmt s; procedure p;"
+                               "Select s Select p";
+
+    TestThrows(query_string);
+  }
 }

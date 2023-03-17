@@ -44,5 +44,6 @@ using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 using ParentIndexFilter = IndexFilter<pkb::ParentData>;
 using CallsIndexFilter = IndexFilter<pkb::CallsData>;
+using ConditionIndexFilter = IndexFilter<pkb::ConditionData>;
 using NextIndexFilter = IndexFilter<pkb::NextData>;
 }  // namespace filter

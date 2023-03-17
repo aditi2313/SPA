@@ -27,7 +27,7 @@ class ConditionData {
 
   inline std::variant<int, std::string> get_index() { return line_; }
 
-  inline const std::unordered_set<std::string>& get_control_variables() {
+  inline const std::unordered_set<std::string>& get_variables() {
     return variable_names_;
   }
 

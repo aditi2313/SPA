@@ -33,10 +33,6 @@ class UsesData {
         return variable_names_;
     }
 
-    inline const std::unordered_set<std::string>& get_control_variables() {
-      return control_variable_names_;
-    }
-
  private:
     std::variant<int, std::string> line_;
     std::unordered_set<std::string> variable_names_;

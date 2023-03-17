@@ -103,8 +103,9 @@ class PKBRelationTable {
   }
 
 
-  void add_condition_data(const std::variant<int, std::string> line,
-                          const std::unordered_set<std::string>& variable_names) {
+  void add_condition_data(
+      const std::variant<int, std::string> line,
+      const std::unordered_set<std::string>& variable_names) {
     condition_table_.add_row(line, ConditionData(line, variable_names));
   }
 };

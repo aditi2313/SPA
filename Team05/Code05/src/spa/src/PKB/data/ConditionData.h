@@ -36,5 +36,4 @@ class ConditionData {
   // Variable names that appear in the condition
   std::unordered_set<std::string> variable_names_;
 };
-
-}
+}  // namespace pkb

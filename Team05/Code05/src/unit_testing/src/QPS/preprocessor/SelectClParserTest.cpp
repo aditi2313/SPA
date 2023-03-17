@@ -402,4 +402,11 @@ TEST_CASE("Test ParseQuery") {
     REQUIRE_THROWS_AS(
         parser.ParseQuery(query_string), PqlSemanticErrorException);
   }
+
+  SECTION("Query with double Select should throw error") {
+    std::string query_string = "stmt s; procedure p;"
+                               "Select s Select p";
+
+    TestThrows(query_string);
+  }
 }

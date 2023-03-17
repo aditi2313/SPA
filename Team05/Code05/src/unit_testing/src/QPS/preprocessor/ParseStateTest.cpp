@@ -191,6 +191,21 @@ TEST_CASE("Test SuchThatParseState") {
   MasterArgumentFactory master_argument_factory;
   MasterClauseFactory master_clause_factory;
 
+  SECTION("Such that clause for Affects should parse correctly") {
+    std::vector<std::string> tokens{
+        "such", "that", "Affects", "(", "6", ",", "7", ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_clause = master_clause_factory.Create(
+        ClauseType::kAffects,
+        master_argument_factory.CreateEntOrStmtRef("6"),
+        master_argument_factory.CreateEntOrStmtRef("7"));
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
   SECTION("Such that clause for Modifies should parse correctly") {
     std::vector<std::string> tokens{
         "such", "that", "Modifies", "(", "6", ",", "v", ")"};

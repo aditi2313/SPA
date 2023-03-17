@@ -46,6 +46,7 @@ class PQL {
     return kAllEntityNames.count(str);
   }
 
+  inline static RelName kAffectsRelName = "Affects";
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";

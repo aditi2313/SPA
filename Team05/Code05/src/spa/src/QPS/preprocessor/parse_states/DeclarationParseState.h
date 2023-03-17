@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "RecursiveParseState.h"
 
 namespace qps {
@@ -40,6 +42,10 @@ class DeclarationParseState : public RecursiveParseState {
 
     end_states_.emplace_back(grammar_.end());
     kExceptionMessage = "Invalid PQL syntax in declaration";
+  }
+
+  inline bool is_transition_keyword(std::string token) override {
+    return PQL::is_entity_name(token);
   }
 
  private:

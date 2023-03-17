@@ -10,26 +10,14 @@ namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
-  ClauseEvaluator clause_evaluator(pkb_);
   auto &clauses = query->get_clauses();
 
   // Order of evaluation
   auto order = ClauseOptimiser::GroupClauses(clauses);
 
-  for(auto &group : order) {
+  for (auto &group : order) {
     for (auto &clause_index : group) {
-      auto &clause = clauses.at(clause_index);
-      clause->Preprocess(pkb_, table_);
-
-      ArgumentPtr &arg1 = clause->get_arg1();
-      ArgumentPtr &arg2 = clause->get_arg2();
-      EntitySet LHS, RHS;
-      Table clause_table;
-
-      arg1->InitializeEntities(table_, pkb_, LHS);
-      arg2->InitializeEntities(table_, pkb_, RHS);
-
-      bool res = clause_evaluator.EvaluateClause(clause, clause_table, LHS, RHS);
+      bool res = EvaluateClause(clauses.at(clause_index));
 
       if (!res) {
         // Clause is false, can immediately return empty result.
@@ -39,14 +27,34 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
           return std::make_unique<ListQueryResult>();
         }
       }
-
-      if (!clause_table.Empty()) {
-        table_ = TableJoiner::Join(table_, clause_table);
-      }
     }
   }
 
+  return BuildResult(query);
+}
 
+bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
+  clause->Preprocess(pkb_, table_);
+
+  ArgumentPtr &arg1 = clause->get_arg1();
+  ArgumentPtr &arg2 = clause->get_arg2();
+  EntitySet LHS, RHS;
+  Table clause_table;
+
+  arg1->InitializeEntities(table_, pkb_, LHS);
+  arg2->InitializeEntities(table_, pkb_, RHS);
+
+  bool res = clause_evaluator_.EvaluateClause(
+      clause, clause_table, LHS, RHS);
+
+  if (!clause_table.Empty()) {
+    table_ = TableJoiner::Join(table_, clause_table);
+  }
+
+  return res;
+}
+
+QueryResultPtr QueryEvaluator::BuildResult(QueryPtr &query) {
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);
   }

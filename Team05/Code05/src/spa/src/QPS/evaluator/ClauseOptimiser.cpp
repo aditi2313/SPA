@@ -3,9 +3,16 @@
 #include <queue>
 
 namespace qps {
+// Given a list of clauses, returns a list of groups
+// where each group is a list of indexes of
+// clauses that belong to that same group.
+// Clauses belong to the same group if they share at least
+// one common synonym with another clause in that group.
 std::vector<ClauseOptimiser::Group> ClauseOptimiser::GroupClauses(
     std::vector<ClausePtr> &clauses) {
   AdjList adj_list;
+  // Draw bidirectional edges between clauses that
+  // share at least one synonym
   PreprocessClauses(clauses, adj_list);
   std::vector<ClauseOptimiser::Group> groups;
 
@@ -22,6 +29,13 @@ std::vector<ClauseOptimiser::Group> ClauseOptimiser::GroupClauses(
   return groups;
 }
 
+// Starts a BFS from `source` and using `AL`.
+// Adds all nodes visited on the BFS to `group`
+// as they belong to the same `group`.
+// Implicitly the order of nodes being added to `group` also ensures that
+// processing a new Clause has at least one shared synonym
+// to a Clause that has been previously processed,
+// hence avoiding expensive cross products.
 void ClauseOptimiser::BFS(
     int source, AdjList &AL, std::vector<bool> &visited, Group &group) {
   std::queue<int> q;
@@ -40,6 +54,11 @@ void ClauseOptimiser::BFS(
   }
 }
 
+// Given a list of clauses, iterate through each
+// clause and find clauses that it shares at least
+// one synonym argument with.
+// Update adj_list by drawing a bidirectional edge
+// between these two clause indexes.
 void ClauseOptimiser::PreprocessClauses(
     std::vector<ClausePtr> &clauses, AdjList &adj_list) {
   int num_clauses = clauses.size();

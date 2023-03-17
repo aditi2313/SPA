@@ -77,6 +77,15 @@ class PKBWrite {
   /// <param name="next"></param>
   void AddNextData(int line, const int next);
 
+  /// <summary>
+  /// Adds a conditions row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="variable_names"></param>
+  void AddConditionData(const std::variant<int, std::string> line,
+                   const std::unordered_set<std::string>& variable_names);
+
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);
   }

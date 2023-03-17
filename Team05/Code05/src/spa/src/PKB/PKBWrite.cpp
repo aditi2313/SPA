@@ -87,6 +87,12 @@ void PKBWrite::AddNextData(int line, int next) {
   pkb_relation_table_->add_next_data(line, next);
 }
 
+void PKBWrite::AddConditionData(
+    const std::variant<int, std::string> line,
+    const std::unordered_set<std::string>& variable_names) {
+  pkb_relation_table_->add_condition_data(line, variable_names);
+}
+
 void PKBWrite::ProcessFollows() {
   ProcessIndexableTableInt<FollowsData>(
       pkb_relation_table_->follows_table_, [&](FollowsData& data) {

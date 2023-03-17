@@ -46,6 +46,7 @@ class PQL {
     return kAllEntityNames.count(str);
   }
 
+  inline static RelName kAffectsRelName = "Affects";
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -61,9 +62,14 @@ class PQL {
 
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{
-      kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
-      kParentTRelName, kUsesRelName, kPatternRelName,
-      kCallsRelName, kCallsTRelName, kNextRelName, kNextTRelName
+      kAffectsRelName,
+      kCallsRelName, kCallsTRelName,
+      kFollowsRelName, kFollowsTRelName,
+      kModifiesRelName,
+      kNextRelName, kNextTRelName,
+      kParentRelName, kParentTRelName,
+      kPatternRelName,
+      kUsesRelName,
   };
 
   // Returns true if the string is a relationship that appears

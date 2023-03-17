@@ -14,6 +14,8 @@ class MasterClauseFactory {
  public:
   MasterClauseFactory() {
     clause_factories_.insert(
+        {PQL::kAffectsRelName, std::make_unique<AffectsFactory>()});
+    clause_factories_.insert(
         {PQL::kModifiesRelName, std::make_unique<ModifiesFactory>()});
     clause_factories_.insert(
         {PQL::kFollowsRelName, std::make_unique<FollowsFactory>()});

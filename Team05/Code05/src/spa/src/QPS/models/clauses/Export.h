@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AffectsClause.h"
 #include "CallsClause.h"
 #include "CallsTClause.h"
 #include "Clause.h"

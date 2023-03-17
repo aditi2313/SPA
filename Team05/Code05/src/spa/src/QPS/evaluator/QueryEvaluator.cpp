@@ -4,39 +4,48 @@
 #include "QPS/models/Table.h"
 #include "TableJoiner.h"
 #include "ClauseEvaluator.h"
+#include "ClauseOptimiser.h"
 
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   ClauseEvaluator clause_evaluator(pkb_);
+  auto &clauses = query->get_clauses();
 
-  for (auto &clause : query->get_clauses()) {
-    clause->Preprocess(pkb_, table_);
+  // Order of evaluation
+  auto order = ClauseOptimiser::GroupClauses(clauses);
 
-    ArgumentPtr &arg1 = clause->get_arg1();
-    ArgumentPtr &arg2 = clause->get_arg2();
-    EntitySet LHS, RHS;
-    Table clause_table;
+  for(auto &group : order) {
+    for (auto &clause_index : group) {
+      auto &clause = clauses.at(clause_index);
+      clause->Preprocess(pkb_, table_);
 
-    arg1->InitializeEntities(table_, pkb_, LHS);
-    arg2->InitializeEntities(table_, pkb_, RHS);
+      ArgumentPtr &arg1 = clause->get_arg1();
+      ArgumentPtr &arg2 = clause->get_arg2();
+      EntitySet LHS, RHS;
+      Table clause_table;
 
-    bool res = clause_evaluator.EvaluateClause(clause, clause_table, LHS, RHS);
+      arg1->InitializeEntities(table_, pkb_, LHS);
+      arg2->InitializeEntities(table_, pkb_, RHS);
 
-    if (!res) {
-      // Clause is false, can immediately return empty result.
-      if (query->is_boolean_query()) {
-        return std::make_unique<BooleanQueryResult>(false);
-      } else {
-        return std::make_unique<ListQueryResult>();
+      bool res = clause_evaluator.EvaluateClause(clause, clause_table, LHS, RHS);
+
+      if (!res) {
+        // Clause is false, can immediately return empty result.
+        if (query->is_boolean_query()) {
+          return std::make_unique<BooleanQueryResult>(false);
+        } else {
+          return std::make_unique<ListQueryResult>();
+        }
+      }
+
+      if (!clause_table.Empty()) {
+        table_ = TableJoiner::Join(table_, clause_table);
       }
     }
-
-    if (!clause_table.Empty()) {
-      table_ = TableJoiner::Join(table_, clause_table);
-    }
   }
+
 
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);

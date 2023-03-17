@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Clause.h"
 
 using filter::CallsIndexFilter;
@@ -17,7 +19,7 @@ class AffectsClause : public Clause {
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
     auto affected_lines = pkb->Affects(index.get_int());
-    for(auto &affected_line : affected_lines) {
+    for (auto &affected_line : affected_lines) {
       results.insert(Entity(affected_line));
     }
   }

@@ -61,6 +61,7 @@ class PQL {
   inline static RelName kWithRelName = "with";
 
   inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
+      {kAffectsRelName, ClauseType::kAffects},
       {kModifiesRelName, ClauseType::kModifies},
       {kFollowsRelName, ClauseType::kFollows},
       {kFollowsTRelName, ClauseType::kFollowsT},

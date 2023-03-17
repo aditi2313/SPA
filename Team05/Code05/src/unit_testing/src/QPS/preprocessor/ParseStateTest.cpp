@@ -198,7 +198,7 @@ TEST_CASE("Test SuchThatParseState") {
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
-        PQL::kAffectsRelName,
+        ClauseType::kAffects,
         master_argument_factory.CreateEntOrStmtRef("6"),
         master_argument_factory.CreateEntOrStmtRef("7"));
 

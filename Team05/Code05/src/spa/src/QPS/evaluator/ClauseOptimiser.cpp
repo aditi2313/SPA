@@ -3,7 +3,8 @@
 #include <queue>
 
 namespace qps {
-std::vector<ClauseOptimiser::Group> ClauseOptimiser::GroupClauses(std::vector<ClausePtr> &clauses) {
+std::vector<ClauseOptimiser::Group> ClauseOptimiser::GroupClauses(
+    std::vector<ClausePtr> &clauses) {
   AdjList adj_list;
   PreprocessClauses(clauses, adj_list);
   std::vector<ClauseOptimiser::Group> groups;
@@ -25,15 +26,16 @@ void ClauseOptimiser::BFS(
     int source, AdjList &AL, std::vector<bool> &visited, Group &group) {
   std::queue<int> q;
   q.push(source);
+  visited[source] = true;
+
   while (!q.empty()) {
     int curr = q.front();
     q.pop();
-    if (visited[curr]) continue;
-    visited[curr] = true;
     group.emplace_back(curr);  // Add to current group
 
     for (int neigh : AL.at(curr)) {
-      q.push(neigh);
+      if (!visited[neigh]) q.push(neigh);
+      visited[neigh] = true;
     }
   }
 }
@@ -49,7 +51,7 @@ void ClauseOptimiser::PreprocessClauses(
         adj_list.at(i).emplace_back(j);
         adj_list.at(j).emplace_back(i);
       }
-    };
+    }
   }
 }
 

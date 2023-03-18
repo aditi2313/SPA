@@ -8,6 +8,7 @@
 #include "QPS/models/PQL.h"
 #include "QPS/models/arguments/Export.h"
 #include "QPS/models/Query.h"
+#include "ArgumentFactory.h"
 
 namespace qps {
 class MasterArgumentFactory {
@@ -142,6 +143,8 @@ class MasterArgumentFactory {
     assert(PQL::is_synonym(token));
     return CreateSynonym(token);
   }
+ private:
+  std::unordered_map<ArgumentType, ArgumentFactoryPtr> argument_factories_;
 };
 }  // namespace qps
 

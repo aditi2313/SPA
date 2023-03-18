@@ -95,6 +95,8 @@ class Clause {
 
   virtual ~Clause() = default;
 
+  friend class ClauseOptimiser;
+
  protected:
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;

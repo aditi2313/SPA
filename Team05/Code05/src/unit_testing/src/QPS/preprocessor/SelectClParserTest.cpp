@@ -356,8 +356,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-    // TODO(JL): Will fix this in a separate PR
-//    TestThrows(query_string);
+    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

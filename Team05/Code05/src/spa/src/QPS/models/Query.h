@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "QPS/models/clauses/Clause.h"
-#include "common/Utiity.h"
+#include "common/Utility.h"
 #include "Entity.h"
 #include "Synonym.h"
 #include "PQL.h"

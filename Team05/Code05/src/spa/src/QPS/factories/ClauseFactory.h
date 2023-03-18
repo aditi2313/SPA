@@ -51,6 +51,22 @@ class AffectsFactory : public ClauseFactory {
     InitializeWildcard(arg1, EntityType::kStmt);
     InitializeWildcard(arg2, EntityType::kStmt);
 
+    return std::make_unique<AffectsClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
+class AffectsTFactory : public ClauseFactory {
+ public:
+  AffectsTFactory() : ClauseFactory() {
+    LHS_entity_types_ = PQL::kAllStmtEntityTypes;
+    RHS_entity_types_ = PQL::kAllStmtEntityTypes;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, EntityType::kStmt);
+    InitializeWildcard(arg2, EntityType::kStmt);
+
     return std::make_unique<AffectsTClause>(
         std::move(arg1), std::move(arg2));
   }

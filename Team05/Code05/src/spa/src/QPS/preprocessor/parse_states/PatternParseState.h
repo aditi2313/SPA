@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <string>
+#include <memory>
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterArgumentFactory.h"
@@ -34,14 +35,7 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
-              if (!query->is_synonym_name_declared(*itr_)) {
-                throw PqlSemanticErrorException(
-                    "Synonym name in Pattern clause has not been declared");
-              }
-              EntityType entity_type =
-                  query->get_declared_synonym_entity_type(*itr_);
-              arg1_ =
-                  master_argument_factory_.CreateSynonym(*itr_, entity_type);
+              arg1_ = master_argument_factory_.CreateSynonym(*itr_);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
@@ -116,7 +110,13 @@ class PatternParseState : public RecursiveParseState {
               if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
                 ThrowException();
               }
-              EntityType entity_type = SynonymArg::get_entity_type(arg1_);
+              if (!query->is_synonym_name_declared(arg1_->get_syn_name())) {
+                throw PqlSemanticErrorException(
+                    "Undeclared synonym used in pattern clause");
+              }
+              EntityType entity_type = query->get_declared_synonym_entity_type(
+                  arg1_->get_syn_name());
+              arg1_->set_entity_type(entity_type);
               if (pattern_clause_type_ == ClauseType::kPatternIf
                   && entity_type != EntityType::kIf)
                 throw PqlSemanticErrorException(
@@ -162,7 +162,7 @@ class PatternParseState : public RecursiveParseState {
   }
 
  private:
-  ArgumentPtr arg1_;
+  std::unique_ptr<SynonymArg> arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
   ClauseType pattern_clause_type_;

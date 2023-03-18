@@ -3,6 +3,7 @@
 namespace qps {
 enum class ClauseType {
   kAffects,
+  kAffectsT,
   kModifies,
   kFollows,
   kFollowsT,

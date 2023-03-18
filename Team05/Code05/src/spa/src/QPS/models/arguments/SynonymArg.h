@@ -19,8 +19,7 @@ class SynonymArg : public Argument {
       : Argument(), syn_name_(syn_name), entity_type_(entity_type) {}
 
   static inline SynonymName get_full_name(ArgumentPtr &arg) {
-    SynonymArg *syn_arg = dynam
-        ic_cast<SynonymArg *>(arg.get());
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
     return syn_arg->get_full_name();
   }
 

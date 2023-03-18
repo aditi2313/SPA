@@ -9,6 +9,7 @@
 // include your other headers here
 #include "AbstractWrapper.h"
 #include "PKB/PKBRelationTable.h"
+#include "PKB/PKBCache.h"
 
 class TestWrapper : public AbstractWrapper {
  public:
@@ -26,6 +27,7 @@ class TestWrapper : public AbstractWrapper {
 
  private:
   std::unique_ptr<pkb::PKBRelationTable> pkb_relation_;
+  std::unique_ptr<pkb::PKBCache> pkb_cache_;
 };
 
 #endif

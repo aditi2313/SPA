@@ -11,41 +11,23 @@
 #include <vector>
 
 namespace util {
-/// <summary>
-/// Runs BFS with the given get_children, initial children.
-/// </summary>
-/// <typeparam name="Node">The type of the nodes to run bfs</typeparam>
-/// <typeparam name="Container">The container of nodes returned</typeparam>
-/// <param name="get_children">The function to return the container of
-/// nodes</param> <param name="intial_children">The initial container of
-/// children</param> <param name="add_result">The method to add results
-/// to. Returns true if nothing needs to be done. False if no more children
-/// should be generated from this</param>
-template <class Node, class Container = std::vector<Node>>
-void BFS(std::function<Container(Node &)> get_children,
-         const Container intial_children,
-         std::function<bool(const Node &)> add_result) {
-  std::queue<Node> frontier;
-  std::unordered_set<Node> visited;
-  for (auto &node : intial_children) {
-    frontier.push(node);
-  }
-  while (!frontier.empty()) {
-    auto &c = frontier.front();
-    frontier.pop();
-    if (visited.count(c)) {
-      continue;
-    }
-    visited.insert(c);
-    if (!add_result(c)) {
-      continue;
-    }
 
-    for (auto &v : get_children(c)) {
-      frontier.push(v);
-    }
-  }
-}
+template <class Node, class Container = std::vector<Node>>
+struct GraphSearch {
+  /// <summary>
+  /// Runs BFS with the given get_children, initial children.
+  /// </summary>
+  /// <typeparam name="Node">The type of the nodes to run bfs</typeparam>
+  /// <typeparam name="Container">The container of nodes returned</typeparam>
+  /// <param name="get_children">The function to return the container of
+  /// nodes</param> <param name="intial_children">The initial container of
+  /// children</param> <param name="add_result">The method to add results
+  /// to. Returns true if nothing needs to be done. False if no more children
+  /// should be generated from this</param>
+  static void BFS(std::function<Container(Node &)> get_children,
+                  const Container intial_children,
+                  std::function<bool(const Node &)> add_result);
+};
 
 /// <summary>
 /// Utility function for checking the instance of a

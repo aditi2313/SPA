@@ -75,7 +75,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
 
-  util::BFS<int, std::unordered_set<int>>(
+  util::GraphSearch<int, std::unordered_set<int>>::BFS(
       [&](int& v) {
         if (!relation_table_->next_table_.exists(v))
           return std::unordered_set<int>{};
@@ -117,7 +117,7 @@ std::unordered_set<int> PKBRead::NextT(int v) {
   }
   auto& data = relation_table_->next_table_.get_row(v);
 
-  util::BFS<int, std::unordered_set<int>>(
+  util::GraphSearch<int, std::unordered_set<int>>::BFS(
       [&](int& curr) {
         if (!relation_table_->next_table_.exists(curr))
           return std::unordered_set<int>{};

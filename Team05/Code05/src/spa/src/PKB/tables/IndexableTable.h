@@ -70,6 +70,7 @@ class IndexableTable {
 };
 
 typedef IndexableTable<AffectsData> AffectsTable;
+typedef IndexableTable<AffectsTData> AffectsTTable;
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<UsesData> UsesTable;
 typedef IndexableTable<FollowsData> FollowsTable;

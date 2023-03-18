@@ -286,7 +286,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v) "
                                "pattern a(v, _\"x\"_) "
-                               "and pattern a(_, \"x\") "
+                               "and a(_, \"x\") "
                                "such that Uses(6, v) "
                                "and Parent(6, 7)";
 

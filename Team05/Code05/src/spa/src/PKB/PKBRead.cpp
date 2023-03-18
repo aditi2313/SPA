@@ -57,6 +57,12 @@ std::unique_ptr<PKBResult<NextTable>> PKBRead::Next(
   return create_result(std::move(result_table));
 }
 
+std::unique_ptr<PKBResult<ConditionTable>> PKBRead::Condition(
+    IndexableFilterPtr<ConditionData> filter) {
+  auto result_table = filter->FilterTable(relation_table_->condition_table_);
+  return create_result(std::move(result_table));
+}
+
 std::unordered_set<int> PKBRead::Affects(int s) {
   // bfs to find the variables that this stmt
 

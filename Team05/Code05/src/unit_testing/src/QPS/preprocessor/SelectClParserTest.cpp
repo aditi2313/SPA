@@ -9,7 +9,7 @@ using namespace qps; // NOLINT
 
 // Helper method for testing
 QueryPtr BuildQuery(
-    std::vector<std::pair<SynonymName, EntityName>> synonyms,
+    std::vector<std::pair<SynonymName, EntityType>> synonyms,
     std::vector<std::string> selected_synonyms
 ) {
   QueryPtr query = std::make_unique<Query>();
@@ -73,7 +73,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "procedure p; Select p";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"p", PQL::kProcedureEntityName}},
+        {{"p", EntityType::kProcedure}},
         {"p"});
 
     REQUIRE(*actual_query == *expected_query);
@@ -83,7 +83,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "variable v; Select v such that Modifies(6, v)";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName}},
+        {{"v", EntityType::kVariable}},
         {"v"});
     auto arg1 = master_argument_factory.CreateEntOrStmtRef("6");
     auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
@@ -99,8 +99,8 @@ TEST_CASE("Test ParseQuery") {
                                "Select <s, v> such that Modifies(s, v)";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName},
-         {"s", PQL::kStmtEntityName}},
+        {{"v", EntityType::kVariable},
+         {"s", EntityType::kStmt}},
         {"s", "v"});
     auto arg1 = master_argument_factory.CreateEntOrStmtRef("s");
     auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
@@ -116,19 +116,19 @@ TEST_CASE("Test ParseQuery") {
                                "Select a pattern a(v, \"x + y\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"a", PQL::kAssignEntityName}, {"v", PQL::kVariableEntityName}},
+        {{"a", EntityType::kAssign}, {"v", EntityType::kVariable}},
         {"a"});
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -138,7 +138,7 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "assign a; Select a with a.stmt# = 12";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"a", PQL::kAssignEntityName}},
+        {{"a", EntityType::kAssign}},
         {"a"});
 
     expected_query->add_clause(
@@ -160,9 +160,9 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(\"variable\", _\"x\"_)";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName},
-         {"p", PQL::kProcedureEntityName},
-         {"a", PQL::kAssignEntityName}},
+        {{"v", EntityType::kVariable},
+         {"p", EntityType::kProcedure},
+         {"a", EntityType::kAssign}},
         {"v"});
 
     expected_query->add_clause(
@@ -178,22 +178,22 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", PQL::kAssignEntityName),
+            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", PQL::kAssignEntityName),
+            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", PQL::kAssignEntityName),
+            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("\"variable\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", PQL::kAssignEntityName),
+            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -211,8 +211,8 @@ TEST_CASE("Test ParseQuery") {
                                "   \t pattern a(_,  \"   x  \t\")";
     QueryPtr actual_query = parser.ParseQuery(query_string);
     QueryPtr expected_query = BuildQuery(
-        {{"v", PQL::kVariableEntityName},
-         {"a", PQL::kAssignEntityName}},
+        {{"v", EntityType::kVariable},
+         {"a", EntityType::kAssign}},
         {"v"});
     expected_query->add_clause(
         master_clause_factory.Create(
@@ -228,25 +228,25 @@ TEST_CASE("Test ParseQuery") {
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
-                "a", PQL::kAssignEntityName),
+                "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x\"")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -346,7 +346,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v such that Modifies(6, v) "
                                "and pattern a(v, _\"x\"_)";
 
-      TestThrows(query_string);
+    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

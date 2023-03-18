@@ -38,10 +38,10 @@ class PatternParseState : public RecursiveParseState {
                 throw PqlSemanticErrorException(
                     "Synonym name in Pattern clause has not been declared");
               }
-              EntityName entity_name =
-                  query->get_declared_synonym_entity_name(*itr_);
+              EntityType entity_type =
+                  query->get_declared_synonym_entity_type(*itr_);
               arg1_ =
-                  master_argument_factory_.CreateSynonym(*itr_, entity_name);
+                  master_argument_factory_.CreateSynonym(*itr_, entity_type);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
@@ -116,16 +116,16 @@ class PatternParseState : public RecursiveParseState {
               if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
                 ThrowException();
               }
-              EntityName entity_name = SynonymArg::get_entity_name(arg1_);
+              EntityType entity_type = SynonymArg::get_entity_type(arg1_);
               if (pattern_clause_type_ == ClauseType::kPatternIf
-                  && entity_name != PQL::kIfEntityName)
+                  && entity_type != EntityType::kIf)
                 throw PqlSemanticErrorException(
                     "Pattern-if clause does not start with a syn-if");
 
-              if (entity_name == PQL::kAssignEntityName)
+              if (entity_type == EntityType::kAssign)
                 pattern_clause_type_ = ClauseType::kPatternAssign;
 
-              if (entity_name == PQL::kWhileEntityName)
+              if (entity_type == EntityType::kWhile)
                 pattern_clause_type_ = ClauseType::kPatternWhile;
 
               if (pattern_clause_type_ == ClauseType::kPatternUndetermined) {
@@ -133,7 +133,7 @@ class PatternParseState : public RecursiveParseState {
                     "Unsupported synonym in Pattern clause");
               }
 
-              if (entity_name == PQL::kAssignEntityName) {
+              if (entity_type == EntityType::kAssign) {
                 // Need to create two clauses
                 query->add_clause(master_clause_factory_.Create(
                     ClauseType::kModifies,

@@ -16,9 +16,9 @@ class IntegerArg : public Argument {
   inline int get_number() { return number_; }
 
   inline bool Validate(
-      std::unordered_set<EntityName> &entity_names) override {
-    for (auto &entity_name : entity_names) {
-      if (master_entity_factory_.is_integer(entity_name)) {
+      std::unordered_set<EntityType> &valid_entity_types) override {
+    for (auto &entity_type : valid_entity_types) {
+      if (master_entity_factory_.is_integer(entity_type)) {
         return true;
       }
     }

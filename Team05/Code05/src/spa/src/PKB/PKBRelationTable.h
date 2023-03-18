@@ -28,6 +28,7 @@ class PKBRelationTable {
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
   IndexableTable<NextData> next_table_;
+  IndexableTable<ConditionData> condition_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;
@@ -76,14 +77,6 @@ class PKBRelationTable {
     uses_table_.add_row(line, UsesData(line, variable_names));
   }
 
-  void add_uses_data(const std::variant<int, std::string> line,
-                     const std::unordered_set<std::string>&
-                         control_variable_names,
-                     const std::unordered_set<std::string>& variable_names) {
-    uses_table_.add_row(line,
-                        UsesData(line, control_variable_names, variable_names));
-  }
-
   void add_follows_data(const int line, const int follows) {
     follows_table_.add_row(line, FollowsData(line, follows));
   }
@@ -107,6 +100,13 @@ class PKBRelationTable {
       next_table_.add_row(line, NextData(line));
     }
     next_table_.get_row(line).add_to_next_im_list(next);
+  }
+
+
+  void add_condition_data(
+      const std::variant<int, std::string> line,
+      const std::unordered_set<std::string>& variable_names) {
+    condition_table_.add_row(line, ConditionData(line, variable_names));
   }
 };
 }  // namespace pkb

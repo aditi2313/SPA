@@ -58,6 +58,7 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
 
   inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
@@ -72,6 +73,7 @@ class PQL {
       {kCallsRelName, ClauseType::kCalls},
       {kCallsTRelName, ClauseType::kCallsT},
       {kNextRelName, ClauseType::kNext},
+      {kNextTRelName, ClauseType::kNextT},
       {kWithRelName, ClauseType::kWith}
   };
 
@@ -85,9 +87,8 @@ class PQL {
       kCallsRelName, kCallsTRelName,
       kFollowsRelName, kFollowsTRelName,
       kModifiesRelName,
-      kNextRelName,
+      kNextRelName, kNextTRelName,
       kParentRelName, kParentTRelName,
-      kPatternRelName,
       kUsesRelName,
   };
 

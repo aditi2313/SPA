@@ -1,11 +1,11 @@
 #pragma once
 
-#include <vector>
+#include <iostream>
+#include <memory>
+#include <string>
 #include <unordered_set>
 #include <utility>
-#include <string>
-#include <memory>
-#include <iostream>
+#include <vector>
 
 #include "QPS/models/clauses/Export.h"
 #include "common/exceptions/QPSExceptions.h"
@@ -240,6 +240,22 @@ class NextFactory : public ClauseFactory {
   }
 };
 
+class NextTFactory : public ClauseFactory {
+ public:
+  NextTFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllStmtEntityNames;
+    RHS_entity_names_ = PQL::kAllStmtEntityNames;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kStmtEntityName);
+    InitializeWildcard(arg2, PQL::kStmtEntityName);
+
+    return std::make_unique<NextTClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 class WithFactory : public ClauseFactory {
  public:
   WithFactory() : ClauseFactory() {
@@ -253,7 +269,7 @@ class WithFactory : public ClauseFactory {
   inline bool Validate(ArgumentPtr &arg1, ArgumentPtr &arg2) override {
     // Mismatched LHS and RHS types (e.g stmt.stmt# = "string")
     if ((arg1->IsIdentType() && arg2->IsIntegerType())
-        || (arg1->IsIntegerType() && arg2->IsIdentType()))
+      || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
 
     return arg1->Validate(LHS_entity_names_)

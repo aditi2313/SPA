@@ -6,6 +6,8 @@
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
 
+using filter::ConditionIndexFilter;
+
 namespace qps {
 // RS between a statement and a list of (control) variables
 class PatternIfClause : public Clause {
@@ -18,7 +20,18 @@ class PatternIfClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    // TODO(JL)
+    Clause::Index<pkb::ConditionData>(
+        index,
+        [&](Entity::Value key) {
+          auto filter = std::make_unique<ConditionIndexFilter>(key);
+          return std::move(pkb->Condition(std::move(filter))->get_result());
+        },
+        [&](EntitySet &result, pkb::ConditionData data) {
+          for (auto child : data.get_variables()) {
+            result.insert(Entity(child));
+          }
+        },
+        results);
   }
 };
 

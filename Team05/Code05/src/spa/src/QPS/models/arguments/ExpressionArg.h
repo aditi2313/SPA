@@ -17,7 +17,7 @@ class ExpressionArg : public Argument {
   inline bool is_exact() { return is_exact_; }
 
   inline bool Validate(
-      std::unordered_set<EntityName> &entity_names) override {
+      std::unordered_set<EntityType> &valid_entity_types) override {
     return true;
   }
 

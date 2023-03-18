@@ -27,7 +27,8 @@ class DeclarationParseState : public RecursiveParseState {
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query) {
-              query->declare_synonym(*itr_, declared_entity_name_);
+              query->declare_synonym(
+                  *itr_, PQL::get_entity_type(declared_entity_name_));
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 

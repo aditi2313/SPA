@@ -28,7 +28,6 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::CreateTokenCheck(PQL::kPatternToken),
             Grammar::kEmptyAction));
-    kRecurseBegin = --grammar_.end();  // Recurse from here
 
     // syn-assign | syn-while | syn-if
     grammar_.emplace_back(
@@ -45,6 +44,7 @@ class PatternParseState : public RecursiveParseState {
                   master_argument_factory_.CreateSynonym(*itr_, entity_name);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;
             }));
+    kRecurseBegin = --grammar_.end();  // Recurse from here
 
     // '('
     grammar_.emplace_back(

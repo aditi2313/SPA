@@ -4,7 +4,7 @@
 #include <typeinfo>
 #include <utility>
 
-#include "common/Utiity.h"
+#include "common/Utility.h"
 #include "models/AST/TNode.h"
 #include "models/AST/Token.h"
 

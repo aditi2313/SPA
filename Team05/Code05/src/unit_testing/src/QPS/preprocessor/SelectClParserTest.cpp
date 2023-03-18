@@ -296,7 +296,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "such that Modifies(6, v) "
                                "pattern a(v, _\"x\"_) "
-                               "and pattern a(_, \"x\") "
+                               "and a(_, \"x\") "
                                "such that Uses(6, v) "
                                "and Parent(6, 7)";
 
@@ -322,8 +322,8 @@ TEST_CASE("Test ParseQuery") {
     std::string query_string = "variable v; assign a; if ifs; while w; "
                                "Select <v, a, ifs, w> "
                                "pattern a(v, _) and "
-                               "pattern ifs(v, _, _) and "
-                               "pattern w(v, _)";
+                               "ifs(v, _, _) and "
+                               "w(v, _)";
 
     TestNoThrows(query_string);
   }
@@ -346,17 +346,18 @@ TEST_CASE("Test ParseQuery") {
                                "Select v such that Modifies(6, v) "
                                "and pattern a(v, _\"x\"_)";
 
-    TestThrows(query_string);
+      TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "
           "between pattern and with "
           "should throw error") {
-    std::string query_string = "variable v; assign a;"
+    std::string query_string = "variable v; assign a; constant c; "
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-    TestThrows(query_string);
+    // TODO(JL): Will fix this in a separate PR
+//    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

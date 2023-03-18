@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "common/Utiity.h"
+#include "common/Utility.h"
 
 namespace cfg {
 

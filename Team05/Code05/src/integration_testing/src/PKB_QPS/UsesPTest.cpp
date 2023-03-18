@@ -4,7 +4,7 @@
 #include <list>
 #include <catch.hpp>
 
-#include "common/Utiity.h"
+#include "common/Utility.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "PKB/PKBRead.h"

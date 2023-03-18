@@ -109,7 +109,6 @@ std::unordered_set<int> PKBRead::Affects(int s) {
         }
         return true;
       });
-
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;

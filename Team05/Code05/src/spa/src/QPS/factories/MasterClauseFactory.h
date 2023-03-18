@@ -16,6 +16,8 @@ class MasterClauseFactory {
     clause_factories_.insert(
         {ClauseType::kAffects, std::make_unique<AffectsFactory>()});
     clause_factories_.insert(
+        {ClauseType::kAffectsT, std::make_unique<AffectsTFactory>()});
+    clause_factories_.insert(
         {ClauseType::kModifies, std::make_unique<ModifiesFactory>()});
     clause_factories_.insert(
         {ClauseType::kFollows, std::make_unique<FollowsFactory>()});

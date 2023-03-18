@@ -36,7 +36,7 @@ Select a such that Affects*(7, a)
 8 - AffectsT for line number 8
 assign a;
 Select a such that Affects*(8, a)
-8, 10, 11, 12
+10, 11, 12
 5000
 9 - AffectsT for line number 9
 assign a;
@@ -46,7 +46,7 @@ Select a such that Affects*(9, a)
 10 - AffectsT for line number 10
 assign a;
 Select a such that Affects*(10, a)
-10, 11, 12
+11, 12
 5000
 11 - AffectsT for line number 11
 assign a;
@@ -56,7 +56,7 @@ Select a such that Affects*(11, a)
 12 - AffectsT for line number 12
 assign a;
 Select a such that Affects*(12, a)
-12
+
 5000
 13 - AffectsT for line number 13
 assign a;

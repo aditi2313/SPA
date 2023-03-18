@@ -4,7 +4,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/UsesVisitor.h"
+#include "SP/visitors/Export.h"
 #include "common/filter/filters/PredicateFilter.h"
 
 std::unordered_map<std::variant<int, std::string>,
@@ -125,13 +125,32 @@ TEST_CASE("Test SP and PKB integration for Uses data") {
 
     std::unordered_map<std::variant<int, std::string>,
                        std::unordered_set<std::string>>
-        expected_results = {{1, {"x"}},
-                            {2, vars},
-                            {3, vars},
-                            {4, {"v"}},
-                            {"helper", vars},
-                            {"uses", vars2}};
+        expected_results = {{1, {"x"}}, {2, vars},        {3, vars},
+                            {4, {"v"}}, {"helper", vars}, {"uses", vars2}};
 
     REQUIRE(actual_results == expected_results);
   }
+}
+
+TEST_CASE("Test calls within uses") {
+  std::string program =
+      "procedure p1 {"
+      "if (x == 2) then {"
+      "call r1;"
+      "}else {"
+      "m = 2;"
+      "n = 3;"
+      "}"
+      "}"
+      "procedure r1 { print k; }";
+  auto actual_results = InitializeUses(program);
+
+  std::unordered_map<std::variant<int, std::string>,
+                     std::unordered_set<std::string>>
+      expected_results = {{1, {"x", "k"}},
+                          {2, {"k"}},
+                          {"p1", {"x", "k"}},
+                          {5, {"k"}},
+                          {"r1", {"k"}}};
+  REQUIRE(actual_results == expected_results);
 }

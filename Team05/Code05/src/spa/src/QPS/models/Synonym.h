@@ -10,20 +10,20 @@
 namespace qps {
 class Synonym {
  public:
-  Synonym(SynonymName syn_name, EntityName entity_name) :
-      syn_name_(syn_name), entity_name_(entity_name) {}
+  Synonym(SynonymName syn_name, EntityType entity_type) :
+      syn_name_(syn_name), entity_type_(entity_type) {}
 
   inline SynonymName get_syn_name() const {
     return syn_name_;
   }
 
-  inline EntityName get_entity_name() const {
-    return entity_name_;
+  inline EntityType get_entity_type() const {
+    return entity_type_;
   }
 
   inline bool operator==(const Synonym &other) const {
     return syn_name_ == other.syn_name_
-        && entity_name_ == other.entity_name_;
+        && entity_type_ == other.entity_type_;
   }
 
   inline bool operator!=(const Synonym &other) const {
@@ -32,7 +32,7 @@ class Synonym {
 
  private:
   SynonymName syn_name_;
-  EntityName entity_name_;
+  EntityType entity_type_;
 };
 
 using SynonymPtr = std::unique_ptr<Synonym>;

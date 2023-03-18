@@ -34,8 +34,8 @@ TEST_CASE("Test DeclarationParseState") {
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v"));
-    REQUIRE(query->get_declared_synonym_entity_name("v")
-                == PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_type("v")
+                == EntityType::kVariable);
     REQUIRE(itr == tokens.end());
   };
 
@@ -47,14 +47,14 @@ TEST_CASE("Test DeclarationParseState") {
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v1"));
-    REQUIRE(query->get_declared_synonym_entity_name("v1")
-                == PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_type("v1")
+                == EntityType::kVariable);
     REQUIRE(query->is_synonym_name_declared("v2"));
-    REQUIRE(query->get_declared_synonym_entity_name("v2")
-                == PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_type("v2")
+                == EntityType::kVariable);
     REQUIRE(query->is_synonym_name_declared("v3"));
-    REQUIRE(query->get_declared_synonym_entity_name("v3")
-                == PQL::kVariableEntityName);
+    REQUIRE(query->get_declared_synonym_entity_type("v3")
+                == EntityType::kVariable);
 
     REQUIRE(itr == tokens.end());
   };
@@ -106,7 +106,7 @@ TEST_CASE("Test SelectParseState") {
           "should parse as synonym correctly") {
     std::vector<std::string> tokens{"Select", "BOOLEAN"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("BOOLEAN", PQL::kVariableEntityName);
+    query->declare_synonym("BOOLEAN", EntityType::kVariable);
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -344,7 +344,7 @@ TEST_CASE("Test SuchThatParseState") {
 
   SECTION("Such that clause for Next should parse correctly") {
     std::vector<std::string> tokens{"such", "that", "Next", "(",
-                                    "1",    ",",    "2",    ")"};
+                                    "1", ",", "2", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -359,7 +359,7 @@ TEST_CASE("Test SuchThatParseState") {
 
   SECTION("Such that clause for Next* should parse correctly") {
     std::vector<std::string> tokens{"such", "that", "Next*", "(",
-                                    "1",    ",",    "2",     ")"};
+                                    "1", ",", "2", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -412,18 +412,18 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         ClauseType::kModifies,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("_"));
     auto expected_pattern_clause = master_clause_factory.Create(
         ClauseType::kPatternAssign,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateExpressionSpec("\"x + y\""));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
@@ -435,13 +435,13 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "w", "(", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("w", PQL::kWhileEntityName);
+    query->declare_synonym("w", EntityType::kWhile);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_pattern_clause = master_clause_factory.Create(
         ClauseType::kPatternWhile,
         master_argument_factory.CreateSynonym(
-            "w", PQL::kWhileEntityName),
+            "w", EntityType::kWhile),
         master_argument_factory.CreateWildcard());
 
     REQUIRE(*query->get_clauses().at(0) == *expected_pattern_clause);
@@ -452,13 +452,13 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "if", "(", "_", ",", "_", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("if", PQL::kIfEntityName);
+    query->declare_synonym("if", EntityType::kIf);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_pattern_clause = master_clause_factory.Create(
         ClauseType::kPatternIf,
         master_argument_factory.CreateSynonym(
-            "if", PQL::kIfEntityName),
+            "if", EntityType::kIf),
         master_argument_factory.CreateWildcard());
 
     REQUIRE(*query->get_clauses().at(0) == *expected_pattern_clause);
@@ -469,19 +469,19 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "v", ",", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("v", PQL::kVariableEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
+    query->declare_synonym("v", EntityType::kVariable);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         ClauseType::kModifies,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("v"));
     auto expected_pattern_clause = master_clause_factory.Create(
         ClauseType::kPatternAssign,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateExpressionSpec("_"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
@@ -493,19 +493,19 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("variable", PQL::kVariableEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
+    query->declare_synonym("variable", EntityType::kVariable);
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_modifies_clause = master_clause_factory.Create(
         ClauseType::kModifies,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("variable"));
     auto expected_pattern_clause = master_clause_factory.Create(
         ClauseType::kPatternAssign,
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateExpressionSpec("_\"x\"_"));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
@@ -519,9 +519,9 @@ TEST_CASE("Test PatternParseState") {
         "and",
         "a1", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
-    query->declare_synonym("a1", PQL::kAssignEntityName);
-    query->declare_synonym("variable", PQL::kVariableEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
+    query->declare_synonym("a1", EntityType::kAssign);
+    query->declare_synonym("variable", EntityType::kVariable);
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -529,19 +529,19 @@ TEST_CASE("Test PatternParseState") {
     std::vector<ClausePtr> expected_clauses;
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("_")));
     expected_clauses.push_back(std::make_unique<PatternAssignClause>(
         master_argument_factory.CreateSynonym(
-            "a", PQL::kAssignEntityName),
+            "a", EntityType::kAssign),
         master_argument_factory.CreateExpressionSpec("\"x + y\"")));
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
         master_argument_factory.CreateSynonym(
-            "a1", PQL::kAssignEntityName),
+            "a1", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("variable")));
     expected_clauses.push_back(std::make_unique<PatternAssignClause>(
         master_argument_factory.CreateSynonym(
-            "a1", PQL::kAssignEntityName),
+            "a1", EntityType::kAssign),
         master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(util::CompareVectorOfPointers(
@@ -551,7 +551,7 @@ TEST_CASE("Test PatternParseState") {
 
   SECTION("Wrong casing should throw PqlSyntaxErrorException") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
     TestErrorCase(state, query, {"PATTERN", "a", "(", "_", ",", "x + y", ")"});
   };
 
@@ -565,13 +565,13 @@ TEST_CASE("Test PatternParseState") {
 
   SECTION("Missing bracket should throw PqlSyntaxErrorException") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
     TestErrorCase(state, query, {"pattern", "a", "(", "_", ",", "x + y"});
   };
 
   SECTION("Invalid expression should throw PqlSyntaxErrorException") {
     std::unique_ptr<Query> query = std::make_unique<Query>();
-    query->declare_synonym("a", PQL::kAssignEntityName);
+    query->declare_synonym("a", EntityType::kAssign);
     TestErrorCase(
         state, query, {"pattern", "a", "(", "_", ",", "_\" +temp\"_"});
   }

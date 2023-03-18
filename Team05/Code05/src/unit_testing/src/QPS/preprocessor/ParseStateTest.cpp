@@ -316,14 +316,29 @@ TEST_CASE("Test SuchThatParseState") {
     REQUIRE(itr == tokens.end());
   };
 
+
   SECTION("Such that clause for Next should parse correctly") {
-    std::vector<std::string> tokens{"such", "that", "Next",
-                                    "(", "1", ",", "2", ")"};
+    std::vector<std::string> tokens{"such", "that", "Next", "(",
+                                    "1",    ",",    "2",    ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
     auto expected_clause = master_clause_factory.Create(
-        PQL::kNextRelName,
+        PQL::kNextRelName, master_argument_factory.CreateEntOrStmtRef("1"),
+        master_argument_factory.CreateEntOrStmtRef("2"));
+
+    REQUIRE(*query->get_clauses().at(0) == *expected_clause);
+    REQUIRE(itr == tokens.end());
+  };
+
+  SECTION("Such that clause for Next* should parse correctly") {
+    std::vector<std::string> tokens{"such", "that", "Next*", "(",
+                                    "1",    ",",    "2",     ")"};
+    std::unique_ptr<Query> query = std::make_unique<Query>();
+    auto itr = tokens.begin();
+    state.Parse(tokens, itr, query);
+    auto expected_clause = master_clause_factory.Create(
+        PQL::kNextTRelName,
         master_argument_factory.CreateEntOrStmtRef("1"),
         master_argument_factory.CreateEntOrStmtRef("2"));
 

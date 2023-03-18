@@ -12,4 +12,5 @@
 #include "ParentTClause.h"
 #include "PatternClause.h"
 #include "UsesClause.h"
+#include "NextTClause.h"
 #include "WithClause.h"

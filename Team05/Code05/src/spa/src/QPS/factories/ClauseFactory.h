@@ -160,6 +160,7 @@ class PatternAssignFactory : public ClauseFactory {
  public:
   PatternAssignFactory() : ClauseFactory() {
     LHS_entity_names_.insert(PQL::kAssignEntityName);  // Assign only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
@@ -172,6 +173,7 @@ class PatternIfFactory : public ClauseFactory {
  public:
   PatternIfFactory() : ClauseFactory() {
     LHS_entity_names_.insert(PQL::kIfEntityName);  // If only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
@@ -184,6 +186,7 @@ class PatternWhileFactory : public ClauseFactory {
  public:
   PatternWhileFactory() : ClauseFactory() {
     LHS_entity_names_.insert(PQL::kWhileEntityName);  // While only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {

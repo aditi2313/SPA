@@ -1,0 +1,75 @@
+1 - AffectsT for line number 1
+assign a;
+Select a such that Affects*(1, a)
+4, 8, 10, 11, 12
+5000
+2 - AffectsT for line number 2
+assign a;
+Select a such that Affects*(2, a)
+6, 10, 11, 12
+5000
+3 - AffectsT for line number 3
+assign a;
+Select a such that Affects*(3, a)
+
+5000
+4 - AffectsT for line number 4
+assign a;
+Select a such that Affects*(4, a)
+4, 8, 10, 11, 12
+5000
+5 - AffectsT for line number 5
+assign a;
+Select a such that Affects*(5, a)
+
+5000
+6 - AffectsT for line number 6
+assign a;
+Select a such that Affects*(6, a)
+6, 10, 11, 12
+5000
+7 - AffectsT for line number 7
+assign a;
+Select a such that Affects*(7, a)
+
+5000
+8 - AffectsT for line number 8
+assign a;
+Select a such that Affects*(8, a)
+8, 10, 11, 12
+5000
+9 - AffectsT for line number 9
+assign a;
+Select a such that Affects*(9, a)
+10, 11, 12
+5000
+10 - AffectsT for line number 10
+assign a;
+Select a such that Affects*(10, a)
+10, 11, 12
+5000
+11 - AffectsT for line number 11
+assign a;
+Select a such that Affects*(11, a)
+12
+5000
+12 - AffectsT for line number 12
+assign a;
+Select a such that Affects*(12, a)
+12
+5000
+13 - AffectsT for line number 13
+assign a;
+Select a such that Affects*(13, a)
+14
+5000
+14 - AffectsT for line number 14
+assign a;
+Select a such that Affects*(14, a)
+
+5000
+15 - AffectsT for line number 15
+assign a;
+Select a such that Affects*(15, a)
+
+5000

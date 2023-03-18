@@ -27,7 +27,7 @@ TEST_CASE("Test Clause") {
         master_argument_factory.CreateEntOrStmtRef("123"),
         master_argument_factory.CreateEntOrStmtRef("456"));
 
-    auto pattern_clause = PatternClause(
+    auto pattern_clause = PatternAssignClause(
         master_argument_factory.CreateEntOrStmtRef("123"),
         master_argument_factory.CreateEntOrStmtRef("456"));
 

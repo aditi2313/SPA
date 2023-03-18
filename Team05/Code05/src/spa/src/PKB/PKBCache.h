@@ -14,8 +14,7 @@ class PKBCache {
   }
 
   inline bool ExistsAffectsT(int stmt) {
-    return affects_table_.exists(stmt)
-        && affects_table_.get_row(stmt).is_affectsT_calculated();
+    return affectsT_table_.exists(stmt);
   }
 
   inline void WriteAffects(int stmt, std::unordered_set<int> affected_lines) {
@@ -23,11 +22,7 @@ class PKBCache {
   }
 
   inline void WriteAffectsT(int stmt, std::unordered_set<int> affectedT_lines) {
-    // Since AffectsT depends on Affects,
-    // we can assume (and hence assert) that Affects has been
-    // previously calculated for this stmt
-    assert(ExistsAffects(stmt));
-    affects_table_.get_row(stmt).set_affectedT_lines(affectedT_lines);
+    affectsT_table_.add_row(stmt, AffectsData(stmt, affectedT_lines));
   }
 
   inline std::unordered_set<int> &GetAffects(int stmt) {
@@ -35,7 +30,7 @@ class PKBCache {
   }
 
   inline std::unordered_set<int> &GetAffectsT(int stmt) {
-    return affects_table_.get_row(stmt).get_affectedT_lines();
+    return affects_table_.get_row(stmt).get_affected_lines();
   }
 
   inline void clear() {
@@ -44,6 +39,7 @@ class PKBCache {
 
  private:
   AffectsTable affects_table_;
+  AffectsTable affectsT_table_;
 };
 }  // namespace pkb
 

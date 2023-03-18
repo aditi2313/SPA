@@ -51,7 +51,7 @@ class AffectsFactory : public ClauseFactory {
     InitializeWildcard(arg1, EntityType::kStmt);
     InitializeWildcard(arg2, EntityType::kStmt);
 
-    return std::make_unique<AffectsClause>(
+    return std::make_unique<AffectsTClause>(
         std::move(arg1), std::move(arg2));
   }
 };

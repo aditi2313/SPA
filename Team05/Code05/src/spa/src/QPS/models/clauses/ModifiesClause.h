@@ -13,9 +13,8 @@ namespace qps {
 class ModifiesClause : public Clause {
  public:
   ModifiesClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kModifiesRelName;
-  }
+      : Clause(
+      ClauseType::kModifies, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,

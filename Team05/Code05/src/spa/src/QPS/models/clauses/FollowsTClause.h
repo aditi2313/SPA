@@ -13,9 +13,8 @@ namespace qps {
 class FollowsTClause : public Clause {
  public:
   FollowsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kFollowsRelName;
-  }
+      : Clause(
+      ClauseType::kFollowsT, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,

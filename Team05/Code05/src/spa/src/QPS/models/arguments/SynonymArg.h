@@ -13,6 +13,9 @@ class SynonymArg : public Argument {
   explicit SynonymArg(SynonymName syn_name)
       : Argument(), syn_name_(syn_name) {}
 
+  explicit SynonymArg(SynonymName syn_name, EntityName entity_name)
+      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {}
+
   static inline SynonymName get_full_name(ArgumentPtr &arg) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
     return syn_arg->get_full_name();
@@ -37,6 +40,7 @@ class SynonymArg : public Argument {
   }
 
   inline SynonymName get_syn_name() { return syn_name_; }
+  inline EntityName get_entity_name() { return entity_name_; }
 
   inline SynonymName get_full_name() {
     if (attr_name_.empty()) return syn_name_;
@@ -135,9 +139,15 @@ class SynonymArg : public Argument {
     return syn_name_ == arg->syn_name_
         && entity_name_ == arg->entity_name_;
   }
+
   static inline SynonymName get_syn_name(ArgumentPtr &arg) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
     return syn_arg->get_syn_name();
+  }
+
+  static inline SynonymName get_entity_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_entity_name();
   }
 
  private:

@@ -13,9 +13,8 @@ namespace qps {
 class CallsTClause : public Clause {
  public:
   CallsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kCallsRelName;
-  }
+      : Clause(
+      ClauseType::kCallsT, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,

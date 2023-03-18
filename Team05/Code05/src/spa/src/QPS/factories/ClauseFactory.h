@@ -56,6 +56,23 @@ class AffectsFactory : public ClauseFactory {
   }
 };
 
+
+class AffectsTFactory : public ClauseFactory {
+ public:
+  AffectsTFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllStmtEntityNames;
+    RHS_entity_names_ = PQL::kAllStmtEntityNames;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kStmtEntityName);
+    InitializeWildcard(arg2, PQL::kStmtEntityName);
+
+    return std::make_unique<AffectsTClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 class ModifiesFactory : public ClauseFactory {
  public:
   ModifiesFactory() : ClauseFactory() {
@@ -156,16 +173,41 @@ class UsesFactory : public ClauseFactory {
   }
 };
 
-class PatternFactory : public ClauseFactory {
+class PatternAssignFactory : public ClauseFactory {
  public:
-  PatternFactory() : ClauseFactory() {
+  PatternAssignFactory() : ClauseFactory() {
     LHS_entity_names_.insert(PQL::kAssignEntityName);  // Assign only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    InitializeWildcard(arg1, PQL::kAssignEntityName);
+    return std::make_unique<PatternAssignClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
 
-    return std::make_unique<PatternClause>(
+class PatternIfFactory : public ClauseFactory {
+ public:
+  PatternIfFactory() : ClauseFactory() {
+    LHS_entity_names_.insert(PQL::kIfEntityName);  // If only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<PatternIfClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
+class PatternWhileFactory : public ClauseFactory {
+ public:
+  PatternWhileFactory() : ClauseFactory() {
+    LHS_entity_names_.insert(PQL::kWhileEntityName);  // While only
+    RHS_entity_names_.insert(PQL::kVariableEntityName);
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<PatternWhileClause>(
         std::move(arg1), std::move(arg2));
   }
 };
@@ -249,7 +291,6 @@ class WithFactory : public ClauseFactory {
     if ((arg1->IsIdentType() && arg2->IsIntegerType())
       || (arg1->IsIntegerType() && arg2->IsIdentType()))
       return false;
-
 
     return arg1->Validate(LHS_entity_names_)
         && arg2->Validate(RHS_entity_names_);

@@ -45,7 +45,7 @@ void Validator::InitializeSynonymEntityTypes(
 void Validator::ValidateClauseArguments(QueryPtr &query) {
   for (auto &clause : query->get_clauses()) {
     if (!master_clause_factory_.Validate(
-        clause->get_rel_name(), clause->get_arg1(), clause->get_arg2())) {
+        clause->get_clause_type(), clause->get_arg1(), clause->get_arg2())) {
       throw PqlSemanticErrorException(
           "Mismatched entity types between argument and clause");
     }

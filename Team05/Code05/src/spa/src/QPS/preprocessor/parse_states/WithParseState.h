@@ -53,7 +53,7 @@ class WithParseState : public RecursiveParseState {
               arg2_ = master_argument_factory_.CreateRef(*itr_);
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               auto with_clause = master_clause_factory_.Create(
-                  PQL::kWithRelName,
+                  ClauseType::kWith,
                   std::move(arg1_),
                   std::move(arg2_));
               query->add_clause(with_clause);

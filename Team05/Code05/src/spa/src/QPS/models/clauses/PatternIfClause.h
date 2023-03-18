@@ -6,27 +6,27 @@
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
 
-using filter::UsesIndexFilter;
+using filter::ConditionIndexFilter;
 
 namespace qps {
-// RS between a statement and a list of variables
-class UsesClause : public Clause {
+// RS between a statement and a list of (control) variables
+class PatternIfClause : public Clause {
  public:
-  UsesClause(ArgumentPtr arg1, ArgumentPtr arg2)
+  PatternIfClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(
-      ClauseType::kUses, std::move(arg1), std::move(arg2)) {}
+      ClauseType::kPatternIf, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::UsesData>(
+    Clause::Index<pkb::ConditionData>(
         index,
         [&](Entity::Value key) {
-          auto filter = std::make_unique<UsesIndexFilter>(key);
-          return std::move(pkb->Uses(std::move(filter))->get_result());
+          auto filter = std::make_unique<ConditionIndexFilter>(key);
+          return std::move(pkb->Condition(std::move(filter))->get_result());
         },
-        [&](EntitySet &result, pkb::UsesData data) {
+        [&](EntitySet &result, pkb::ConditionData data) {
           for (auto child : data.get_variables()) {
             result.insert(Entity(child));
           }
@@ -34,4 +34,5 @@ class UsesClause : public Clause {
         results);
   }
 };
+
 }  // namespace qps

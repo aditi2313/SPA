@@ -6,7 +6,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "common/Utiity.h"
+#include "common/Utility.h"
 #include "models/AST/Token.h"
 
 namespace ast {

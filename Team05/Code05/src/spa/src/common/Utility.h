@@ -18,7 +18,7 @@ namespace util {
 /// <typeparam name="Derived">The possibly derived class of the
 /// object.</typeparam> <param name="other">The object to check</param>
 /// <returns></returns>
-template <class Derived, class Base>
+template<class Derived, class Base>
 inline bool InstanceOf(const Base &object) {
   return dynamic_cast<const Derived *>(&object) != nullptr;
 }
@@ -29,7 +29,7 @@ inline bool InstanceOf(const Base &object) {
 /// </summary>
 /// <returns>True if the two vectors are the same size and
 /// the object each pointer is pointing to compares equal</returns>
-template <class UniquePointerLHS, class UniquePointerRHS>
+template<class UniquePointerLHS, class UniquePointerRHS>
 inline bool CompareVectorOfPointers(const std::vector<UniquePointerLHS> &LHS,
                                     const std::vector<UniquePointerRHS> &RHS) {
   if (LHS.size() != RHS.size()) return false;
@@ -52,6 +52,19 @@ inline bool CompareResults(const std::list<std::string> &LHS,
   }
   for (auto &res : RHS) {
     RHS_map[res]++;
+  }
+
+  if (LHS_map != RHS_map) {
+    std::cout << "actual: ";
+    for (auto str : LHS) {
+      std::cout << str << ", ";
+    }
+    std::cout << "\n";
+    std::cout << "expected: ";
+    for (auto str : RHS) {
+      std::cout << str << ", ";
+    }
+    std::cout << "\n";
   }
 
   return LHS_map == RHS_map;

@@ -9,6 +9,7 @@
 #include "common/exceptions/QPSExceptions.h"
 #include "SP/SourceProcessor.h"
 #include "QPS/models/clauses/ClauseType.h"
+#include "QPS/models/EntityType.h"
 #include "models/types.h"
 
 namespace qps {
@@ -38,13 +39,39 @@ class PQL {
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
-  inline static std::unordered_set<std::string> kAllStmtEntityNames{
-      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
-      kWhileEntityName, kIfEntityName, kAssignEntityName
+  inline static std::unordered_set<EntityType> kAllEntityTypes{
+      EntityType::kStmt, EntityType::kRead,
+      EntityType::kPrint, EntityType::kCall,
+      EntityType::kWhile, EntityType::kIf, EntityType::kAssign,
+      EntityType::kVariable, EntityType::kConstant, EntityType::kProcedure
   };
 
-  inline static bool const is_entity_name(EntityName const str) {
-    return kAllEntityNames.count(str);
+  inline static std::unordered_set<EntityType> kAllStmtEntityTypes{
+      EntityType::kStmt, EntityType::kRead,
+      EntityType::kPrint, EntityType::kCall,
+      EntityType::kWhile, EntityType::kIf, EntityType::kAssign
+  };
+
+  inline static std::unordered_map<EntityName, EntityType>
+      kEntityNameToEntityTypeMap{
+      {kStmtEntityName, EntityType::kStmt},
+      {kReadEntityName, EntityType::kRead},
+      {kPrintEntityName, EntityType::kPrint},
+      {kCallEntityName, EntityType::kCall},
+      {kWhileEntityName, EntityType::kWhile},
+      {kIfEntityName, EntityType::kIf},
+      {kAssignEntityName, EntityType::kAssign},
+      {kVariableEntityName, EntityType::kVariable},
+      {kConstantEntityName, EntityType::kConstant},
+      {kProcedureEntityName, EntityType::kProcedure}
+  };
+
+  inline static bool const is_entity_name(EntityName const entity_name) {
+    return kAllEntityNames.count(entity_name);
+  }
+
+  inline static EntityType get_entity_type(EntityName const entity_name) {
+    return kEntityNameToEntityTypeMap.at(entity_name);
   }
 
   inline static RelName kAffectsRelName = "Affects";
@@ -157,13 +184,13 @@ class PQL {
   // Maps an AttrName (e.g stmt#) to a hashset of all
   // entities that can be paired with that AttrName.
   // e.g. varName is mapped to { variable, read, print }
-  inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
+  inline static std::unordered_map<std::string, std::unordered_set<EntityType>>
       kAttrNameToEntitiesMap{
-      {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
+      {kProcedureAttrName, {EntityType::kProcedure, EntityType::kCall}},
       {kVariableAttrName,
-       {kVariableEntityName, kReadEntityName, kPrintEntityName}},
-      {kValueAttrName, {kConstantEntityName}},
-      {kStmtAttrName, kAllStmtEntityNames}
+       {EntityType::kVariable, EntityType::kRead, EntityType::kPrint}},
+      {kValueAttrName, {EntityType::kConstant}},
+      {kStmtAttrName, kAllStmtEntityTypes}
   };
 
   inline static std::unordered_set<std::string> kAllAttrName{
@@ -185,9 +212,9 @@ class PQL {
   }
 
   inline static bool ValidateAttrRef(
-      AttrName attr_name, EntityName entity_name) {
+      AttrName attr_name, EntityType entity_type) {
     auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
-    return attr_name_types.count(entity_name);
+    return attr_name_types.count(entity_type);
   }
 
   inline static std::string kSemicolonToken = ";";
@@ -251,12 +278,12 @@ class PQL {
   // In ADVANCED SPA requirements, only
   // call, print, and read can have secondary attr_refs.
   inline static bool is_attr_ref_secondary(
-      EntityName entity_name, AttrName attr_name) {
-    if (entity_name == kReadEntityName
-        || entity_name == kPrintEntityName) {
+      EntityType entity_type, AttrName attr_name) {
+    if (entity_type == EntityType::kRead
+        || entity_type == EntityType::kPrint) {
       return attr_name == kVariableAttrName;
     }
-    if (entity_name == kCallEntityName) {
+    if (entity_type == EntityType::kProcedure) {
       return attr_name == kProcedureAttrName;
     }
     return false;  // False by default

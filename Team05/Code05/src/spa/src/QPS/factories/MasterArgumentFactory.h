@@ -17,8 +17,8 @@ class MasterArgumentFactory {
   }
 
   inline std::unique_ptr<SynonymArg> CreateSynonym(
-      SynonymName syn_name, EntityName entity_name) {
-    return std::make_unique<SynonymArg>(syn_name, entity_name);
+      SynonymName syn_name, EntityType entity_type) {
+    return std::make_unique<SynonymArg>(syn_name, entity_type);
   }
 
   // synonym | _ | INTEGER | "ident"

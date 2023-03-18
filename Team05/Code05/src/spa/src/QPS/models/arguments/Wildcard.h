@@ -8,18 +8,19 @@
 namespace qps {
 class Wildcard : public Argument {
  public:
-  Wildcard() : Argument() {}
+  Wildcard()
+      : Argument(), entity_type_(EntityType::kUndetermined) {}
 
   inline bool IsWildcard() override { return true; }
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
 
-  inline void set_entity_name(EntityName entity_name) {
-    entity_name_ = entity_name;
+  inline void set_entity_type(EntityType entity_type) {
+    entity_type_ = entity_type;
   }
 
   inline bool Validate(
-      std::unordered_set<EntityName> &entity_names) override {
+      std::unordered_set<EntityType> &valid_entity_types) override {
     return true;
   }
 
@@ -27,9 +28,10 @@ class Wildcard : public Argument {
       Table &table,
       pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    if (entity_name_.empty()) return;
+    if (entity_type_ == EntityType::kUndetermined) return;
+
     results = master_entity_factory_.GetAllFromPKB(
-        entity_name_, pkb);
+        entity_type_, pkb);
   }
 
   inline std::ostream &dump(std::ostream &str) const override {
@@ -46,6 +48,6 @@ class Wildcard : public Argument {
   }
 
  private:
-  EntityName entity_name_;
+  EntityType entity_type_;
 };
 }  // namespace qps

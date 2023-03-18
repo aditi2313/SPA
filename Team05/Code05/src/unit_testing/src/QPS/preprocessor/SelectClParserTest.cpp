@@ -36,6 +36,10 @@ void TestThrows(std::string query_string) {
       parser.ParseQuery(query_string), PqlSyntaxErrorException);
 }
 
+// Helper method for testing, forward declared.
+std::unique_ptr<SynonymArg> CreateSynonym(
+    SynonymName syn_name, EntityType entity_type);
+
 TEST_CASE("Test SelectClParser methods") {
   SelectClParser parser;
   SECTION("Test PreprocessQueryString") {
@@ -121,13 +125,13 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
 
@@ -178,22 +182,22 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
+            CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
+            CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
+            CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateEntRef("\"variable\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
+            CreateSynonym("a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("_\"x\"_")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -227,25 +231,25 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x+y\"")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateEntOrStmtRef("_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
             master_argument_factory.CreateExpressionSpec("\"x\"")));
 
@@ -356,8 +360,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-    // TODO(JL): Will fix this in a separate PR
-//    TestThrows(query_string);
+    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

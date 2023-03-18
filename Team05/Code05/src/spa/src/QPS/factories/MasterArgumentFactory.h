@@ -51,7 +51,9 @@ class MasterArgumentFactory {
     throw PqlSyntaxErrorException("Invalid argument syntax");
   }
 
-  // synonym | _ | INTEGER | "ident"
+  /* ====== Methods for creating composite Arguments ======= */
+  // Where composite Arguments are Arguments that can be
+  // one of multiple types
   inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
     try {
       CreateEntRef(token);
@@ -60,8 +62,6 @@ class MasterArgumentFactory {
     }
   }
 
-  // "ident" | INTEGER | attrRef
-  // attrRef: synonym.attrName
   inline ArgumentPtr CreateRef(std::string token) {
     return Create(ref_arg_types_, token);
   }
@@ -76,16 +76,6 @@ class MasterArgumentFactory {
 
   inline ArgumentPtr CreateStmtRef(std::string token) {
     return Create(stmt_ref_arg_types_, token);
-  }
-
-  inline std::unique_ptr<SynonymArg> CreateSynonym(
-      SynonymName syn_name, EntityType entity_type) {
-    return std::make_unique<SynonymArg>(syn_name, entity_type);
-  }
-
-  inline std::unique_ptr<Wildcard> CreateWildcard(
-      SynonymName syn_name) {
-    return std::make_unique<Wildcard>();
   }
 
  private:

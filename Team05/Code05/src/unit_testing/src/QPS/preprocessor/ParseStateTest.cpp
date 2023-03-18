@@ -34,7 +34,7 @@ TEST_CASE("Test DeclarationParseState") {
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v"));
-    REQUIRE(query->get_declared_synonym_entity_name("v")
+    REQUIRE(query->get_declared_synonym_entity_type("v")
                 == EntityType::kVariable);
     REQUIRE(itr == tokens.end());
   };
@@ -47,13 +47,13 @@ TEST_CASE("Test DeclarationParseState") {
     state.Parse(tokens, itr, query);
 
     REQUIRE(query->is_synonym_name_declared("v1"));
-    REQUIRE(query->get_declared_synonym_entity_name("v1")
+    REQUIRE(query->get_declared_synonym_entity_type("v1")
                 == EntityType::kVariable);
     REQUIRE(query->is_synonym_name_declared("v2"));
-    REQUIRE(query->get_declared_synonym_entity_name("v2")
+    REQUIRE(query->get_declared_synonym_entity_type("v2")
                 == EntityType::kVariable);
     REQUIRE(query->is_synonym_name_declared("v3"));
-    REQUIRE(query->get_declared_synonym_entity_name("v3")
+    REQUIRE(query->get_declared_synonym_entity_type("v3")
                 == EntityType::kVariable);
 
     REQUIRE(itr == tokens.end());

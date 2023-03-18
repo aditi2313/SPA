@@ -287,8 +287,9 @@ class PQL {
         return attr_name == kVariableAttrName;
       case EntityType::kCall:
         return attr_name == kProcedureAttrName;
+      default:
+        return false;
     }
-    return false;  // False by default
   }
 };
 }  // namespace qps

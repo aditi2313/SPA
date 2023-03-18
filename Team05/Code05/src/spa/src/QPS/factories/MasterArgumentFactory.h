@@ -15,6 +15,8 @@ class MasterArgumentFactory {
  public:
   MasterArgumentFactory() {
     argument_factories_.insert(
+        {ArgumentType::kAttrRef,std::make_unique<AttrRefFactory>()});
+    argument_factories_.insert(
         {ArgumentType::kExactExpressionArg,
          std::make_unique<ExactExpressionArgFactory>()});
     argument_factories_.insert(
@@ -49,44 +51,41 @@ class MasterArgumentFactory {
     throw PqlSyntaxErrorException("Invalid argument syntax");
   }
 
-  inline std::unique_ptr<SynonymArg> CreateSynonym(
-      SynonymName syn_name, EntityType entity_type) {
-    return std::make_unique<SynonymArg>(syn_name, entity_type);
-  }
-
   // synonym | _ | INTEGER | "ident"
   inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    return Create();
+    try {
+      CreateEntRef(token);
+    } catch(PqlSyntaxErrorException _) {
+      CreateStmtRef(token);
+    }
   }
 
   // "ident" | INTEGER | attrRef
   // attrRef: synonym.attrName
   inline ArgumentPtr CreateRef(std::string token) {
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIntegerArg(token);
-    }
-
-    assert(PQL::is_attr_ref(token));
-    return CreateAttrRef(token);
+    return Create(ref_arg_types_, token);
   }
 
   inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
     return Create(expression_spec_arg_types_, token);
   }
 
-
-  // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
-  inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
-
-  }
-
-  // synonym | _ | "ident"
   inline ArgumentPtr CreateEntRef(std::string token) {
     return Create(ent_ref_arg_types_, token);
+  }
+
+  inline ArgumentPtr CreateStmtRef(std::string token) {
+    return Create(stmt_ref_arg_types_, token);
+  }
+
+  inline std::unique_ptr<SynonymArg> CreateSynonym(
+      SynonymName syn_name, EntityType entity_type) {
+    return std::make_unique<SynonymArg>(syn_name, entity_type);
+  }
+
+  inline std::unique_ptr<Wildcard> CreateWildcard(
+      SynonymName syn_name) {
+    return std::make_unique<Wildcard>();
   }
 
  private:
@@ -105,6 +104,11 @@ class MasterArgumentFactory {
       ArgumentType::kWildcard,
       ArgumentType::kWildcardExpressionArg,
       ArgumentType::kExactExpressionArg
+  };
+  std::vector<ArgumentType> ref_arg_types_ {
+      ArgumentType::kIdentArg,
+      ArgumentType::kIntegerArg,
+      ArgumentType::kAttrRef
   };
 
 };

@@ -502,7 +502,7 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")",
         "and",
-        "pattern", "a1", "(", "variable", ",", "_\"x\"_", ")"};
+        "a1", "(", "variable", ",", "_\"x\"_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     query->declare_synonym("a", PQL::kAssignEntityName);
     query->declare_synonym("a1", PQL::kAssignEntityName);

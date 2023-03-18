@@ -25,4 +25,6 @@ class AffectsData {
   int line_;
   std::unordered_set<int> affected_lines_;
 };
+
+typedef AffectsData AffectsTData;
 }  // namespace pkb

@@ -22,7 +22,7 @@ class PKBCache {
   }
 
   inline void WriteAffectsT(int stmt, std::unordered_set<int> affectedT_lines) {
-    affectsT_table_.add_row(stmt, AffectsData(stmt, affectedT_lines));
+    affectsT_table_.add_row(stmt, AffectsTData(stmt, affectedT_lines));
   }
 
   inline std::unordered_set<int> &GetAffects(int stmt) {
@@ -39,7 +39,7 @@ class PKBCache {
 
  private:
   AffectsTable affects_table_;
-  AffectsTable affectsT_table_;
+  AffectsTTable affectsT_table_;
 };
 }  // namespace pkb
 

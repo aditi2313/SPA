@@ -56,6 +56,23 @@ class AffectsFactory : public ClauseFactory {
   }
 };
 
+
+class AffectsTFactory : public ClauseFactory {
+ public:
+  AffectsTFactory() : ClauseFactory() {
+    LHS_entity_names_ = PQL::kAllStmtEntityNames;
+    RHS_entity_names_ = PQL::kAllStmtEntityNames;
+  }
+
+  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg1, PQL::kStmtEntityName);
+    InitializeWildcard(arg2, PQL::kStmtEntityName);
+
+    return std::make_unique<AffectsTClause>(
+        std::move(arg1), std::move(arg2));
+  }
+};
+
 class ModifiesFactory : public ClauseFactory {
  public:
   ModifiesFactory() : ClauseFactory() {

@@ -75,6 +75,7 @@ class PQL {
   }
 
   inline static RelName kAffectsRelName = "Affects";
+  inline static RelName kAffectsTRelName = "Affects*";
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -90,6 +91,7 @@ class PQL {
 
   inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
       {kAffectsRelName, ClauseType::kAffects},
+      {kAffectsTRelName, ClauseType::kAffectsT},
       {kModifiesRelName, ClauseType::kModifies},
       {kFollowsRelName, ClauseType::kFollows},
       {kFollowsTRelName, ClauseType::kFollowsT},
@@ -110,7 +112,7 @@ class PQL {
 
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{
-      kAffectsRelName,
+      kAffectsRelName, kAffectsTRelName,
       kCallsRelName, kCallsTRelName,
       kFollowsRelName, kFollowsTRelName,
       kModifiesRelName,

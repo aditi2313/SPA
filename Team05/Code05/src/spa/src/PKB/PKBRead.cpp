@@ -66,8 +66,8 @@ std::unique_ptr<PKBResult<ConditionTable>> PKBRead::Condition(
 std::unordered_set<int> PKBRead::Affects(int s) {
   // Return cached result immediately if it has been
   // calculated before
-  if (cache_.ExistsAffects(s)) {
-    return cache_.GetAffects(s);
+  if (cache_->ExistsAffects(s)) {
+    return cache_->GetAffects(s);
   }
 
   // bfs to find the variables that this stmt
@@ -76,7 +76,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   std::unordered_set<int> result;
 
   if (!relation_table_->assign_.count(s)) {
-    cache_.WriteAffects(s, {});
+    cache_->WriteAffects(s, {});
     return {};
   }
 
@@ -115,7 +115,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
     }
   }
   // Write to cache
-  cache_.WriteAffects(s, result);
+  cache_->WriteAffects(s, result);
 
   return result;
 }
@@ -123,8 +123,8 @@ std::unordered_set<int> PKBRead::Affects(int s) {
 std::unordered_set<int> PKBRead::AffectsT(int s) {
   // Return cached result immediately if it has been
   // calculated before
-  if (cache_.ExistsAffectsT(s)) {
-    return cache_.GetAffectsT(s);
+  if (cache_->ExistsAffectsT(s)) {
+    return cache_->GetAffectsT(s);
   }
 
   std::unordered_set<int> affected_lines = Affects(s);
@@ -155,7 +155,7 @@ std::unordered_set<int> PKBRead::AffectsT(int s) {
   }
 
   // Write back to cache
-  cache_.WriteAffectsT(s, affectedT_lines);
+  cache_->WriteAffectsT(s, affectedT_lines);
   return affectedT_lines;
 }
 

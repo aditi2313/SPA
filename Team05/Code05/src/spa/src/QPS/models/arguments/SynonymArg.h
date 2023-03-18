@@ -11,44 +11,41 @@ namespace qps {
 class SynonymArg : public Argument {
  public:
   explicit SynonymArg(SynonymName syn_name)
-      : Argument(), syn_name_(syn_name) {}
+      : Argument(),
+        syn_name_(syn_name),
+        entity_type_(EntityType::kUndetermined) {}
 
-  explicit SynonymArg(SynonymName syn_name, EntityName entity_name)
-      : Argument(), syn_name_(syn_name), entity_name_(entity_name) {}
-
-  static inline SynonymName get_full_name(ArgumentPtr &arg) {
-    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-    return syn_arg->get_full_name();
-  }
+  explicit SynonymArg(SynonymName syn_name, EntityType entity_type)
+      : Argument(), syn_name_(syn_name), entity_type_(entity_type) {}
 
   inline bool IsSynonym() override { return true; }
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
 
   inline bool IsIdentType() override {
-    if (entity_name_.empty()) return false;
+    if (entity_type_ == EntityType::kUndetermined) return false;
     if (!attr_name_.empty())
       return PQL::is_attr_name_ident(attr_name_);
-    return master_entity_factory_.is_ident(entity_name_);
+    return master_entity_factory_.is_ident(entity_type_);
   }
 
   inline bool IsIntegerType() override {
-    if (entity_name_.empty()) return false;
+    if (entity_type_ == EntityType::kUndetermined) return false;
     if (!attr_name_.empty())
       return PQL::is_attr_name_integer(attr_name_);
-    return master_entity_factory_.is_integer(entity_name_);
+    return master_entity_factory_.is_integer(entity_type_);
   }
 
   inline SynonymName get_syn_name() { return syn_name_; }
-  inline EntityName get_entity_name() { return entity_name_; }
+  inline EntityType get_entity_type() { return entity_type_; }
 
   inline SynonymName get_full_name() {
     if (attr_name_.empty()) return syn_name_;
     return PQL::join_attr_ref(syn_name_, attr_name_);
   }
 
-  inline void set_entity_name(EntityName entity_name) {
-    entity_name_ = entity_name;
+  inline void set_entity_type(EntityType entity_type) {
+    entity_type_ = entity_type;
   }
 
   inline void set_attr_name(AttrName attr_name) {
@@ -57,29 +54,29 @@ class SynonymArg : public Argument {
 
   inline bool is_secondary_attr_ref() {
     return !attr_name_.empty()
-        && PQL::is_attr_ref_secondary(entity_name_, attr_name_);
+        && PQL::is_attr_ref_secondary(entity_type_, attr_name_);
   }
 
   inline Entity get_secondary_attr_value(
       const pkb::PKBReadPtr &pkb, const Entity &index
   ) {
-    return master_entity_factory_.GetAttrValue(entity_name_, index, pkb);
+    return master_entity_factory_.GetAttrValue(entity_type_, index, pkb);
   }
 
   inline bool Validate(
-      std::unordered_set<EntityName> &entity_names) override {
+      std::unordered_set<EntityType> &valid_entity_types) override {
     // Synonym has not been declared
-    if (entity_name_.empty()) return false;
+    if (entity_type_ == EntityType::kUndetermined) return false;
     if (!attr_name_.empty()) {
       // This is an attrRef: e.g s.stmt#
       // Validate if the synonym type matches the attrName
       // e.g s must match with stmt#
       return PQL::ValidateAttrRef(
-          attr_name_, entity_name_);
+          attr_name_, entity_type_);
     }
     // Else just verify that the synonym type matches the
     // context of the clause, e.g Modifies(stmt, var)
-    return entity_names.count(entity_name_);
+    return valid_entity_types.count(entity_type_);
   }
 
   inline void InitializeEntities(
@@ -105,7 +102,7 @@ class SynonymArg : public Argument {
       }
     } else {
       indexes = master_entity_factory_.GetAllFromPKB(
-          entity_name_, pkb);
+          entity_type_, pkb);
     }
 
     for (auto &index : indexes) {
@@ -122,10 +119,11 @@ class SynonymArg : public Argument {
       Table &query_table);
 
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_name_ << "->" << entity_name_
+    str << "Synonym: " << syn_name_
         << (attr_name_.empty() ? "" : " with: " + attr_name_);
     return str;
   }
+
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<SynonymArg>(*this);
   }
@@ -137,7 +135,12 @@ class SynonymArg : public Argument {
 
     auto arg = dynamic_cast<SynonymArg *>(&other);
     return syn_name_ == arg->syn_name_
-        && entity_name_ == arg->entity_name_;
+        && entity_type_ == arg->entity_type_;
+  }
+
+  static inline SynonymName get_full_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_full_name();
   }
 
   static inline SynonymName get_syn_name(ArgumentPtr &arg) {
@@ -145,14 +148,14 @@ class SynonymArg : public Argument {
     return syn_arg->get_syn_name();
   }
 
-  static inline SynonymName get_entity_name(ArgumentPtr &arg) {
+  static inline EntityType get_entity_type(ArgumentPtr &arg) {
     SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-    return syn_arg->get_entity_name();
+    return syn_arg->get_entity_type();
   }
 
  private:
   SynonymName syn_name_;
-  EntityName entity_name_;
+  EntityType entity_type_;
   AttrName attr_name_;
 };
 }  // namespace qps

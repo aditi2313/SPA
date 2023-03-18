@@ -9,6 +9,7 @@
 
 #include "models/types.h"
 #include "PQL.h"
+#include "EntityType.h"
 
 namespace qps {
 
@@ -49,8 +50,7 @@ class Entity {
   }
 
   inline bool operator==(const Entity &other) const {
-    return value_ == other.value_
-        && entity_name_ == other.entity_name_;
+    return value_ == other.value_;
   }
 
   inline bool operator!=(const Entity &other) const {
@@ -86,7 +86,6 @@ class Entity {
   friend std::hash<Entity>;
 
  private:
-  EntityName entity_name_;
   Value value_;
 };
 

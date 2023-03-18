@@ -27,13 +27,13 @@ void Validator::InitializeSynonymEntityTypes(QueryPtr &query) {
 void Validator::InitializeSynonymEntityTypes(
     QueryPtr &query, ArgumentPtr &arg) {
   if (!arg->IsSynonym()) return;
-  SynonymArg* syn_arg = dynamic_cast<SynonymArg*>(arg.get());
+  SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
   SynonymName syn_name = syn_arg->get_syn_name();
   if (!query->is_synonym_name_declared(syn_name))
     throw PqlSemanticErrorException("Undeclared synonym in clause");
 
-  EntityName entity_name = query->get_declared_synonym_entity_name(syn_name);
-  syn_arg->set_entity_name(entity_name);
+  EntityType entity_type = query->get_declared_synonym_entity_type(syn_name);
+  syn_arg->set_entity_type(entity_type);
 }
 
 // Used to ensure that the design entity for synonyms is correct
@@ -81,8 +81,8 @@ void Validator::ValidateAttrRefs(QueryPtr &query) {
   for (auto elem : query->get_selected_elems()) {
     if (PQL::is_attr_ref(elem)) {
       auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
-      auto entity_name = query->get_declared_synonym_entity_name(syn_name);
-      if (!PQL::ValidateAttrRef(attr_name, entity_name)) {
+      auto entity_type = query->get_declared_synonym_entity_type(syn_name);
+      if (!PQL::ValidateAttrRef(attr_name, entity_type)) {
         throw PqlSemanticErrorException(
             "Selected attrRef has mismatched types");
       }

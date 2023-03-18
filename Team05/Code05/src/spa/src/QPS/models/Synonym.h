@@ -17,7 +17,7 @@ class Synonym {
     return syn_name_;
   }
 
-  inline EntityType get_entity_name() const {
+  inline EntityType get_entity_type() const {
     return entity_type_;
   }
 

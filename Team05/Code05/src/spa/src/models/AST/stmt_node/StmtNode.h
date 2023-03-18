@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
@@ -95,7 +96,7 @@ class CallNode : public StmtNode {
 
 class ContainerNode : public StmtNode {
  public:
-  ContainerNode(int line) : StmtNode(line) {}
+  explicit ContainerNode(int line) : StmtNode(line) {}
   virtual std::vector<std::unique_ptr<StmtLstNode>>& get_total_stmts() {
     return stmts_;
   }

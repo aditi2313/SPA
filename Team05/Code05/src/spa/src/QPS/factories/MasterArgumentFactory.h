@@ -35,8 +35,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   // "ident" | INTEGER | attrRef
@@ -50,8 +54,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_attr_ref(token));
-    return CreateAttrRef(token);
+    if (PQL::is_attr_ref(token)) {
+      return CreateAttrRef(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
@@ -63,8 +71,12 @@ class MasterArgumentFactory {
       return CreateWildcardExpression(token);
     }
 
-    assert(PQL::is_pattern_exact(token));
-    return CreateExactExpression(token);
+    if (PQL::is_pattern_exact(token)) {
+      return CreateExactExpression(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
@@ -125,8 +137,12 @@ class MasterArgumentFactory {
       return CreateIdentArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   // synonym | _ | INTEGER
@@ -139,8 +155,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 };
 }  // namespace qps

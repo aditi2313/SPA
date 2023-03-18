@@ -11,9 +11,9 @@ using filter::AssignPredicateFilter;
 
 namespace qps {
 // RS between a statement and a list of variables
-class PatternClause : public Clause {
+class PatternAssignClause : public Clause {
  public:
-  PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
+  PatternAssignClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(
       ClauseType::kPatternAssign, std::move(arg1), std::move(arg2)) {}
 

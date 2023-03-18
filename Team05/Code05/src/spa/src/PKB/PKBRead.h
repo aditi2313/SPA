@@ -99,6 +99,8 @@ class PKBRead {
 
   std::unordered_set<int> Affects(int);
 
+  std::unordered_set<int> AffectsT(int);
+
  private:
   inline bool IsContainerStmt(int v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);

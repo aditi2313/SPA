@@ -119,6 +119,40 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   return result;
 }
 
+std::unordered_set<int> PKBRead::AffectsT(int s) {
+  std::unordered_set<int> affects_lines = Affects(s);
+  // Named it affects_t_lines instead of all_affected_lines
+  // because affects_t is not really semantically equivalent
+  // to all_affected_lines
+  std::unordered_set<int> affects_t_lines(affects_lines);
+
+  std::queue<int> q;
+  std::unordered_set<int> visited;
+
+  // Initialize BFS queue
+  for(auto &line : affects_lines) {
+    q.push(line);
+    visited.insert(line);
+  }
+
+  while(!q.empty()) {
+    int curr = q.front();
+    q.pop();
+    affects_t_lines.insert(curr);  // Update result
+    auto neighbors = Affects(curr);
+
+    for(auto &neighbor : neighbors) {
+      // Note: moving the visited check here helps to prevent
+      // pushing many duplicate lines into the queue
+      if(visited.count(neighbor)) continue;
+      q.push(neighbor);
+      visited.insert(neighbor);
+    }
+  }
+
+  return affects_t_lines;
+}
+
 std::unordered_set<int> PKBRead::NextT(int v) {
   std::unordered_set<int> visited;
   std::queue<int> frontier;

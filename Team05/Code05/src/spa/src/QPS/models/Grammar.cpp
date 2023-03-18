@@ -47,5 +47,9 @@ Grammar::CheckLambda Grammar::kTupleCheck = [](std::string token) {
       || token == PQL::kTupleOpenBktToken;
 };
 
+Grammar::CheckLambda Grammar::kWildcardCheck = [](std::string token) {
+  return PQL::is_wildcard(token);
+};
+
 Grammar::ActionLambda Grammar::kEmptyAction = [](QueryPtr &query) {};
 }  // namespace qps

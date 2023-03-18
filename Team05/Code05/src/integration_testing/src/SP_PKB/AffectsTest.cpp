@@ -1,7 +1,7 @@
+#include <catch.hpp>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
-#include <catch.hpp>
 
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
@@ -26,7 +26,7 @@ void TestPKBAffects(
 }
 
 TEST_CASE("Simple affects testcase") {
-  TestPKBAffects({{1, {1, 3}}},
+  TestPKBAffects({{1, {3}}},
                  "procedure name {"
                  "x = x + 1;"
                  "print x;"
@@ -44,18 +44,17 @@ TEST_CASE("Complicated affects testcase") {
                  "y = x + 1;"
                  "}");
 
-  TestPKBAffects(
-      {{2, {2, 3}}, {3, {3, 5}}, {5, {5, 2, 6}}, {4, {4, 6}}, {6, {6}}},
-      "procedure name {"
-      "while (x < 2)"  // 1
-      "{"
-      "x = x + 2;"  // 2
-      "x = x + 1;"  // 3
-      "y = y;"      // 4
-      "x = x + 3;"  // 5
-      "}"
-      "y = x + 1 + y;"  // 6
-      "}");
+  TestPKBAffects({{2, {3}}, {3, {5}}, {5, {2, 6}}, {4, {4, 6}}, {6, {}}},
+                 "procedure name {"
+                 "while (x < 2)"  // 1
+                 "{"
+                 "x = x + 2;"  // 2
+                 "x = x + 1;"  // 3
+                 "y = y;"      // 4
+                 "x = x + 3;"  // 5
+                 "}"
+                 "y = x + 1 + y;"  // 6
+                 "}");
 }
 
 TEST_CASE("Complicated affects test case in if and while loop") {
@@ -94,7 +93,7 @@ TEST_CASE("While which doesn't occur will mean prev line will affect") {
 }
 
 TEST_CASE("If which doesn't occur will mean prev line will affect") {
-  TestPKBAffects({{1, {3, 5}}, {3, {3, 5}}},
+  TestPKBAffects({{1, {3, 5}}, {3, {5}}},
                  "procedure name {"
                  "x = 100;"
                  "if (x < 10) then {"

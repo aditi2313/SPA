@@ -71,9 +71,11 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   if (!relation_table_->assign_.count(s)) {
     return {};
   }
-
+  auto& table = relation_table_->next_table_;
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
+  auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list()
+                                 : std::unordered_set<int>{};
 
   util::GraphSearch<int, std::unordered_set<int>>::BFS(
       [&](int& v) {
@@ -82,7 +84,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
         auto& next = relation_table_->next_table_.get_row(v);
         return next.get_next_im_list();
       },
-      {s},
+      n_im_l,
       [&](const int& curr) {
         if (relation_table_->uses_table_.exists(curr)) {
           auto& data = relation_table_->uses_table_.get_row(curr);
@@ -93,7 +95,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
           }
         }
         // if this stmt modifies the variable then dont do anything
-        if (relation_table_->modifies_table_.exists(curr) && curr != s &&
+        if (relation_table_->modifies_table_.exists(curr) &&
             !IsContainerStmt(curr)) {
           auto& data = relation_table_->modifies_table_.get_row(curr);
           if (data.get_variables().count(modified_var)) {

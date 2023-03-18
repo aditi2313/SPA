@@ -30,11 +30,12 @@ class PKBCache {
   }
 
   inline std::unordered_set<int> &GetAffectsT(int stmt) {
-    return affects_table_.get_row(stmt).get_affected_lines();
+    return affectsT_table_.get_row(stmt).get_affected_lines();
   }
 
   inline void clear() {
     affects_table_.clear();
+    affectsT_table_.clear();
   }
 
  private:

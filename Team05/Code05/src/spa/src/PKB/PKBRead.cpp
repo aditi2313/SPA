@@ -64,8 +64,13 @@ std::unique_ptr<PKBResult<ConditionTable>> PKBRead::Condition(
 }
 
 std::unordered_set<int> PKBRead::Affects(int s) {
-  // bfs to find the variables that this stmt
+  // Return cached result immediately if it has been
+  // calculated before
+  if(cache_.exists(s)) {
+    return cache_.GetAffects(s).get_affected_lines();
+  }
 
+  // bfs to find the variables that this stmt
   std::queue<int> frontier;
   std::unordered_set<int> visited;
   std::unordered_set<int> result;
@@ -108,6 +113,9 @@ std::unordered_set<int> PKBRead::Affects(int s) {
       frontier.push(n);
     }
   }
+  // Write to cache
+  cache_.WriteAffects(s, result);
+
   return result;
 }
 

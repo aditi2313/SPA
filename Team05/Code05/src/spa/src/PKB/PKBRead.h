@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "PKBRelationTable.h"
+#include "PKBCache.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
 
@@ -105,6 +106,7 @@ class PKBRead {
 
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;
+  PKBCache cache_;
 };
 
 using PKBReadPtr = std::unique_ptr<PKBRead>;

@@ -55,6 +55,8 @@ class PKBRead {
   std::unique_ptr<PKBResult<ParentTable>> Parent(
       IndexableFilterPtr<ParentData>);
 
+  std::unordered_set<int> NextT(int);
+
   std::unique_ptr<PKBResult<CallsTable>> Calls(IndexableFilterPtr<CallsData>);
 
   std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);

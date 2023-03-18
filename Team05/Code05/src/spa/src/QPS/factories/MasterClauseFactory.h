@@ -7,6 +7,7 @@
 
 #include "ClauseFactory.h"
 #include "QPS/models/PQL.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class MasterClauseFactory {
@@ -39,6 +40,8 @@ class MasterClauseFactory {
     clause_factories_.insert(
         {ClauseType::kNext, std::make_unique<NextFactory>()});
     clause_factories_.insert(
+        {ClauseType::kNextT, std::make_unique<NextTFactory>()});
+    clause_factories_.insert(
         {ClauseType::kWith, std::make_unique<WithFactory>()});
   }
 
@@ -46,6 +49,9 @@ class MasterClauseFactory {
       ClauseType clause_type,
       ArgumentPtr arg1,
       ArgumentPtr arg2) {
+    if (!clause_factories_.count(clause_type)) {
+      throw PqlSyntaxErrorException("No such relation");
+    }
     return clause_factories_.at(clause_type)->Create(
         std::move(arg1), std::move(arg2));
   }
@@ -61,5 +67,3 @@ class MasterClauseFactory {
   std::unordered_map<ClauseType, ClauseFactoryPtr> clause_factories_;
 };
 }  // namespace qps
-
-

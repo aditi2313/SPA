@@ -14,4 +14,5 @@
 #include "PatternIfClause.h"
 #include "PatternWhileClause.h"
 #include "UsesClause.h"
+#include "NextTClause.h"
 #include "WithClause.h"

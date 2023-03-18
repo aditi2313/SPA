@@ -12,6 +12,7 @@ enum class ClauseType {
   kCalls,
   kCallsT,
   kNext,
+  kNextT,
   kWith,
   kPatternAssign,
   kPatternIf,

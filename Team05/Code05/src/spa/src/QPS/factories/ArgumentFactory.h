@@ -20,6 +20,20 @@ class ArgumentFactory {
   virtual ~ArgumentFactory() = default;
 };
 
+class AttrRefFactory : public ArgumentFactory {
+ public:
+  inline ArgumentPtr Create(std::string token) override {
+    auto [syn_name, attr_name] = PQL::split_attr_ref(token);
+    auto syn_arg = std::make_unique<SynonymArg>(syn_name);
+    syn_arg->set_attr_name(attr_name);
+    return syn_arg;
+  }
+
+  inline bool CheckSyntax(std::string token) override {
+    return PQL::is_attr_ref(token);
+  }
+};
+
 class ExactExpressionArgFactory : public ArgumentFactory {
  public:
   inline ArgumentPtr Create(std::string token) override {
@@ -36,12 +50,6 @@ class ExactExpressionArgFactory : public ArgumentFactory {
 
   inline bool CheckSyntax(std::string token) override {
     return PQL::is_pattern_exact(token);
-  }
-
- private:
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
-      std::string token) {
-
   }
 };
 
@@ -61,20 +69,6 @@ class WildcardExpressionArgFactory : public ArgumentFactory {
 
   inline bool CheckSyntax(std::string token) override {
     return PQL::is_pattern_wildcard(token);
-  }
-
- private:
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
-      std::string token) {
-    token = token.substr(2, token.size() - 4);
-
-    try {
-      auto AST = sp::SourceProcessor::ParseExpression(token);
-      return std::make_unique<ExpressionArg>(
-          std::move(AST), false);
-    } catch (std::exception _) {
-      throw PqlSyntaxErrorException("Invalid expression");
-    }
   }
 };
 

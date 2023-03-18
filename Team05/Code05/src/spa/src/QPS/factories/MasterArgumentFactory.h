@@ -13,8 +13,40 @@
 namespace qps {
 class MasterArgumentFactory {
  public:
-  inline std::unique_ptr<SynonymArg> CreateSynonym(SynonymName syn_name) {
-    return std::make_unique<SynonymArg>(syn_name);
+  MasterArgumentFactory() {
+    argument_factories_.insert(
+        {ArgumentType::kExactExpressionArg,
+         std::make_unique<ExactExpressionArgFactory>()});
+    argument_factories_.insert(
+        {ArgumentType::kWildcardExpressionArg,
+         std::make_unique<WildcardExpressionArgFactory>()});
+    argument_factories_.insert(
+        {ArgumentType::kIdentArg, std::make_unique<IdentArgFactory>()});
+    argument_factories_.insert(
+        {ArgumentType::kIntegerArg, std::make_unique<IntegerArgFactory>()});
+    argument_factories_.insert(
+        {ArgumentType::kSynonymArg, std::make_unique<SynonymArgFactory>()});
+    argument_factories_.insert(
+        {ArgumentType::kWildcard, std::make_unique<WildcardFactory>()});
+  }
+
+  inline ArgumentPtr Create(ArgumentType argument_type, std::string token) {
+    return argument_factories_.at(argument_type)->Create(token);
+  }
+
+  inline bool CheckSyntax(ArgumentType argument_type, std::string token) {
+    return argument_factories_.at(argument_type)->CheckSyntax(token);
+  }
+
+  inline ArgumentPtr Create(
+      std::vector<ArgumentType> &possible_arg_types,
+      std::string token) {
+    for(auto &arg_type : possible_arg_types) {
+      if (CheckSyntax(arg_type, token)) {
+        return Create(arg_type, token);
+      }
+    }
+    throw PqlSyntaxErrorException("Invalid argument syntax");
   }
 
   inline std::unique_ptr<SynonymArg> CreateSynonym(
@@ -24,20 +56,7 @@ class MasterArgumentFactory {
 
   // synonym | _ | INTEGER | "ident"
   inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIntegerArg(token);
-    }
-
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    return Create();
   }
 
   // "ident" | INTEGER | attrRef
@@ -56,95 +75,38 @@ class MasterArgumentFactory {
   }
 
   inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_pattern_wildcard(token)) {
-      return CreateWildcardExpression(token);
-    }
-
-    assert(PQL::is_pattern_exact(token));
-    return CreateExactExpression(token);
+    return Create(expression_spec_arg_types_, token);
   }
 
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
-      std::string token) {
-    token = token.substr(2, token.size() - 4);
-
-    try {
-      auto AST = sp::SourceProcessor::ParseExpression(token);
-      return std::make_unique<ExpressionArg>(
-          std::move(AST), false);
-    } catch (std::exception _) {
-      throw PqlSyntaxErrorException("Invalid expression");
-    }
-  }
-
-  inline std::unique_ptr<ExpressionArg> CreateExactExpression(
-      std::string token) {
-    token = token.substr(1, token.size() - 2);
-
-    try {
-      auto AST = sp::SourceProcessor::ParseExpression(token);
-      return std::make_unique<ExpressionArg>(
-          std::move(AST), true);
-    } catch (std::exception _) {
-      throw PqlSyntaxErrorException("Invalid expression");
-    }
-  }
-
-  inline std::unique_ptr<IdentArg> CreateIdentArg(std::string token) {
-    // Remove first and last quotation marks
-    token = token.substr(1, token.size() - 2);
-    return std::make_unique<IdentArg>(token);
-  }
-
-  inline std::unique_ptr<IntegerArg> CreateIntegerArg(std::string token) {
-    return std::make_unique<IntegerArg>(stoi(token));
-  }
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
   inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
-    auto [syn_name, attr_name] = PQL::split_attr_ref(token);
-    auto syn_arg = std::make_unique<SynonymArg>(syn_name);
-    syn_arg->set_attr_name(attr_name);
-    return syn_arg;
-  }
 
-  inline std::unique_ptr<Wildcard> CreateWildcard() {
-    return std::make_unique<Wildcard>();
   }
 
   // synonym | _ | "ident"
   inline ArgumentPtr CreateEntRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    return Create(ent_ref_arg_types_, token);
   }
 
-  // synonym | _ | INTEGER
-  inline ArgumentPtr CreateStmtRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIntegerArg(token);
-    }
-
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
-  }
  private:
   std::unordered_map<ArgumentType, ArgumentFactoryPtr> argument_factories_;
+  std::vector<ArgumentType> ent_ref_arg_types_ {
+    ArgumentType::kSynonymArg,
+    ArgumentType::kWildcard,
+    ArgumentType::kIntegerArg
+  };
+  std::vector<ArgumentType> stmt_ref_arg_types_ {
+      ArgumentType::kSynonymArg,
+      ArgumentType::kWildcard,
+      ArgumentType::kIdentArg
+  };
+  std::vector<ArgumentType> expression_spec_arg_types_ {
+      ArgumentType::kWildcard,
+      ArgumentType::kWildcardExpressionArg,
+      ArgumentType::kExactExpressionArg
+  };
+
 };
 }  // namespace qps
 

@@ -7,6 +7,7 @@
 
 #include "ClauseFactory.h"
 #include "QPS/models/PQL.h"
+#include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class MasterClauseFactory {
@@ -35,6 +36,8 @@ class MasterClauseFactory {
     clause_factories_.insert(
         {PQL::kNextRelName, std::make_unique<NextFactory>()});
     clause_factories_.insert(
+        {PQL::kNextTRelName, std::make_unique<NextTFactory>()});
+    clause_factories_.insert(
         {PQL::kWithRelName, std::make_unique<WithFactory>()});
   }
 
@@ -42,8 +45,11 @@ class MasterClauseFactory {
       RelName rel_name,
       ArgumentPtr arg1,
       ArgumentPtr arg2) {
-    return clause_factories_.at(rel_name)->Create(
-        std::move(arg1), std::move(arg2));
+    if (!clause_factories_.count(rel_name)) {
+      throw PqlSyntaxErrorException("No such relation");
+    }
+    return clause_factories_.at(rel_name)->Create(std::move(arg1),
+                                                  std::move(arg2));
   }
 
   inline bool Validate(
@@ -57,5 +63,3 @@ class MasterClauseFactory {
   std::unordered_map<std::string, ClauseFactoryPtr> clause_factories_;
 };
 }  // namespace qps
-
-

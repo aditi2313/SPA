@@ -57,6 +57,7 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
 
   // All relationships that appear after such that
@@ -65,7 +66,7 @@ class PQL {
       kCallsRelName, kCallsTRelName,
       kFollowsRelName, kFollowsTRelName,
       kModifiesRelName,
-      kNextRelName,
+      kNextRelName, kNextTRelName,
       kParentRelName, kParentTRelName,
       kPatternRelName,
       kUsesRelName,

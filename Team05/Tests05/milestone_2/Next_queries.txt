@@ -43,3 +43,13 @@ stmt stmt;
 Select stmt such that Next(stmt, 18)
 17, 20
 5000
+11 - testing nextT on long next
+stmt stmt;
+Select stmt such that Next*(stmt, 2)
+1
+5000
+12 - testing nextT on very long next
+stmt s;
+Select s such that Next*(1, s)
+2, 3, 4, 5, 6, 7, 8, 9, 10
+5000

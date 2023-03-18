@@ -34,6 +34,11 @@ class IndexFilter : public IndexableFilter<T> {
     return result;
   }
 
+  static std::unique_ptr<IndexFilter<T>> of(
+      std::variant<int, std::string> line) {
+    return std::make_unique<IndexFilter<T>>(line);
+  }
+
  private:
   std::variant<int, std::string> line_;
 };

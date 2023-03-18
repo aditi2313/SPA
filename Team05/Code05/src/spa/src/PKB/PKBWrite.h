@@ -46,18 +46,6 @@ class PKBWrite {
                    const std::unordered_set<std::string>& variable_names);
 
   /// <summary>
-  /// Adds a uses row.
-  ///
-  /// </summary>
-  /// <param name="line"></param>
-  /// <param name="control_variable_names"></param>
-  /// <param name="variable_names"></param>
-  void AddUsesData(const std::variant<int, std::string> line,
-                   const std::unordered_set<std::string>&
-                       control_variable_names,
-                   const std::unordered_set<std::string>& variable_names);
-
-  /// <summary>
   /// Adds a follows row.
   ///
   /// </summary>
@@ -88,6 +76,15 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="next"></param>
   void AddNextData(int line, const int next);
+
+  /// <summary>
+  /// Adds a conditions row.
+  ///
+  /// </summary>
+  /// <param name="line"></param>
+  /// <param name="variable_names"></param>
+  void AddConditionData(const std::variant<int, std::string> line,
+                   const std::unordered_set<std::string>& variable_names);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);

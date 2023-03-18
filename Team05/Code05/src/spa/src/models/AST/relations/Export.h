@@ -1,4 +1,15 @@
 #pragma once
 
+#include "AndExprNode.h"
 #include "CondExprNode.h"
+#include "DoubleCondExprNode.h"
+#include "EqualNode.h"
+#include "LessThanEqualNode.h"
+#include "LessThanNode.h"
+#include "MoreThanEqualNode.h"
+#include "MoreThanNode.h"
+#include "NotEqualNode.h"
+#include "NotExprNode.h"
+#include "OrExprNode.h"
 #include "RelExprNode.h"
+#include "RelFactor.h"

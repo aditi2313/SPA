@@ -18,11 +18,6 @@ class SynonymArg : public Argument {
   explicit SynonymArg(SynonymName syn_name, EntityType entity_type)
       : Argument(), syn_name_(syn_name), entity_type_(entity_type) {}
 
-  static inline SynonymName get_full_name(ArgumentPtr &arg) {
-    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
-    return syn_arg->get_full_name();
-  }
-
   inline bool IsSynonym() override { return true; }
   inline bool IsEntRef() override { return true; }
   inline bool IsStmtRef() override { return true; }
@@ -128,6 +123,7 @@ class SynonymArg : public Argument {
         << (attr_name_.empty() ? "" : " with: " + attr_name_);
     return str;
   }
+
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<SynonymArg>(*this);
   }
@@ -140,6 +136,11 @@ class SynonymArg : public Argument {
     auto arg = dynamic_cast<SynonymArg *>(&other);
     return syn_name_ == arg->syn_name_
         && entity_type_ == arg->entity_type_;
+  }
+
+  static inline SynonymName get_full_name(ArgumentPtr &arg) {
+    SynonymArg *syn_arg = dynamic_cast<SynonymArg *>(arg.get());
+    return syn_arg->get_full_name();
   }
 
   static inline SynonymName get_syn_name(ArgumentPtr &arg) {

@@ -60,7 +60,7 @@ void QueryEvaluator::UpdateTableWithElem(
     QueryPtr &query, Elem elem) {
   if (PQL::is_attr_ref(elem)) {
     auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
-    EntityType entity_type = query->get_declared_synonym_entity_name(
+    EntityType entity_type = query->get_declared_synonym_entity_type(
         syn_name);
     SynonymArg syn_arg(syn_name);
     syn_arg.set_entity_type(entity_type);
@@ -68,7 +68,7 @@ void QueryEvaluator::UpdateTableWithElem(
     syn_arg.UpdateTableWithAttrValue(pkb_, table_);
   } else {
     SynonymName syn_name = elem;
-    EntityType entity_type = query->get_declared_synonym_entity_name(
+    EntityType entity_type = query->get_declared_synonym_entity_type(
         syn_name);
     EntitySet initial_entities = master_entity_factory_.GetAllFromPKB(
         entity_type, pkb_);

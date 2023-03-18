@@ -186,7 +186,7 @@ class PQL {
   // Maps an AttrName (e.g stmt#) to a hashset of all
   // entities that can be paired with that AttrName.
   // e.g. varName is mapped to { variable, read, print }
-  inline static std::unordered_map<std::string, std::unordered_set<EntityType>>
+  inline static std::unordered_map<AttrName, std::unordered_set<EntityType>>
       kAttrNameToEntitiesMap{
       {kProcedureAttrName, {EntityType::kProcedure, EntityType::kCall}},
       {kVariableAttrName,
@@ -281,14 +281,15 @@ class PQL {
   // call, print, and read can have secondary attr_refs.
   inline static bool is_attr_ref_secondary(
       EntityType entity_type, AttrName attr_name) {
-    if (entity_type == EntityType::kRead
-        || entity_type == EntityType::kPrint) {
-      return attr_name == kVariableAttrName;
+    switch (entity_type) {
+      case EntityType::kRead:
+      case EntityType::kPrint:
+        return attr_name == kVariableAttrName;
+      case EntityType::kCall:
+        return attr_name == kProcedureAttrName;
+      default:
+        return false;
     }
-    if (entity_type == EntityType::kProcedure) {
-      return attr_name == kProcedureAttrName;
-    }
-    return false;  // False by default
   }
 };
 }  // namespace qps

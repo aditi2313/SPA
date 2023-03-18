@@ -9,7 +9,7 @@ TEST_CASE("Test Query methods") {
   SECTION("Test synonyms methods") {
     query.declare_synonym("v", EntityType::kVariable);
     REQUIRE(query.is_synonym_name_declared("v"));
-    REQUIRE(query.get_declared_synonym_entity_name("v")
+    REQUIRE(query.get_declared_synonym_entity_type("v")
                 == EntityType::kVariable);
 
     // Unknown key

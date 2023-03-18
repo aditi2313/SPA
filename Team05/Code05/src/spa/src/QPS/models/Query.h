@@ -31,10 +31,10 @@ class Query {
     return false;
   }
 
-  inline EntityType get_declared_synonym_entity_name(SynonymName syn_name) {
+  inline EntityType get_declared_synonym_entity_type(SynonymName syn_name) {
     for (auto &syn : synonym_declarations_) {
       if (syn->get_syn_name() == syn_name)
-        return syn->get_entity_name();
+        return syn->get_entity_type();
     }
     throw std::runtime_error("Synonym has not been declared");
   }

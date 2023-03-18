@@ -39,7 +39,7 @@ class PatternParseState : public RecursiveParseState {
                     "Synonym name in Pattern clause has not been declared");
               }
               EntityType entity_type =
-                  query->get_declared_synonym_entity_name(*itr_);
+                  query->get_declared_synonym_entity_type(*itr_);
               arg1_ =
                   master_argument_factory_.CreateSynonym(*itr_, entity_type);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;

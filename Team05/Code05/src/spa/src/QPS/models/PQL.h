@@ -8,6 +8,7 @@
 
 #include "common/exceptions/QPSExceptions.h"
 #include "SP/SourceProcessor.h"
+#include "QPS/models/clauses/ClauseType.h"
 #include "models/types.h"
 
 namespace qps {
@@ -20,16 +21,16 @@ using Elem = std::string;
 
 class PQL {
  public:
-  inline static std::string kStmtEntityName = "stmt";
-  inline static std::string kReadEntityName = "read";
-  inline static std::string kPrintEntityName = "print";
-  inline static std::string kCallEntityName = "call";
-  inline static std::string kWhileEntityName = "while";
-  inline static std::string kIfEntityName = "if";
-  inline static std::string kAssignEntityName = "assign";
-  inline static std::string kVariableEntityName = "variable";
-  inline static std::string kConstantEntityName = "constant";
-  inline static std::string kProcedureEntityName = "procedure";
+  inline static EntityName kStmtEntityName = "stmt";
+  inline static EntityName kReadEntityName = "read";
+  inline static EntityName kPrintEntityName = "print";
+  inline static EntityName kCallEntityName = "call";
+  inline static EntityName kWhileEntityName = "while";
+  inline static EntityName kIfEntityName = "if";
+  inline static EntityName kAssignEntityName = "assign";
+  inline static EntityName kVariableEntityName = "variable";
+  inline static EntityName kConstantEntityName = "constant";
+  inline static EntityName kProcedureEntityName = "procedure";
 
   inline static std::unordered_set<std::string> kAllEntityNames{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
@@ -60,6 +61,26 @@ class PQL {
   inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
 
+  inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
+      {kAffectsRelName, ClauseType::kAffects},
+      {kModifiesRelName, ClauseType::kModifies},
+      {kFollowsRelName, ClauseType::kFollows},
+      {kFollowsTRelName, ClauseType::kFollowsT},
+      {kPatternRelName, ClauseType::kPatternAssign},
+      {kUsesRelName, ClauseType::kUses},
+      {kParentRelName, ClauseType::kParent},
+      {kParentTRelName, ClauseType::kParentT},
+      {kCallsRelName, ClauseType::kCalls},
+      {kCallsTRelName, ClauseType::kCallsT},
+      {kNextRelName, ClauseType::kNext},
+      {kNextTRelName, ClauseType::kNextT},
+      {kWithRelName, ClauseType::kWith}
+  };
+
+  inline static ClauseType get_clause_type(RelName const rel_name) {
+    return kRelNameToClauseTypeMap.at(rel_name);
+  }
+
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{
       kAffectsRelName,
@@ -68,7 +89,6 @@ class PQL {
       kModifiesRelName,
       kNextRelName, kNextTRelName,
       kParentRelName, kParentTRelName,
-      kPatternRelName,
       kUsesRelName,
   };
 

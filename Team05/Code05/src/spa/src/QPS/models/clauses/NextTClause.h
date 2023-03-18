@@ -13,9 +13,7 @@ namespace qps {
 class NextTClause : public Clause {
  public:
   NextTClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kNextTRelName;
-  }
+      : Clause(ClauseType::kNextT, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(const Entity& index, const pkb::PKBReadPtr& pkb,
                     EntitySet& results) override {

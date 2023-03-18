@@ -64,13 +64,19 @@ std::unique_ptr<PKBResult<ConditionTable>> PKBRead::Condition(
 }
 
 std::unordered_set<int> PKBRead::Affects(int s) {
-  // bfs to find the variables that this stmt
+  // Return cached result immediately if it has been
+  // calculated before
+  if (cache_->ExistsAffects(s)) {
+    return cache_->GetAffects(s);
+  }
 
+  // bfs to find the variables that this stmt
   std::queue<int> frontier;
   std::unordered_set<int> visited;
   std::unordered_set<int> result;
 
   if (!relation_table_->assign_.count(s)) {
+    cache_->WriteAffects(s, {});
     return {};
   }
 
@@ -108,7 +114,49 @@ std::unordered_set<int> PKBRead::Affects(int s) {
       frontier.push(n);
     }
   }
+  // Write to cache
+  cache_->WriteAffects(s, result);
+
   return result;
+}
+
+std::unordered_set<int> PKBRead::AffectsT(int s) {
+  // Return cached result immediately if it has been
+  // calculated before
+  if (cache_->ExistsAffectsT(s)) {
+    return cache_->GetAffectsT(s);
+  }
+
+  std::unordered_set<int> affected_lines = Affects(s);
+  std::unordered_set<int> affectedT_lines(affected_lines);
+
+  std::queue<int> q;
+  std::unordered_set<int> visited;
+
+  // Initialize BFS queue
+  for (auto& line : affected_lines) {
+    q.push(line);
+    visited.insert(line);
+  }
+
+  while (!q.empty()) {
+    int curr = q.front();
+    q.pop();
+    affectedT_lines.insert(curr);  // Update result
+    auto neighbors = Affects(curr);
+
+    for (auto& neighbor : neighbors) {
+      // Note: moving the visited check here helps to prevent
+      // pushing many duplicate lines into the queue
+      if (visited.count(neighbor)) continue;
+      q.push(neighbor);
+      visited.insert(neighbor);
+    }
+  }
+
+  // Write back to cache
+  cache_->WriteAffectsT(s, affectedT_lines);
+  return affectedT_lines;
 }
 
 std::unordered_set<int> PKBRead::NextT(int v) {

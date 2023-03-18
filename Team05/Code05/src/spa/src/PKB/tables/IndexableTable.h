@@ -59,11 +59,17 @@ class IndexableTable {
     return std::move(result);
   }
 
+  inline void clear() {
+    table_.clear();
+    indexes_.clear();
+  }
+
  protected:
   std::unordered_map<IntOrStringVariant, T> table_;
   std::vector<IntOrStringVariant> indexes_;
 };
 
+typedef IndexableTable<AffectsData> AffectsTable;
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<UsesData> UsesTable;
 typedef IndexableTable<FollowsData> FollowsTable;

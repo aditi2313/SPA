@@ -44,6 +44,7 @@ struct GraphSearch {
       }
 
       for (auto &v : get_children(c)) {
+        if (visited.count(v)) continue;
         frontier.push(v);
       }
     }

@@ -24,9 +24,30 @@ struct GraphSearch {
   /// children</param> <param name="add_result">The method to add results
   /// to. Returns true if nothing needs to be done. False if no more children
   /// should be generated from this</param>
-  static void BFS(std::function<Container(Node &)> get_children,
-                  const Container intial_children,
-                  std::function<bool(const Node &)> add_result);
+  inline static void BFS(std::function<Container(Node &)> get_children,
+                         const Container intial_children,
+                         std::function<bool(const Node &)> add_result) {
+    std::queue<Node> frontier;
+    std::unordered_set<Node> visited;
+    for (auto &node : intial_children) {
+      frontier.push(node);
+    }
+    while (!frontier.empty()) {
+      auto &c = frontier.front();
+      frontier.pop();
+      if (visited.count(c)) {
+        continue;
+      }
+      visited.insert(c);
+      if (!add_result(c)) {
+        continue;
+      }
+
+      for (auto &v : get_children(c)) {
+        frontier.push(v);
+      }
+    }
+  }
 };
 
 /// <summary>

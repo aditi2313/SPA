@@ -101,6 +101,10 @@ class PKBRead {
 
   std::unordered_set<int> AffectsT(int);
 
+  inline void ClearCache() {
+    cache_.clear();
+  }
+
  private:
   inline bool IsContainerStmt(int v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);

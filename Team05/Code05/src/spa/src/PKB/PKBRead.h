@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "PKBRelationTable.h"
+#include "PKBCache.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
 
@@ -20,13 +21,36 @@ class PKBRead {
   /// </summary>
   /// <param name="relation_table">The table containing all
   /// relationships</param>
-  explicit PKBRead(std::unique_ptr<PKBRelationTable> relation_table) {
+  explicit PKBRead(
+      std::unique_ptr<PKBRelationTable> relation_table) {
     relation_table_ = std::move(relation_table);
+    // Create new cache if not using passed in cache
+    cache_ = std::make_unique<PKBCache>();
+    read_end_ = false;
+  }
+
+  /// <summary>
+  /// Create a PKBRead which reads from the given relation table
+  /// and cache.
+  /// </summary>
+  /// <param name="relation_table">The table containing all
+  /// relationships</param>
+  /// <param name="cache"> Cache that may contain
+  /// previously computed data from other queries</param>
+  PKBRead(
+      std::unique_ptr<PKBRelationTable> relation_table,
+      std::unique_ptr<PKBCache> cache) {
+    relation_table_ = std::move(relation_table);
+    cache_ = std::move(cache);
     read_end_ = false;
   }
 
   std::unique_ptr<PKBRelationTable> EndRead() {
     return std::move(relation_table_);
+  }
+
+  std::unique_ptr<PKBCache> RetrieveCache() {
+    return std::move(cache_);
   }
 
   /// <summary>
@@ -55,9 +79,14 @@ class PKBRead {
   std::unique_ptr<PKBResult<ParentTable>> Parent(
       IndexableFilterPtr<ParentData>);
 
+  std::unordered_set<int> NextT(int);
+
   std::unique_ptr<PKBResult<CallsTable>> Calls(IndexableFilterPtr<CallsData>);
 
   std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);
+
+  std::unique_ptr<PKBResult<ConditionTable>> Condition(
+      IndexableFilterPtr<ConditionData>);
 
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
@@ -93,6 +122,8 @@ class PKBRead {
 
   std::unordered_set<int> Affects(int);
 
+  std::unordered_set<int> AffectsT(int);
+
  private:
   inline bool IsContainerStmt(int v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);
@@ -100,6 +131,7 @@ class PKBRead {
 
   bool read_end_;
   std::unique_ptr<PKBRelationTable> relation_table_;
+  std::unique_ptr<PKBCache> cache_;
 };
 
 using PKBReadPtr = std::unique_ptr<PKBRead>;

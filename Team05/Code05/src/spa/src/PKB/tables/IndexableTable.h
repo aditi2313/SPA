@@ -7,13 +7,7 @@
 #include <variant>
 #include <vector>
 
-#include "PKB/data/AssignData.h"
-#include "PKB/data/CallsData.h"
-#include "PKB/data/FollowsData.h"
-#include "PKB/data/ModifiesData.h"
-#include "PKB/data/NextData.h"
-#include "PKB/data/ParentData.h"
-#include "PKB/data/UsesData.h"
+#include "PKB/data/Export.h"
 
 namespace pkb {
 
@@ -65,11 +59,18 @@ class IndexableTable {
     return std::move(result);
   }
 
+  inline void clear() {
+    table_.clear();
+    indexes_.clear();
+  }
+
  protected:
   std::unordered_map<IntOrStringVariant, T> table_;
   std::vector<IntOrStringVariant> indexes_;
 };
 
+typedef IndexableTable<AffectsData> AffectsTable;
+typedef IndexableTable<AffectsTData> AffectsTTable;
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<UsesData> UsesTable;
 typedef IndexableTable<FollowsData> FollowsTable;
@@ -77,6 +78,7 @@ typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 typedef IndexableTable<CallsData> CallsTable;
 typedef IndexableTable<NextData> NextTable;
+typedef IndexableTable<ConditionData> ConditionTable;
 
 template <typename T>
 using IndexableTablePtr = std::unique_ptr<IndexableTable<T>>;

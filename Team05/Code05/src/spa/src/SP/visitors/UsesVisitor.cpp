@@ -77,8 +77,8 @@ void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
   AddVariablesFromStmtList(*(if_node->get_then()), vars);
   AddVariablesFromStmtList(*(if_node->get_else()), vars);
 
-  pkb_ptr_->AddUsesData(
-      if_node->get_line(), cond_vars, vars);
+  pkb_ptr_->AddUsesData(if_node->get_line(), vars);
+  pkb_ptr_->AddConditionData(if_node->get_line(), cond_vars);
 
   direct_uses_[current_procedure_].merge(vars);
 }
@@ -92,8 +92,9 @@ void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
 
   // add the variables from the sub statements
   AddVariablesFromStmtList(*(while_node->get_stmts()), vars);
-  pkb_ptr_->AddUsesData(
-      while_node->get_line(), cond_vars, vars);
+  pkb_ptr_->AddUsesData(while_node->get_line(), vars);
+  pkb_ptr_->AddConditionData(while_node->get_line(), cond_vars);
+
   direct_uses_[current_procedure_].merge(vars);
 }
 

@@ -8,6 +8,8 @@
 
 #include "common/exceptions/QPSExceptions.h"
 #include "SP/SourceProcessor.h"
+#include "QPS/models/clauses/ClauseType.h"
+#include "QPS/models/EntityType.h"
 #include "models/types.h"
 
 namespace qps {
@@ -20,16 +22,16 @@ using Elem = std::string;
 
 class PQL {
  public:
-  inline static std::string kStmtEntityName = "stmt";
-  inline static std::string kReadEntityName = "read";
-  inline static std::string kPrintEntityName = "print";
-  inline static std::string kCallEntityName = "call";
-  inline static std::string kWhileEntityName = "while";
-  inline static std::string kIfEntityName = "if";
-  inline static std::string kAssignEntityName = "assign";
-  inline static std::string kVariableEntityName = "variable";
-  inline static std::string kConstantEntityName = "constant";
-  inline static std::string kProcedureEntityName = "procedure";
+  inline static EntityName kStmtEntityName = "stmt";
+  inline static EntityName kReadEntityName = "read";
+  inline static EntityName kPrintEntityName = "print";
+  inline static EntityName kCallEntityName = "call";
+  inline static EntityName kWhileEntityName = "while";
+  inline static EntityName kIfEntityName = "if";
+  inline static EntityName kAssignEntityName = "assign";
+  inline static EntityName kVariableEntityName = "variable";
+  inline static EntityName kConstantEntityName = "constant";
+  inline static EntityName kProcedureEntityName = "procedure";
 
   inline static std::unordered_set<std::string> kAllEntityNames{
       kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
@@ -37,15 +39,43 @@ class PQL {
       kVariableEntityName, kConstantEntityName, kProcedureEntityName
   };
 
-  inline static std::unordered_set<std::string> kAllStmtEntityNames{
-      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
-      kWhileEntityName, kIfEntityName, kAssignEntityName
+  inline static std::unordered_set<EntityType> kAllEntityTypes{
+      EntityType::kStmt, EntityType::kRead,
+      EntityType::kPrint, EntityType::kCall,
+      EntityType::kWhile, EntityType::kIf, EntityType::kAssign,
+      EntityType::kVariable, EntityType::kConstant, EntityType::kProcedure
   };
 
-  inline static bool const is_entity_name(EntityName const str) {
-    return kAllEntityNames.count(str);
+  inline static std::unordered_set<EntityType> kAllStmtEntityTypes{
+      EntityType::kStmt, EntityType::kRead,
+      EntityType::kPrint, EntityType::kCall,
+      EntityType::kWhile, EntityType::kIf, EntityType::kAssign
+  };
+
+  inline static std::unordered_map<EntityName, EntityType>
+      kEntityNameToEntityTypeMap{
+      {kStmtEntityName, EntityType::kStmt},
+      {kReadEntityName, EntityType::kRead},
+      {kPrintEntityName, EntityType::kPrint},
+      {kCallEntityName, EntityType::kCall},
+      {kWhileEntityName, EntityType::kWhile},
+      {kIfEntityName, EntityType::kIf},
+      {kAssignEntityName, EntityType::kAssign},
+      {kVariableEntityName, EntityType::kVariable},
+      {kConstantEntityName, EntityType::kConstant},
+      {kProcedureEntityName, EntityType::kProcedure}
+  };
+
+  inline static bool const is_entity_name(EntityName const entity_name) {
+    return kAllEntityNames.count(entity_name);
   }
 
+  inline static EntityType get_entity_type(EntityName const entity_name) {
+    return kEntityNameToEntityTypeMap.at(entity_name);
+  }
+
+  inline static RelName kAffectsRelName = "Affects";
+  inline static RelName kAffectsTRelName = "Affects*";
   inline static RelName kModifiesRelName = "Modifies";
   inline static RelName kFollowsRelName = "Follows";
   inline static RelName kFollowsTRelName = "Follows*";
@@ -56,13 +86,39 @@ class PQL {
   inline static RelName kCallsRelName = "Calls";
   inline static RelName kCallsTRelName = "Calls*";
   inline static RelName kNextRelName = "Next";
+  inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
+
+  inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
+      {kAffectsRelName, ClauseType::kAffects},
+      {kAffectsTRelName, ClauseType::kAffectsT},
+      {kModifiesRelName, ClauseType::kModifies},
+      {kFollowsRelName, ClauseType::kFollows},
+      {kFollowsTRelName, ClauseType::kFollowsT},
+      {kPatternRelName, ClauseType::kPatternAssign},
+      {kUsesRelName, ClauseType::kUses},
+      {kParentRelName, ClauseType::kParent},
+      {kParentTRelName, ClauseType::kParentT},
+      {kCallsRelName, ClauseType::kCalls},
+      {kCallsTRelName, ClauseType::kCallsT},
+      {kNextRelName, ClauseType::kNext},
+      {kNextTRelName, ClauseType::kNextT},
+      {kWithRelName, ClauseType::kWith}
+  };
+
+  inline static ClauseType get_clause_type(RelName const rel_name) {
+    return kRelNameToClauseTypeMap.at(rel_name);
+  }
 
   // All relationships that appear after such that
   inline static std::unordered_set<std::string> kAllSuchThatRelNames{
-      kModifiesRelName, kFollowsRelName, kFollowsTRelName, kParentRelName,
-      kParentTRelName, kUsesRelName, kPatternRelName,
-      kCallsRelName, kCallsTRelName, kNextRelName
+      kAffectsRelName, kAffectsTRelName,
+      kCallsRelName, kCallsTRelName,
+      kFollowsRelName, kFollowsTRelName,
+      kModifiesRelName,
+      kNextRelName, kNextTRelName,
+      kParentRelName, kParentTRelName,
+      kUsesRelName,
   };
 
   // Returns true if the string is a relationship that appears
@@ -130,13 +186,13 @@ class PQL {
   // Maps an AttrName (e.g stmt#) to a hashset of all
   // entities that can be paired with that AttrName.
   // e.g. varName is mapped to { variable, read, print }
-  inline static std::unordered_map<std::string, std::unordered_set<EntityName>>
+  inline static std::unordered_map<AttrName, std::unordered_set<EntityType>>
       kAttrNameToEntitiesMap{
-      {kProcedureAttrName, {kProcedureEntityName, kCallEntityName}},
+      {kProcedureAttrName, {EntityType::kProcedure, EntityType::kCall}},
       {kVariableAttrName,
-       {kVariableEntityName, kReadEntityName, kPrintEntityName}},
-      {kValueAttrName, {kConstantEntityName}},
-      {kStmtAttrName, kAllStmtEntityNames}
+       {EntityType::kVariable, EntityType::kRead, EntityType::kPrint}},
+      {kValueAttrName, {EntityType::kConstant}},
+      {kStmtAttrName, kAllStmtEntityTypes}
   };
 
   inline static std::unordered_set<std::string> kAllAttrName{
@@ -158,9 +214,9 @@ class PQL {
   }
 
   inline static bool ValidateAttrRef(
-      AttrName attr_name, EntityName entity_name) {
+      AttrName attr_name, EntityType entity_type) {
     auto &attr_name_types = kAttrNameToEntitiesMap.at(attr_name);
-    return attr_name_types.count(entity_name);
+    return attr_name_types.count(entity_type);
   }
 
   inline static std::string kSemicolonToken = ";";
@@ -224,15 +280,16 @@ class PQL {
   // In ADVANCED SPA requirements, only
   // call, print, and read can have secondary attr_refs.
   inline static bool is_attr_ref_secondary(
-      EntityName entity_name, AttrName attr_name) {
-    if (entity_name == kReadEntityName
-        || entity_name == kPrintEntityName) {
-      return attr_name == kVariableAttrName;
+      EntityType entity_type, AttrName attr_name) {
+    switch (entity_type) {
+      case EntityType::kRead:
+      case EntityType::kPrint:
+        return attr_name == kVariableAttrName;
+      case EntityType::kCall:
+        return attr_name == kProcedureAttrName;
+      default:
+        return false;
     }
-    if (entity_name == kCallEntityName) {
-      return attr_name == kProcedureAttrName;
-    }
-    return false;  // False by default
   }
 };
 }  // namespace qps

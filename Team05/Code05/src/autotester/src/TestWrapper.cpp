@@ -21,6 +21,7 @@ TestWrapper::TestWrapper() {
   // create any objects here as instance variables of this class
   // as well as any initialization required for your spa program
   pkb_relation_ = std::make_unique<pkb::PKBRelationTable>();
+  pkb_cache_ = std::make_unique<pkb::PKBCache>();
 }
 
 // method for parsing the SIMPLE source
@@ -41,12 +42,15 @@ void TestWrapper::parse(std::string filename) {
 
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, pkb_relation_);
+  pkb_cache_->clear();  // Important: reset cache between programs
 }
 
 // method to evaluating a query
 void TestWrapper::evaluate(std::string query, std::list<std::string> &results) {
   qps::QPS qps;
-  auto reader = std::make_unique<pkb::PKBRead>(std::move(pkb_relation_));
+  auto reader = std::make_unique<pkb::PKBRead>(
+      std::move(pkb_relation_), std::move(pkb_cache_));
   qps.evaluate(query, results, reader);
+  pkb_cache_ = reader->RetrieveCache();
   pkb_relation_ = reader->EndRead();
 }

@@ -1,14 +1,55 @@
 #pragma once
 
 #include <cassert>
+#include <functional>
 #include <iostream>
 #include <list>
+#include <queue>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace util {
-// Todo(Gab) replace all dynamic cast checks with this.
+
+template <class Node, class Container = std::vector<Node>>
+struct GraphSearch {
+  /// <summary>
+  /// Runs BFS with the given get_children, initial children.
+  /// </summary>
+  /// <typeparam name="Node">The type of the nodes to run bfs</typeparam>
+  /// <typeparam name="Container">The container of nodes returned</typeparam>
+  /// <param name="get_children">The function to return the container of
+  /// nodes</param> <param name="intial_children">The initial container of
+  /// children</param> <param name="add_result">The method to add results
+  /// to. Returns true if nothing needs to be done. False if no more children
+  /// should be generated from this</param>
+  inline static void BFS(std::function<Container(Node &)> get_children,
+                         const Container intial_children,
+                         std::function<bool(const Node &)> add_result) {
+    std::queue<Node> frontier;
+    std::unordered_set<Node> visited;
+    for (auto &node : intial_children) {
+      frontier.push(node);
+    }
+    while (!frontier.empty()) {
+      auto &c = frontier.front();
+      frontier.pop();
+      if (visited.count(c)) {
+        continue;
+      }
+      visited.insert(c);
+      if (!add_result(c)) {
+        continue;
+      }
+
+      for (auto &v : get_children(c)) {
+        if (visited.count(v)) continue;
+        frontier.push(v);
+      }
+    }
+  }
+};
 
 /// <summary>
 /// Utility function for checking the instance of a
@@ -18,7 +59,7 @@ namespace util {
 /// <typeparam name="Derived">The possibly derived class of the
 /// object.</typeparam> <param name="other">The object to check</param>
 /// <returns></returns>
-template <class Derived, class Base>
+template<class Derived, class Base>
 inline bool InstanceOf(const Base &object) {
   return dynamic_cast<const Derived *>(&object) != nullptr;
 }
@@ -29,7 +70,7 @@ inline bool InstanceOf(const Base &object) {
 /// </summary>
 /// <returns>True if the two vectors are the same size and
 /// the object each pointer is pointing to compares equal</returns>
-template <class UniquePointerLHS, class UniquePointerRHS>
+template<class UniquePointerLHS, class UniquePointerRHS>
 inline bool CompareVectorOfPointers(const std::vector<UniquePointerLHS> &LHS,
                                     const std::vector<UniquePointerRHS> &RHS) {
   if (LHS.size() != RHS.size()) return false;
@@ -52,6 +93,19 @@ inline bool CompareResults(const std::list<std::string> &LHS,
   }
   for (auto &res : RHS) {
     RHS_map[res]++;
+  }
+
+  if (LHS_map != RHS_map) {
+    std::cout << "actual: ";
+    for (auto str : LHS) {
+      std::cout << str << ", ";
+    }
+    std::cout << "\n";
+    std::cout << "expected: ";
+    for (auto str : RHS) {
+      std::cout << str << ", ";
+    }
+    std::cout << "\n";
   }
 
   return LHS_map == RHS_map;

@@ -41,10 +41,10 @@ class Argument {
 
   virtual std::unique_ptr<Argument> Copy() = 0;
 
-  // Returns true if the entity name of the argument
-  // exists in the parameter hashset of entity names
+  // Returns true if the entity type of the argument
+  // exists in the hashset of valid entity types
   virtual bool Validate(
-      std::unordered_set<EntityName> &entity_names) = 0;
+      std::unordered_set<EntityType> &valid_entity_types) = 0;
 
   virtual void InitializeEntities(
       Table &table, pkb::PKBReadPtr &pkb, EntitySet &result) = 0;

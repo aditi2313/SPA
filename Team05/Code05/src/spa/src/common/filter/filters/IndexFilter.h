@@ -34,6 +34,11 @@ class IndexFilter : public IndexableFilter<T> {
     return result;
   }
 
+  static std::unique_ptr<IndexFilter<T>> of(
+      std::variant<int, std::string> line) {
+    return std::make_unique<IndexFilter<T>>(line);
+  }
+
  private:
   std::variant<int, std::string> line_;
 };
@@ -44,5 +49,6 @@ using UsesIndexFilter = IndexFilter<pkb::UsesData>;
 using FollowsIndexFilter = IndexFilter<pkb::FollowsData>;
 using ParentIndexFilter = IndexFilter<pkb::ParentData>;
 using CallsIndexFilter = IndexFilter<pkb::CallsData>;
+using ConditionIndexFilter = IndexFilter<pkb::ConditionData>;
 using NextIndexFilter = IndexFilter<pkb::NextData>;
 }  // namespace filter

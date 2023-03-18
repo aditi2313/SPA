@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AffectsClause.h"
+#include "AffectsTClause.h"
 #include "CallsClause.h"
 #include "CallsTClause.h"
 #include "Clause.h"
@@ -9,6 +11,9 @@
 #include "NextClause.h"
 #include "ParentClause.h"
 #include "ParentTClause.h"
-#include "PatternClause.h"
+#include "PatternAssignClause.h"
+#include "PatternIfClause.h"
+#include "PatternWhileClause.h"
 #include "UsesClause.h"
+#include "NextTClause.h"
 #include "WithClause.h"

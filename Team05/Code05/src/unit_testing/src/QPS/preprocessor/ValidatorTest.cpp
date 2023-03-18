@@ -9,7 +9,7 @@
 using namespace qps;  // NOLINT
 
 std::unique_ptr<Query> BuildQuery(
-    std::vector<std::pair<SynonymName, EntityName>> synonyms,
+    std::vector<std::pair<SynonymName, EntityType>> synonyms,
     std::vector<std::string> selected_synonyms);  // Forward declaration
 
 TEST_CASE("Test Wildcard as first argument in Clauses") {
@@ -303,7 +303,6 @@ TEST_CASE("Test synonym types for each clause are valid") {
 
     REQUIRE_NOTHROW(Validator::Validate(query));
   }
-
 
   SECTION("Exact expression for Pattern should pass") {
     std::string query_str = "assign a; variable v;"

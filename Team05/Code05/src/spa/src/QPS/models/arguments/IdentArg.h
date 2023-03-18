@@ -17,9 +17,9 @@ class IdentArg : public Argument {
   inline std::string get_ident() { return ident_; }
 
   inline bool Validate(
-      std::unordered_set<EntityName> &entity_names) override {
-    for (auto &entity_name : entity_names) {
-      if (master_entity_factory_.is_ident(entity_name)) {
+      std::unordered_set<EntityType> &valid_entity_types) override {
+    for (auto &entity_type : valid_entity_types) {
+      if (master_entity_factory_.is_ident(entity_type)) {
         return true;
       }
     }
@@ -37,9 +37,11 @@ class IdentArg : public Argument {
     str << "Ident Arg: " << ident_;
     return str;
   }
+
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<IdentArg>(*this);
   }
+
   inline bool operator==(Argument &other) override {
     const std::type_info &ti1 = typeid(*this);
     const std::type_info &ti2 = typeid(other);

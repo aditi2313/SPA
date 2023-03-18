@@ -38,19 +38,19 @@ class SelectClParser {
     transition_table_.assign(num_states, std::vector<int>());
 
     transition_table_[kDeclarationIndex] =
-        {kSelectIndex};
+        {kDeclarationIndex, kSelectIndex};
 
     transition_table_[kSelectIndex] =
         {kSuchThatIndex, kPatternIndex, kWithIndex};
 
     transition_table_[kSuchThatIndex] =
-        {kPatternIndex, kWithIndex};
+        {kSuchThatIndex, kPatternIndex, kWithIndex};
 
     transition_table_[kPatternIndex] =
-        {kSuchThatIndex, kWithIndex};
+        {kPatternIndex, kSuchThatIndex, kWithIndex};
 
     transition_table_[kWithIndex] =
-        {kSuchThatIndex, kPatternIndex};
+        {kWithIndex, kSuchThatIndex, kPatternIndex};
   }
 
   std::vector<std::string> PreprocessQueryString(std::string query_string);

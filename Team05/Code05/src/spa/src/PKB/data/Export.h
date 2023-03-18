@@ -1,6 +1,9 @@
 #pragma once
 
+#include "AffectsData.h"
 #include "AssignData.h"
+#include "CallsData.h"
+#include "ConditionData.h"
 #include "FollowsData.h"
 #include "ModifiesData.h"
 #include "NextData.h"

@@ -11,12 +11,11 @@ using filter::AssignPredicateFilter;
 
 namespace qps {
 // RS between a statement and a list of variables
-class PatternClause : public Clause {
+class PatternAssignClause : public Clause {
  public:
-  PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kPatternRelName;
-  }
+  PatternAssignClause(ArgumentPtr arg1, ArgumentPtr arg2)
+      : Clause(
+      ClauseType::kPatternAssign, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,

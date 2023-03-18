@@ -23,6 +23,9 @@ stmt s1, s2, s3, s4;
 Select <s1, s4> such that Next(s1, s2) and Next(s2, s3) such that Next(s3, s4)
 4 5, 3 6, 5 6, 6 5
 5000
-
-
+6 - s1 ->* s2 ->* s3 --> equivalent to s1 -> s2 -> s3
+stmt s1, s2, s3;
+Select s1 such that Next* (s1, s2) and Next*(s2, s3)
+3, 4, 5, 6
+5000
 

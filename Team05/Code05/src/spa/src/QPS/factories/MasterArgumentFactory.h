@@ -12,8 +12,13 @@
 namespace qps {
 class MasterArgumentFactory {
  public:
-  inline std::unique_ptr<SynonymArg> CreateSynonym(std::string token) {
-    return std::make_unique<SynonymArg>(token);
+  inline std::unique_ptr<SynonymArg> CreateSynonym(SynonymName syn_name) {
+    return std::make_unique<SynonymArg>(syn_name);
+  }
+
+  inline std::unique_ptr<SynonymArg> CreateSynonym(
+      SynonymName syn_name, EntityType entity_type) {
+    return std::make_unique<SynonymArg>(syn_name, entity_type);
   }
 
   // synonym | _ | INTEGER | "ident"
@@ -30,8 +35,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   // "ident" | INTEGER | attrRef
@@ -45,8 +54,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_attr_ref(token));
-    return CreateAttrRef(token);
+    if (PQL::is_attr_ref(token)) {
+      return CreateAttrRef(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
@@ -58,8 +71,12 @@ class MasterArgumentFactory {
       return CreateWildcardExpression(token);
     }
 
-    assert(PQL::is_pattern_exact(token));
-    return CreateExactExpression(token);
+    if (PQL::is_pattern_exact(token)) {
+      return CreateExactExpression(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
@@ -77,7 +94,7 @@ class MasterArgumentFactory {
 
   inline std::unique_ptr<ExpressionArg> CreateExactExpression(
       std::string token) {
-    token = token.substr(1, token.size()- 2);
+    token = token.substr(1, token.size() - 2);
 
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
@@ -97,7 +114,6 @@ class MasterArgumentFactory {
   inline std::unique_ptr<IntegerArg> CreateIntegerArg(std::string token) {
     return std::make_unique<IntegerArg>(stoi(token));
   }
-
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
   inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
@@ -121,8 +137,12 @@ class MasterArgumentFactory {
       return CreateIdentArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 
   // synonym | _ | INTEGER
@@ -135,8 +155,12 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    assert(PQL::is_synonym(token));
-    return CreateSynonym(token);
+    if (PQL::is_synonym(token)) {
+      return CreateSynonym(token);
+    }
+
+    throw PqlSyntaxErrorException(
+        "Unexpected argument type in clause");
   }
 };
 }  // namespace qps

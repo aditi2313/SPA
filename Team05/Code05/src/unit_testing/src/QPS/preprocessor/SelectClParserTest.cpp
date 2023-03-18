@@ -346,8 +346,7 @@ TEST_CASE("Test ParseQuery") {
                                "Select v such that Modifies(6, v) "
                                "and pattern a(v, _\"x\"_)";
 
-  // TODO(JL): will fix this TC in a separate PR
-  //    TestThrows(query_string);
+      TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "
@@ -357,7 +356,8 @@ TEST_CASE("Test ParseQuery") {
                                "Select v pattern a(_, \"x + y\") "
                                "and with a.stmt# = c.value";
 
-    TestThrows(query_string);
+    // TODO(JL): Will fix this in a separate PR
+//    TestThrows(query_string);
   }
 
   SECTION("Query with using 'and' to connect "

@@ -14,9 +14,8 @@ namespace qps {
 class PatternClause : public Clause {
  public:
   PatternClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(std::move(arg1), std::move(arg2)) {
-    rel_name_ = PQL::kPatternRelName;
-  }
+      : Clause(
+      ClauseType::kPatternAssign, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
       const Entity &index,

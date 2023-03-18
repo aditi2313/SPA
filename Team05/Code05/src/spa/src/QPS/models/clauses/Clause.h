@@ -5,19 +5,22 @@
 #include <typeinfo>
 #include <utility>
 
-#include "QPS/models/arguments/Export.h"
 #include "PKB/PKBRead.h"
-#include "QPS/factories/MasterEntityFactory.h"
 #include "common/filter/filters/PredicateFilter.h"
+#include "QPS/models/arguments/Export.h"
+#include "QPS/factories/MasterEntityFactory.h"
 #include "QPS/models/QueryResult.h"
+#include "ClauseType.h"
 
 namespace qps {
 // Pure abstract base class for a Clause:
 // It should not be instantiated as its own object.
 class Clause {
  public:
-  Clause(ArgumentPtr arg1, ArgumentPtr arg2) :
-      arg1_(std::move(arg1)), arg2_(std::move(arg2)) {}
+  Clause(ClauseType clause_type, ArgumentPtr arg1, ArgumentPtr arg2)
+      : clause_type_(clause_type),
+        arg1_(std::move(arg1)),
+        arg2_(std::move(arg2)) {}
 
   virtual void Preprocess(
       const pkb::PKBReadPtr &pkb,
@@ -76,7 +79,7 @@ class Clause {
 
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
-  inline RelName get_rel_name() { return rel_name_; }
+  inline ClauseType get_clause_type() { return clause_type_; }
 
   inline bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);
@@ -95,7 +98,7 @@ class Clause {
  protected:
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
-  RelName rel_name_;
+  ClauseType clause_type_;
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

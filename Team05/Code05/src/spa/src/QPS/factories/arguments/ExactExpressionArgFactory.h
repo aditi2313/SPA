@@ -1,8 +1,8 @@
 #pragma once
 
-#include <utility> 
-#include <string>
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "ArgumentFactory.h"
 

@@ -50,6 +50,7 @@ class MasterArgumentFactory {
         return Create(arg_type, token);
       }
     }
+
     throw PqlSyntaxErrorException(
         "Argument token does not fit any possible argument types");
   }

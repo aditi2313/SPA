@@ -1,5 +1,9 @@
 #pragma once
 
+#include <utility> 
+#include <string>
+#include <memory>
+
 #include "ArgumentFactory.h"
 
 namespace qps {

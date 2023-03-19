@@ -19,9 +19,7 @@ class AffectsTClause : public Clause {
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
     auto affectsT_lines = pkb->AffectsT(index.get_int());
-    for (auto &affectsT_line : affectsT_lines) {
-      results.insert(Entity(affectsT_line));
-    }
+    AddList(affectsT_lines, results);
   }
 };
 

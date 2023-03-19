@@ -27,9 +27,7 @@ class FollowsTClause : public Clause {
           return std::move(pkb->Follows(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::FollowsData data) {
-          for (auto stmt : data.get_follows_list()) {
-            result.insert(Entity(stmt));
-          }
+          AddList(data.get_follows_list(), result);
         },
         results);
   }

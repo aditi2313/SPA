@@ -26,9 +26,7 @@ class NextClause : public Clause {
           return std::move(pkb->Next(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::NextData data) {
-          for (auto child : data.get_next_im_list()) {
-            result.insert(Entity(child));
-          }
+          AddList(data.get_next_im_list(), result);
         },
         results);
   }

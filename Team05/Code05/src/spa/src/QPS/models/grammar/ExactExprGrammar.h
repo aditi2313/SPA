@@ -43,7 +43,8 @@ class ExactExprGrammar : public CompositeGrammar {
         Grammar(
             Grammar::CreateTokenCheck(PQL::kQuotationToken),
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg_ = master_argument_factory_.CreateExpressionArg(expr_, true);
+              arg_ = master_argument_factory_.Create(
+                  ArgumentType::kExactExprArg, expr_);
             }));
   }
 

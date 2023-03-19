@@ -48,7 +48,8 @@ class WildcardExprGrammar : public CompositeGrammar {
         Grammar(
             Grammar::kWildcardCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg_ = master_argument_factory_.CreateExpressionArg(expr_, false);
+              arg_ = master_argument_factory_.Create(
+                  ArgumentType::kWildcardExprArg, expr_);
             }));
   }
 

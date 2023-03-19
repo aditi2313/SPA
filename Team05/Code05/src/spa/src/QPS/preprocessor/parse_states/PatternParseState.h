@@ -38,7 +38,8 @@ class PatternParseState : public RecursiveParseState {
         Grammar(
             Grammar::kSynCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg1_ = master_argument_factory_.CreateSynonym(*itr_);
+              arg1_ = master_argument_factory_.Create(
+                  ArgumentType::kSynonymArg, *itr_);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
@@ -49,15 +50,17 @@ class PatternParseState : public RecursiveParseState {
             Grammar::CreateTokenCheck(PQL::kOpenBktToken),
             Grammar::kEmptyAction));
 
-    // argument
+    // entRef
     grammar_.emplace_back(
         Grammar(
-            Grammar::kArgumentCheck,
+            Grammar::kEntRefCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               IdentArgGrammar ident_arg_grammar(tokens, query, itr_, arg2_);
               bool is_ident_arg = ident_arg_grammar.Parse();
               if (!is_ident_arg) {
-                arg2_ = master_argument_factory_.CreateEntRef(*itr_);
+                arg2_ = master_argument_factory_.Create(
+                    {ArgumentType::kWildcard, ArgumentType::kSynonymArg},
+                    *itr_);
               }
             }));
 
@@ -143,7 +146,8 @@ class PatternParseState : public RecursiveParseState {
     bool is_exact_expr = exact_expr_grammar.Parse();
     if (is_exact_expr) return;
 
-    arg = master_argument_factory_.CreateWildcard();
+    arg = master_argument_factory_.Create(
+        ArgumentType::kWildcard, "_");
   }
 
   inline void CreatePatternClause(
@@ -175,12 +179,13 @@ class PatternParseState : public RecursiveParseState {
   // Returns false if there is no valid pattern clause type
   // match - indicating that there is a SemanticError
   inline bool GetPatternClauseType(QueryPtr &query) {
-    if (!query->is_synonym_name_declared(arg1_->get_syn_name())) {
+    auto syn_arg = dynamic_cast<SynonymArg *>(arg1_.get());
+    if (!query->is_synonym_name_declared(syn_arg->get_syn_name())) {
       return false;
     }
 
     EntityType entity_type = query->get_declared_synonym_entity_type(
-        arg1_->get_syn_name());
+        syn_arg->get_syn_name());
 
     if (!kEntityTypeToClauseTypeMap.count(entity_type)) {
       // Not assign or while or if
@@ -204,11 +209,11 @@ class PatternParseState : public RecursiveParseState {
       return false;
     }
 
-    arg1_->set_entity_type(entity_type);
+    syn_arg->set_entity_type(entity_type);
     return true;
   }
 
-  std::unique_ptr<SynonymArg> arg1_;
+  ArgumentPtr arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
   ClauseType pattern_clause_type_;

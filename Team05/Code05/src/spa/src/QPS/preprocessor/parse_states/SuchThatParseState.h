@@ -54,7 +54,10 @@ class SuchThatParseState : public RecursiveParseState {
     // argument
     grammar_.emplace_back(
         Grammar(
-            Grammar::kArgumentCheck,
+            [](std::string token) {
+              return Grammar::kStmtRefCheck(token)
+                  || Grammar::kEntRefCheck(token);
+            },
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               CreateEntOrStmtRef(tokens, query, arg1_);
             }));
@@ -68,7 +71,10 @@ class SuchThatParseState : public RecursiveParseState {
     // argument
     grammar_.emplace_back(
         Grammar(
-            Grammar::kArgumentCheck,
+            [](std::string token) {
+              return Grammar::kStmtRefCheck(token)
+                  || Grammar::kEntRefCheck(token);
+            },
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               CreateEntOrStmtRef(tokens, query, arg2_);
             }));
@@ -103,7 +109,12 @@ class SuchThatParseState : public RecursiveParseState {
     bool is_ident_arg = ident_arg_grammar.Parse();
     if (is_ident_arg) return;
 
-    arg = master_argument_factory_.CreateStmtRef(*itr_);
+    arg = master_argument_factory_.Create(
+        {
+            ArgumentType::kSynonymArg,
+            ArgumentType::kWildcard,
+            ArgumentType::kIntegerArg},
+        *itr_);
   }
 
   RelName rel_name_;

@@ -1,10 +1,14 @@
 #include "Grammar.h"
-#include "PQL.h"
-#include "Query.h"
+#include "QPS/models/PQL.h"
+#include "QPS/models/Query.h"
 
 namespace qps {
 Grammar::CheckLambda Grammar::kArgumentCheck = [](std::string token) {
   return PQL::is_argument(token);
+};
+
+Grammar::CheckLambda Grammar::kAttrNameCheck = [](std::string token) {
+  return PQL::is_attr_name(token);
 };
 
 Grammar::CheckLambda Grammar::kBooleanCheck = [](std::string token) {
@@ -24,6 +28,10 @@ Grammar::CheckLambda Grammar::kExprCheck = [](std::string token) {
   return PQL::is_pattern_wildcard(token)
       || PQL::is_pattern_exact(token)
       || PQL::is_wildcard(token);
+};
+
+Grammar::CheckLambda Grammar::kExactExprCheck = [](std::string token) {
+  return PQL::is_pattern_exact(token);
 };
 
 Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {

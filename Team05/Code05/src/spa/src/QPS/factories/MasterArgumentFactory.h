@@ -67,39 +67,27 @@ class MasterArgumentFactory {
       return CreateWildcard();
     }
 
-    if (PQL::is_pattern_wildcard(token)) {
-      return CreateWildcardExpression(token);
+    if (PQL::is_pattern_exact(token)) {
+      return CreateExpressionArg(token, true);
     }
 
-    if (PQL::is_pattern_exact(token)) {
-      return CreateExactExpression(token);
+    if (PQL::is_pattern_wildcard(token)) {
+      token = token.substr(1, token.size() - 2);
+      return CreateExpressionArg(token, false);
     }
 
     throw PqlSyntaxErrorException(
         "Unexpected argument type in clause");
   }
 
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
-      std::string token) {
-    token = token.substr(2, token.size() - 4);
-
-    try {
-      auto AST = sp::SourceProcessor::ParseExpression(token);
-      return std::make_unique<ExpressionArg>(
-          std::move(AST), false);
-    } catch (std::exception _) {
-      throw PqlSyntaxErrorException("Invalid expression");
-    }
-  }
-
-  inline std::unique_ptr<ExpressionArg> CreateExactExpression(
-      std::string token) {
+  inline std::unique_ptr<ExpressionArg> CreateExpressionArg(
+      std::string token, bool is_exact) {
     token = token.substr(1, token.size() - 2);
 
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
-          std::move(AST), true);
+          std::move(AST), is_exact);
     } catch (std::exception _) {
       throw PqlSyntaxErrorException("Invalid expression");
     }

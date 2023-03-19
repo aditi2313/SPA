@@ -16,9 +16,11 @@ class Grammar {
       : check_(check), action_(action) {}
 
   static CheckLambda kArgumentCheck;
+  static CheckLambda kAttrNameCheck;
   static CheckLambda kBooleanCheck;
   static CheckLambda kDesignEntityCheck;
   static CheckLambda kElemCheck;
+  static CheckLambda kExactExprCheck;
   static CheckLambda kExprCheck;
   static CheckLambda kRefCheck;
   static CheckLambda kRelRefCheck;
@@ -46,4 +48,7 @@ class Grammar {
   CheckLambda check_;
   ActionLambda action_;
 };
+
+using ParseItr = std::vector<std::string>::iterator;
+using GrammarItr = std::vector<Grammar>::iterator;
 }  // namespace qps

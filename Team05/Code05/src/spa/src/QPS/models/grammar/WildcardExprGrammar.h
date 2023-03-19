@@ -7,6 +7,7 @@
 
 #include "QPS/models/Query.h"
 #include "QPS/models/grammar/CompositeGrammar.h"
+#include "./ExactExprGrammar.h"
 #include "QPS/factories/MasterArgumentFactory.h"
 #include "common/exceptions/QPSExceptions.h"
 
@@ -26,28 +27,20 @@ class WildcardExprGrammar : public CompositeGrammar {
         Grammar(
             Grammar::kWildcardCheck,
             Grammar::kEmptyAction));
-    // "
+
+    // "expr"
     grammar_.emplace_back(
         Grammar(
             Grammar::CreateTokenCheck(PQL::kQuotationToken),
-            Grammar::kEmptyAction));
-    // expr
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::kTrueCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              if (*itr_ == PQL::kQuotationToken) {
-                itr--;  // Don't consume token
-              } else {
-                expr_ += *itr_;
-                grammar_itr_--;  // Stay in this grammar
+              ExactExprGrammar exact_expr_grammar(
+                  tokens, query, itr_, arg_);
+              if (!exact_expr_grammar.Parse()) {
+                throw PqlSyntaxErrorException("Invalid syntax for wildcard expression");
               }
+
+              expr_ = exact_expr_grammar.get_expr();
             }));
-    // "
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::CreateTokenCheck(PQL::kQuotationToken),
-            Grammar::kEmptyAction));
 
     // _
     grammar_.emplace_back(

@@ -47,6 +47,10 @@ class ExactExprGrammar : public CompositeGrammar {
             }));
   }
 
+  inline std::string get_expr() {
+    return expr_;
+  }
+
  protected:
   std::string expr_;
   ArgumentPtr &arg_;

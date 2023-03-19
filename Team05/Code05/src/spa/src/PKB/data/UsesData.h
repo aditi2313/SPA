@@ -35,6 +35,7 @@ class UsesData {
     inline void add_variables(std::unordered_set<std::string> vars) {
         variable_names_.merge(vars);
     }
+
  private:
     std::variant<int, std::string> line_;
     std::unordered_set<std::string> variable_names_;

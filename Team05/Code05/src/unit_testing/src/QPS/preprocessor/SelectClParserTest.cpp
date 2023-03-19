@@ -328,6 +328,14 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
+  SECTION("Query with whitespaces around wildcard expression should parse"
+          "correctly") {
+    std::string query_string = "assign a; "
+                               "Select a pattern a(_, _  \t \" \t x \"  _)";
+
+    TestNoThrows(query_string);
+  }
+
     /* ============ ERROR CASES =============== */
   SECTION("Query with both 'and' and 'such-that'"
           "should throw error") {

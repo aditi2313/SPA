@@ -60,5 +60,19 @@ class SelectClParser {
   int NextState(int current_state_index, std::string token);
   std::vector<std::unique_ptr<ParseState>> states_{};
   std::vector<std::vector<int>> transition_table_;
+
+  // Special characters are characters that PreprocessQueryString
+  // will insert spaces around to ensure correct delimitation
+  // ; ( ) , < > = _
+  std::unordered_set<std::string> special_characters_{
+      PQL::kSemicolonToken,
+      PQL::kOpenBktToken,
+      PQL::kCloseBktToken,
+      PQL::kCommaToken,
+      PQL::kTupleOpenBktToken,
+      PQL::kTupleCloseBktToken,
+      PQL::kEqualToken,
+      PQL::kUnderscoreToken,
+  };
 };
 }  // namespace qps

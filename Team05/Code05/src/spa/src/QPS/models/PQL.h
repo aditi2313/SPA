@@ -232,6 +232,7 @@ class PQL {
   inline static std::string kBooleanToken = "BOOLEAN";
   inline static std::string kTupleOpenBktToken = "<";
   inline static std::string kTupleCloseBktToken = ">";
+  inline static std::string kUnderscoreToken = "_";
 
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
@@ -283,12 +284,9 @@ class PQL {
       EntityType entity_type, AttrName attr_name) {
     switch (entity_type) {
       case EntityType::kRead:
-      case EntityType::kPrint:
-        return attr_name == kVariableAttrName;
-      case EntityType::kCall:
-        return attr_name == kProcedureAttrName;
-      default:
-        return false;
+      case EntityType::kPrint:return attr_name == kVariableAttrName;
+      case EntityType::kCall:return attr_name == kProcedureAttrName;
+      default:return false;
     }
   }
 };

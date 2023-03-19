@@ -132,7 +132,6 @@ void TestEquivalentString(std::string left, std::string right) {
   ExpressionParser parser;
   auto& res = parser.ParseStringExpr(v_lxr);
   auto& other = parser.ParseStringExpr(o_v_lxr);
-  std::cout << res << std::endl;
 
   REQUIRE(res == other);
   REQUIRE(other == res);
@@ -147,8 +146,6 @@ void TestContainsString(std::string left, std::string right,
   ExpressionParser parser;
   auto& res = parser.ParseStringExpr(v_lxr);
   auto& other = parser.ParseStringExpr(o_v_lxr);
-  std::cout << res << std::endl;
-  std::cout << other << std::endl;
   REQUIRE(res.Contains(other) == contains);
 }
 
@@ -160,7 +157,6 @@ TEST_CASE("Parsing of string expression") {
   VectorLexer v_lxr(lxr);
   ExpressionParser parser;
   auto& res = parser.ParseStringExpr(v_lxr);
-  std::cout << res << std::endl;
 }
 
 TEST_CASE("Verify left associative") {

@@ -4,7 +4,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "EntityFactory.h"
+#include "entities/Export.h"
 #include "QPS/models/EntityType.h"
 #include "QPS/models/PQL.h"
 

@@ -6,7 +6,7 @@
 
 namespace qps {
 Grammar::CheckLambda Grammar::kAttrNameCheck = [](std::string token) {
-  return PQL::is_attr_name(token);
+  return AttrRef::is_attr_name(token);
 };
 
 Grammar::CheckLambda Grammar::kBooleanCheck = [](std::string token) {
@@ -19,7 +19,7 @@ Grammar::CheckLambda Grammar::kDesignEntityCheck = [](std::string token) {
 
 Grammar::CheckLambda Grammar::kElemCheck = [](std::string token) {
   // synonym | attrRef
-  return kSynCheck(token) || PQL::is_attr_ref(token);
+  return kSynCheck(token) || AttrRef::is_attr_ref(token);
 };
 
 Grammar::CheckLambda Grammar::kEntRefCheck = [](std::string token) {

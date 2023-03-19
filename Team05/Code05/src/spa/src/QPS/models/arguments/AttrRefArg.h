@@ -7,6 +7,7 @@
 #include "Argument.h"
 #include "SynonymArg.h"
 #include "QPS/models/AttrType.h"
+#include "QPS/models/AttrRef.h"
 
 namespace qps {
 
@@ -18,21 +19,21 @@ class AttrRefArg : public SynonymArg {
 
   inline bool IsIdentType() override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::is_attr_type_ident(attr_type_);
+    return AttrRef::is_attr_type_ident(attr_type_);
   }
 
   inline bool IsIntegerType() override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::is_attr_type_integer(attr_type_);
+    return AttrRef::is_attr_type_integer(attr_type_);
   }
 
   inline Elem get_full_name() override {
-    return PQL::join_attr_ref(syn_name_, attr_type_);
+    return AttrRef::join_attr_ref(syn_name_, attr_type_);
   }
 
   inline void set_entity_type(EntityType entity_type) override {
     entity_type_ = entity_type;
-    is_secondary_attr_value_ = PQL::is_attr_ref_secondary(
+    is_secondary_attr_value_ = AttrRef::is_attr_ref_secondary(
         entity_type, attr_type_);
   }
 
@@ -45,7 +46,7 @@ class AttrRefArg : public SynonymArg {
   inline bool Validate(
       std::unordered_set<EntityType> &valid_entity_types) override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::ValidateAttrRef(attr_type_, entity_type_);
+    return AttrRef::ValidateAttrRef(attr_type_, entity_type_);
   }
 
   void InitializeEntities(

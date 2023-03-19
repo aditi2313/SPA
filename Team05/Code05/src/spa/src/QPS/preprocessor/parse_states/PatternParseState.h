@@ -2,6 +2,7 @@
 
 #include <utility>
 #include <string>
+#include <unordered_map>
 #include <vector>
 #include <memory>
 
@@ -115,46 +116,7 @@ class PatternParseState : public RecursiveParseState {
               if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
                 ThrowException();
               }
-              if (!query->is_synonym_name_declared(arg1_->get_syn_name())) {
-                throw PqlSemanticErrorException(
-                    "Undeclared synonym used in pattern clause");
-              }
-              EntityType entity_type = query->get_declared_synonym_entity_type(
-                  arg1_->get_syn_name());
-              arg1_->set_entity_type(entity_type);
-              if (pattern_clause_type_ == ClauseType::kPatternIf
-                  && entity_type != EntityType::kIf)
-                throw PqlSemanticErrorException(
-                    "Pattern-if clause does not start with a syn-if");
-
-              if (entity_type == EntityType::kAssign)
-                pattern_clause_type_ = ClauseType::kPatternAssign;
-
-              if (entity_type == EntityType::kWhile)
-                pattern_clause_type_ = ClauseType::kPatternWhile;
-
-              if (pattern_clause_type_ == ClauseType::kPatternUndetermined) {
-                throw PqlSemanticErrorException(
-                    "Unsupported synonym in Pattern clause");
-              }
-
-              if (entity_type == EntityType::kAssign) {
-                // Need to create two clauses
-                query->add_clause(master_clause_factory_.Create(
-                    ClauseType::kModifies,
-                    std::move(arg1_->Copy()),
-                    std::move(arg2_)));
-                query->add_clause(master_clause_factory_.Create(
-                    ClauseType::kPatternAssign,
-                    std::move(arg1_),
-                    std::move(arg3_)));
-                return;
-              }
-
-              query->add_clause(master_clause_factory_.Create(
-                  pattern_clause_type_,
-                  std::move(arg1_),
-                  std::move(arg2_)));
+              CreatePatternClause(query);
             }));
 
     // Recurse (if needed)
@@ -167,7 +129,7 @@ class PatternParseState : public RecursiveParseState {
   }
 
  private:
-  void CreateExpressionSpec(
+  inline void CreateExpressionSpec(
       const std::vector<std::string> &tokens,
       QueryPtr &query,
       ArgumentPtr &arg) {
@@ -184,9 +146,78 @@ class PatternParseState : public RecursiveParseState {
     arg = master_argument_factory_.CreateWildcard();
   }
 
+  inline void CreatePatternClause(
+      QueryPtr &query) {
+    if (!GetPatternClauseType(query)) {
+      has_semantic_error_ = true;
+      return;
+    }
+
+    if (pattern_clause_type_ == ClauseType::kPatternAssign) {
+      // Need to create two clauses
+      query->add_clause(master_clause_factory_.Create(
+          ClauseType::kModifies,
+          std::move(arg1_->Copy()),
+          std::move(arg2_)));
+      query->add_clause(master_clause_factory_.Create(
+          ClauseType::kPatternAssign,
+          std::move(arg1_),
+          std::move(arg3_)));
+    } else {
+      // kPatternIf or kPatternWhile
+      query->add_clause(master_clause_factory_.Create(
+          pattern_clause_type_,
+          std::move(arg1_),
+          std::move(arg2_)));
+    }
+  }
+
+  // Returns false if there is no valid pattern clause type
+  // match - indicating that there is a SemanticError
+  inline bool GetPatternClauseType(QueryPtr &query) {
+    if (!query->is_synonym_name_declared(arg1_->get_syn_name())) {
+      return false;
+    }
+
+    EntityType entity_type = query->get_declared_synonym_entity_type(
+        arg1_->get_syn_name());
+
+    if (!kEntityTypeToClauseTypeMap.count(entity_type)) {
+      // Not assign or while or if
+      return false;
+    }
+
+    if (pattern_clause_type_ == ClauseType::kPatternUndetermined
+        && entity_type == EntityType::kIf) {
+      // Undetermined can only be Assign or While
+      return false;
+    }
+
+    pattern_clause_type_ =
+        pattern_clause_type_ == ClauseType::kPatternUndetermined
+        ? kEntityTypeToClauseTypeMap.at(entity_type)
+        : pattern_clause_type_;
+
+    if (pattern_clause_type_ !=
+        kEntityTypeToClauseTypeMap.at(entity_type)) {
+      // Mismatch between EntityType and ClauseType
+      return false;
+    }
+
+    arg1_->set_entity_type(entity_type);
+    return true;
+  }
+
   std::unique_ptr<SynonymArg> arg1_;
   ArgumentPtr arg2_;
   ArgumentPtr arg3_;
   ClauseType pattern_clause_type_;
+
+  inline static std::unordered_map<EntityType, ClauseType>
+      kEntityTypeToClauseTypeMap{
+      {EntityType::kAssign, ClauseType::kPatternAssign},
+      {EntityType::kIf, ClauseType::kPatternIf},
+      {EntityType::kWhile, ClauseType::kPatternWhile}
+  };
 };
 }  // namespace qps

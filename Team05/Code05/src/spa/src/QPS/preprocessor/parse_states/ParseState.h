@@ -22,6 +22,10 @@ class ParseState {
     return token == kTransitionKeyword;
   }
 
+  inline bool has_semantic_error() {
+    return has_semantic_error_;
+  }
+
   virtual ~ParseState() = default;
 
  protected:
@@ -44,5 +48,7 @@ class ParseState {
 
   ParseItr itr_;
   GrammarItr grammar_itr_;
+
+  bool has_semantic_error_ = false;
 };
 }  // namespace qps

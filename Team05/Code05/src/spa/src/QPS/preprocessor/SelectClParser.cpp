@@ -42,10 +42,22 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
 
   int current_state_index = 0;
   auto itr = tokens.begin();
+  bool has_semantic_error = false;
+  const char *error_msg;
+
   while (itr != tokens.end()) {
     current_state_index = NextState(current_state_index, *itr);
     states_.at(current_state_index)->Parse(
         tokens, itr, query);
+
+    has_semantic_error |= states_.at(
+        current_state_index)->has_semantic_error();
+  }
+
+  // Delay throwing of semantic error in order to
+  // prioritise SyntaxError
+  if (has_semantic_error) {
+    throw PqlSemanticErrorException(error_msg);
   }
 
   return query;

@@ -8,7 +8,7 @@ class Data {
  public:
     explicit Data(T line);
 
-    virtual inline T get_index() { return line_; }
+    inline T get_index() { return line_; }
 
  protected:
     T line_;

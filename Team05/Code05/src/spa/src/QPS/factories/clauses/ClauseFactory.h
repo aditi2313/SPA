@@ -38,4 +38,7 @@ class ClauseFactory {
   std::unordered_set<EntityType> RHS_entity_types_;
   bool is_wildcard_allowed_as_first_arg_ = true;
 };
+
+using ClauseFactoryPtr = std::unique_ptr<ClauseFactory>;
+
 }  // namespace qps

@@ -32,9 +32,13 @@ class UsesData {
     inline const std::unordered_set<std::string>& get_variables() {
         return variable_names_;
     }
+    inline void add_variables(std::unordered_set<std::string> vars) {
+        variable_names_.merge(vars);
+    }
 
  private:
     std::variant<int, std::string> line_;
     std::unordered_set<std::string> variable_names_;
 };
 }  // namespace pkb
+

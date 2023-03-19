@@ -13,3 +13,8 @@ variable v;
 Select v such that Modifies("modifies1", v)
 in1, in2, in3, in4, in5, in6, in7
 5000
+4 - modifies with calls
+variable m1;
+Select m1 such that Modifies(15, m1)
+m2, k, m, l
+5000

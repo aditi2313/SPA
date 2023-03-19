@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <utility>
 
-#include "ClauseFactory.h"
+#include "clauses/Export.h"
 #include "QPS/models/PQL.h"
 #include "common/exceptions/QPSExceptions.h"
 

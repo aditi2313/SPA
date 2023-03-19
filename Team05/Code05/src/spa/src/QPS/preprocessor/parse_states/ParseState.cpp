@@ -10,13 +10,15 @@ void ParseState::Parse(
 
   while (itr_ != tokens.end() && grammar_itr_ != grammar_.end()) {
     auto &grammar = *grammar_itr_;
-    if (!grammar.Check(*itr_)) ThrowException();
+    if (!grammar.Check(*itr_)) {
+      ThrowException();
+    }
 
     grammar_itr_++;
     // Action needs to be performed AFTER incrementing
     // grammar_itr such that should the action be Recurse,
     // grammar_itr is correctly set to kRecurseBegin.
-    grammar.Action(query);
+    grammar.Action(query, tokens);
     itr_++;
   }
 

@@ -134,7 +134,7 @@ class PQL {
         || is_wildcard(token)
         || is_pattern_exact(token)
         || is_pattern_wildcard(token)
-        || is_ident_arg(token);
+        || token == PQL::kQuotationToken;
   }
 
   inline static bool is_synonym(std::string str) {
@@ -219,6 +219,7 @@ class PQL {
     return attr_name_types.count(entity_type);
   }
 
+  inline static std::string kQuotationToken = "\"";
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
   inline static std::string kEqualToken = "=";
@@ -232,6 +233,7 @@ class PQL {
   inline static std::string kBooleanToken = "BOOLEAN";
   inline static std::string kTupleOpenBktToken = "<";
   inline static std::string kTupleCloseBktToken = ">";
+  inline static std::string kUnderscoreToken = "_";
 
   // It is the same string but it is possible for it to change,
   // so these are two separate constants
@@ -283,12 +285,15 @@ class PQL {
       EntityType entity_type, AttrName attr_name) {
     switch (entity_type) {
       case EntityType::kRead:
-      case EntityType::kPrint:
+      case EntityType::kPrint: {
         return attr_name == kVariableAttrName;
-      case EntityType::kCall:
+      }
+      case EntityType::kCall: {
         return attr_name == kProcedureAttrName;
-      default:
+      }
+      default: {
         return false;
+      }
     }
   }
 };

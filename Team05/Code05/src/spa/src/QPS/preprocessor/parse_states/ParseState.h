@@ -6,15 +6,12 @@
 #include <vector>
 
 #include "QPS/models/Query.h"
-#include "QPS/models/Grammar.h"
+#include "QPS/models/grammar/Grammar.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace qps {
 class ParseState {
  public:
-  using ParseItr = std::vector<std::string>::iterator;
-  using GrammarItr = std::vector<Grammar>::iterator;
-
   explicit ParseState(std::string transition)
       : kTransitionKeyword(transition) {}
 

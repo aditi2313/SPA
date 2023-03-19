@@ -21,28 +21,6 @@ class MasterArgumentFactory {
     return std::make_unique<SynonymArg>(syn_name, entity_type);
   }
 
-  // synonym | _ | INTEGER | "ident"
-  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIntegerArg(token);
-    }
-
-    if (PQL::is_synonym(token)) {
-      return CreateSynonym(token);
-    }
-
-    throw PqlSyntaxErrorException(
-        "Unexpected argument type in clause");
-  }
-
   // "ident" | INTEGER | attrRef
   // attrRef: synonym.attrName
   inline ArgumentPtr CreateRef(std::string token) {
@@ -54,60 +32,22 @@ class MasterArgumentFactory {
       return CreateIntegerArg(token);
     }
 
-    if (PQL::is_attr_ref(token)) {
-      return CreateAttrRef(token);
-    }
-
     throw PqlSyntaxErrorException(
         "Unexpected argument type in clause");
   }
 
-  inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_pattern_wildcard(token)) {
-      return CreateWildcardExpression(token);
-    }
-
-    if (PQL::is_pattern_exact(token)) {
-      return CreateExactExpression(token);
-    }
-
-    throw PqlSyntaxErrorException(
-        "Unexpected argument type in clause");
-  }
-
-  inline std::unique_ptr<ExpressionArg> CreateWildcardExpression(
-      std::string token) {
-    token = token.substr(2, token.size() - 4);
-
+  inline std::unique_ptr<ExpressionArg> CreateExpressionArg(
+      std::string token, bool is_exact) {
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
-          std::move(AST), false);
-    } catch (std::exception _) {
-      throw PqlSyntaxErrorException("Invalid expression");
-    }
-  }
-
-  inline std::unique_ptr<ExpressionArg> CreateExactExpression(
-      std::string token) {
-    token = token.substr(1, token.size() - 2);
-
-    try {
-      auto AST = sp::SourceProcessor::ParseExpression(token);
-      return std::make_unique<ExpressionArg>(
-          std::move(AST), true);
+          std::move(AST), is_exact);
     } catch (std::exception _) {
       throw PqlSyntaxErrorException("Invalid expression");
     }
   }
 
   inline std::unique_ptr<IdentArg> CreateIdentArg(std::string token) {
-    // Remove first and last quotation marks
-    token = token.substr(1, token.size() - 2);
     return std::make_unique<IdentArg>(token);
   }
 
@@ -116,8 +56,8 @@ class MasterArgumentFactory {
   }
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
-  inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
-    auto [syn_name, attr_name] = PQL::split_attr_ref(token);
+  inline std::unique_ptr<SynonymArg> CreateAttrRef(
+      SynonymName syn_name, AttrName attr_name) {
     auto syn_arg = std::make_unique<SynonymArg>(syn_name);
     syn_arg->set_attr_name(attr_name);
     return syn_arg;
@@ -131,10 +71,6 @@ class MasterArgumentFactory {
   inline ArgumentPtr CreateEntRef(std::string token) {
     if (PQL::is_wildcard(token)) {
       return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
     }
 
     if (PQL::is_synonym(token)) {

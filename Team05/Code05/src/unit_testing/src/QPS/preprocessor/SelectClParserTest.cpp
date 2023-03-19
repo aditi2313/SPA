@@ -44,13 +44,14 @@ TEST_CASE("Test SelectClParser methods") {
     std::vector<std::string> expected_tokens{
         "variable", "p", ";", "select", "p", "such", "that",
         "Modifies", "(", "6", ",", "v", ")",
-        "pattern", "a", "(", "_", ",", "_\"x+y\"_", ")"
+        "pattern", "a", "(", "_", ",",
+        "_", "\"", "x", "+", "y", "\"", "_", ")"
     };
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
 
     // With random whitespaces and newlines
     query_string = "variable     p;\n   select    p   such  \n   "
-                   "that Modifies(6, v) \n pattern a(_, _\"x+y\"_)";
+                   "that Modifies(6, v) \n pattern a(_, _\"x + y\"_)";
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
   }
 }
@@ -85,8 +86,8 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", EntityType::kVariable}},
         {"v"});
-    auto arg1 = master_argument_factory.CreateEntOrStmtRef("6");
-    auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
+    auto arg1 = master_argument_factory.CreateIntegerArg("6");
+    auto arg2 = master_argument_factory.CreateSynonym("v");
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies, std::move(arg1), std::move(arg2)));
@@ -102,8 +103,8 @@ TEST_CASE("Test ParseQuery") {
         {{"v", EntityType::kVariable},
          {"s", EntityType::kStmt}},
         {"s", "v"});
-    auto arg1 = master_argument_factory.CreateEntOrStmtRef("s");
-    auto arg2 = master_argument_factory.CreateEntOrStmtRef("v");
+    auto arg1 = master_argument_factory.CreateSynonym("s");
+    auto arg2 = master_argument_factory.CreateSynonym("v");
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies, std::move(arg1), std::move(arg2)));
@@ -129,7 +130,7 @@ TEST_CASE("Test ParseQuery") {
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
+            master_argument_factory.CreateExpressionArg("x+y", true)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -144,7 +145,7 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kWith,
-            master_argument_factory.CreateRef("a.stmt#"),
+            master_argument_factory.CreateAttrRef("a", "stmt#"),
             master_argument_factory.CreateRef("12")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -168,13 +169,13 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateEntOrStmtRef("6"),
-            master_argument_factory.CreateEntOrStmtRef("v")));
+            master_argument_factory.CreateIntegerArg("6"),
+            master_argument_factory.CreateSynonym("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateEntOrStmtRef("3"),
-            master_argument_factory.CreateEntOrStmtRef("v")));
+            master_argument_factory.CreateIntegerArg("3"),
+            master_argument_factory.CreateSynonym("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
@@ -184,17 +185,17 @@ TEST_CASE("Test ParseQuery") {
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
+            master_argument_factory.CreateExpressionArg("x+y", true)));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateEntRef("\"variable\"")));
+            master_argument_factory.CreateIdentArg("variable")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("_\"x\"_")));
+            master_argument_factory.CreateExpressionArg("x", false)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -217,37 +218,37 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateEntOrStmtRef("6"),
+            master_argument_factory.CreateIntegerArg("6"),
             master_argument_factory.CreateEntRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateEntOrStmtRef("3"),
+            master_argument_factory.CreateIntegerArg("3"),
             master_argument_factory.CreateEntRef("v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateEntOrStmtRef("_")));
+            master_argument_factory.CreateWildcard()));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("\"x+y\"")));
+            master_argument_factory.CreateExpressionArg("x+y", true)));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
             master_argument_factory.CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateEntOrStmtRef("_")));
+            master_argument_factory.CreateWildcard()));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("\"x\"")));
+            master_argument_factory.CreateExpressionArg("x", true)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -265,7 +266,7 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
-  SECTION("Query with interleaving clauses of different types"
+  SECTION("Query with interleaving clauses of different types "
           "should parse correctly") {
     std::string query_string = "variable v; assign a; "
                                "Select v pattern a(_, \"x + y\") "
@@ -324,6 +325,30 @@ TEST_CASE("Test ParseQuery") {
                                "pattern a(v, _) and "
                                "ifs(v, _, _) and "
                                "w(v, _)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces around wildcard expression should parse"
+          "correctly") {
+    std::string query_string = "assign a; "
+                               "Select a pattern a(_, _  \t \" \t x \"  _)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces around '.' in attrRef should parse"
+          "correctly") {
+    std::string query_string = "stmt s; constant c; "
+                               "Select s with s  . \t stmt# = c \t . value";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces around '.' in attrRef should parse"
+          "correctly") {
+    std::string query_string = "procedure p; "
+                               "Select p  .\t procName";
 
     TestNoThrows(query_string);
   }
@@ -406,6 +431,20 @@ TEST_CASE("Test ParseQuery") {
   SECTION("Query with double Select should throw error") {
     std::string query_string = "stmt s; procedure p;"
                                "Select s Select p";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces in Ident should throw error") {
+    std::string query_string = "variable v; assign a; "
+                               "Select v pattern a(\"s s\", _) ";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces in Ident should throw error") {
+    std::string query_string = "variable v; assign a; "
+                               "Select v pattern a(_, _\"read\"_\") ";
 
     TestThrows(query_string);
   }

@@ -26,5 +26,7 @@ class QueryEvaluator {
   pkb::PKBReadPtr &pkb_;
   Table table_;
   ClauseEvaluator clause_evaluator_;
+
+  bool has_table_been_intialized_ = false;
 };
 }  // namespace qps

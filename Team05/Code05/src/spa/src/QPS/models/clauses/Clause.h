@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 #include <typeinfo>
 #include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
 #include "PKB/PKBRead.h"
 #include "common/filter/filters/PredicateFilter.h"
@@ -21,6 +24,17 @@ class Clause {
       : clause_type_(clause_type),
         arg1_(std::move(arg1)),
         arg2_(std::move(arg2)) {}
+
+  inline static ClauseType get_clause_type(RelName const rel_name) {
+    return kRelNameToClauseTypeMap.at(rel_name);
+  }
+
+  // Returns true if the string is a relationship that appears
+  // after such-that.
+  // Examples of non such-that rel names are 'pattern' and 'with'
+  inline static bool is_such_that_rel_name(std::string const token) {
+    return kAllSuchThatRelNames.count(token);
+  }
 
   virtual void Preprocess(
       pkb::PKBReadPtr &pkb,
@@ -102,6 +116,35 @@ class Clause {
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
   ClauseType clause_type_;
+
+ private:
+  inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
+      {PQL::kAffectsRelName, ClauseType::kAffects},
+      {PQL::kAffectsTRelName, ClauseType::kAffectsT},
+      {PQL::kModifiesRelName, ClauseType::kModifies},
+      {PQL::kFollowsRelName, ClauseType::kFollows},
+      {PQL::kFollowsTRelName, ClauseType::kFollowsT},
+      {PQL::kPatternRelName, ClauseType::kPatternAssign},
+      {PQL::kUsesRelName, ClauseType::kUses},
+      {PQL::kParentRelName, ClauseType::kParent},
+      {PQL::kParentTRelName, ClauseType::kParentT},
+      {PQL::kCallsRelName, ClauseType::kCalls},
+      {PQL::kCallsTRelName, ClauseType::kCallsT},
+      {PQL::kNextRelName, ClauseType::kNext},
+      {PQL::kNextTRelName, ClauseType::kNextT},
+      {PQL::kWithRelName, ClauseType::kWith}
+  };
+
+  // All relationships that appear after such that
+  inline static std::unordered_set<std::string> kAllSuchThatRelNames{
+      PQL::kAffectsRelName, PQL::kAffectsTRelName,
+      PQL::kCallsRelName, PQL::kCallsTRelName,
+      PQL::kFollowsRelName, PQL::kFollowsTRelName,
+      PQL::kModifiesRelName,
+      PQL::kNextRelName, PQL::kNextTRelName,
+      PQL::kParentRelName, PQL::kParentTRelName,
+      PQL::kUsesRelName,
+  };
 };
 
 using ClausePtr = std::unique_ptr<Clause>;

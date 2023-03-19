@@ -5,6 +5,7 @@
 #include <variant>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 #include <cassert>
 
 #include "models/types.h"
@@ -23,6 +24,26 @@ class Entity {
   Entity() {}
   explicit Entity(int int_value) : value_(int_value) {}
   explicit Entity(std::string str) : value_(str) {}
+
+  inline static bool const is_entity_name(EntityName const entity_name) {
+    return kEntityNameToEntityTypeMap.count(entity_name);
+  }
+
+  inline static EntityType get_entity_type(EntityName const entity_name) {
+    return kEntityNameToEntityTypeMap.at(entity_name);
+  }
+
+  inline static std::unordered_set<EntityType> get_all_entities() {
+    std::unordered_set<EntityType> entities;
+    for (auto &[name, type] : kEntityNameToEntityTypeMap) {
+      entities.insert(type);
+    }
+    return entities;
+  }
+
+  inline static std::unordered_set<EntityType> get_all_stmt_entities() {
+    return kAllStmtEntityTypes;
+  }
 
   inline Value get_value() const {
     return value_;
@@ -87,6 +108,25 @@ class Entity {
 
  private:
   Value value_;
+  inline static std::unordered_set<EntityType> kAllStmtEntityTypes{
+      EntityType::kStmt, EntityType::kRead,
+      EntityType::kPrint, EntityType::kCall,
+      EntityType::kWhile, EntityType::kIf, EntityType::kAssign
+  };
+
+  inline static std::unordered_map<EntityName, EntityType>
+      kEntityNameToEntityTypeMap{
+      {PQL::kStmtEntityName, EntityType::kStmt},
+      {PQL::kReadEntityName, EntityType::kRead},
+      {PQL::kPrintEntityName, EntityType::kPrint},
+      {PQL::kCallEntityName, EntityType::kCall},
+      {PQL::kWhileEntityName, EntityType::kWhile},
+      {PQL::kIfEntityName, EntityType::kIf},
+      {PQL::kAssignEntityName, EntityType::kAssign},
+      {PQL::kVariableEntityName, EntityType::kVariable},
+      {PQL::kConstantEntityName, EntityType::kConstant},
+      {PQL::kProcedureEntityName, EntityType::kProcedure}
+  };
 };
 
 using EntitySet = std::unordered_set<Entity>;

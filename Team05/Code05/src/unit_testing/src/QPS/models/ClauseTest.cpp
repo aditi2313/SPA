@@ -5,6 +5,11 @@
 
 using namespace qps; // NOLINT
 
+TEST_CASE("Test Clause static methods") {
+  REQUIRE(Clause::is_such_that_rel_name("Modifies") == true);
+  REQUIRE(Clause::is_such_that_rel_name("pattern") == false);
+}
+
 // TODO(JL): replace with real unit tests after PKB is implemented
 TEST_CASE("Test Clause") {
   MasterArgumentFactory master_argument_factory;

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "AffectsFactory.h"
 #include "AffectsTFactory.h"
 #include "CallsFactory.h"

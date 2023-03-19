@@ -1,3 +1,5 @@
+#pragma once
+
 #include "AssignEntityFactory.h"
 #include "CallEntityFactory.h"
 #include "ConstantEntityFactory.h"

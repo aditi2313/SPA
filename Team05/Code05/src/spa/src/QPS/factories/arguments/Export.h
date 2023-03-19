@@ -1,3 +1,5 @@
+#pragma once
+
 #include "ArgumentFactory.h"
 #include "AttrRefFactory.h"
 #include "ExactExpressionArgFactory.h"

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <memory>
 #include <string>
 #include <utility>
@@ -8,13 +9,13 @@
 namespace qps {
 
 class IntegerArgFactory : public ArgumentFactory {
- public:
+public:
   inline ArgumentPtr Create(std::string token) override {
-    return std::make_unique<IntegerArg>(stoi(token));
+      return std::make_unique<IntegerArg>(stoi(token));
   }
 
   inline bool CheckSyntax(std::string token) override {
-    return PQL::is_integer(token);
+      return PQL::is_integer(token);
   }
 };
 

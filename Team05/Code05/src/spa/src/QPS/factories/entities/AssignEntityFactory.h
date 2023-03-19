@@ -10,16 +10,16 @@
 namespace qps {
 
 class AssignEntityFactory : public IntEntityFactory {
- public:
+public:
   AssignEntityFactory() : IntEntityFactory() {}
 
   inline EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) override {
-    return CreateInstanceList(pkb->get_assign());
+      return CreateInstanceList(pkb->get_assign());
   }
 
   inline Entity GetAttrValue(const Entity &index,
                              const pkb::PKBReadPtr &pkb) override {
-    throw QpsEvaluatorException("Assign does not have a secondary attr value");
+      throw QpsEvaluatorException("Assign does not have a secondary attr value");
   }
 };
 }  // namespace qps

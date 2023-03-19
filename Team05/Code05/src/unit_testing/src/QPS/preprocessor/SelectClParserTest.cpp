@@ -6,7 +6,6 @@
 #include "QPS/models/PQL.h"
 
 using namespace qps; // NOLINT
-
 // Helper method for testing
 QueryPtr BuildQuery(
     std::vector<std::pair<SynonymName, EntityType>> synonyms,

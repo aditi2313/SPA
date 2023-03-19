@@ -78,14 +78,9 @@ void ClauseOptimiser::PreprocessClauses(
 // synonym as an argument and false otherwise.
 bool ClauseOptimiser::SharesSynonym(ClausePtr &LHS, ClausePtr &RHS) {
   // Four comparisons to be made
-  if (LHS->arg1_->IsSynonym()) {
-    if (*LHS->arg1_ == *RHS->arg1_) return true;
-    if (*LHS->arg1_ == *RHS->arg2_) return true;
-  }
-  if (LHS->arg2_->IsSynonym()) {
-    if (*LHS->arg2_ == *RHS->arg1_) return true;
-    if (*LHS->arg2_ == *RHS->arg2_) return true;
-  }
-  return false;
+  return SynonymArg::CompareSynonym(LHS->arg1_, RHS->arg1_)
+      || SynonymArg::CompareSynonym(LHS->arg1_, RHS->arg2_)
+      || SynonymArg::CompareSynonym(LHS->arg2_, RHS->arg1_)
+      || SynonymArg::CompareSynonym(LHS->arg2_, RHS->arg2_);
 }
 }  // namespace qps

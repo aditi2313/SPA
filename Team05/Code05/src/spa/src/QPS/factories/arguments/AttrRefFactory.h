@@ -13,9 +13,8 @@ class AttrRefFactory : public ArgumentFactory {
  public:
   inline ArgumentPtr Create(std::string token) override {
     auto [syn_name, attr_name] = PQL::split_attr_ref(token);
-    auto syn_arg = std::make_unique<SynonymArg>(syn_name);
-    syn_arg->set_attr_name(attr_name);
-    return syn_arg;
+    auto attr_ref_arg = std::make_unique<AttrRefArg>(syn_name, attr_name);
+    return attr_ref_arg;
   }
 
   inline bool CheckSyntax(std::string token) override {

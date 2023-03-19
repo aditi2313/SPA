@@ -4,8 +4,10 @@
 #include <unordered_set>
 #include <variant>
 
+#include "Data.h"
+
 namespace pkb {
-class ModifiesData {
+class ModifiesData : public Data<std::variant<int, std::string>>{
  public:
   ModifiesData(std::variant<int, std::string> line,
                const std::unordered_set<std::string>& variables);
@@ -21,8 +23,6 @@ class ModifiesData {
     return LHS.line_ == RHS.line_ && LHS.variables_ == RHS.variables_;
   }
 
-  inline std::variant<int, std::string> get_index() { return line_; }
-
   inline const std::unordered_set<std::string>& get_variables() {
     return variables_;
   }
@@ -32,7 +32,6 @@ class ModifiesData {
   }
 
  private:
-  std::variant<int, std::string> line_;
   std::unordered_set<std::string> variables_;
 };
 }  // namespace pkb

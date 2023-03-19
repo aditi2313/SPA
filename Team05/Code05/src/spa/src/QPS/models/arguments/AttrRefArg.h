@@ -12,9 +12,8 @@ namespace qps {
 class AttrRefArg : public SynonymArg {
  public:
   explicit AttrRefArg(SynonymName syn_name, AttrName attr_name)
-      : SynonymArg(syn_name),
-        attr_name_(attr_name),
-        entity_type_(EntityType::kUndetermined) {}
+      : SynonymArg(syn_name, EntityType::kUndetermined),
+        attr_name_(attr_name) {}
 
   inline bool IsIdentType() override {
     if (entity_type_ == EntityType::kUndetermined) return false;
@@ -79,8 +78,6 @@ class AttrRefArg : public SynonymArg {
   }
 
  private:
-  SynonymName syn_name_;
-  EntityType entity_type_;
   AttrName attr_name_;
   bool is_secondary_attr_value_ = false;
 };

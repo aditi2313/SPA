@@ -95,7 +95,7 @@ class SynonymArg : public Argument {
         && entity_type_ == arg->entity_type_;
   }
 
- private:
+ protected:
   SynonymName syn_name_;
   EntityType entity_type_;
 };

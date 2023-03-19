@@ -3,8 +3,10 @@
 #include <unordered_set>
 #include <cassert>
 
+#include "Data.h"
+
 namespace pkb {
-class AffectsData {
+class AffectsData : public Data<int> {
  public:
   explicit AffectsData(
       int line, std::unordered_set<int> affected_lines);
@@ -14,15 +16,11 @@ class AffectsData {
         && LHS.affected_lines_ == RHS.affected_lines_;
   }
 
-  inline int get_index() { return line_; }
-
-
   inline std::unordered_set<int> &get_affected_lines() {
     return affected_lines_;
   }
 
  private:
-  int line_;
   std::unordered_set<int> affected_lines_;
 };
 

@@ -15,12 +15,12 @@ class MasterArgumentFactory {
  public:
   MasterArgumentFactory() {
     argument_factories_.insert(
-        {ArgumentType::kAttrRef,std::make_unique<AttrRefFactory>()});
+        {ArgumentType::kAttrRef, std::make_unique<AttrRefFactory>()});
     argument_factories_.insert(
-        {ArgumentType::kExactExpressionArg,
+        {ArgumentType::kExactExprArg,
          std::make_unique<ExactExpressionArgFactory>()});
     argument_factories_.insert(
-        {ArgumentType::kWildcardExpressionArg,
+        {ArgumentType::kWildcardExprArg,
          std::make_unique<WildcardExpressionArgFactory>()});
     argument_factories_.insert(
         {ArgumentType::kIdentArg, std::make_unique<IdentArgFactory>()});
@@ -33,6 +33,7 @@ class MasterArgumentFactory {
   }
 
   inline ArgumentPtr Create(ArgumentType argument_type, std::string token) {
+    assert(CheckSyntax(argument_type, token));
     return argument_factories_.at(argument_type)->Create(token);
   }
 
@@ -41,66 +42,18 @@ class MasterArgumentFactory {
   }
 
   inline ArgumentPtr Create(
-      std::vector<ArgumentType> &possible_arg_types,
+      std::vector<ArgumentType> possible_arg_types,
       std::string token) {
-    for(auto &arg_type : possible_arg_types) {
+    for (auto &arg_type : possible_arg_types) {
       if (CheckSyntax(arg_type, token)) {
         return Create(arg_type, token);
       }
     }
-    throw PqlSyntaxErrorException("Invalid argument syntax");
-  }
-
-  /* ====== Methods for creating composite Arguments ======= */
-  // Where composite Arguments are Arguments that can be
-  // one of multiple types
-  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    try {
-      CreateEntRef(token);
-    } catch(PqlSyntaxErrorException _) {
-      CreateStmtRef(token);
-    }
-  }
-
-  inline ArgumentPtr CreateRef(std::string token) {
-    return Create(ref_arg_types_, token);
-  }
-
-  inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
-    return Create(expression_spec_arg_types_, token);
-  }
-
-  inline ArgumentPtr CreateEntRef(std::string token) {
-    return Create(ent_ref_arg_types_, token);
-  }
-
-  inline ArgumentPtr CreateStmtRef(std::string token) {
-    return Create(stmt_ref_arg_types_, token);
+    assert(false);
   }
 
  private:
   std::unordered_map<ArgumentType, ArgumentFactoryPtr> argument_factories_;
-  std::vector<ArgumentType> ent_ref_arg_types_ {
-    ArgumentType::kSynonymArg,
-    ArgumentType::kWildcard,
-    ArgumentType::kIntegerArg
-  };
-  std::vector<ArgumentType> stmt_ref_arg_types_ {
-      ArgumentType::kSynonymArg,
-      ArgumentType::kWildcard,
-      ArgumentType::kIdentArg
-  };
-  std::vector<ArgumentType> expression_spec_arg_types_ {
-      ArgumentType::kWildcard,
-      ArgumentType::kWildcardExpressionArg,
-      ArgumentType::kExactExpressionArg
-  };
-  std::vector<ArgumentType> ref_arg_types_ {
-      ArgumentType::kIdentArg,
-      ArgumentType::kIntegerArg,
-      ArgumentType::kAttrRef
-  };
-
 };
 }  // namespace qps
 

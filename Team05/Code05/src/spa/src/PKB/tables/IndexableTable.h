@@ -10,7 +10,7 @@
 #include "PKB/data/Export.h"
 
 namespace pkb {
-
+using IntOrStringVariant = std::variant<int, std::string>;
 /// <summary>
 /// Class for table indexable by id.
 /// </summary>
@@ -18,8 +18,6 @@ namespace pkb {
 template <class T>
 class IndexableTable {
  public:
-  using IntOrStringVariant = std::variant<int, std::string>;
-
   IndexableTable() = default;
 
   inline void add_row(IntOrStringVariant v, T row) {

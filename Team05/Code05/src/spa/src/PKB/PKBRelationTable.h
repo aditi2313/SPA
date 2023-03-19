@@ -1,8 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 
 #include "data/Export.h"
@@ -42,7 +42,6 @@ class PKBRelationTable {
   std::unordered_map<int, std::string> line_to_var_name_;
   std::unordered_map<int, std::string> line_to_proc_name_;
 
-
   friend bool operator==(const PKBRelationTable& LHS,
                          const PKBRelationTable& RHS) {
     return LHS.modifies_table_ == RHS.modifies_table_ &&
@@ -62,6 +61,11 @@ class PKBRelationTable {
 
   void add_modifies_data(const std::variant<int, std::string> line,
                          const std::unordered_set<std::string>& variables) {
+    if (modifies_table_.exists(line)) {
+      auto& data = modifies_table_.get_row(line);
+      data.add_variables(variables);
+      return;
+    }
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
 
@@ -74,6 +78,11 @@ class PKBRelationTable {
 
   void add_uses_data(const std::variant<int, std::string> line,
                      const std::unordered_set<std::string>& variable_names) {
+    if (uses_table_.exists(line)) {
+      auto& data = uses_table_.get_row(line);
+      data.add_variables(variable_names);
+      return;
+    }
     uses_table_.add_row(line, UsesData(line, variable_names));
   }
 
@@ -101,7 +110,6 @@ class PKBRelationTable {
     }
     next_table_.get_row(line).add_to_next_im_list(next);
   }
-
 
   void add_condition_data(
       const std::variant<int, std::string> line,

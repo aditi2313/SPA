@@ -11,11 +11,11 @@ TEST_CASE("Test Clause") {
   SECTION("Modifies clause should compare equal") {
     QueryPtr query = std::make_unique<Query>();
     auto clause_1 = ModifiesClause(
-        master_argument_factory.CreateEntOrStmtRef("\"abc\""),
-        master_argument_factory.CreateEntOrStmtRef("\"def\""));
+        master_argument_factory.Create(ArgumentType::kIdentArg, "abc"),
+        master_argument_factory.Create(ArgumentType::kIdentArg, "def"));
     auto clause_2 = ModifiesClause(
-        master_argument_factory.CreateEntOrStmtRef("\"abc\""),
-        master_argument_factory.CreateEntOrStmtRef("\"def\""));
+        master_argument_factory.Create(ArgumentType::kIdentArg, "abc"),
+        master_argument_factory.Create(ArgumentType::kIdentArg, "def"));
 
     REQUIRE(clause_1 == clause_2);
   };
@@ -24,12 +24,12 @@ TEST_CASE("Test Clause") {
           "should not compare equal") {
     QueryPtr query = std::make_unique<Query>();
     auto modifies_clause = ModifiesClause(
-        master_argument_factory.CreateEntOrStmtRef("123"),
-        master_argument_factory.CreateEntOrStmtRef("456"));
+        master_argument_factory.Create(ArgumentType::kIntegerArg, "123"),
+        master_argument_factory.Create(ArgumentType::kIntegerArg, "456"));
 
     auto pattern_clause = PatternAssignClause(
-        master_argument_factory.CreateEntOrStmtRef("123"),
-        master_argument_factory.CreateEntOrStmtRef("456"));
+        master_argument_factory.Create(ArgumentType::kIntegerArg, "123"),
+        master_argument_factory.Create(ArgumentType::kIntegerArg, "456"));
 
     REQUIRE(modifies_clause != pattern_clause);
   }

@@ -5,7 +5,8 @@
 namespace qps {
 void SynonymArg::UpdateTableWithAttrValue(
     const pkb::PKBReadPtr &pkb,
-    Table &query_table) {
+    Table &query_table,
+    bool &is_table_initialized) {
   if (attr_name_.empty()) return;  // Not an attr ref
   bool is_secondary_attr_value = is_secondary_attr_ref();
 
@@ -33,7 +34,11 @@ void SynonymArg::UpdateTableWithAttrValue(
   Table new_table(columns);
 
   new_table.add_values(col1, col2, rows);
-
-  query_table = TableJoiner::Join(query_table, new_table);
+  if (!is_table_initialized) {
+    query_table = new_table;
+    is_table_initialized = true;
+  } else {
+    query_table = TableJoiner::Join(query_table, new_table);
+  }
 }
 }  // namespace qps

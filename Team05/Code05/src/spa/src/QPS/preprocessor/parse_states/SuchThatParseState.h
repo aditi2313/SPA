@@ -1,9 +1,12 @@
 #pragma once
 
 #include <utility>
+#include <vector>
+#include <string>
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/Export.h"
+#include "QPS/models/grammar/Export.h"
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
@@ -37,7 +40,7 @@ class SuchThatParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kRelRefCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               rel_name_ = *itr_;
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
@@ -52,8 +55,8 @@ class SuchThatParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kArgumentCheck,
-            [&](QueryPtr &query) {
-              arg1_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
+              CreateEntOrStmtRef(tokens, query, arg1_);
             }));
 
     // ','
@@ -66,15 +69,15 @@ class SuchThatParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kArgumentCheck,
-            [&](QueryPtr &query) {
-              arg2_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
+              CreateEntOrStmtRef(tokens, query, arg2_);
             }));
 
     // ')'
     grammar_.emplace_back(
         Grammar(
             Grammar::CreateTokenCheck(PQL::kCloseBktToken),
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               query->add_clause(master_clause_factory_.Create(
                   PQL::get_clause_type(rel_name_),
@@ -92,6 +95,19 @@ class SuchThatParseState : public RecursiveParseState {
   }
 
  private:
+  void CreateEntOrStmtRef(
+      const std::vector<std::string> &tokens,
+      QueryPtr &query,
+      ArgumentPtr &arg) {
+    IdentArgGrammar ident_arg_grammar(tokens, query, itr_, arg);
+    bool is_ident_arg = ident_arg_grammar.Parse();
+    if (is_ident_arg) return;
+
+    arg = master_argument_factory_.Create(
+        {ArgumentType::kSynonymArg, ArgumentType::kWildcard, ArgumentType::kIntegerArg},
+        *itr_);
+  }
+
   RelName rel_name_;
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;

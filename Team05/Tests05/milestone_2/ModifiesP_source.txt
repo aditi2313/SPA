@@ -27,3 +27,23 @@ procedure modifies3 {
     }
   } 
 }
+
+procedure m1 {
+while (x == 2) {
+  call m2;
+  m2 = 5;
+}
+n3 = 100;
+}
+
+
+
+procedure m2 {
+if (x == 2) then {
+k = 100;
+} else {
+m = 1000;
+read l;
+print m3;
+}
+}

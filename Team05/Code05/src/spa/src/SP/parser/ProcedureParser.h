@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "SP/parser/Parser.h"
-#include "models/AST/ProcNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class ProcedureParser : Parser<ast::ProcNode> {

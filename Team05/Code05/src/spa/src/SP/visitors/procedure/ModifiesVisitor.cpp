@@ -23,16 +23,14 @@ void ModifiesVisitor::ProcessAft(ast::IfNode* if_node) {
   AddVariablesFromStmtList(*(if_node->get_else()), variables);
   AddVariablesFromStmtList(*(if_node->get_then()), variables);
   pkb_ptr_->AddModifiesData(if_node->get_line(), variables);
-  direct_data_[current_procedure_].merge(variables);
-  ProcedureProcessingVisitor::ProcessAft(if_node);
+  direct_data_[current_procedure_].merge(variables);  
 }
 
 void ModifiesVisitor::ProcessAft(ast::WhileNode* while_node) {
   std::unordered_set<std::string> variables;
   AddVariablesFromStmtList(*(while_node->get_stmts()), variables);
   pkb_ptr_->AddModifiesData(while_node->get_line(), variables);
-  direct_data_[current_procedure_].merge(variables);
-  ProcedureProcessingVisitor::ProcessAft(while_node);
+  direct_data_[current_procedure_].merge(variables);  
 }
 
 }  // namespace sp

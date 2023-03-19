@@ -40,8 +40,7 @@ void UsesVisitor::ProcessAft(ast::IfNode* if_node) {
   pkb_ptr_->AddUsesData(if_node->get_line(), vars);
   pkb_ptr_->AddConditionData(if_node->get_line(), cond_vars);
 
-  direct_data_[current_procedure_].merge(vars);
-  ProcedureProcessingVisitor::ProcessAft(if_node);
+  direct_data_[current_procedure_].merge(vars);  
 }
 
 void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
@@ -56,8 +55,7 @@ void UsesVisitor::ProcessAft(ast::WhileNode* while_node) {
   pkb_ptr_->AddUsesData(while_node->get_line(), vars);
   pkb_ptr_->AddConditionData(while_node->get_line(), cond_vars);
 
-  direct_data_[current_procedure_].merge(vars);
-  ProcedureProcessingVisitor::ProcessAft(while_node);
+  direct_data_[current_procedure_].merge(vars);  
 }
 
 void UsesVisitor::AddVariablesFromStmtList(

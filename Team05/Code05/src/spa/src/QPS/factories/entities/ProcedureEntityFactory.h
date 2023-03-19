@@ -10,17 +10,17 @@
 namespace qps {
 
 class ProcedureEntityFactory : public IdentEntityFactory {
-public:
+ public:
   ProcedureEntityFactory() : IdentEntityFactory() {}
 
   inline EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) override {
-      return CreateInstanceList(pkb->get_procedures());
+    return CreateInstanceList(pkb->get_procedures());
   }
 
   inline Entity GetAttrValue(const Entity &index,
                              const pkb::PKBReadPtr &pkb) override {
-      throw QpsEvaluatorException(
-          "Procedure does not have a secondary attr value");
+    throw QpsEvaluatorException(
+        "Procedure does not have a secondary attr value");
   }
 };
 

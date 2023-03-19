@@ -10,16 +10,16 @@
 namespace qps {
 
 class WhileEntityFactory : public IntEntityFactory {
-public:
+ public:
   WhileEntityFactory() : IntEntityFactory() {}
 
   inline EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) override {
-      return CreateInstanceList(pkb->get_whiles());
+    return CreateInstanceList(pkb->get_whiles());
   }
 
   inline Entity GetAttrValue(const Entity &index,
                              const pkb::PKBReadPtr &pkb) override {
-      throw QpsEvaluatorException("While does not have a secondary attr value");
+    throw QpsEvaluatorException("While does not have a secondary attr value");
   }
 };
 }  // namespace qps

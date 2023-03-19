@@ -10,18 +10,18 @@
 namespace qps {
 
 class IntEntityFactory : public EntityFactory {
-public:
+ public:
   IntEntityFactory() : EntityFactory() {}
 
   inline bool is_integer() override { return true; }
 
-protected:
+ protected:
   inline EntitySet CreateInstanceList(std::unordered_set<int> ls) {
-      EntitySet result;
-      for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
-          result.insert(Entity(*itr));
-      }
-      return result;
+    EntitySet result;
+    for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
+      result.insert(Entity(*itr));
+    }
+    return result;
   }
 };
 }  // namespace qps

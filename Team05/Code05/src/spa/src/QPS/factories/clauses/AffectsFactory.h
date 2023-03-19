@@ -13,15 +13,15 @@ namespace qps {
 class AffectsFactory : public ClauseFactory {
  public:
   AffectsFactory() : ClauseFactory() {
-	  LHS_entity_types_ = PQL::kAllStmtEntityTypes;
-	  RHS_entity_types_ = PQL::kAllStmtEntityTypes;
+    LHS_entity_types_ = PQL::kAllStmtEntityTypes;
+    RHS_entity_types_ = PQL::kAllStmtEntityTypes;
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-	  InitializeWildcard(arg1, EntityType::kStmt);
-	  InitializeWildcard(arg2, EntityType::kStmt);
+    InitializeWildcard(arg1, EntityType::kStmt);
+    InitializeWildcard(arg2, EntityType::kStmt);
 
-	  return std::make_unique<AffectsClause>(std::move(arg1), std::move(arg2));
+    return std::make_unique<AffectsClause>(std::move(arg1), std::move(arg2));
   }
 };
 }  // namespace qps

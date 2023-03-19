@@ -12,7 +12,7 @@
 
 namespace qps {
 class ArgumentFactory {
-public:
+ public:
   ArgumentFactory() {}
 
   virtual ArgumentPtr Create(std::string token) = 0;
@@ -22,4 +22,5 @@ public:
 };
 
 using ArgumentFactoryPtr = std::unique_ptr<ArgumentFactory>;
+
 }  // namespace qps

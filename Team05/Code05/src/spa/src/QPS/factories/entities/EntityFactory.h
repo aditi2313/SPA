@@ -12,7 +12,7 @@ using namespace models;  // NOLINT
 
 namespace qps {
 class EntityFactory {
-public:
+ public:
   EntityFactory() {}
   virtual EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) = 0;
   virtual Entity GetAttrValue(const Entity &index,

@@ -10,16 +10,16 @@
 namespace qps {
 
 class IfEntityFactory : public IntEntityFactory {
-public:
+ public:
   IfEntityFactory() : IntEntityFactory() {}
 
   inline EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) override {
-      return CreateInstanceList(pkb->get_if());
+    return CreateInstanceList(pkb->get_if());
   }
 
   inline Entity GetAttrValue(const Entity &index,
                              const pkb::PKBReadPtr &pkb) override {
-      throw QpsEvaluatorException("If does not have a secondary attr value");
+    throw QpsEvaluatorException("If does not have a secondary attr value");
   }
 };
 }  // namespace qps

@@ -10,18 +10,18 @@
 namespace qps {
 
 class IdentEntityFactory : public EntityFactory {
-public:
+ public:
   IdentEntityFactory() : EntityFactory() {}
 
   inline bool is_ident() override { return true; }
 
-protected:
+ protected:
   inline EntitySet CreateInstanceList(std::unordered_set<std::string> ls) {
-      EntitySet result;
-      for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
-          result.insert(Entity(*itr));
-      }
-      return result;
+    EntitySet result;
+    for (auto itr = ls.begin(); itr != ls.end(); ++itr) {
+      result.insert(Entity(*itr));
+    }
+    return result;
   }
 };
 

@@ -10,17 +10,17 @@
 namespace qps {
 
 class ConstantEntityFactory : public IntEntityFactory {
-public:
+ public:
   ConstantEntityFactory() : IntEntityFactory() {}
 
   inline EntitySet GetAllFromPKB(const pkb::PKBReadPtr &pkb) override {
-      return CreateInstanceList(pkb->get_constants());
+    return CreateInstanceList(pkb->get_constants());
   }
 
   inline Entity GetAttrValue(const Entity &index,
                              const pkb::PKBReadPtr &pkb) override {
-      throw QpsEvaluatorException(
-          "Constant does not have a secondary attr value");
+    throw QpsEvaluatorException(
+        "Constant does not have a secondary attr value");
   }
 };
 

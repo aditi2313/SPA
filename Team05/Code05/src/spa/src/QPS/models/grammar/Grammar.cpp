@@ -14,7 +14,7 @@ Grammar::CheckLambda Grammar::kBooleanCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kDesignEntityCheck = [](std::string token) {
-  return PQL::is_entity_name(token);
+  return Entity::is_entity_name(token);
 };
 
 Grammar::CheckLambda Grammar::kElemCheck = [](std::string token) {

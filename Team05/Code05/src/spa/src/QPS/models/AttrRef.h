@@ -5,6 +5,7 @@
 
 #include "QPS/models/AttrType.h"
 #include "QPS/models/EntityType.h"
+#include "QPS/models/Entity.h"
 #include "PQL.h"
 
 namespace qps {
@@ -21,7 +22,7 @@ class AttrRef {
       {AttrType::kVarName,
        {EntityType::kVariable, EntityType::kRead, EntityType::kPrint}},
       {AttrType::kValue, {EntityType::kConstant}},
-      {AttrType::kStmtNum, PQL::kAllStmtEntityTypes}
+      {AttrType::kStmtNum, Entity::get_all_stmt_entities()}
   };
 
   inline static std::unordered_map<AttrName, AttrType> kAttrNameToTypeMap{

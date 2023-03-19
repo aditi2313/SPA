@@ -34,47 +34,6 @@ class PQL {
   inline static EntityName kConstantEntityName = "constant";
   inline static EntityName kProcedureEntityName = "procedure";
 
-  inline static std::unordered_set<std::string> kAllEntityNames{
-      kStmtEntityName, kReadEntityName, kPrintEntityName, kCallEntityName,
-      kWhileEntityName, kIfEntityName, kAssignEntityName,
-      kVariableEntityName, kConstantEntityName, kProcedureEntityName
-  };
-
-  inline static std::unordered_set<EntityType> kAllEntityTypes{
-      EntityType::kStmt, EntityType::kRead,
-      EntityType::kPrint, EntityType::kCall,
-      EntityType::kWhile, EntityType::kIf, EntityType::kAssign,
-      EntityType::kVariable, EntityType::kConstant, EntityType::kProcedure
-  };
-
-  inline static std::unordered_set<EntityType> kAllStmtEntityTypes{
-      EntityType::kStmt, EntityType::kRead,
-      EntityType::kPrint, EntityType::kCall,
-      EntityType::kWhile, EntityType::kIf, EntityType::kAssign
-  };
-
-  inline static std::unordered_map<EntityName, EntityType>
-      kEntityNameToEntityTypeMap{
-      {kStmtEntityName, EntityType::kStmt},
-      {kReadEntityName, EntityType::kRead},
-      {kPrintEntityName, EntityType::kPrint},
-      {kCallEntityName, EntityType::kCall},
-      {kWhileEntityName, EntityType::kWhile},
-      {kIfEntityName, EntityType::kIf},
-      {kAssignEntityName, EntityType::kAssign},
-      {kVariableEntityName, EntityType::kVariable},
-      {kConstantEntityName, EntityType::kConstant},
-      {kProcedureEntityName, EntityType::kProcedure}
-  };
-
-  inline static bool const is_entity_name(EntityName const entity_name) {
-    return kAllEntityNames.count(entity_name);
-  }
-
-  inline static EntityType get_entity_type(EntityName const entity_name) {
-    return kEntityNameToEntityTypeMap.at(entity_name);
-  }
-
   inline static RelName kAffectsRelName = "Affects";
   inline static RelName kAffectsTRelName = "Affects*";
   inline static RelName kModifiesRelName = "Modifies";
@@ -150,7 +109,7 @@ class PQL {
   }
 
   inline static bool is_wildcard(std::string str) {
-    return str == "_";
+    return str == kUnderscoreToken;
   }
 
   inline static AttrName kProcedureAttrName = "procName";

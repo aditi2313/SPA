@@ -32,7 +32,7 @@ class DeclarationParseState : public RecursiveParseState {
             Grammar::kSynCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               query->declare_synonym(
-                  *itr_, PQL::get_entity_type(declared_entity_name_));
+                  *itr_, Entity::get_entity_type(declared_entity_name_));
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -50,7 +50,7 @@ class DeclarationParseState : public RecursiveParseState {
   }
 
   inline bool is_transition_keyword(std::string token) override {
-    return PQL::is_entity_name(token);
+    return Entity::is_entity_name(token);
   }
 
  private:

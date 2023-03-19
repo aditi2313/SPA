@@ -46,7 +46,7 @@ Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kRelRefCheck = [](std::string token) {
-  return PQL::is_such_that_rel_name(token);
+  return Clause::is_such_that_rel_name(token);
 };
 
 Grammar::CheckLambda Grammar::kStmtRefCheck = [](std::string token) {

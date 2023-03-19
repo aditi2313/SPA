@@ -15,9 +15,6 @@ TEST_CASE("Test PQL") {
     REQUIRE(PQL::is_integer("1234567890") == true);
     REQUIRE(PQL::is_integer("0") == false);
     REQUIRE(PQL::is_integer("01") == false);
-
-    REQUIRE(PQL::is_such_that_rel_name("Modifies") == true);
-    REQUIRE(PQL::is_such_that_rel_name("pattern") == false);
   };
 }
 

@@ -49,45 +49,6 @@ class PQL {
   inline static RelName kNextTRelName = "Next*";
   inline static RelName kWithRelName = "with";
 
-  inline static std::unordered_map<RelName, ClauseType> kRelNameToClauseTypeMap{
-      {kAffectsRelName, ClauseType::kAffects},
-      {kAffectsTRelName, ClauseType::kAffectsT},
-      {kModifiesRelName, ClauseType::kModifies},
-      {kFollowsRelName, ClauseType::kFollows},
-      {kFollowsTRelName, ClauseType::kFollowsT},
-      {kPatternRelName, ClauseType::kPatternAssign},
-      {kUsesRelName, ClauseType::kUses},
-      {kParentRelName, ClauseType::kParent},
-      {kParentTRelName, ClauseType::kParentT},
-      {kCallsRelName, ClauseType::kCalls},
-      {kCallsTRelName, ClauseType::kCallsT},
-      {kNextRelName, ClauseType::kNext},
-      {kNextTRelName, ClauseType::kNextT},
-      {kWithRelName, ClauseType::kWith}
-  };
-
-  inline static ClauseType get_clause_type(RelName const rel_name) {
-    return kRelNameToClauseTypeMap.at(rel_name);
-  }
-
-  // All relationships that appear after such that
-  inline static std::unordered_set<std::string> kAllSuchThatRelNames{
-      kAffectsRelName, kAffectsTRelName,
-      kCallsRelName, kCallsTRelName,
-      kFollowsRelName, kFollowsTRelName,
-      kModifiesRelName,
-      kNextRelName, kNextTRelName,
-      kParentRelName, kParentTRelName,
-      kUsesRelName,
-  };
-
-  // Returns true if the string is a relationship that appears
-  // after such-that.
-  // Examples of non such-that rel names are 'pattern' and 'with'
-  inline static bool is_such_that_rel_name(std::string const token) {
-    return kAllSuchThatRelNames.count(token);
-  }
-
   inline static bool is_synonym(std::string str) {
     return is_ident(str);
   }

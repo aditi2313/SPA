@@ -10,7 +10,7 @@
 #include "PKB/data/Export.h"
 
 namespace pkb {
-using IntOrStringVariant = std::variant<int, std::string>;
+using Key = std::variant<int, std::string>;
 /// <summary>
 /// Class for table indexable by id.
 /// </summary>
@@ -20,22 +20,22 @@ class IndexableTable {
  public:
   IndexableTable() = default;
 
-  inline void add_row(IntOrStringVariant v, T row) {
+  inline void add_row(Key v, T row) {
     indexes_.push_back(v);
     table_.insert(std::make_pair(v, row));
   }
 
-  inline T &get_row(IntOrStringVariant v) { return table_.at(v); }
+  inline T &get_row(Key v) { return table_.at(v); }
 
-  inline const T &get_row(IntOrStringVariant v) const { return table_.at(v); }
+  inline const T &get_row(Key v) const { return table_.at(v); }
 
-  inline const std::vector<IntOrStringVariant> &get_indexes() const {
+  inline const std::vector<Key> &get_indexes() const {
     return indexes_;
   }
 
-  inline std::vector<IntOrStringVariant> &get_indexes() { return indexes_; }
+  inline std::vector<Key> &get_indexes() { return indexes_; }
 
-  inline bool exists(IntOrStringVariant v) const {
+  inline bool exists(Key v) const {
     return table_.find(v) != table_.end();
   }
 
@@ -63,8 +63,8 @@ class IndexableTable {
   }
 
  protected:
-  std::unordered_map<IntOrStringVariant, T> table_;
-  std::vector<IntOrStringVariant> indexes_;
+  std::unordered_map<Key, T> table_;
+  std::vector<Key> indexes_;
 };
 
 typedef IndexableTable<AffectsData> AffectsTable;

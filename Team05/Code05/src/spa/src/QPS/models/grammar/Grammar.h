@@ -9,7 +9,8 @@ namespace qps {
 class Grammar {
  public:
   using CheckLambda = std::function<bool(std::string)>;
-  using ActionLambda = std::function<void(QueryPtr &)>;
+  using ActionLambda = std::function<void(
+      QueryPtr &, const std::vector<std::string> &)>;
 
   Grammar(
       CheckLambda check, ActionLambda action)
@@ -40,8 +41,9 @@ class Grammar {
     return check_(token);
   }
 
-  inline void Action(QueryPtr &query) {
-    action_(query);
+  inline void Action(
+      QueryPtr &query, const std::vector<std::string> &tokens) {
+    action_(query, tokens);
   }
 
  private:

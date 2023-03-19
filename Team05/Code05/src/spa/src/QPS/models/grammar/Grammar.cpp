@@ -59,5 +59,6 @@ Grammar::CheckLambda Grammar::kWildcardCheck = [](std::string token) {
   return PQL::is_wildcard(token);
 };
 
-Grammar::ActionLambda Grammar::kEmptyAction = [](QueryPtr &query) {};
+Grammar::ActionLambda Grammar::kEmptyAction = [](
+    QueryPtr &query, const std::vector<std::string> &tokens) {};
 }  // namespace qps

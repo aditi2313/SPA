@@ -16,7 +16,7 @@ extern MasterArgumentFactory master_argument_factory_;
 class WildcardExprGrammar : public CompositeGrammar {
  public:
   WildcardExprGrammar(
-      std::vector<std::string> &tokens,
+      const std::vector<std::string> &tokens,
       QueryPtr &query,
       ParseItr &itr,
       ArgumentPtr &arg)
@@ -30,14 +30,14 @@ class WildcardExprGrammar : public CompositeGrammar {
     grammar_.emplace_back(
         Grammar(
             Grammar::kExactExprCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               expr_ = *itr_;
             }));
     // _
     grammar_.emplace_back(
         Grammar(
             Grammar::kWildcardCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg_ = master_argument_factory_.CreateExpressionArg(expr_, false);
             }));
   }

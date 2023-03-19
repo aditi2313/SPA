@@ -20,13 +20,16 @@ class DeclarationParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kDesignEntityCheck,
-            [&](QueryPtr &query) { declared_entity_name_ = *itr_; }));
+            [&](QueryPtr &query,
+                const std::vector<std::string> &tokens) {
+              declared_entity_name_ = *itr_;
+            }));
 
     // synonym
     grammar_.emplace_back(
         Grammar(
             Grammar::kSynCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               query->declare_synonym(
                   *itr_, PQL::get_entity_type(declared_entity_name_));
             }));

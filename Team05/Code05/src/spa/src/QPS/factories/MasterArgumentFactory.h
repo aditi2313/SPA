@@ -71,11 +71,6 @@ class MasterArgumentFactory {
       return CreateExpressionArg(token, true);
     }
 
-    if (PQL::is_pattern_wildcard(token)) {
-      token = token.substr(1, token.size() - 2);
-      return CreateExpressionArg(token, false);
-    }
-
     throw PqlSyntaxErrorException(
         "Unexpected argument type in clause");
   }

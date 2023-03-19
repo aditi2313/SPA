@@ -33,7 +33,7 @@ class WithParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kRefCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg1_ = master_argument_factory_.CreateRef(*itr_);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
@@ -49,7 +49,7 @@ class WithParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kRefCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg2_ = master_argument_factory_.CreateRef(*itr_);
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               auto with_clause = master_clause_factory_.Create(

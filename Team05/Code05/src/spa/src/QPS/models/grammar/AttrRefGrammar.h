@@ -16,7 +16,7 @@ extern MasterArgumentFactory master_argument_factory_;
 class AttrRefGrammar : public CompositeGrammar {
  public:
   AttrRefGrammar(
-      std::vector<std::string> &tokens,
+      const std::vector<std::string> &tokens,
       QueryPtr &query,
       ParseItr &itr,
       ArgumentPtr &arg)
@@ -25,7 +25,7 @@ class AttrRefGrammar : public CompositeGrammar {
     grammar_.emplace_back(
         Grammar(
             Grammar::kSynCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               syn_name_ = *itr_;
             }));
     // '.'
@@ -38,7 +38,7 @@ class AttrRefGrammar : public CompositeGrammar {
     grammar_.emplace_back(
         Grammar(
             Grammar::kAttrNameCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg_ = master_argument_factory_.CreateAttrRef(*itr_);
             }));
   }

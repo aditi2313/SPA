@@ -6,6 +6,7 @@
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterArgumentFactory.h"
+#include "QPS/models/grammar/WildcardExprGrammar.h"
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
@@ -34,7 +35,7 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kSynCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg1_ = master_argument_factory_.CreateSynonym(*itr_);
               pattern_clause_type_ = ClauseType::kPatternUndetermined;
             }));
@@ -50,7 +51,7 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kArgumentCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               arg2_ = master_argument_factory_.CreateEntRef(*itr_);
             }));
 
@@ -64,12 +65,17 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kExprCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (!Grammar::kWildcardCheck(*itr_)) {
                 // Not a wildcard, must be pattern-assign
                 pattern_clause_type_ = ClauseType::kPatternAssign;
               }
-              arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
+              WildcardExprGrammar wildcard_expr_grammar(
+                  tokens, query, itr_, arg3_);
+              bool is_wildcard_expr = wildcard_expr_grammar.Parse();
+              if (!is_wildcard_expr) {
+                arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
+              }
             }));
 
     // ',' | skip to ')'
@@ -78,7 +84,7 @@ class PatternParseState : public RecursiveParseState {
             [](std::string token) {
               return token == PQL::kCommaToken || token == PQL::kCloseBktToken;
             },
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (*itr_ == PQL::kCloseBktToken) {
                 grammar_itr_++;  // Skip to close bkt
                 itr_--;  // Don't consume token
@@ -96,7 +102,7 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kWildcardCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               // Must be if-type
               pattern_clause_type_ = ClauseType::kPatternIf;
               arg3_ = master_argument_factory_.CreateExpressionSpec(*itr_);
@@ -106,7 +112,7 @@ class PatternParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::CreateTokenCheck(PQL::kCloseBktToken),
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (arg1_ == nullptr || arg2_ == nullptr || arg3_ == nullptr) {
                 ThrowException();
               }

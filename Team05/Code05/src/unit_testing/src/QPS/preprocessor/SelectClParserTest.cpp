@@ -44,7 +44,7 @@ TEST_CASE("Test SelectClParser methods") {
     std::vector<std::string> expected_tokens{
         "variable", "p", ";", "select", "p", "such", "that",
         "Modifies", "(", "6", ",", "v", ")",
-        "pattern", "a", "(", "_", ",", "_\"x+y\"_", ")"
+        "pattern", "a", "(", "_", ",", "_", "\"x+y\"", "_", ")"
     };
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
 
@@ -194,7 +194,7 @@ TEST_CASE("Test ParseQuery") {
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
             master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionSpec("_\"x\"_")));
+            master_argument_factory.CreateExpressionArg("\"x\"", false)));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -265,7 +265,7 @@ TEST_CASE("Test ParseQuery") {
     TestNoThrows(query_string);
   }
 
-  SECTION("Query with interleaving clauses of different types"
+  SECTION("Query with interleaving clauses of different types "
           "should parse correctly") {
     std::string query_string = "variable v; assign a; "
                                "Select v pattern a(_, \"x + y\") "

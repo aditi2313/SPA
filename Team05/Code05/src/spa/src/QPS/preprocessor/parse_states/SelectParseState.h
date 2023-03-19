@@ -29,7 +29,7 @@ class SelectParseState : public RecursiveParseState {
               return Grammar::kTupleCheck(token)
                   || Grammar::kBooleanCheck(token);
             },
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (Grammar::kBooleanCheck(*itr_) &&
                   !query->is_synonym_name_declared(*itr_)) {
                 query->set_boolean_query_to_true();
@@ -52,7 +52,7 @@ class SelectParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kElemCheck,
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               query->add_selected_elem(*itr_);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here

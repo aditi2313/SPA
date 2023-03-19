@@ -491,7 +491,7 @@ TEST_CASE("Test PatternParseState") {
 
   SECTION("Pattern wildcard clause should parse correctly") {
     std::vector<std::string> tokens{
-        "pattern", "a", "(", "variable", ",", "_\"x\"_", ")"};
+        "pattern", "a", "(", "variable", ",", "_", "\"x\"", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     query->declare_synonym("a", EntityType::kAssign);
     query->declare_synonym("variable", EntityType::kVariable);
@@ -506,7 +506,7 @@ TEST_CASE("Test PatternParseState") {
         ClauseType::kPatternAssign,
         master_argument_factory.CreateSynonym(
             "a", EntityType::kAssign),
-        master_argument_factory.CreateExpressionSpec("_\"x\"_"));
+        master_argument_factory.CreateExpressionArg("\"x\"", false));
 
     REQUIRE(*query->get_clauses().at(0) == *expected_modifies_clause);
     REQUIRE(*query->get_clauses().at(1) == *expected_pattern_clause);
@@ -517,7 +517,7 @@ TEST_CASE("Test PatternParseState") {
     std::vector<std::string> tokens{
         "pattern", "a", "(", "_", ",", "\"x + y\"", ")",
         "and",
-        "a1", "(", "variable", ",", "_\"x\"_", ")"};
+        "a1", "(", "variable", ",", "_", "\"x\"", "_", ")"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     query->declare_synonym("a", EntityType::kAssign);
     query->declare_synonym("a1", EntityType::kAssign);
@@ -531,18 +531,23 @@ TEST_CASE("Test PatternParseState") {
         master_argument_factory.CreateSynonym(
             "a", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("_")));
+
     expected_clauses.push_back(std::make_unique<PatternAssignClause>(
         master_argument_factory.CreateSynonym(
             "a", EntityType::kAssign),
-        master_argument_factory.CreateExpressionSpec("\"x + y\"")));
+        master_argument_factory.CreateExpressionArg(
+            "\"x + y\"", true)));
+
     expected_clauses.push_back(std::make_unique<ModifiesClause>(
         master_argument_factory.CreateSynonym(
             "a1", EntityType::kAssign),
         master_argument_factory.CreateEntOrStmtRef("variable")));
+
     expected_clauses.push_back(std::make_unique<PatternAssignClause>(
         master_argument_factory.CreateSynonym(
             "a1", EntityType::kAssign),
-        master_argument_factory.CreateExpressionSpec("_\"x\"_")));
+        master_argument_factory.CreateExpressionArg(
+            "\"x\"", false)));
 
     REQUIRE(util::CompareVectorOfPointers(
         expected_clauses, query->get_clauses()));

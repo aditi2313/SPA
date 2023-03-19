@@ -15,6 +15,10 @@ class ExprNode : public TNode {
   virtual std::unique_ptr<ExprNode> Copy() = 0;
   virtual bool DeepEquals(const ExprNode&) = 0;
   virtual bool PartialMatch(const ExprNode&) = 0;
+  int get_size() const { return size_; }
+
+ protected:
+  int size_;
 };
 
 typedef std::unique_ptr<ExprNode> ExprNodePtr;
@@ -24,13 +28,15 @@ class OpNode : public ExprNode {
       : operation_(operation) {
     left_ = std::move(left);
     right_ = std::move(right);
+    size_ = left_->get_size() + right_->get_size();
   }
 
   bool DeepEquals(const ExprNode& other) override {
+    if (other.get_size() != size_) return false;
     if (util::InstanceOf<OpNode>(other)) {
       const OpNode& o_v = dynamic_cast<const OpNode&>(other);
       return operation_ == o_v.operation_ && o_v.left_->DeepEquals(*left_) &&
-              o_v.right_->DeepEquals(*right_);
+             o_v.right_->DeepEquals(*right_);
     }
     return false;
   }
@@ -59,7 +65,7 @@ class OpNode : public ExprNode {
 
 class VarNode : public ExprNode {
  public:
-  explicit VarNode(std::string var_name) : var_name_(var_name) {}
+  explicit VarNode(std::string var_name) : var_name_(var_name) { size_ = 1; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
@@ -87,7 +93,7 @@ class VarNode : public ExprNode {
 
 class ConstNode : public ExprNode {
  public:
-  explicit ConstNode(int val) : val_(val) {}
+  explicit ConstNode(int val) : val_(val) { size_ = 1; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 

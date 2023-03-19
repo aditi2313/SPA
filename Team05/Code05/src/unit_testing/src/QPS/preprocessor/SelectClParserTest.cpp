@@ -441,4 +441,11 @@ TEST_CASE("Test ParseQuery") {
 
     TestThrows(query_string);
   }
+
+  SECTION("Query with whitespaces in Ident should throw error") {
+    std::string query_string = "variable v; assign a; "
+                               "Select v pattern a(_, _\"read\"_\") ";
+
+    TestThrows(query_string);
+  }
 }

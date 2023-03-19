@@ -4,8 +4,10 @@
 #include <variant>
 #include <unordered_set>
 
+#include "Data.h"
+
 namespace pkb {
-class ConditionData {
+class ConditionData : public Data<std::variant<int, std::string>>{
  public:
   ConditionData(
       std::variant<int, std::string> line,
@@ -25,14 +27,11 @@ class ConditionData {
         LHS.variable_names_ == RHS.variable_names_;
   }
 
-  inline std::variant<int, std::string> get_index() { return line_; }
-
   inline const std::unordered_set<std::string>& get_variables() {
     return variable_names_;
   }
 
  private:
-  std::variant<int, std::string> line_;
   // Variable names that appear in the condition
   std::unordered_set<std::string> variable_names_;
 };

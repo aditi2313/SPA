@@ -5,10 +5,11 @@
 #include <utility>
 
 #include "models/AST/factor_node/FactorNode.h"
+#include "Data.h"
 
 namespace pkb {
 
-class AssignData {
+class AssignData : public Data<int> {
  public:
   AssignData(std::string variable, int line,
              std::unique_ptr<ast::ExprNode> expression);
@@ -20,8 +21,6 @@ class AssignData {
     return is_exact ? expression_->DeepEquals(*other_node)
                     : expression_->PartialMatch(*other_node);
   }
-
-  inline int get_index() { return line_; }
 
   inline const std::string& get_variable() { return variable_; }
 
@@ -39,7 +38,6 @@ class AssignData {
 
  private:
   std::string variable_;
-  int line_;
   std::unique_ptr<ast::ExprNode> expression_;
 };
 }  // namespace pkb

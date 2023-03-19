@@ -13,8 +13,8 @@ namespace qps {
 class WithFactory : public ClauseFactory {
  public:
   WithFactory() : ClauseFactory() {
-    LHS_entity_types_ = PQL::kAllEntityTypes;
-    RHS_entity_types_ = PQL::kAllEntityTypes;
+    LHS_entity_types_ = Entity::get_all_entities();
+    RHS_entity_types_ = Entity::get_all_entities();
   }
 
   // Also check if the type of the LHS and RHS matches
@@ -27,7 +27,7 @@ class WithFactory : public ClauseFactory {
       return false;
 
     return arg1->Validate(LHS_entity_types_) &&
-           arg2->Validate(RHS_entity_types_);
+        arg2->Validate(RHS_entity_types_);
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {

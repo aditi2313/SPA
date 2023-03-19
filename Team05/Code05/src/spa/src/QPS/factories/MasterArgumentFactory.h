@@ -34,7 +34,9 @@ class MasterArgumentFactory {
   }
 
   inline ArgumentPtr Create(ArgumentType argument_type, std::string token) {
-    assert(CheckSyntax(argument_type, token));
+    if (!CheckSyntax(argument_type, token)) {
+      throw PqlSyntaxErrorException("Invalid argument syntax");
+    }
     return argument_factories_.at(argument_type)->Create(token);
   }
 

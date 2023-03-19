@@ -13,8 +13,8 @@ namespace qps {
 class AffectsFactory : public ClauseFactory {
  public:
   AffectsFactory() : ClauseFactory() {
-    LHS_entity_types_ = PQL::kAllStmtEntityTypes;
-    RHS_entity_types_ = PQL::kAllStmtEntityTypes;
+    LHS_entity_types_ = Entity::get_all_stmt_entities();
+    RHS_entity_types_ = Entity::get_all_stmt_entities();
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {

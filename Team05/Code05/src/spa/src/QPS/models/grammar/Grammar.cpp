@@ -5,12 +5,8 @@
 #include "QPS/models/Query.h"
 
 namespace qps {
-Grammar::CheckLambda Grammar::kArgumentCheck = [](std::string token) {
-  return PQL::is_argument(token);
-};
-
 Grammar::CheckLambda Grammar::kAttrNameCheck = [](std::string token) {
-  return PQL::is_attr_name(token);
+  return AttrRef::is_attr_name(token);
 };
 
 Grammar::CheckLambda Grammar::kBooleanCheck = [](std::string token) {
@@ -18,12 +14,12 @@ Grammar::CheckLambda Grammar::kBooleanCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kDesignEntityCheck = [](std::string token) {
-  return PQL::is_entity_name(token);
+  return Entity::is_entity_name(token);
 };
 
 Grammar::CheckLambda Grammar::kElemCheck = [](std::string token) {
   // synonym | attrRef
-  return kSynCheck(token) || PQL::is_attr_ref(token);
+  return kSynCheck(token) || AttrRef::is_attr_ref(token);
 };
 
 Grammar::CheckLambda Grammar::kEntRefCheck = [](std::string token) {
@@ -50,7 +46,7 @@ Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kRelRefCheck = [](std::string token) {
-  return PQL::is_such_that_rel_name(token);
+  return Clause::is_such_that_rel_name(token);
 };
 
 Grammar::CheckLambda Grammar::kStmtRefCheck = [](std::string token) {

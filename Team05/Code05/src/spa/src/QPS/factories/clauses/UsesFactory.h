@@ -13,7 +13,7 @@ namespace qps {
 class UsesFactory : public ClauseFactory {
  public:
   UsesFactory() : ClauseFactory() {
-    LHS_entity_types_ = PQL::kAllStmtEntityTypes;
+    LHS_entity_types_ = Entity::get_all_stmt_entities();
     LHS_entity_types_.insert(EntityType::kProcedure);
     RHS_entity_types_.insert(EntityType::kVariable);
     is_wildcard_allowed_as_first_arg_ = false;

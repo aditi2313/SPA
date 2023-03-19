@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "Synonym.h"
 #include "PQL.h"
+#include "AttrRef.h"
 
 namespace qps {
 class Query {
@@ -62,8 +63,8 @@ class Query {
   inline std::vector<std::string> get_selected_synonyms() {
     std::vector<std::string> synonyms;
     for (auto &elem : selected_elems_) {
-      if (PQL::is_attr_ref(elem)) {
-        synonyms.push_back(PQL::split_attr_ref(elem).first);
+      if (AttrRef::is_attr_ref(elem)) {
+        synonyms.push_back(AttrRef::split_attr_ref(elem).first);
       } else {
         synonyms.push_back(elem);
       }

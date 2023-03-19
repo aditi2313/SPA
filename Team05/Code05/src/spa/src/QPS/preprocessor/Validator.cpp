@@ -79,10 +79,11 @@ void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
 // in ValidateClauseArguments
 void Validator::ValidateAttrRefs(QueryPtr &query) {
   for (auto elem : query->get_selected_elems()) {
-    if (PQL::is_attr_ref(elem)) {
-      auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
+    if (AttrRef::is_attr_ref(elem)) {
+      auto [syn_name, attr_name] = AttrRef::split_attr_ref(elem);
       auto entity_type = query->get_declared_synonym_entity_type(syn_name);
-      if (!PQL::ValidateAttrRef(attr_name, entity_type)) {
+      if (!AttrRef::ValidateAttrRef(
+          AttrRef::get_attr_type(attr_name), entity_type)) {
         throw PqlSemanticErrorException(
             "Selected attrRef has mismatched types");
       }

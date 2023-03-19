@@ -27,9 +27,7 @@ class UsesClause : public Clause {
           return std::move(pkb->Uses(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::UsesData data) {
-          for (auto child : data.get_variables()) {
-            result.insert(Entity(child));
-          }
+          AddList(data.get_variables(), result);
         },
         results);
   }

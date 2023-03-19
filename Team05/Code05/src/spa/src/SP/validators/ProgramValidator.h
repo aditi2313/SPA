@@ -8,12 +8,12 @@
 
 #include "CallValidator.h"
 #include "ProcedureValidator.h"
-#include "SP/visitors/ValidatorVisitor.h"
+#include "SP/visitors/TNodeVisitor.h"
 #include "Validator.h"
 #include "models/AST/ProgramNode.h"
 
 namespace sp {
-class ProgramValidator : public Validator, ValidatorVisitor {
+class ProgramValidator : public Validator, TNodeVisitor {
  public:
   explicit ProgramValidator(std::unique_ptr<ast::ProgramNode>& root)
       : root_(root) {}

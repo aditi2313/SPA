@@ -285,9 +285,15 @@ class PQL {
       EntityType entity_type, AttrName attr_name) {
     switch (entity_type) {
       case EntityType::kRead:
-      case EntityType::kPrint:return attr_name == kVariableAttrName;
-      case EntityType::kCall:return attr_name == kProcedureAttrName;
-      default:return false;
+      case EntityType::kPrint: {
+        return attr_name == kVariableAttrName;
+      }
+      case EntityType::kCall: {
+        return attr_name == kProcedureAttrName;
+      }
+      default: {
+        return false;
+      }
     }
   }
 };

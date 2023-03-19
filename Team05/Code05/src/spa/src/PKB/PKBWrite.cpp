@@ -11,8 +11,6 @@
 
 namespace pkb {
 
-using Key = std::variant<int, std::string>;
-
 template <class Data>
 void ProcessIndexableTable(
     IndexableTable<Data>& table,

@@ -70,11 +70,11 @@ void ProcedureProcessingVisitor::Process(ast::CallNode* call_node) {
   call_to_proc_[call_node->get_line()] = parent_proc;
 }
 
-void ProcedureProcessingVisitor::ProcessAft(ast::WhileNode* while_node) {
+void ProcedureProcessingVisitor::Process(ast::WhileNode* while_node) {
   containers_visited_.push_back(while_node);
 }
 
-void ProcedureProcessingVisitor::ProcessAft(ast::IfNode* if_node) {
+void ProcedureProcessingVisitor::Process(ast::IfNode* if_node) {
   containers_visited_.push_back(if_node);
 }
 

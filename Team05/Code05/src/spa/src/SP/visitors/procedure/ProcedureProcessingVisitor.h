@@ -27,9 +27,9 @@ class ProcedureProcessingVisitor : public PKBWritingVisitor {
 
   void Process(ast::ProcNode* proc_node) override;
 
-  void ProcessAft(ast::IfNode* if_node) override;
+  void Process(ast::IfNode* if_node) override;
 
-  void ProcessAft(ast::WhileNode* while_node) override;
+  void Process(ast::WhileNode* while_node) override;
 
   void Process(ast::CallNode* call_node) override;
 

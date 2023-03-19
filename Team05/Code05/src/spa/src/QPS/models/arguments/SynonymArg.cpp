@@ -3,42 +3,17 @@
 #include "QPS/evaluator/TableJoiner.h"
 
 namespace qps {
-void SynonymArg::UpdateTableWithAttrValue(
-    const pkb::PKBReadPtr &pkb,
-    Table &query_table,
-    bool &is_table_initialized) {
-  if (attr_name_.empty()) return;  // Not an attr ref
-  bool is_secondary_attr_value = is_secondary_attr_ref();
-
-  // Update query_table with rows mapping from
-  // Index to AttrValue
-  // e.g. calls (line) to calls (procName)
-  EntitySet indexes;
-  InitializeEntities(
-      query_table, pkb, indexes, false);
-  Table::TwoSynonymRows rows;
-
-  for (auto &index : indexes) {
-    if (is_secondary_attr_value) {
-      rows.emplace_back(index, get_secondary_attr_value(pkb, index));
-    } else {
-      rows.emplace_back(index, index);
+void SynonymArg::InitializeEntities(
+    Table &table, pkb::PKBReadPtr &pkb, EntitySet &results) {
+  if (table.HasColumn(syn_name_)) {
+    std::vector<std::vector<Entity>> values;
+    table.Select({syn_name_}, values);
+    for (auto &entities : values) {
+      results.insert(entities.at(0));
     }
-  }
-
-  std::vector<SynonymName> columns;
-  SynonymName col1 = get_syn_name();
-  SynonymName col2 = get_full_name();
-  columns.emplace_back(col1);
-  columns.emplace_back(col2);
-  Table new_table(columns);
-
-  new_table.add_values(col1, col2, rows);
-  if (!is_table_initialized) {
-    query_table = new_table;
-    is_table_initialized = true;
   } else {
-    query_table = TableJoiner::Join(query_table, new_table);
+    results = master_entity_factory_.GetAllFromPKB(
+        entity_type_, pkb);
   }
 }
 }  // namespace qps

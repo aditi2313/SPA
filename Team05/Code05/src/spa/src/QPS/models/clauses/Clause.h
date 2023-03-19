@@ -23,7 +23,7 @@ class Clause {
         arg2_(std::move(arg2)) {}
 
   virtual void Preprocess(
-      const pkb::PKBReadPtr &pkb,
+      pkb::PKBReadPtr &pkb,
       Table &query_table,
       bool &is_table_initialized) {
     return;

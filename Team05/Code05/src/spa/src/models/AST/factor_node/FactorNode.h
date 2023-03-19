@@ -43,6 +43,8 @@ class OpNode : public ExprNode {
 
   bool PartialMatch(const ExprNode& other) override {
     if (DeepEquals(other)) return true;
+    // if current size is smaller than other size, no reason to perform check
+    if (this->size_ < other.get_size()) return false;
     return left_->PartialMatch(other) || right_->PartialMatch(other);
   }
 

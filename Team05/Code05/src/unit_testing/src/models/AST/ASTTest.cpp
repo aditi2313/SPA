@@ -5,8 +5,7 @@
 #include <catch.hpp>
 
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/AssignVisitor.h"
-#include "SP/visitors/ModifiesVisitor.h"
+#include "SP/visitors/Export.h"
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/stmt_node/StmtNode.h"

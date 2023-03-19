@@ -2,8 +2,10 @@
 
 #include <unordered_set>
 
+#include "Data.h"
+
 namespace pkb {
-class FollowsData {
+class FollowsData : public Data<int> {
  public:
   FollowsData(int line, int follows);
 
@@ -11,8 +13,6 @@ class FollowsData {
     return LHS.line_ == RHS.line_ && LHS.follows_ == RHS.follows_ &&
            LHS.follows_list_ == RHS.follows_list_;
   }
-
-  inline int get_index() { return line_; }
 
   inline int get_follows() { return follows_; }
 
@@ -25,7 +25,6 @@ class FollowsData {
   }
 
  private:
-  int line_;
   int follows_;
   std::unordered_set<int> follows_list_;
 };

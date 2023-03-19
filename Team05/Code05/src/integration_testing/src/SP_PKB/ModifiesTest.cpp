@@ -4,7 +4,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/ModifiesVisitor.h"
+#include "SP/visitors/procedure/ModifiesVisitor.h"
 #include "common/filter/filters/PredicateFilter.h"
 
 std::unordered_map<std::variant<int, std::string>,
@@ -134,12 +134,30 @@ TEST_CASE("Test SP and PKB integration for Modifies data") {
 
     std::unordered_map<std::variant<int, std::string>,
                        std::unordered_set<std::string>>
-        expected_results = {{1, {"x"}}, {2, {"v"}},
-                            {3, {"v"}},
-                            {4, {"v"}},
-                            {"helper", {"v"}},
-                            {"modifies", vars}};
+        expected_results = {{1, {"x"}}, {2, {"v"}},        {3, {"v"}},
+                            {4, {"v"}}, {"helper", {"v"}}, {"modifies", vars}};
 
     REQUIRE(actual_results == expected_results);
   }
+}
+
+TEST_CASE("Test calls within modifies") {
+  std::string program =
+      "procedure p1 {"
+      "if (x == 2) then {"
+      "m = 2;"
+      "}else {"
+      "call r1;"
+      "n = 3;"
+      "}"
+      "}"
+      "procedure r1 { k = 1; }";
+  auto actual_results = InitializeModifies(program);
+
+  std::unordered_map<std::variant<int, std::string>,
+                     std::unordered_set<std::string>>
+      expected_results = {
+          {1, {"k", "m", "n"}},    {2, {"m"}}, {3, {"k"}},   {4, {"n"}},
+          {"p1", {"k", "m", "n"}}, {5, {"k"}}, {"r1", {"k"}}};
+  REQUIRE(actual_results == expected_results);
 }

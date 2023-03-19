@@ -6,8 +6,7 @@
 
 #include "SP/parser/Parser.h"
 #include "SP/parser/ProgramParser.h"
-#include "models/AST/factor_node/FactorNode.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class CallParser : Parser<ast::CallNode> {

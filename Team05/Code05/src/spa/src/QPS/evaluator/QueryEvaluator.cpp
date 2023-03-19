@@ -4,40 +4,65 @@
 #include "QPS/models/Table.h"
 #include "TableJoiner.h"
 #include "ClauseEvaluator.h"
+#include "ClauseOptimiser.h"
 
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
-  ClauseEvaluator clause_evaluator(pkb_);
+  auto &clauses = query->get_clauses();
+  has_table_been_intialized_ = false;
 
-  for (auto &clause : query->get_clauses()) {
-    clause->Preprocess(pkb_, table_);
+  // Order of evaluation
+  auto order = ClauseOptimiser::GroupClauses(clauses);
 
-    ArgumentPtr &arg1 = clause->get_arg1();
-    ArgumentPtr &arg2 = clause->get_arg2();
-    EntitySet LHS, RHS;
-    Table clause_table;
+  for (auto &group : order) {
+    for (auto &clause_index : group) {
+      bool res = EvaluateClause(clauses.at(clause_index));
 
-    arg1->InitializeEntities(table_, pkb_, LHS);
-    arg2->InitializeEntities(table_, pkb_, RHS);
-
-    bool res = clause_evaluator.EvaluateClause(clause, clause_table, LHS, RHS);
-
-    if (!res) {
-      // Clause is false, can immediately return empty result.
-      if (query->is_boolean_query()) {
-        return std::make_unique<BooleanQueryResult>(false);
-      } else {
-        return std::make_unique<ListQueryResult>();
+      if (!res) {
+        // Clause is false, can immediately return empty result.
+        if (query->is_boolean_query()) {
+          return std::make_unique<BooleanQueryResult>(false);
+        } else {
+          return std::make_unique<ListQueryResult>();
+        }
       }
-    }
-
-    if (!clause_table.Empty()) {
-      table_ = TableJoiner::Join(table_, clause_table);
     }
   }
 
+  return BuildResult(query);
+}
+
+bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
+  clause->Preprocess(
+      pkb_, table_, has_table_been_intialized_);
+
+  ArgumentPtr &arg1 = clause->get_arg1();
+  ArgumentPtr &arg2 = clause->get_arg2();
+  EntitySet LHS, RHS;
+  Table clause_table;
+
+  arg1->InitializeEntities(table_, pkb_, LHS);
+  arg2->InitializeEntities(table_, pkb_, RHS);
+
+  bool res = clause_evaluator_.EvaluateClause(
+      clause, clause_table, LHS, RHS);
+
+  if (!clause_table.Empty()) {
+    if (!has_table_been_intialized_) {
+      table_ = clause_table;
+      has_table_been_intialized_ = true;
+    } else {
+      table_ = TableJoiner::Join(table_, clause_table);
+    }
+    if (table_.Empty()) return false;
+  }
+
+  return res;
+}
+
+QueryResultPtr QueryEvaluator::BuildResult(QueryPtr &query) {
   if (query->is_boolean_query()) {
     return std::make_unique<BooleanQueryResult>(true);
   }
@@ -65,7 +90,8 @@ void QueryEvaluator::UpdateTableWithElem(
     SynonymArg syn_arg(syn_name);
     syn_arg.set_entity_type(entity_type);
     syn_arg.set_attr_name(attr_name);
-    syn_arg.UpdateTableWithAttrValue(pkb_, table_);
+    syn_arg.UpdateTableWithAttrValue(
+        pkb_, table_, has_table_been_intialized_);
   } else {
     SynonymName syn_name = elem;
     EntityType entity_type = query->get_declared_synonym_entity_type(
@@ -74,7 +100,12 @@ void QueryEvaluator::UpdateTableWithElem(
         entity_type, pkb_);
 
     auto synonym_table = Table(syn_name, initial_entities);
-    table_ = TableJoiner::Join(table_, synonym_table);
+    if (!has_table_been_intialized_) {
+      table_ = synonym_table;
+      has_table_been_intialized_ = true;
+    } else {
+      table_ = TableJoiner::Join(table_, synonym_table);
+    }
   }
 }
 }  // namespace qps

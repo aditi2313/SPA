@@ -7,7 +7,7 @@
 #include "SP/parser/relations/CondExprParser.h"
 #include "SP/parser/stmts/StatementListParser.h"
 #include "common/exceptions/SPExceptions.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class IfParser : public Parser<ast::IfNode> {

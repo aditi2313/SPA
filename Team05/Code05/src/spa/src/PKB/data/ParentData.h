@@ -2,8 +2,10 @@
 
 #include <unordered_set>
 
+#include "Data.h"
+
 namespace pkb {
-class ParentData {
+class ParentData : public Data<int> {
  public:
   explicit ParentData(int parent);
   friend bool operator==(const ParentData& LHS, const ParentData& RHS) {
@@ -11,8 +13,6 @@ class ParentData {
            LHS.direct_children_ == RHS.direct_children_ &&
            LHS.total_children_ == RHS.total_children_;
   }
-
-  inline int get_index() { return line_; }
 
   inline std::unordered_set<int> get_direct_children() {
     return direct_children_;
@@ -32,7 +32,6 @@ class ParentData {
   }
 
  private:
-  int line_;
   // the immediate children
   std::unordered_set<int> direct_children_;
 

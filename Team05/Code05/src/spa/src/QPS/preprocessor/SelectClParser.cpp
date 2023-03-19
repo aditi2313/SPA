@@ -20,33 +20,10 @@ int SelectClParser::NextState(
 
 // Returns a vector of tokens retrieved from query_string
 std::vector<std::string> SelectClParser::PreprocessQueryString(
-    std::string query_string) {
-  // First insert whitespaces around special characters
-  // (e.g. semicolons and brackets) for easier delimitation
-  std::string new_query = "";
-  std::string special_characters = ";(),<>=";
-  for (auto itr = query_string.begin(); itr != query_string.end(); ++itr) {
-    if (special_characters.find(*itr) != std::string::npos) {
-      new_query += " " + std::string(1, *itr) + " ";
-    } else if (*itr == '\"') {
-      // This removes whitespace and tabs in the
-      // pattern match arg
-      // e.g "x + y" such that it is treated as one token.
-      new_query += *itr++;
-      while (*itr != '\"') {
-        if (isspace(*itr)) {
-          itr++;
-          continue;
-        }
-        new_query += *itr++;
-      }
-      new_query += *itr;
-    } else {
-      new_query += *itr;
-    }
-  }
+    std::string query_str) {
+  query_str = PadWhitespaces(query_str);
 
-  std::stringstream ss(new_query);
+  std::stringstream ss(query_str);
   std::vector<std::string> tokens;
   std::string token;
   while (ss >> token) {
@@ -65,12 +42,38 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
 
   int current_state_index = 0;
   auto itr = tokens.begin();
+  bool has_semantic_error = false;
+
   while (itr != tokens.end()) {
     current_state_index = NextState(current_state_index, *itr);
     states_.at(current_state_index)->Parse(
         tokens, itr, query);
+
+    has_semantic_error |= states_.at(
+        current_state_index)->has_semantic_error();
+  }
+
+  // Delay throwing of semantic error in order to
+  // prioritise SyntaxError
+  if (has_semantic_error) {
+    throw PqlSemanticErrorException("Invalid semantics in query parsing");
   }
 
   return query;
+}
+
+std::string SelectClParser::PadWhitespaces(std::string query_str) {
+  std::string new_query = "";
+
+  // Pad whitespaces around special characters
+  for (auto itr = query_str.begin(); itr != query_str.end(); ++itr) {
+    if (special_characters_.count(std::string(1, *itr))) {
+      new_query += " " + std::string(1, *itr) + " ";
+    } else {
+      new_query += *itr;
+    }
+  }
+
+  return new_query;
 }
 }  // namespace qps

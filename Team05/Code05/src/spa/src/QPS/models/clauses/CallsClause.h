@@ -26,9 +26,7 @@ class CallsClause : public Clause {
           return std::move(pkb->Calls(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::CallsData data) {
-          for (auto child : data.get_direct_calls()) {
-            result.insert(Entity(child));
-          }
+          AddList(data.get_direct_calls(), result);
         },
         results);
   }

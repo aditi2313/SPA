@@ -26,9 +26,7 @@ class ParentTClause : public Clause {
           return std::move(pkb->Parent(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::ParentData data) {
-          for (auto child : data.get_all_children()) {
-            result.insert(Entity(child));
-          }
+          AddList(data.get_all_children(), result);
         },
         results);
   }

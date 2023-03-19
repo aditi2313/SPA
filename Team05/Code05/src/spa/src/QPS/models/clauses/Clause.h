@@ -49,6 +49,15 @@ class Clause {
     add_function(results, data);
   }
 
+  template<class Data>
+  inline static void AddList(
+      Data &&data,
+      EntitySet &results) {
+    for (auto &value : data) {
+      results.insert(Entity(value));
+    }
+  }
+
   inline virtual void Filter(
       const Entity &index,
       const EntitySet &filter_values,

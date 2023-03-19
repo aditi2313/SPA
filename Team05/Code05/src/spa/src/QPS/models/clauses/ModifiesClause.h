@@ -27,9 +27,7 @@ class ModifiesClause : public Clause {
           return std::move(pkb->Modifies(std::move(filter))->get_result());
         },
         [&](EntitySet &result, pkb::ModifiesData data) {
-          for (auto var : data.get_variables()) {
-            result.insert(Entity(var));
-          }
+          AddList(data.get_variables(), result);
         },
         results);
   }

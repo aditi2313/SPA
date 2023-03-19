@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "RelExprNode.h"
-#include "common/Utiity.h"
+#include "common/Utility.h"
 
 namespace ast {
 class LessThanNode : public RelExprNode {

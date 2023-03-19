@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "RelFactor.h"
-#include "common/Utiity.h"
+#include "common/Utility.h"
 
 namespace ast {
 /// <summary>

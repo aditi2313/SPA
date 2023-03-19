@@ -35,7 +35,7 @@ void TestThrows(std::string query_string) {
   REQUIRE_THROWS_AS(
       parser.ParseQuery(query_string), PqlSyntaxErrorException);
 }
-//obebbeebe
+
 TEST_CASE("Test SelectClParser methods") {
   SelectClParser parser;
   SECTION("Test PreprocessQueryString") {

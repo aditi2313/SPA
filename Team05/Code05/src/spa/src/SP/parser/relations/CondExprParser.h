@@ -3,7 +3,7 @@
 #include <memory>
 
 #include "SP/parser/Parser.h"
-#include "models/AST/relations/CondExprNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class CondExprParser : public Parser<ast::CondExprNode> {

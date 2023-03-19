@@ -7,8 +7,7 @@
 
 #include "PKB/PKBWrite.h"
 #include "models/AST/ProgramNode.h"
-#include "models/AST/relations/CondExprNode.h"
-#include "models/AST/relations/RelExprNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 /*

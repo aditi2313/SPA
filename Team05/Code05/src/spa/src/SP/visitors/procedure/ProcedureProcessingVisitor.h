@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -8,22 +9,23 @@
 #include <vector>
 
 #include "PKB/PKBRead.h"
-#include "PKBWritingVisitor.h"
-#include "SP/visitors/TNodeVisitor.h"
+#include "PKB/tables/IndexableTable.h"
+#include "SP/visitors/PKBWritingVisitor.h"
 
 namespace sp {
-class UsesVisitor : public PKBWritingVisitor {
+class ProcedureProcessingVisitor : public PKBWritingVisitor {
  public:
-  explicit UsesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
-      : PKBWritingVisitor(std::move(pkb_ptr)) {}
+  explicit ProcedureProcessingVisitor(
+      std::unique_ptr<pkb::PKBWrite>&& pkb_ptr,
+      std::function<void(pkb::IntOrStringVariant,
+                         std::unordered_set<std::string>)>
+          adding_function)
+      : PKBWritingVisitor(std::move(pkb_ptr)),
+        adding_function_(adding_function) {}
 
   void ProcessAft(ast::ProgramNode* program_node) override;
 
   void Process(ast::ProcNode* proc_node) override;
-
-  void Process(ast::AssignNode* assign_node) override;
-
-  void Process(ast::PrintNode* print_node) override;
 
   void ProcessAft(ast::IfNode* if_node) override;
 
@@ -31,12 +33,15 @@ class UsesVisitor : public PKBWritingVisitor {
 
   void Process(ast::CallNode* call_node) override;
 
- private:
-  void AddVariablesFromStmtList(ast::StmtLstNode& node,
-                                std::unordered_set<std::string>& vars);
+ protected:
+  virtual void AddVariablesFromStmtList(
+      ast::StmtLstNode& node, std::unordered_set<std::string>& vars) = 0;
 
-  // Mapping from a procedure to the variables it uses directly
-  std::unordered_map<std::string, std::unordered_set<std::string>> direct_uses_;
+  // The mapping from procedure to directly used data
+  std::unordered_map<std::string, std::unordered_set<std::string>> direct_data_;
+  std::string current_procedure_;
+
+ private:
   // Mapping from a procedure to the procedures which call it
   std::unordered_map<std::string, std::unordered_set<std::string>> called_by_;
   // Mapping from a procedure to the calls within the procedure
@@ -47,6 +52,10 @@ class UsesVisitor : public PKBWritingVisitor {
 
   // mapping from procedure to lines that call said procedure
   std::unordered_map<std::string, std::unordered_set<int>> proc_called_by_line_;
-  std::string current_procedure_;
+  std::vector<ast::ContainerNode*> containers_visited_;
+
+  std::function<void(pkb::IntOrStringVariant, std::unordered_set<std::string>)>
+      adding_function_;
 };
+
 }  // namespace sp

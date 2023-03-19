@@ -23,3 +23,10 @@ procedure p;
 Select p such that Uses(p, "x")
 use4, use5
 5000
+6 - uses p on container
+variable v;
+Select v such that Uses(20, v)
+x8, x9, x7
+5000
+
+

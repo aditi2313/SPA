@@ -11,11 +11,10 @@ class ModifiesData {
                const std::unordered_set<std::string>& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
-        (LHS.line_ == RHS.line_ &&
-        std::lexicographical_compare(LHS.variables_.begin(),
-                                     LHS.variables_.end(),
-                                     RHS.variables_.begin(),
-                                     RHS.variables_.end()));
+           (LHS.line_ == RHS.line_ &&
+            std::lexicographical_compare(
+                LHS.variables_.begin(), LHS.variables_.end(),
+                RHS.variables_.begin(), RHS.variables_.end()));
   }
 
   friend bool operator==(const ModifiesData& LHS, const ModifiesData& RHS) {
@@ -25,7 +24,11 @@ class ModifiesData {
   inline std::variant<int, std::string> get_index() { return line_; }
 
   inline const std::unordered_set<std::string>& get_variables() {
-      return variables_;
+    return variables_;
+  }
+
+  inline void add_variables(std::unordered_set<std::string> variables) {
+    variables_.merge(variables);
   }
 
  private:

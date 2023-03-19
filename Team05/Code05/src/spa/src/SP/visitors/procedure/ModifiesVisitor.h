@@ -9,33 +9,31 @@
 
 #include "PKB/PKBRead.h"
 #include "PKB/PKBWrite.h"
-#include "PKBWritingVisitor.h"
+#include "ProcedureProcessingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/logging/Logger.h"
 
 namespace sp {
-class ModifiesVisitor : public PKBWritingVisitor {
+class ModifiesVisitor : public ProcedureProcessingVisitor {
  public:
   explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
-      : PKBWritingVisitor(std::move(pkb_ptr)) {}
-
-  void ProcessAft(ast::ProgramNode* program_node) override;
-
-  void Process(ast::ProcNode* proc_node) override;
+      : ProcedureProcessingVisitor(
+            std::move(pkb_ptr), [&](pkb::IntOrStringVariant key,
+                                    std::unordered_set<std::string> variables) {
+              pkb_ptr_->AddModifiesData(key, variables);
+            }) {}
 
   void Process(ast::AssignNode* assign_node) override;
 
   void Process(ast::ReadNode* read_node) override;
 
-  void Process(ast::CallNode* call_node) override;
-
   void ProcessAft(ast::IfNode*) override;
   void ProcessAft(ast::WhileNode*) override;
 
  private:
-  void AddVariablesFromStmtList(ast::StmtLstNode& node,
-                                std::unordered_set<std::string>& vars) {
+  inline void AddVariablesFromStmtList(
+      ast::StmtLstNode& node, std::unordered_set<std::string>& vars) override {
     auto pkb = pkb_ptr_->EndWrite();
     pkb::PKBRead reader(std::move(pkb));
     for (auto& child : node.get_children()) {
@@ -50,20 +48,5 @@ class ModifiesVisitor : public PKBWritingVisitor {
     pkb = reader.EndRead();
     pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));
   }
-
-  // Mapping from a procedure to the variables it modifies directly
-  std::unordered_map<std::string, std::unordered_set<std::string>>
-      direct_modifies_;
-  // Mapping from a procedure to the procedures which call it
-  std::unordered_map<std::string, std::unordered_set<std::string>> called_by_;
-  // Mapping from a procedure to the calls within the procedure
-  std::unordered_map<std::string, std::unordered_set<std::string>> proc_calls_;
-
-  // Mapping from call to procedure that it is in
-  std::unordered_map<int, std::string> call_to_proc_;
-
-  // mapping from procedure to lines that call said procedure
-  std::unordered_map<std::string, std::unordered_set<int>> proc_called_by_line_;
-  std::string current_procedure_;
 };
 }  // namespace sp

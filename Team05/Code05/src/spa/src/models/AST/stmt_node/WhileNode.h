@@ -6,25 +6,24 @@
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/stmt_node/ContainerNode.h"
 
 namespace ast {
-class WhileNode : public StmtNode {
+class WhileNode : public ContainerNode {
  public:
   WhileNode(std::unique_ptr<CondExprNode> cond,
             std::unique_ptr<StmtLstNode> stmts, int line)
-      : StmtNode(line) {
+      : ContainerNode(line) {
     cond_ = std::move(cond);
-    stmts_ = std::move(stmts);
+    stmts_.push_back(std::move(stmts));
   }
 
   void AcceptVisitor(sp::TNodeVisitor*) override;
 
   inline std::unique_ptr<CondExprNode>& get_cond() { return cond_; }
-  inline std::unique_ptr<StmtLstNode>& get_stmts() { return stmts_; }
+  inline std::unique_ptr<StmtLstNode>& get_stmts() { return stmts_.front(); }
 
  private:
   std::unique_ptr<CondExprNode> cond_;
-  std::unique_ptr<StmtLstNode> stmts_;
 };
 }  // namespace ast

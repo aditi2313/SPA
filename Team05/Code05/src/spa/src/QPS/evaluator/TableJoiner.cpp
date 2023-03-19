@@ -11,14 +11,48 @@ namespace qps {
 // for "a" and "v" for LHS and RHS are the same.
 // If there are no common columns, the result is
 // essentially the cross product of the two tables.
-// TODO(JL): Can be optimized further in terms of time complexity
 Table TableJoiner::Join(Table &LHS, Table &RHS) {
-  if (LHS.Empty()) return RHS;
-  if (RHS.Empty()) return LHS;
+  auto join_columns = IntersectColumns(
+      LHS.get_columns(), RHS.get_columns());
+  if (join_columns.empty()) {
+    return CrossProduct(LHS, RHS);
+  } else {
+    return Intersect(LHS, RHS, join_columns);
+  }
+}
 
-  auto join_columns = IntersectColumns(LHS.get_columns(), RHS.get_columns());
+Table TableJoiner::CrossProduct(Table &LHS, Table &RHS) {
   auto new_columns = UnionColumns(
       LHS.get_columns(), RHS.get_columns());
+  Table new_table(new_columns);
+
+  for (int i = 0, N1 = LHS.Size(); i < N1; ++i) {
+    for (int j = 0, N2 = RHS.Size(); j < N2; ++j) {
+      Table::Row new_row;
+
+      for (auto &col : new_columns) {
+        if (LHS.HasColumn(col)) {
+          new_row.emplace_back(
+              col, LHS.Index(i, col));
+        } else {
+          new_row.emplace_back(
+              col, RHS.Index(j, col));
+        }
+      }
+
+      new_table.add_row(new_row);
+    }
+  }
+
+  return new_table;
+}
+
+// TODO(JL): Can be optimized further in terms of time complexity
+Table TableJoiner::Intersect(
+    Table &LHS, Table &RHS, std::vector<SynonymName> &join_columns) {
+  auto new_columns = UnionColumns(
+      LHS.get_columns(), RHS.get_columns());
+
   Table new_table(new_columns);
 
   for (int i = 0, N1 = LHS.Size(); i < N1; ++i) {

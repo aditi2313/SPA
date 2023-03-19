@@ -1,8 +1,8 @@
 namespace qps {
 enum class ArgumentType {
   kAttrRef,
-  kExactExpressionArg,
-  kWildcardExpressionArg,
+  kExactExprArg,
+  kWildcardExprArg,
   kIdentArg,
   kIntegerArg,
   kSynonymArg,

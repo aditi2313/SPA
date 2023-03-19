@@ -42,3 +42,18 @@ procedure use6 {
   print z;
 }
 
+procedure use7 {
+  if (x7 == 2) then {
+    call use9;
+  } else {
+    call use8;
+  }
+}
+
+procedure use8 {
+  print x8;
+}
+
+procedure use9 {
+  x10 = x9 + x7;
+}

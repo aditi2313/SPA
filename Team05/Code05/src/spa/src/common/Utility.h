@@ -12,7 +12,7 @@
 
 namespace util {
 
-template <class Node, class Container = std::vector<Node>>
+template<class Node, class Container = std::vector<Node>>
 struct GraphSearch {
   /// <summary>
   /// Runs BFS with the given get_children, initial children.
@@ -93,19 +93,6 @@ inline bool CompareResults(const std::list<std::string> &LHS,
   }
   for (auto &res : RHS) {
     RHS_map[res]++;
-  }
-
-  if (LHS_map != RHS_map) {
-    std::cout << "actual: ";
-    for (auto str : LHS) {
-      std::cout << str << ", ";
-    }
-    std::cout << "\n";
-    std::cout << "expected: ";
-    for (auto str : RHS) {
-      std::cout << str << ", ";
-    }
-    std::cout << "\n";
   }
 
   return LHS_map == RHS_map;

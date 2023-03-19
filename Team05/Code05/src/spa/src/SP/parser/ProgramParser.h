@@ -5,7 +5,7 @@
 
 #include "Parser.h"
 #include "SP/lexer/Lexer.h"
-#include "models/AST/ProgramNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class ProgramParser : Parser<ast::ProgramNode> {

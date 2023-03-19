@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_set>
 #include <string>
+#include <utility>
 #include <memory>
 
 #include "PKB/PKBRead.h"
@@ -37,8 +38,6 @@ class AttrRefFactory : public ArgumentFactory {
 class ExactExpressionArgFactory : public ArgumentFactory {
  public:
   inline ArgumentPtr Create(std::string token) override {
-    token = token.substr(1, token.size() - 2);
-
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
@@ -49,15 +48,15 @@ class ExactExpressionArgFactory : public ArgumentFactory {
   }
 
   inline bool CheckSyntax(std::string token) override {
-    return PQL::is_pattern_exact(token);
+    // Syntax for expressions are checked when trying
+    // to create the AST Tree
+    return true;
   }
 };
 
 class WildcardExpressionArgFactory : public ArgumentFactory {
  public:
   inline ArgumentPtr Create(std::string token) override {
-    token = token.substr(2, token.size() - 4);
-
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
@@ -68,22 +67,20 @@ class WildcardExpressionArgFactory : public ArgumentFactory {
   }
 
   inline bool CheckSyntax(std::string token) override {
-    return PQL::is_pattern_wildcard(token);
+    // Syntax for expressions are checked when trying
+    // to create the AST Tree
+    return true;
   }
 };
 
 class IdentArgFactory : public ArgumentFactory {
  public:
   inline ArgumentPtr Create(std::string token) override {
-    // Remove first and last quotation marks
-    token = token.substr(1, token.size() - 2);
     return std::make_unique<IdentArg>(token);
   }
 
   inline bool CheckSyntax(std::string token) override {
-    if (token.size() < 3) return false;
-    if (token.front() != '\"' || token.back() != '\"') return false;
-    return PQL::is_ident(token.substr(1, token.size() - 2));
+    return PQL::is_ident(token);
   }
 };
 

@@ -6,7 +6,7 @@
 
 #include "SP/parser/Parser.h"
 #include "SP/parser/ProgramParser.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class ReadParser : Parser<ast::ReadNode> {

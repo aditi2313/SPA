@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "ParseState.h"
 
@@ -14,8 +15,8 @@ class RecursiveParseState : public ParseState {
 
   inline static Grammar CreateRecurseGrammar(RecursiveParseState &parse_state) {
     return Grammar(
-        [](std::string token) { return true; },
-        [&](QueryPtr &query) {
+        Grammar::kTrueCheck,
+        [&](QueryPtr &query, const std::vector<std::string> &tokens) {
           parse_state.Recurse();
         });
   }

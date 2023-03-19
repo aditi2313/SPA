@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "ParseState.h"
+#include "QPS/models/grammar/AttrRefGrammar.h"
 
 namespace qps {
 // 'Select' tuple | BOOLEAN
@@ -29,7 +31,7 @@ class SelectParseState : public RecursiveParseState {
               return Grammar::kTupleCheck(token)
                   || Grammar::kBooleanCheck(token);
             },
-            [&](QueryPtr &query) {
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
               if (Grammar::kBooleanCheck(*itr_) &&
                   !query->is_synonym_name_declared(*itr_)) {
                 query->set_boolean_query_to_true();
@@ -37,7 +39,7 @@ class SelectParseState : public RecursiveParseState {
               } else if (*itr_ == PQL::kTupleOpenBktToken) {
                 itr_--;
               } else {
-                query->add_selected_elem(*itr_);
+                AddElem(tokens, query);
                 grammar_itr_ = grammar_.end();
               }
             }));
@@ -52,8 +54,8 @@ class SelectParseState : public RecursiveParseState {
     grammar_.emplace_back(
         Grammar(
             Grammar::kElemCheck,
-            [&](QueryPtr &query) {
-              query->add_selected_elem(*itr_);
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
+              AddElem(tokens, query);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -69,5 +71,20 @@ class SelectParseState : public RecursiveParseState {
     end_states_.emplace_back(grammar_.end());
     kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
+
+ private:
+  void AddElem(
+      const std::vector<std::string> &tokens,
+      QueryPtr &query) {
+    AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
+    bool is_attr_ref = attr_ref_grammar.Parse();
+    if (is_attr_ref) {
+      query->add_selected_elem(attr_ref_grammar.get_full_name());
+    } else {
+      query->add_selected_elem(*itr_);
+    }
+  }
+
+  ArgumentPtr arg_;
 };
 }  // namespace qps

@@ -24,7 +24,8 @@ class Clause {
 
   virtual void Preprocess(
       const pkb::PKBReadPtr &pkb,
-      Table &query_table) {
+      Table &query_table,
+      bool &is_table_initialized) {
     return;
   }
 
@@ -94,6 +95,8 @@ class Clause {
   }
 
   virtual ~Clause() = default;
+
+  friend class ClauseOptimiser;
 
  protected:
   ArgumentPtr arg1_;

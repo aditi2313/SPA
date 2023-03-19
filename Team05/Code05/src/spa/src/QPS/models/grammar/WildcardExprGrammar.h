@@ -36,7 +36,8 @@ class WildcardExprGrammar : public CompositeGrammar {
               ExactExprGrammar exact_expr_grammar(
                   tokens, query, itr_, arg_);
               if (!exact_expr_grammar.Parse()) {
-                throw PqlSyntaxErrorException("Invalid syntax for wildcard expression");
+                throw PqlSyntaxErrorException(
+                    "Invalid syntax for wildcard expression");
               }
 
               expr_ = exact_expr_grammar.get_expr();

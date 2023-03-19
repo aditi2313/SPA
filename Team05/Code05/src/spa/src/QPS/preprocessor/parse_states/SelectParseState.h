@@ -39,13 +39,7 @@ class SelectParseState : public RecursiveParseState {
               } else if (*itr_ == PQL::kTupleOpenBktToken) {
                 itr_--;
               } else {
-                AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
-                bool is_attr_ref = attr_ref_grammar.Parse();
-                if (is_attr_ref) {
-                  query->add_selected_elem(attr_ref_grammar.get_full_name());
-                } else {
-                  query->add_selected_elem(*itr_);
-                }
+                AddElem(tokens, query);
                 grammar_itr_ = grammar_.end();
               }
             }));
@@ -61,13 +55,7 @@ class SelectParseState : public RecursiveParseState {
         Grammar(
             Grammar::kElemCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
-              bool is_attr_ref = attr_ref_grammar.Parse();
-              if (is_attr_ref) {
-                query->add_selected_elem(attr_ref_grammar.get_full_name());
-              } else {
-                query->add_selected_elem(*itr_);
-              }
+              AddElem(tokens, query);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -85,6 +73,18 @@ class SelectParseState : public RecursiveParseState {
   }
 
  private:
+  void AddElem(
+      const std::vector<std::string> &tokens,
+      QueryPtr &query) {
+    AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
+    bool is_attr_ref = attr_ref_grammar.Parse();
+    if (is_attr_ref) {
+      query->add_selected_elem(attr_ref_grammar.get_full_name());
+    } else {
+      query->add_selected_elem(*itr_);
+    }
+  }
+
   ArgumentPtr arg_;
 };
 }  // namespace qps

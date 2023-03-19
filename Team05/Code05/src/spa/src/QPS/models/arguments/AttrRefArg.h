@@ -6,33 +6,34 @@
 
 #include "Argument.h"
 #include "SynonymArg.h"
+#include "QPS/models/AttrType.h"
 
 namespace qps {
 
 class AttrRefArg : public SynonymArg {
  public:
-  explicit AttrRefArg(SynonymName syn_name, AttrName attr_name)
+  explicit AttrRefArg(SynonymName syn_name, AttrType attr_type)
       : SynonymArg(syn_name, EntityType::kUndetermined),
-        attr_name_(attr_name) {}
+        attr_type_(attr_type) {}
 
   inline bool IsIdentType() override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::is_attr_name_ident(attr_name_);
+    return PQL::is_attr_type_ident(attr_type_);
   }
 
   inline bool IsIntegerType() override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::is_attr_name_integer(attr_name_);
+    return PQL::is_attr_type_integer(attr_type_);
   }
 
   inline Elem get_full_name() override {
-    return PQL::join_attr_ref(syn_name_, attr_name_);
+    return PQL::join_attr_ref(syn_name_, attr_type_);
   }
 
   inline void set_entity_type(EntityType entity_type) override {
     entity_type_ = entity_type;
     is_secondary_attr_value_ = PQL::is_attr_ref_secondary(
-        entity_type, attr_name_);
+        entity_type, attr_type_);
   }
 
   inline Entity get_attr_value(
@@ -44,7 +45,7 @@ class AttrRefArg : public SynonymArg {
   inline bool Validate(
       std::unordered_set<EntityType> &valid_entity_types) override {
     if (entity_type_ == EntityType::kUndetermined) return false;
-    return PQL::ValidateAttrRef(attr_name_, entity_type_);
+    return PQL::ValidateAttrRef(attr_type_, entity_type_);
   }
 
   void InitializeEntities(
@@ -58,7 +59,7 @@ class AttrRefArg : public SynonymArg {
       bool &is_table_initialized);
 
   inline std::ostream &dump(std::ostream &str) const override {
-    str << "Synonym: " << syn_name_ << " with: " << attr_name_;
+    str << "AttrRef: " << syn_name_;
     return str;
   }
 
@@ -74,11 +75,11 @@ class AttrRefArg : public SynonymArg {
     auto arg = dynamic_cast<AttrRefArg *>(&other);
     return syn_name_ == arg->syn_name_
         && entity_type_ == arg->entity_type_
-        && attr_name_ == arg->attr_name_;
+        && attr_type_ == arg->attr_type_;
   }
 
  private:
-  AttrName attr_name_;
+  AttrType attr_type_;
   bool is_secondary_attr_value_ = false;
 };
 }  // namespace qps

@@ -5,10 +5,6 @@
 #include "QPS/models/Query.h"
 
 namespace qps {
-Grammar::CheckLambda Grammar::kArgumentCheck = [](std::string token) {
-  return PQL::is_argument(token);
-};
-
 Grammar::CheckLambda Grammar::kAttrNameCheck = [](std::string token) {
   return PQL::is_attr_name(token);
 };

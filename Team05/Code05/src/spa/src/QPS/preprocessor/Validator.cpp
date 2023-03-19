@@ -82,7 +82,8 @@ void Validator::ValidateAttrRefs(QueryPtr &query) {
     if (PQL::is_attr_ref(elem)) {
       auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
       auto entity_type = query->get_declared_synonym_entity_type(syn_name);
-      if (!PQL::ValidateAttrRef(attr_name, entity_type)) {
+      if (!PQL::ValidateAttrRef(
+          PQL::get_attr_type(attr_name), entity_type)) {
         throw PqlSemanticErrorException(
             "Selected attrRef has mismatched types");
       }

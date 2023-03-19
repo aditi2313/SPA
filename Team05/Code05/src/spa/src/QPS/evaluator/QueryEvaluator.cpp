@@ -87,7 +87,7 @@ void QueryEvaluator::UpdateTableWithElem(
     auto [syn_name, attr_name] = PQL::split_attr_ref(elem);
     EntityType entity_type = query->get_declared_synonym_entity_type(
         syn_name);
-    AttrRefArg attr_ref_arg(syn_name, attr_name);
+    AttrRefArg attr_ref_arg(syn_name, PQL::get_attr_type(attr_name));
     attr_ref_arg.set_entity_type(entity_type);
     attr_ref_arg.UpdateTableWithAttrValue(
         pkb_, table_, has_table_been_intialized_);

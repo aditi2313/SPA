@@ -16,7 +16,7 @@ class WithClause : public Clause {
       : Clause(ClauseType::kWith, std::move(arg1), std::move(arg2)) {}
 
   void Preprocess(
-      const pkb::PKBReadPtr &pkb,
+      pkb::PKBReadPtr &pkb,
       Table &query_table,
       bool &is_table_initialized) override;
 

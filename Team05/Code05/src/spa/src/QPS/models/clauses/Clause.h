@@ -2,8 +2,11 @@
 
 #include <iostream>
 #include <memory>
+#include <string>
 #include <typeinfo>
 #include <utility>
+#include <unordered_set>
+#include <unordered_map>
 
 #include "PKB/PKBRead.h"
 #include "common/filter/filters/PredicateFilter.h"

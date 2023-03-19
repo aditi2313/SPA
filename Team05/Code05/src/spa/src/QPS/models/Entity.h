@@ -5,6 +5,7 @@
 #include <variant>
 #include <vector>
 #include <unordered_set>
+#include <unordered_map>
 #include <cassert>
 
 #include "models/types.h"

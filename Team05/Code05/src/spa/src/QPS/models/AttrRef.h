@@ -2,6 +2,8 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
+#include <string>
 
 #include "QPS/models/AttrType.h"
 #include "QPS/models/EntityType.h"
@@ -119,6 +121,5 @@ class AttrRef {
       }
     }
   }
-
 };
 }  // namespace qps

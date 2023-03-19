@@ -9,7 +9,7 @@
 #include "QPS/models/PQL.h"
 #include "QPS/models/arguments/Export.h"
 #include "QPS/models/Query.h"
-#include "ArgumentFactory.h"
+#include "QPS/factories/arguments/Export.h"
 
 namespace qps {
 class MasterArgumentFactory {

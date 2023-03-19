@@ -48,10 +48,12 @@ class MasterArgumentFactory {
   }
 
   inline std::unique_ptr<IdentArg> CreateIdentArg(std::string token) {
+    if (!PQL::is_ident(token)) throw PqlSyntaxErrorException("Invalid token for ident");
     return std::make_unique<IdentArg>(token);
   }
 
   inline std::unique_ptr<IntegerArg> CreateIntegerArg(std::string token) {
+    if (!PQL::is_integer(token)) throw PqlSyntaxErrorException("Invalid token for integer");
     return std::make_unique<IntegerArg>(stoi(token));
   }
 

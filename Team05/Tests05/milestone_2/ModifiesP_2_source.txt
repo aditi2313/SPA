@@ -1,0 +1,31 @@
+procedure mod1 {
+if (x < 10000) then      {
+  if (v2 == 1000) then {
+    call mod3;
+  } else {
+    call mod2;
+  }
+} else { 
+  v1 = 1;
+}
+
+
+}
+
+procedure mod2 {
+  v3 = v0 + v2;
+  if (v2 == 100) then {
+    call mod4;
+  } else {
+    v5 = 10;
+  }
+}
+
+procedure mod3 {
+v4 = v0 - v1;
+}
+
+procedure mod4 {
+  read v6;
+}
+

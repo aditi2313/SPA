@@ -117,5 +117,5 @@ class WildcardFactory : public ArgumentFactory {
   }
 };
 
-using ArgumentFactoryPtr = std::unique_ptr<ArgumentFactory>;
+
 }  // namespace qps

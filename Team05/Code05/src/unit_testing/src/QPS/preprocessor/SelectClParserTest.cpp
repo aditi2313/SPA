@@ -45,13 +45,13 @@ TEST_CASE("Test SelectClParser methods") {
         "variable", "p", ";", "select", "p", "such", "that",
         "Modifies", "(", "6", ",", "v", ")",
         "pattern", "a", "(", "_", ",",
-        "_", "\"", "x+y", "\"", "_", ")"
+        "_", "\"", "x", "+", "y", "\"", "_", ")"
     };
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
 
     // With random whitespaces and newlines
     query_string = "variable     p;\n   select    p   such  \n   "
-                   "that Modifies(6, v) \n pattern a(_, _\"x+y\"_)";
+                   "that Modifies(6, v) \n pattern a(_, _\"x + y\"_)";
     REQUIRE(parser.PreprocessQueryString(query_string) == expected_tokens);
   }
 }
@@ -431,6 +431,13 @@ TEST_CASE("Test ParseQuery") {
   SECTION("Query with double Select should throw error") {
     std::string query_string = "stmt s; procedure p;"
                                "Select s Select p";
+
+    TestThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces in Ident should throw error") {
+    std::string query_string = "variable v; assign a; "
+                               "Select v pattern a(\"s s\", _) ";
 
     TestThrows(query_string);
   }

@@ -21,7 +21,6 @@ int SelectClParser::NextState(
 // Returns a vector of tokens retrieved from query_string
 std::vector<std::string> SelectClParser::PreprocessQueryString(
     std::string query_str) {
-  query_str = TrimExpression(query_str);
   query_str = PadWhitespaces(query_str);
 
   std::stringstream ss(query_str);
@@ -50,31 +49,6 @@ std::unique_ptr<Query> SelectClParser::ParseQuery(std::string query_string) {
   }
 
   return query;
-}
-
-std::string SelectClParser::TrimExpression(std::string query_str) {
-  std::string new_query = "";
-
-  for (auto itr = query_str.begin(); itr != query_str.end(); ++itr) {
-    if (*itr == '\"') {
-      // This removes whitespace and tabs in the
-      // pattern match arg (e.g "x + y")
-      // such that it is treated as one token.
-      new_query += *itr++;
-      while (*itr != '\"') {
-        if (isspace(*itr)) {
-          itr++;
-          continue;
-        }
-        new_query += *itr++;
-      }
-      new_query += *itr;
-    } else {
-      new_query += *itr;
-    }
-  }
-
-  return new_query;
 }
 
 std::string SelectClParser::PadWhitespaces(std::string query_str) {

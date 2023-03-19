@@ -36,7 +36,12 @@ class WildcardExprGrammar : public CompositeGrammar {
         Grammar(
             Grammar::kTrueCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              expr_ = *itr_;
+              if (*itr_ == PQL::kQuotationToken) {
+                itr--;  // Don't consume token
+              } else {
+                expr_ += *itr_;
+                grammar_itr_--;  // Stay in this grammar
+              }
             }));
     // "
     grammar_.emplace_back(

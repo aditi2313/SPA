@@ -2,7 +2,7 @@
 
 #include <utility>
 #include <vector>
-#include <string>ß
+#include <string>
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterClauseFactory.h"

@@ -59,7 +59,6 @@ class SelectClParser {
 
  private:
   int NextState(int current_state_index, std::string token);
-  std::string TrimExpression(std::string query_str);
   std::string PadWhitespaces(std::string query_str);
 
   std::vector<std::unique_ptr<ParseState>> states_{};

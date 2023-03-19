@@ -32,6 +32,7 @@ class ExpressionArg : public Argument {
     str << "Expr Arg: " << expr_;
     return str;
   }
+
   inline std::unique_ptr<Argument> Copy() override {
     return std::make_unique<ExpressionArg>(
         expr_->Copy(), is_exact_);

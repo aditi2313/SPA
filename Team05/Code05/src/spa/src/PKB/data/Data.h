@@ -13,4 +13,7 @@ class Data {
  protected:
     T line_;
 };
+
+template<class T>
+Data<T>::Data(T line) : line_(line) {}
 }  // namespace pkb

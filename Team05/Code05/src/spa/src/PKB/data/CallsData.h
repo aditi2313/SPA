@@ -3,18 +3,18 @@
 #include <string>
 #include <unordered_set>
 
+#include "Data.h"
+
 namespace pkb {
-class CallsData {
+class CallsData : public Data<std::string> {
  public:
     explicit CallsData(std::string caller);
 
     friend bool operator==(const CallsData& LHS, const CallsData& RHS) {
-        return LHS.caller_ == RHS.caller_
+        return LHS.line_ == RHS.line_
         && LHS.direct_calls_ == RHS.direct_calls_
         && LHS.total_calls_ == RHS.total_calls_;
     }
-
-    inline std::string get_index() { return caller_; }
 
     inline std::unordered_set<std::string>& get_direct_calls() {
         return direct_calls_;
@@ -33,8 +33,6 @@ class CallsData {
     }
 
  private:
-    std::string caller_;
-
     // set of direct calls
     std::unordered_set<std::string> direct_calls_;
 

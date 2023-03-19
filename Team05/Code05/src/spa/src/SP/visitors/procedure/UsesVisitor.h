@@ -15,7 +15,7 @@ class UsesVisitor : public ProcedureProcessingVisitor {
  public:
   explicit UsesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : ProcedureProcessingVisitor(
-            std::move(pkb_ptr), [&](pkb::IntOrStringVariant key,
+            std::move(pkb_ptr), [&](pkb::Key key,
                                     std::unordered_set<std::string> variables) {
               pkb_ptr_->AddUsesData(key, variables);
             }) {}

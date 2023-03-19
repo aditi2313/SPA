@@ -116,7 +116,8 @@ class SynonymArg : public Argument {
 
   void UpdateTableWithAttrValue(
       const pkb::PKBReadPtr &pkb,
-      Table &query_table);
+      Table &query_table,
+      bool &is_table_initialized);
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "Synonym: " << syn_name_

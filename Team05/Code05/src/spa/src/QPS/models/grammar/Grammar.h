@@ -16,7 +16,7 @@ class Grammar {
   Grammar(
       CheckLambda check, ActionLambda action)
       : check_(check), action_(action) {}
-      
+
   static CheckLambda kAttrNameCheck;
   static CheckLambda kBooleanCheck;
   static CheckLambda kDesignEntityCheck;

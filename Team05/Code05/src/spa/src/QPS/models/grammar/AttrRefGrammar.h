@@ -39,7 +39,8 @@ class AttrRefGrammar : public CompositeGrammar {
         Grammar(
             Grammar::kAttrNameCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              full_name_ = PQL::join_attr_ref(syn_name_, PQL::get_attr_type(*itr_));
+              full_name_ = PQL::join_attr_ref(
+                  syn_name_, PQL::get_attr_type(*itr_));
               arg_ = master_argument_factory_.Create(
                   ArgumentType::kAttrRef, full_name_);
             }));

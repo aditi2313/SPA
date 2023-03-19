@@ -49,6 +49,7 @@ bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
 
   if (!clause_table.Empty()) {
     table_ = TableJoiner::Join(table_, clause_table);
+    if (table_.Empty()) return false;
   }
 
   return res;

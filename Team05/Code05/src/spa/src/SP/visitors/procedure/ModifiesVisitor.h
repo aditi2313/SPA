@@ -19,7 +19,7 @@ class ModifiesVisitor : public ProcedureProcessingVisitor {
  public:
   explicit ModifiesVisitor(std::unique_ptr<pkb::PKBWrite>&& pkb_ptr)
       : ProcedureProcessingVisitor(
-            std::move(pkb_ptr), [&](pkb::IntOrStringVariant key,
+            std::move(pkb_ptr), [&](pkb::Key key,
                                     std::unordered_set<std::string> variables) {
               pkb_ptr_->AddModifiesData(key, variables);
             }) {}

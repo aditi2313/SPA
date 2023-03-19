@@ -17,7 +17,7 @@ class ProcedureProcessingVisitor : public PKBWritingVisitor {
  public:
   explicit ProcedureProcessingVisitor(
       std::unique_ptr<pkb::PKBWrite>&& pkb_ptr,
-      std::function<void(pkb::IntOrStringVariant,
+      std::function<void(pkb::Key ,
                          std::unordered_set<std::string>)>
           adding_function)
       : PKBWritingVisitor(std::move(pkb_ptr)),
@@ -54,7 +54,7 @@ class ProcedureProcessingVisitor : public PKBWritingVisitor {
   std::unordered_map<std::string, std::unordered_set<int>> proc_called_by_line_;
   std::vector<ast::ContainerNode*> containers_visited_;
 
-  std::function<void(pkb::IntOrStringVariant, std::unordered_set<std::string>)>
+  std::function<void(pkb::Key, std::unordered_set<std::string>)>
       adding_function_;
 };
 

@@ -9,6 +9,13 @@ class TableJoiner {
  public:
   static Table Join(Table &LHS, Table &RHS);
  private:
+  static Table Intersect(
+      Table &LHS,
+      Table &RHS,
+      std::vector<SynonymName> &join_cols);
+
+  static Table CrossProduct(Table &LHS, Table &RHS);
+
   static std::vector<SynonymName> UnionColumns(
       std::vector<SynonymName> &LHS,
       std::vector<SynonymName> &RHS);

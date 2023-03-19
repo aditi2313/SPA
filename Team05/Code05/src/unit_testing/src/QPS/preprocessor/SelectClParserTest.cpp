@@ -448,4 +448,21 @@ TEST_CASE("Test ParseQuery") {
 
     TestThrows(query_string);
   }
+
+  SECTION("Pattern query with syn-while in syn-assign query should throw"
+          "SemanticError") {
+    SelectClParser parser;
+    std::string query_string = "while w; "
+                               "Select w pattern w(_, \"x\") ";
+
+    REQUIRE_THROWS_AS(
+        parser.ParseQuery(query_string), PqlSemanticErrorException);
+  }
+
+  SECTION("Query with semantically wrong Pattern and syntactically wrong"
+          "other query should throw Syntax and not SemanticError") {
+    std::string query_string = "Select v pattern a(_, _) obebebe";
+
+    TestThrows(query_string);
+  }
 }

@@ -134,7 +134,7 @@ class PQL {
         || is_wildcard(token)
         || is_pattern_exact(token)
         || is_pattern_wildcard(token)
-        || is_ident_arg(token);
+        || token == PQL::kQuotationToken;
   }
 
   inline static bool is_synonym(std::string str) {
@@ -219,6 +219,7 @@ class PQL {
     return attr_name_types.count(entity_type);
   }
 
+  inline static std::string kQuotationToken = "\"";
   inline static std::string kSemicolonToken = ";";
   inline static std::string kCommaToken = ",";
   inline static std::string kEqualToken = "=";

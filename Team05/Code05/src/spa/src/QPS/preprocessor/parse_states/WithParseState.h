@@ -1,10 +1,12 @@
 #pragma once
 
 #include <utility>
+#include <vector>
+#include <string>ß
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterClauseFactory.h"
-#include "QPS/models/grammar/AttrRefGrammar.h"
+#include "QPS/models/grammar/Export.h"
 
 namespace qps {
 extern MasterArgumentFactory master_argument_factory_;
@@ -35,11 +37,7 @@ class WithParseState : public RecursiveParseState {
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg1_);
-              bool is_attr_ref = attr_ref_grammar.Parse();
-              if (!is_attr_ref) {
-                arg1_ = master_argument_factory_.CreateRef(*itr_);
-              }
+              CreateRef(tokens, query, arg1_);
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -55,12 +53,7 @@ class WithParseState : public RecursiveParseState {
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              // Create arg2
-              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg2_);
-              bool is_attr_ref = attr_ref_grammar.Parse();
-              if (!is_attr_ref) {
-                arg2_ = master_argument_factory_.CreateRef(*itr_);
-              }
+              CreateRef(tokens, query, arg2_);
 
               // Create clause
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
@@ -82,6 +75,22 @@ class WithParseState : public RecursiveParseState {
   }
 
  private:
+  // ref: " Ident " | Integer | AttrRef
+  inline void CreateRef(
+      const std::vector<std::string> &tokens,
+      QueryPtr &query,
+      ArgumentPtr &arg) {
+    AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg);
+    bool is_attr_ref = attr_ref_grammar.Parse();
+    if (is_attr_ref) return;
+
+    IdentArgGrammar ident_arg_grammar(tokens, query, itr_, arg);
+    bool is_ident_arg = ident_arg_grammar.Parse();
+    if (is_ident_arg) return;
+
+    arg = master_argument_factory_.CreateIntegerArg(*itr_);
+  }
+
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;
 };

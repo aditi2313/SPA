@@ -21,28 +21,6 @@ class MasterArgumentFactory {
     return std::make_unique<SynonymArg>(syn_name, entity_type);
   }
 
-  // synonym | _ | INTEGER | "ident"
-  inline ArgumentPtr CreateEntOrStmtRef(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
-    }
-
-    if (PQL::is_integer(token)) {
-      return CreateIntegerArg(token);
-    }
-
-    if (PQL::is_synonym(token)) {
-      return CreateSynonym(token);
-    }
-
-    throw PqlSyntaxErrorException(
-        "Unexpected argument type in clause");
-  }
-
   // "ident" | INTEGER | attrRef
   // attrRef: synonym.attrName
   inline ArgumentPtr CreateRef(std::string token) {
@@ -53,19 +31,6 @@ class MasterArgumentFactory {
     if (PQL::is_integer(token)) {
       return CreateIntegerArg(token);
     }
-    
-    throw PqlSyntaxErrorException(
-        "Unexpected argument type in clause");
-  }
-
-  inline std::unique_ptr<Argument> CreateExpressionSpec(std::string token) {
-    if (PQL::is_wildcard(token)) {
-      return CreateWildcard();
-    }
-
-    if (PQL::is_pattern_exact(token)) {
-      return CreateExpressionArg(token, true);
-    }
 
     throw PqlSyntaxErrorException(
         "Unexpected argument type in clause");
@@ -73,8 +38,6 @@ class MasterArgumentFactory {
 
   inline std::unique_ptr<ExpressionArg> CreateExpressionArg(
       std::string token, bool is_exact) {
-    token = token.substr(1, token.size() - 2);
-
     try {
       auto AST = sp::SourceProcessor::ParseExpression(token);
       return std::make_unique<ExpressionArg>(
@@ -85,8 +48,6 @@ class MasterArgumentFactory {
   }
 
   inline std::unique_ptr<IdentArg> CreateIdentArg(std::string token) {
-    // Remove first and last quotation marks
-    token = token.substr(1, token.size() - 2);
     return std::make_unique<IdentArg>(token);
   }
 
@@ -110,10 +71,6 @@ class MasterArgumentFactory {
   inline ArgumentPtr CreateEntRef(std::string token) {
     if (PQL::is_wildcard(token)) {
       return CreateWildcard();
-    }
-
-    if (PQL::is_ident_arg(token)) {
-      return CreateIdentArg(token);
     }
 
     if (PQL::is_synonym(token)) {

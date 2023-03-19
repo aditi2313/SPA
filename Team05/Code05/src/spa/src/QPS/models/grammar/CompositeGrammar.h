@@ -25,7 +25,6 @@ class CompositeGrammar {
     bool is_syntax_match = true;
 
     while (itr_ != tokens_.end() && grammar_itr_ != grammar_.end()) {
-      std::cout << *itr_ << "\n";
       if (!(*grammar_itr_).Check(*itr_)) {
         is_syntax_match = false;
         break;

@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "QPS/models/Query.h"
 #include "QPS/models/clauses/Clause.h"
@@ -53,17 +54,20 @@ class SelectClParser {
         {kWithIndex, kSuchThatIndex, kPatternIndex};
   }
 
-  std::vector<std::string> PreprocessQueryString(std::string query_string);
-  std::unique_ptr<Query> ParseQuery(std::string query_string);
+  std::vector<std::string> PreprocessQueryString(std::string query_str);
+  std::unique_ptr<Query> ParseQuery(std::string query_str);
 
  private:
   int NextState(int current_state_index, std::string token);
+  std::string TrimExpression(std::string query_str);
+  std::string PadWhitespaces(std::string query_str);
+
   std::vector<std::unique_ptr<ParseState>> states_{};
   std::vector<std::vector<int>> transition_table_;
 
   // Special characters are characters that PreprocessQueryString
   // will insert spaces around to ensure correct delimitation
-  // ; ( ) , < > = _ .
+  // ; ( ) , < > = _ . "
   std::unordered_set<std::string> special_characters_{
       PQL::kSemicolonToken,
       PQL::kOpenBktToken,
@@ -73,7 +77,8 @@ class SelectClParser {
       PQL::kTupleCloseBktToken,
       PQL::kEqualToken,
       PQL::kUnderscoreToken,
-      PQL::kPeriodToken
+      PQL::kPeriodToken,
+      PQL::kQuotationToken
   };
 };
 }  // namespace qps

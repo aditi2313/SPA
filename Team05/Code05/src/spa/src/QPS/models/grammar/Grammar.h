@@ -2,6 +2,7 @@
 
 #include <functional>
 #include <string>
+#include <vector>
 
 #include "QPS/models/Query.h"
 
@@ -21,12 +22,13 @@ class Grammar {
   static CheckLambda kBooleanCheck;
   static CheckLambda kDesignEntityCheck;
   static CheckLambda kElemCheck;
-  static CheckLambda kExactExprCheck;
   static CheckLambda kExprCheck;
+  static CheckLambda kIdentCheck;
   static CheckLambda kRefCheck;
   static CheckLambda kRelRefCheck;
   static CheckLambda kSynCheck;
   static CheckLambda kTupleCheck;
+  static CheckLambda kTrueCheck;
   static CheckLambda kWildcardCheck;
 
   static ActionLambda kEmptyAction;

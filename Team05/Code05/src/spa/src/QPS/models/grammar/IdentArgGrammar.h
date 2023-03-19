@@ -13,48 +13,39 @@
 namespace qps {
 extern MasterArgumentFactory master_argument_factory_;
 
-class WildcardExprGrammar : public CompositeGrammar {
+class IdentArgGrammar : public CompositeGrammar {
  public:
-  WildcardExprGrammar(
+  IdentArgGrammar(
       const std::vector<std::string> &tokens,
       QueryPtr &query,
       ParseItr &itr,
       ArgumentPtr &arg)
       : CompositeGrammar(tokens, query, itr), arg_(arg) {
-    // _
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::kWildcardCheck,
-            Grammar::kEmptyAction));
-    // "
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::CreateTokenCheck(PQL::kQuotationToken),
-            Grammar::kEmptyAction));
-    // expr
-    grammar_.emplace_back(
-        Grammar(
-            Grammar::kTrueCheck,
-            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              expr_ = *itr_;
-            }));
     // "
     grammar_.emplace_back(
         Grammar(
             Grammar::CreateTokenCheck(PQL::kQuotationToken),
             Grammar::kEmptyAction));
 
-    // _
+    // IDENT
     grammar_.emplace_back(
         Grammar(
-            Grammar::kWildcardCheck,
+            Grammar::kIdentCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg_ = master_argument_factory_.CreateExpressionArg(expr_, false);
+              ident_ = *itr_;
+            }));
+
+    // "
+    grammar_.emplace_back(
+        Grammar(
+            Grammar::CreateTokenCheck(PQL::kQuotationToken),
+            [&](QueryPtr &query, const std::vector<std::string> &tokens) {
+              arg_ = master_argument_factory_.CreateIdentArg(ident_);
             }));
   }
 
  protected:
-  std::string expr_;
+  std::string ident_;
   ArgumentPtr &arg_;
 };
 }  // namespace qps

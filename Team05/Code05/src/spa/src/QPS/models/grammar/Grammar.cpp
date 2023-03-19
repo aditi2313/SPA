@@ -1,3 +1,5 @@
+#include <vector>
+
 #include "Grammar.h"
 #include "QPS/models/PQL.h"
 #include "QPS/models/Query.h"
@@ -25,18 +27,17 @@ Grammar::CheckLambda Grammar::kElemCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kExprCheck = [](std::string token) {
-  return PQL::is_pattern_wildcard(token)
-      || PQL::is_pattern_exact(token)
-      || PQL::is_wildcard(token);
+  return PQL::is_wildcard(token)
+      || token == PQL::kQuotationToken;
 };
 
-Grammar::CheckLambda Grammar::kExactExprCheck = [](std::string token) {
-  return PQL::is_pattern_exact(token);
+Grammar::CheckLambda Grammar::kIdentCheck = [](std::string token) {
+  return PQL::is_ident(token);
 };
 
 Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {
   // "IDENT" | INTEGER | synonym (attrRef = synonym '.' attrName)
-  return PQL::is_ident_arg(token)
+  return token == PQL::kQuotationToken
       || PQL::is_integer(token)
       || PQL::is_synonym(token);
 };
@@ -53,6 +54,10 @@ Grammar::CheckLambda Grammar::kTupleCheck = [](std::string token) {
   // tuple : elem | '<' elem ( ',' elem)* '>'
   return kElemCheck(token)
       || token == PQL::kTupleOpenBktToken;
+};
+
+Grammar::CheckLambda Grammar::kTrueCheck = [](std::string token) {
+  return true;
 };
 
 Grammar::CheckLambda Grammar::kWildcardCheck = [](std::string token) {

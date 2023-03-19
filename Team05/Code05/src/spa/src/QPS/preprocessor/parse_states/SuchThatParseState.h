@@ -1,9 +1,12 @@
 #pragma once
 
 #include <utility>
+#include <vector>
+#include <string>
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/Export.h"
+#include "QPS/models/grammar/Export.h"
 
 namespace qps {
 extern MasterClauseFactory master_clause_factory_;
@@ -53,7 +56,7 @@ class SuchThatParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg1_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
+              CreateEntOrStmtRef(tokens, query, arg1_);
             }));
 
     // ','
@@ -67,7 +70,7 @@ class SuchThatParseState : public RecursiveParseState {
         Grammar(
             Grammar::kArgumentCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg2_ = master_argument_factory_.CreateEntOrStmtRef(*itr_);
+              CreateEntOrStmtRef(tokens, query, arg2_);
             }));
 
     // ')'
@@ -92,6 +95,17 @@ class SuchThatParseState : public RecursiveParseState {
   }
 
  private:
+  void CreateEntOrStmtRef(
+      const std::vector<std::string> &tokens,
+      QueryPtr &query,
+      ArgumentPtr &arg) {
+    IdentArgGrammar ident_arg_grammar(tokens, query, itr_, arg);
+    bool is_ident_arg = ident_arg_grammar.Parse();
+    if (is_ident_arg) return;
+
+    arg = master_argument_factory_.CreateStmtRef(*itr_);
+  }
+
   RelName rel_name_;
   ArgumentPtr arg1_;
   ArgumentPtr arg2_;

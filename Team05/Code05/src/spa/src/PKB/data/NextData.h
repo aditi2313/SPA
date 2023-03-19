@@ -3,8 +3,10 @@
 #include <unordered_set>
 #include <cassert>
 
+#include "Data.h"
+
 namespace pkb {
-class NextData {
+class NextData : public Data<int> {
  public:
     explicit NextData(int line);
 
@@ -12,8 +14,6 @@ class NextData {
         return LHS.line_ == RHS.line_ &&
         LHS.next_im_list_ == RHS.next_im_list_;
     }
-
-    inline int get_index() { return line_; }
 
     inline std::unordered_set<int>& get_next_im_list() { return next_im_list_; }
 
@@ -23,7 +23,6 @@ class NextData {
     }
 
  private:
-    int line_;
     std::unordered_set<int> next_im_list_;
 };
 }  // namespace pkb

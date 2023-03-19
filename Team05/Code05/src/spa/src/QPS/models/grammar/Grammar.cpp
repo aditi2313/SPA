@@ -26,6 +26,13 @@ Grammar::CheckLambda Grammar::kElemCheck = [](std::string token) {
   return kSynCheck(token) || PQL::is_attr_ref(token);
 };
 
+Grammar::CheckLambda Grammar::kEntRefCheck = [](std::string token) {
+  // " IDENT " | _ | synonym
+  return token == PQL::kQuotationToken
+      || kWildcardCheck(token)
+      || kSynCheck(token);
+};
+
 Grammar::CheckLambda Grammar::kExprCheck = [](std::string token) {
   return PQL::is_wildcard(token)
       || token == PQL::kQuotationToken;
@@ -44,6 +51,13 @@ Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {
 
 Grammar::CheckLambda Grammar::kRelRefCheck = [](std::string token) {
   return PQL::is_such_that_rel_name(token);
+};
+
+Grammar::CheckLambda Grammar::kStmtRefCheck = [](std::string token) {
+  // INTEGER | _ | synonym
+  return PQL::is_integer(token)
+      || kWildcardCheck(token)
+      || kSynCheck(token);
 };
 
 Grammar::CheckLambda Grammar::kSynCheck = [](std::string token) {

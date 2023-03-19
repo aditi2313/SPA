@@ -36,6 +36,10 @@ void TestThrows(std::string query_string) {
       parser.ParseQuery(query_string), PqlSyntaxErrorException);
 }
 
+// Helper method for testing, forward declared.
+std::unique_ptr<SynonymArg> CreateSynonym(
+    SynonymName syn_name, EntityType entity_type);
+
 TEST_CASE("Test SelectClParser methods") {
   SelectClParser parser;
   SECTION("Test PreprocessQueryString") {
@@ -86,8 +90,8 @@ TEST_CASE("Test ParseQuery") {
     QueryPtr expected_query = BuildQuery(
         {{"v", EntityType::kVariable}},
         {"v"});
-    auto arg1 = master_argument_factory.CreateIntegerArg("6");
-    auto arg2 = master_argument_factory.CreateSynonym("v");
+    auto arg1 = master_argument_factory.Create(ArgumentType::kIntegerArg, "6");
+    auto arg2 = master_argument_factory.Create(ArgumentType::kSynonymArg, "v");
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies, std::move(arg1), std::move(arg2)));
@@ -103,8 +107,8 @@ TEST_CASE("Test ParseQuery") {
         {{"v", EntityType::kVariable},
          {"s", EntityType::kStmt}},
         {"s", "v"});
-    auto arg1 = master_argument_factory.CreateSynonym("s");
-    auto arg2 = master_argument_factory.CreateSynonym("v");
+    auto arg1 = master_argument_factory.Create(ArgumentType::kSynonymArg, "s");
+    auto arg2 = master_argument_factory.Create(ArgumentType::kSynonymArg, "v");
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies, std::move(arg1), std::move(arg2)));
@@ -122,15 +126,17 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateEntRef("v")));
+            master_argument_factory.Create(
+                ArgumentType::kSynonymArg, "v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionArg("x+y", true)));
+            master_argument_factory.Create(
+                ArgumentType::kExactExprArg, "x+y")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -145,8 +151,10 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kWith,
-            master_argument_factory.CreateAttrRef("a", "stmt#"),
-            master_argument_factory.CreateRef("12")));
+            master_argument_factory.Create(
+                ArgumentType::kAttrRef, "a.stmt#"),
+            master_argument_factory.Create(
+                ArgumentType::kIntegerArg, "12")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -169,33 +177,37 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateIntegerArg("6"),
-            master_argument_factory.CreateSynonym("v")));
+            master_argument_factory.Create(ArgumentType::kIntegerArg, "6"),
+            master_argument_factory.Create(ArgumentType::kSynonymArg, "v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateIntegerArg("3"),
-            master_argument_factory.CreateSynonym("v")));
+            master_argument_factory.Create(ArgumentType::kIntegerArg, "3"),
+            master_argument_factory.Create(ArgumentType::kSynonymArg, "v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateEntRef("_")));
+            CreateSynonym("a", EntityType::kAssign),
+            master_argument_factory.Create(
+                ArgumentType::kWildcard, "_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionArg("x+y", true)));
+            CreateSynonym("a", EntityType::kAssign),
+            master_argument_factory.Create(
+                ArgumentType::kExactExprArg, "x+y")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateIdentArg("variable")));
+            CreateSynonym("a", EntityType::kAssign),
+            master_argument_factory.Create(
+                ArgumentType::kIdentArg, "variable")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym("a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionArg("x", false)));
+            CreateSynonym("a", EntityType::kAssign),
+            master_argument_factory.Create(
+                ArgumentType::kWildcardExprArg, "x")));
 
     REQUIRE(*actual_query == *expected_query);
   }
@@ -218,37 +230,39 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateIntegerArg("6"),
-            master_argument_factory.CreateEntRef("v")));
+            master_argument_factory.Create(ArgumentType::kIntegerArg, "6"),
+            master_argument_factory.Create(ArgumentType::kSynonymArg, "v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateIntegerArg("3"),
-            master_argument_factory.CreateEntRef("v")));
+            master_argument_factory.Create(ArgumentType::kIntegerArg, "3"),
+            master_argument_factory.Create(ArgumentType::kSynonymArg, "v")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateWildcard()));
+            master_argument_factory.Create(ArgumentType::kWildcard, "_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionArg("x+y", true)));
+            master_argument_factory.Create(
+                ArgumentType::kExactExprArg, "x+y")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kModifies,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateWildcard()));
+            master_argument_factory.Create(ArgumentType::kWildcard, "_")));
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kPatternAssign,
-            master_argument_factory.CreateSynonym(
+            CreateSynonym(
                 "a", EntityType::kAssign),
-            master_argument_factory.CreateExpressionArg("x", true)));
+            master_argument_factory.Create(
+                ArgumentType::kExactExprArg, "x")));
 
     REQUIRE(*actual_query == *expected_query);
   }

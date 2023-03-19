@@ -22,11 +22,13 @@ class Grammar {
   static CheckLambda kBooleanCheck;
   static CheckLambda kDesignEntityCheck;
   static CheckLambda kElemCheck;
+  static CheckLambda kEntRefCheck;
   static CheckLambda kExprCheck;
   static CheckLambda kIdentCheck;
   static CheckLambda kRefCheck;
   static CheckLambda kRelRefCheck;
   static CheckLambda kSynCheck;
+  static CheckLambda kStmtRefCheck;
   static CheckLambda kTupleCheck;
   static CheckLambda kTrueCheck;
   static CheckLambda kWildcardCheck;

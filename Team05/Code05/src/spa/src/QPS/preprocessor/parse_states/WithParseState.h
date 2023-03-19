@@ -88,7 +88,7 @@ class WithParseState : public RecursiveParseState {
     bool is_ident_arg = ident_arg_grammar.Parse();
     if (is_ident_arg) return;
 
-    arg = master_argument_factory_.CreateIntegerArg(*itr_);
+    arg = master_argument_factory_.Create(ArgumentType::kIntegerArg, *itr_);
   }
 
   ArgumentPtr arg1_;

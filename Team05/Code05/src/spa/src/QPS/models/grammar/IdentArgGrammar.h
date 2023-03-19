@@ -40,7 +40,8 @@ class IdentArgGrammar : public CompositeGrammar {
         Grammar(
             Grammar::CreateTokenCheck(PQL::kQuotationToken),
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg_ = master_argument_factory_.CreateIdentArg(ident_);
+              arg_ = master_argument_factory_.Create(
+                  ArgumentType::kIdentArg, ident_);
             }));
   }
 

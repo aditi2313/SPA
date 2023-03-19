@@ -53,11 +53,7 @@ class MasterArgumentFactory {
     if (PQL::is_integer(token)) {
       return CreateIntegerArg(token);
     }
-
-    if (PQL::is_attr_ref(token)) {
-      return CreateAttrRef(token);
-    }
-
+    
     throw PqlSyntaxErrorException(
         "Unexpected argument type in clause");
   }
@@ -99,8 +95,8 @@ class MasterArgumentFactory {
   }
 
   // AttrRef: e.g. s.stmt#, v.varName, p.procName, constant.value
-  inline std::unique_ptr<SynonymArg> CreateAttrRef(std::string token) {
-    auto [syn_name, attr_name] = PQL::split_attr_ref(token);
+  inline std::unique_ptr<SynonymArg> CreateAttrRef(
+      SynonymName syn_name, AttrName attr_name) {
     auto syn_arg = std::make_unique<SynonymArg>(syn_name);
     syn_arg->set_attr_name(attr_name);
     return syn_arg;

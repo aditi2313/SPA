@@ -4,6 +4,7 @@
 
 #include "RecursiveParseState.h"
 #include "QPS/factories/MasterClauseFactory.h"
+#include "QPS/models/grammar/AttrRefGrammar.h"
 
 namespace qps {
 extern MasterArgumentFactory master_argument_factory_;
@@ -29,12 +30,16 @@ class WithParseState : public RecursiveParseState {
             Grammar::CreateTokenCheck(PQL::kWithToken),
             Grammar::kEmptyAction));
 
-    // ref
+    // ref: Ident | Integer | AttrRef
     grammar_.emplace_back(
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg1_ = master_argument_factory_.CreateRef(*itr_);
+              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg1_);
+              bool is_attr_ref = attr_ref_grammar.Parse();
+              if (!is_attr_ref) {
+                arg1_ = master_argument_factory_.CreateRef(*itr_);
+              }
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -50,7 +55,14 @@ class WithParseState : public RecursiveParseState {
         Grammar(
             Grammar::kRefCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              arg2_ = master_argument_factory_.CreateRef(*itr_);
+              // Create arg2
+              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg2_);
+              bool is_attr_ref = attr_ref_grammar.Parse();
+              if (!is_attr_ref) {
+                arg2_ = master_argument_factory_.CreateRef(*itr_);
+              }
+
+              // Create clause
               if (arg1_ == nullptr || arg2_ == nullptr) ThrowException();
               auto with_clause = master_clause_factory_.Create(
                   ClauseType::kWith,

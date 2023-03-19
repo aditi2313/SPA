@@ -35,10 +35,10 @@ Grammar::CheckLambda Grammar::kExactExprCheck = [](std::string token) {
 };
 
 Grammar::CheckLambda Grammar::kRefCheck = [](std::string token) {
-  // "IDENT" | INTEGER | attrRef
+  // "IDENT" | INTEGER | synonym (attrRef = synonym '.' attrName)
   return PQL::is_ident_arg(token)
       || PQL::is_integer(token)
-      || PQL::is_attr_ref(token);
+      || PQL::is_synonym(token);
 };
 
 Grammar::CheckLambda Grammar::kRelRefCheck = [](std::string token) {

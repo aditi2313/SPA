@@ -3,6 +3,7 @@
 #include <string>
 
 #include "ParseState.h"
+#include "QPS/models/grammar/AttrRefGrammar.h"
 
 namespace qps {
 // 'Select' tuple | BOOLEAN
@@ -37,7 +38,13 @@ class SelectParseState : public RecursiveParseState {
               } else if (*itr_ == PQL::kTupleOpenBktToken) {
                 itr_--;
               } else {
-                query->add_selected_elem(*itr_);
+                AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
+                bool is_attr_ref = attr_ref_grammar.Parse();
+                if (is_attr_ref) {
+                  query->add_selected_elem(attr_ref_grammar.get_full_name());
+                } else {
+                  query->add_selected_elem(*itr_);
+                }
                 grammar_itr_ = grammar_.end();
               }
             }));
@@ -53,7 +60,13 @@ class SelectParseState : public RecursiveParseState {
         Grammar(
             Grammar::kElemCheck,
             [&](QueryPtr &query, const std::vector<std::string> &tokens) {
-              query->add_selected_elem(*itr_);
+              AttrRefGrammar attr_ref_grammar(tokens, query, itr_, arg_);
+              bool is_attr_ref = attr_ref_grammar.Parse();
+              if (is_attr_ref) {
+                query->add_selected_elem(attr_ref_grammar.get_full_name());
+              } else {
+                query->add_selected_elem(*itr_);
+              }
             }));
     kRecurseBegin = --grammar_.end();  // Recurse from here
 
@@ -69,5 +82,8 @@ class SelectParseState : public RecursiveParseState {
     end_states_.emplace_back(grammar_.end());
     kExceptionMessage = "Invalid PQL syntax in select-tuple|boolean";
   }
+
+ private:
+  ArgumentPtr arg_;
 };
 }  // namespace qps

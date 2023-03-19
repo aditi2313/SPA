@@ -63,7 +63,7 @@ class SelectClParser {
 
   // Special characters are characters that PreprocessQueryString
   // will insert spaces around to ensure correct delimitation
-  // ; ( ) , < > = _
+  // ; ( ) , < > = _ .
   std::unordered_set<std::string> special_characters_{
       PQL::kSemicolonToken,
       PQL::kOpenBktToken,
@@ -73,6 +73,7 @@ class SelectClParser {
       PQL::kTupleCloseBktToken,
       PQL::kEqualToken,
       PQL::kUnderscoreToken,
+      PQL::kPeriodToken
   };
 };
 }  // namespace qps

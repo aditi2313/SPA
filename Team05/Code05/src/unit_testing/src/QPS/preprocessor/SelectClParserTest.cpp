@@ -144,7 +144,7 @@ TEST_CASE("Test ParseQuery") {
     expected_query->add_clause(
         master_clause_factory.Create(
             ClauseType::kWith,
-            master_argument_factory.CreateRef("a.stmt#"),
+            master_argument_factory.CreateAttrRef("a", "stmt#"),
             master_argument_factory.CreateRef("12")));
 
     REQUIRE(*actual_query == *expected_query);
@@ -332,6 +332,22 @@ TEST_CASE("Test ParseQuery") {
           "correctly") {
     std::string query_string = "assign a; "
                                "Select a pattern a(_, _  \t \" \t x \"  _)";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces around '.' in attrRef should parse"
+          "correctly") {
+    std::string query_string = "stmt s; constant c; "
+                               "Select s with s  . \t stmt# = c \t . value";
+
+    TestNoThrows(query_string);
+  }
+
+  SECTION("Query with whitespaces around '.' in attrRef should parse"
+          "correctly") {
+    std::string query_string = "procedure p; "
+                               "Select p  .\t procName";
 
     TestNoThrows(query_string);
   }

@@ -25,6 +25,7 @@ class CompositeGrammar {
     bool is_syntax_match = true;
 
     while (itr_ != tokens_.end() && grammar_itr_ != grammar_.end()) {
+      std::cout << *itr_ << "\n";
       if (!(*grammar_itr_).Check(*itr_)) {
         is_syntax_match = false;
         break;
@@ -38,7 +39,7 @@ class CompositeGrammar {
       itr_ = saved_itr;  // Reset itr
       return false;
     } else {
-      itr_--;
+      itr_--;  // Don't consume last token
       return true;
     }
   }

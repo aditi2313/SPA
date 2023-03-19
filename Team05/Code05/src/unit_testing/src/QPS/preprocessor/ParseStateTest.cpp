@@ -586,7 +586,7 @@ TEST_CASE("Test WithParseState") {
   WithParseState state;
   SECTION("With clause should parse correctly") {
     std::vector<std::string> tokens{
-        "with", "s.stmt#", "=", "c.value"};
+        "with", "s", ".", "stmt#", "=", "c", ".", "value"};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
@@ -597,8 +597,8 @@ TEST_CASE("Test WithParseState") {
 
   SECTION("With clause with 'and' should parse correctly") {
     std::vector<std::string> tokens{
-        "with", "s.stmt#", "=", "c.value",
-        "and", "v.varName", "=", "p.procName",
+        "with", "s", ".", "stmt#", "=", "c", ".", "value",
+        "and", "v", ".", "varName", "=", "p", ".", "procName",
         "and", "11", "=", "\"ident\""};
     std::unique_ptr<Query> query = std::make_unique<Query>();
     auto itr = tokens.begin();

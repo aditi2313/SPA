@@ -9,12 +9,7 @@
 #include "SP/parser/relations/CondExprParser.h"
 #include "SP/parser/relations/RelExprParser.h"
 #include "common/exceptions/SPExceptions.h"
-#include "models/AST/ProcNode.h"
-#include "models/AST/ProgramNode.h"
-#include "models/AST/factor_node/FactorNode.h"
-#include "models/AST/relations/CondExprNode.h"
-#include "models/AST/relations/RelExprNode.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/Export.h"
 
 using namespace ast;  // NOLINT
 using namespace sp;   // NOLINT

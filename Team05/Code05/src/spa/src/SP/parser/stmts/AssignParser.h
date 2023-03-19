@@ -8,7 +8,7 @@
 #include "SP/parser/ProgramParser.h"
 #include "SP/parser/expression/ExpressionParser.h"
 #include "common/exceptions/SPExceptions.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/Export.h"
 
 namespace sp {
 class AssignParser : Parser<ast::AssignNode> {

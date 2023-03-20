@@ -37,12 +37,13 @@ class ModifiesVisitor : public ProcedureProcessingVisitor {
     auto pkb = pkb_ptr_->EndWrite();
     pkb::PKBRead reader(std::move(pkb));
     for (auto& child : node.get_children()) {
-      auto result = reader
+      auto table = reader
                         .Modifies(std::make_unique<filter::ModifiesIndexFilter>(
-                            child->get_line()))
-                        ->get_result();
+                            child->get_line()));
+      auto result = table->get_result();
       if (result->empty()) continue;
-      auto variables = result->get_row(child->get_line()).get_variables();
+      auto& modifies_data = result->get_row(child->get_line());
+      auto variables = modifies_data.get_variables();
       vars.merge(variables);
     }
     pkb = reader.EndRead();

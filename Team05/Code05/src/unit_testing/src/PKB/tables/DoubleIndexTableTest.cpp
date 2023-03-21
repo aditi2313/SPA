@@ -1,7 +1,7 @@
-#include <catch.hpp>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
+#include <catch.hpp>
 
 #include "PKB/tables/DoubleIndexTable.h"
 

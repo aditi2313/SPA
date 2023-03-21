@@ -11,7 +11,7 @@ typedef DoubleIndexTable<std::string, int, int> TestedTable;
 
 // TODO(Gab) Move to shared header file
 template <class Container, class Data>
-void CompareContents(Container& c1, Container& c2) {
+void CompareContents(Container c1, Container c2) {
   std::unordered_set<Data> data1;
   std::unordered_set<Data> data2;
   for (auto& data : c1) {

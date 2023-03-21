@@ -3,9 +3,11 @@ on:
     push:
         branches:
         - master
+        - pkb/optimisations
     pull_request:
         branches:
         - master
+        - pkb/optimisations
     workflow_dispatch: {}
 jobs:
   cpplint:

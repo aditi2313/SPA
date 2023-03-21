@@ -4,6 +4,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include "IndexableTable.h"
 #include "PKB/data/Export.h"
 
 namespace pkb {

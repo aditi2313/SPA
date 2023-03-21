@@ -33,7 +33,7 @@ class DoubleIndexTable {
                       Data data) {
     int index;
     if (exists(id)) {
-      index = first_index_map_.at(id)
+      index = first_index_map_.at(id);
     } else {
       index = data_.size();
       data_.push_back(data);

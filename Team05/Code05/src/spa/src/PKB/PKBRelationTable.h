@@ -7,6 +7,7 @@
 
 #include "data/Export.h"
 #include "models/AST/factor_node/FactorNode.h"
+#include "tables/DoubleIndexTable.h"
 #include "tables/IndexableTable.h"
 
 namespace pkb {
@@ -29,6 +30,7 @@ class PKBRelationTable {
   IndexableTable<CallsData> calls_table_;
   IndexableTable<NextData> next_table_;
   IndexableTable<ConditionData> condition_table_;
+  FollowsRTable follows_r_table_;
   std::unordered_set<int> constants_;
   std::unordered_set<int> whiles_;
   std::unordered_set<int> stmts_;

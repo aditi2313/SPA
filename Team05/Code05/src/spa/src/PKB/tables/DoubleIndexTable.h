@@ -69,7 +69,18 @@ class DoubleIndexTable {
   friend bool operator==(
       const DoubleIndexTable<Data, Index, SecondIndex>& LHS,
       const DoubleIndexTable<Data, Index, SecondIndex>& RHS) {
-    return false;
+    if (LHS.data_.size() != RHS.data_.size()) return false;
+    for (auto& [id, index] : LHS.first_index_map_) {
+      if (LHS.get_row(id) != RHS.get_row(id)) {
+        return false;
+      }
+    }
+    for (auto& [sid, indexes] : LHS.second_index_map_) {
+      if (LHS.get_row_index2(sid) != RHS.get_row_index2(sid)) {
+        return false;
+      }
+    }
+    return true;
   }
 
  protected:
@@ -77,7 +88,5 @@ class DoubleIndexTable {
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
   std::vector<Data> data_;
 };
-
-
 
 }  // namespace pkb

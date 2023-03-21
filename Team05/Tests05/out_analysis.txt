@@ -1,0 +1,54 @@
+Global maximum: 3.334s = Uses: variable legend27; stmt mobileGame; Select legend27 such that Uses(mobileGame, legend27)
+Global average: 1.215s
+Affects maximum: 1.761s = assign a; Select a such that Affects(a, 8)
+Affects average: 1.055s
+AffectsT maximum: 2.772s = assign a; Select a such that Affects*(a, 10)
+AffectsT average: 1.067s
+AffectsT_2 maximum: 2.344s = assign a; Select a such that Affects*(3, a)
+AffectsT_2 average: 1.186s
+Basic maximum: 1.524s = assign a;  Select a pattern a(_, "a + b")
+Basic average: 1.079s
+Boolean maximum: 1.597s = stmt s; Select BOOLEAN such that Uses(s, _)
+Boolean average: 1.17s
+Calls maximum: 2.244s = procedure p; procedure q; Select p such that Calls(q, p)
+Calls average: 1.392s
+condexpr1 maximum: 1.491s = stmt s;  Select s
+condexpr1 average: 1.491s
+Follows maximum: 1.411s = stmt s;  Select s such that Follows(s,2)
+Follows average: 0.961s
+Follows2 maximum: 1.67s = stmt s;  Select s such that Follows(s,2)
+Follows2 average: 1.22s
+Milestone_1 maximum: 1.796s = assign a;  Select a pattern a(_, "a + b")
+Milestone_1 average: 1.422s
+Modifies maximum: 1.489s = variable v; stmt s; Select v such that Modifies(s, v)
+Modifies average: 1.016s
+ModifiesP maximum: 1.361s = variable v; Select v such that Modifies("modifies3", v)
+ModifiesP average: 1.057s
+ModifiesP_2 maximum: 2.479s = variable v; Select v such that Modifies(1, v)
+ModifiesP_2 average: 1.24s
+Multi-clause maximum: 1.64s = assign a; Select a such that Modifies (a, "b") and Parent* (1,a) and Next(3,a)
+Multi-clause average: 1.171s
+Next maximum: 1.751s = stmt s; Select s such that Next(s, 11)
+Next average: 1.266s
+Next_2 maximum: 1.746s = stmt s1, s2, s3; Select s1 such that Next* (s1, s2) and Next*(s2, s3)
+Next_2 average: 1.604s
+Parent maximum: 1.888s = if if; stmt s; Select s such that Parent(s, if)
+Parent average: 1.187s
+Parent_2 maximum: 1.449s = stmt s; Select s such that Parent(s,2)
+Parent_2 average: 0.991s
+Parentt maximum: 1.471s = stmt s; while w; Select s such that Parent*(s, w)
+Parentt average: 1.226s
+Pattern maximum: 2.803s = assign assign; variable v; Select assign pattern assign(v, "x + y * z")
+Pattern average: 1.605s
+PatternIf maximum: 2.25s = if ifs; Select ifs pattern ifs(_,_,_)
+PatternIf average: 1.765s
+PatternWhile maximum: 1.496s = while w; Select w pattern w(_,_)
+PatternWhile average: 1.232s
+Tuple_clause maximum: 2.712s = variable v1, v2; stmt s; Select<v1, v2, s> such that Modifies(s, v1) and Modifies(s, v2) and Parent(s, 1)
+Tuple_clause average: 1.723s
+Uses maximum: 3.334s = variable legend27; stmt mobileGame; Select legend27 such that Uses(mobileGame, legend27)
+Uses average: 1.445s
+UsesP maximum: 1.524s = variable v; Select v such that Uses("uses1", v)
+UsesP average: 1.157s
+With maximum: 2.512s = stmt s; constant c; Select s with s.stmt# = c.value
+With average: 1.062s

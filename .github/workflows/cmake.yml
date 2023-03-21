@@ -3,8 +3,7 @@ name: CMake
 on: 
   push:
     branches:
-      - master
-      - pkb/optimisations
+      - master      
   pull_request:
     branches:
       - master

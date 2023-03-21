@@ -10,6 +10,7 @@
 #include "common/logging/Logger.h"
 #include "models/AST/factor_node/FactorNode.h"
 
+// optimisations snuff
 namespace pkb {
 class PKBWrite {
  public:

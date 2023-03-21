@@ -3,10 +3,12 @@ name: CMake
 on: 
   push:
     branches:
-      - master      
+      - master
+      - pkb/optimisations
   pull_request:
     branches:
       - master
+      - pkb/optimisations
   workflow_dispatch: {}
   
 

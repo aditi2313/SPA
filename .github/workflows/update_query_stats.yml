@@ -1,0 +1,48 @@
+# Runs the python script for analysing query statistics and 
+# directly adds the updated statistics as a commit to your PR
+name: Update Query Statistics
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  run_script: 
+    runs_on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with: 
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+
+    # Use cache so that we don't have to rebuild autotester
+    # and run system tests again
+    - name: Restore cached out.xml files
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ${{github.workspace}}/Team05/Tests05/out
+        key: ${{ runner.os }}-out-xml-cache-${{ hashFiles('**/Tests05/out/**') }}
+
+    # If the cache isn't hit, then we can't run the script
+    # so just exit the workflow
+    - name: Check cache hit
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: echo "Cache miss, might need to run the build workflow again first" && exit 1
+
+    - name: Run query statistics analysis
+      run: |
+        python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
+    
+    - name: Commit query statistics files
+      run: |
+        git config --local user.email "39623254+aizatazhar@users.noreply.github.com"
+        git config --local user.name "aizatazhar"
+        git commit -a -m "Update out_analysis files"
+    
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        branch: ${{ github.head_ref }}
+        github_token: ${{ secrets.AIZAT_PAT }} # TODO(aizatazhar): do i need this

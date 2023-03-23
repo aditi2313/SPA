@@ -4,34 +4,40 @@
 #include <set>
 #include <vector>
 #include <utility>
+#include <list>
+#include <string>
 #include <memory>
 
 #include "Entity.h"
+#include "QPS/evaluator/Formatter.h"
 
 namespace qps {
 class QueryResult {
  public:
-  virtual inline bool is_boolean() {
-    return false;
-  }
+  virtual void Format(
+      std::list<std::string> &results) = 0;
+
   virtual ~QueryResult() = default;
 };
 
+using QueryResultPtr = std::unique_ptr<QueryResult>;
+
 class BooleanQueryResult : public QueryResult {
  public:
-  explicit BooleanQueryResult(bool is_true)
-      : QueryResult(), is_true_(is_true) {}
+  explicit BooleanQueryResult(bool result)
+      : QueryResult(), result_(result) {}
 
-  inline bool is_boolean() override {
-    return true;
+  inline static QueryResultPtr BuildFalse() {
+    return std::make_unique<BooleanQueryResult>(false);
   }
 
-  inline bool is_true() {
-    return is_true_;
+  inline void Format(
+      std::list<std::string> &results) override {
+    results = Formatter::FormatBooleanQuery(result_);
   }
 
  private:
-  bool is_true_;
+  bool result_;
 };
 
 class ListQueryResult : public QueryResult {
@@ -41,13 +47,21 @@ class ListQueryResult : public QueryResult {
   explicit ListQueryResult(std::vector<std::vector<Entity>> &results)
       : QueryResult(), query_results_(results) {}
 
+  inline static QueryResultPtr BuildEmpty() {
+    return std::make_unique<ListQueryResult>();
+  }
+
   std::vector<std::vector<Entity>> &get_query_results() {
     return query_results_;
+  }
+
+  inline void Format(
+      std::list<std::string> &results) override {
+    results = Formatter::FormatListQuery(query_results_);
   }
 
  private:
   std::vector<std::vector<Entity>> query_results_;
 };
 
-using QueryResultPtr = std::unique_ptr<QueryResult>;
 }  // namespace qps

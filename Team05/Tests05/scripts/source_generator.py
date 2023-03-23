@@ -96,7 +96,7 @@ class IfBlockGenerator:
     
     result += self.c_gen.generate(depth) + ")"
     result += "then "
-    inner_one = self.c_gen.generate(depth+1)
+    inner_one = self.c_block.generate(depth+1)
     if not inner_one:
       return False
     inner_two =self.c_block.generate(depth + 1)
@@ -141,14 +141,14 @@ class StatementGenerator:
     return result + "\n"
     
 stmt_gens = [
-    #WhileBlockGenerator(),
-    #IfBlockGenerator(),    
-    #ReadPrintGenerator(),
+    WhileBlockGenerator(),
+    IfBlockGenerator(),    
+    ReadPrintGenerator(),
     AssignmentGenerator()
   ]
 
 alt_stmt_gens = [
-  #ReadPrintGenerator(),
+  ReadPrintGenerator(),
     AssignmentGenerator()
   ]
 
@@ -156,7 +156,7 @@ def procedure_gen(name):
   result = "procedure " + name
   r = ""
   while True:
-    r = CodeBlockGenerator().generate(4, 5)
+    r = CodeBlockGenerator().generate(4, 60)
     if r:
       break
   result += r
@@ -207,14 +207,18 @@ def nested_calls(depth = 500):
     return
   name = "p" + str(depth)
   print("procedure ", name, "{", end="")
-  print("call", "p" + str(depth-1), end="")
+  print("call", "p" + str(depth-1), end=";")
   print("}", end="")
   nested_calls(depth-1)
 
 
 ## Generating a valid source
 if __name__ == "__main__":
-  nested_calls()
+  #for i in  range(2, 501):
+  #  print("p" + str(i), end=",")
+  print(procedure_gen("rock"))
+  print(StatementGenerator.curr_stmt)
+  #nested_calls()
   #generate_rand_proc()
   #print(StatementGenerator.curr_stmt)
   #print(deep_while_generator())

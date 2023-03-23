@@ -5,7 +5,7 @@
 #include "TableJoiner.h"
 #include "ClauseEvaluator.h"
 #include "ClauseOptimiser.h"
-#include "ClauseEvaluatorState.h"
+#include "ClauseState.h"
 
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
@@ -45,7 +45,7 @@ bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
   arg1->InitializeEntities(table_, pkb_, LHS);
   arg2->InitializeEntities(table_, pkb_, RHS);
 
-  ClauseEvaluatorState clause_evaluator_state(
+  ClauseState clause_evaluator_state(
       clause, clause_table, LHS, RHS);
 
   bool res = clause_evaluator_.EvaluateClause(

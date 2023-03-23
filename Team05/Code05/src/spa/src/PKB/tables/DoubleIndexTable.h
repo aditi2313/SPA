@@ -88,4 +88,13 @@ class DoubleIndexTable {
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
   std::vector<Data> data_;
 };
+
+typedef DoubleIndexTable<ModifiesData> ReverseModifiesTable;
+typedef DoubleIndexTable<UsesData> ReverseUsesTable;
+typedef DoubleIndexTable<AffectsData> ReverseAffectsTable;
+typedef DoubleIndexTable<NextData> ReverseNextTable;
+typedef DoubleIndexTable<FollowsData> ReverseFollowsTable;
+typedef DoubleIndexTable<ParentData> ReverseParentTable;
+typedef DoubleIndexTable<CallsData> ReverseCallsTable;
+
 }  // namespace pkb

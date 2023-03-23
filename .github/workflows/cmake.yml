@@ -89,3 +89,13 @@ jobs:
             Write-Host "Program failed with exit code $LASTEXITCODE"
             exit 1
         }
+
+    - name: Cache system test out.xml files
+      if: runner.os == 'macOS'
+      uses: actions/cache@v3
+      with:
+        path: |
+          ${{github.workspace}}/Team05/Tests05/out
+        key: ${{ runner.os }}-out-xml-cache-${{ hashFiles('**/Tests05/out/**') }}
+        restore-keys: |
+          ${{ runner.os }}-out-xml-cache-

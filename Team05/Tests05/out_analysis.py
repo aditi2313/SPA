@@ -33,6 +33,7 @@ def process_out_xmls(out_xmls):
     global_query_count = 0
 
     for out_xml in out_xmls:
+        print(f"Processing {out_xml}")
         test_name = os.path.basename(out_xml)[:-len(out_xml_suffix)]
         root = ET.parse(out_xml).getroot()
         queries = root.findall(".//query")
@@ -111,7 +112,7 @@ def format_statistic(test_name, result, previous_result):
     prev_max, previous_total_time, prev_max_query, prev_total_queries = previous_result
     prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 
-    max_diff = f"({'↑' if new_max - prev_max > 0 else '↓'} {new_max - prev_max})"
+    max_diff = f"({'↑' if round(new_max - prev_max, 3) > 0 else '↓'} {round(new_max - prev_max, 3)})"
     avg_diff = f"({'↑' if new_avg - prev_avg > 0 else '↓'} {new_avg - prev_avg})"
 
     return f"### {test_name}\n" + \

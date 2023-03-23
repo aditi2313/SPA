@@ -7,13 +7,13 @@ on:
 
 jobs:
   run_script: 
-    runs_on: macos-latest
+    runs-on: macos-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
       with: 
-        ref: ${{ github.head_ref }}
+        ref: ${{ github.ref }}
         fetch-depth: 0
 
     # Use cache so that we don't have to rebuild autotester
@@ -27,9 +27,14 @@ jobs:
 
     # If the cache isn't hit, then we can't run the script
     # so just exit the workflow
-    - name: Check cache hit
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: echo "Cache miss, might need to run the build workflow again first" && exit 1
+    # - name: Check cache hit
+    #   if: steps.cache.outputs.cache-hit != 'true'
+    #   run: echo "Cache miss, might need to run the build workflow again first" && exit 1
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
 
     - name: Run query statistics analysis
       run: |
@@ -44,5 +49,5 @@ jobs:
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
-        branch: ${{ github.head_ref }}
+        branch: ${{ github.ref }}
         github_token: ${{ secrets.AIZAT_PAT }} # TODO(aizatazhar): do i need this

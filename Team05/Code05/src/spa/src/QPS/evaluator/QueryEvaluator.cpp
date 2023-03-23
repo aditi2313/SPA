@@ -23,11 +23,9 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
       if (!res) {
         // Clause is false, can immediately return empty result.
-        if (query->is_boolean_query()) {
-          return std::make_unique<BooleanQueryResult>(false);
-        } else {
-          return std::make_unique<ListQueryResult>();
-        }
+        return query->is_boolean_query()
+               ? BooleanQueryResult::BuildFalse()
+               : ListQueryResult::BuildEmpty();
       }
     }
   }

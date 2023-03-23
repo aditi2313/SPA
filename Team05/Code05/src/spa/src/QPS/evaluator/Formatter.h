@@ -2,13 +2,16 @@
 
 #include <set>
 #include <string>
+#include <vector>
 #include <list>
 
-#include "QPS/models/QueryResult.h"
+#include "QPS/models/Entity.h"
 
 namespace qps {
 class Formatter {
  public:
-  std::list<std::string> FormatQuery(QueryResultPtr &query_result);
+  static std::list<std::string> FormatBooleanQuery(bool result);
+  static std::list<std::string> FormatListQuery(
+      std::vector<std::vector<Entity>> &results);
 };
 }  // namespace qps

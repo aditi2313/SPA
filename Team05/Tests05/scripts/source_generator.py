@@ -198,11 +198,24 @@ def generate_rand_proc():
     ctr += 1
     curr += StatementGenerator.curr_stmt
     StatementGenerator.curr_stmt = 0
-    
+
+
+## used to generate a linear call structure
+def nested_calls(depth = 500):
+  if depth == 1:
+    print("procedure p1 { x = 1; }", end="")
+    return
+  name = "p" + str(depth)
+  print("procedure ", name, "{", end="")
+  print("call", "p" + str(depth-1), end="")
+  print("}", end="")
+  nested_calls(depth-1)
+
+
 ## Generating a valid source
 if __name__ == "__main__":
-  
-  generate_rand_proc()
+  nested_calls()
+  #generate_rand_proc()
   #print(StatementGenerator.curr_stmt)
   #print(deep_while_generator())
   #print(deep_if_generator())

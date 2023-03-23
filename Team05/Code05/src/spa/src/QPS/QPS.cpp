@@ -23,9 +23,9 @@ void QPS::evaluate(
     Validator::Validate(query_object);
 
     QueryEvaluator evaluator(pkb);
-    QueryResultPtr result = evaluator.EvaluateQuery(query_object);
+    QueryResultPtr query_results = evaluator.EvaluateQuery(query_object);
 
-    result->Format(results);
+    query_results->Format(results);
   } catch (PqlSyntaxErrorException e) {
     results = {"SyntaxError"};
   } catch (PqlSemanticErrorException e) {

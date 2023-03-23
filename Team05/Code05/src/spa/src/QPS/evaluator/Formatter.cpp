@@ -31,8 +31,7 @@ std::list<std::string> Formatter::FormatListQuery(
       if (j > 0) {
         row += " ";
       }
-      row +=
-          results.at(i).at(j).to_str();
+      row += results.at(i).at(j).to_str();
     }
     output.push_back(row);
   }

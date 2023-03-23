@@ -6,38 +6,36 @@
 #include "QPS/models/Entity.h"
 
 namespace qps {
-// Takes in a QueryResult and returns an array of string
+// Takes in a BooleanQueryResult and returns a list of string
+// that is "TRUE" or "FALSE" depending on the result.
+std::list<std::string> Formatter::FormatBooleanQuery(bool result) {
+  std::list<std::string> output;
+  output.emplace_back(result ? "TRUE" : "FALSE");
+
+  return output;
+}
+
+// Takes in a ListQueryResult and returns an array of string
 // in the specified format, with no duplicates.
 // If there are no answers to the query, the array is empty.
-std::list<std::string> Formatter::FormatQuery(QueryResultPtr &query_result) {
+std::list<std::string> Formatter::FormatListQuery(
+    std::vector<std::vector<Entity>> &results) {
   std::list<std::string> output;
+  if (results.empty()) return {};
 
-  if (query_result->is_boolean()) {
-    BooleanQueryResult *boolean_query_result =
-        dynamic_cast<BooleanQueryResult *>(query_result.get());
-    output.emplace_back(boolean_query_result->is_true() ? "TRUE" : "FALSE");
-  } else {
-    ListQueryResult *list_query_result =
-        dynamic_cast<ListQueryResult *>(query_result.get());
-    auto result_entities = list_query_result->get_query_results();
-
-    if (result_entities.empty()) return {};
-
-    int num_rows = result_entities.size();
-    int num_columns = result_entities.at(0).size();
-    for (int i = 0; i < num_rows; ++i) {
-      std::string result = "";
-      for (int j = 0; j < num_columns; ++j) {
-        if (j > 0) {
-          result += " ";
-        }
-        result +=
-            result_entities.at(i).at(j).to_str();
+  int num_rows = results.size();
+  int num_columns = results.at(0).size();
+  for (int i = 0; i < num_rows; ++i) {
+    std::string row = "";
+    for (int j = 0; j < num_columns; ++j) {
+      if (j > 0) {
+        row += " ";
       }
-      output.push_back(result);
+      row +=
+          results.at(i).at(j).to_str();
     }
+    output.push_back(row);
   }
-
   return output;
 }
 }  // namespace qps

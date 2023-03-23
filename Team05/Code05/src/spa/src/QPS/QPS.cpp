@@ -6,7 +6,6 @@
 #include "QPS/preprocessor/SelectClParser.h"
 #include "QPS/preprocessor/Validator.h"
 #include "QPS/evaluator/QueryEvaluator.h"
-#include "QPS/evaluator/Formatter.h"
 #include "QPS/factories/Export.h"
 
 namespace qps {
@@ -26,8 +25,7 @@ void QPS::evaluate(
     QueryEvaluator evaluator(pkb);
     QueryResultPtr result = evaluator.EvaluateQuery(query_object);
 
-    Formatter formatter;
-    results = formatter.FormatQuery(result);
+    result->Format(results);
   } catch (PqlSyntaxErrorException e) {
     results = {"SyntaxError"};
   } catch (PqlSemanticErrorException e) {

@@ -88,5 +88,4 @@ class DoubleIndexTable {
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
   std::vector<Data> data_;
 };
-
 }  // namespace pkb

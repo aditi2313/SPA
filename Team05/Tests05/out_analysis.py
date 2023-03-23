@@ -19,7 +19,9 @@ def get_out_xmls():
 def process_out_xmls(out_xmls):
     """
     Calculates the global/local maximum and average query time for the given out.xml files.
-    Returns a dictionary in the form { "test_name": [max, average, max_query_string], ... }.
+    Returns a dictionary in the form { 
+        "test_name": [max, total_time, max_query_string, total_queries], .
+    .. }.
 
     :param out_xmls: the list of out.xml files to process 
     """
@@ -27,7 +29,7 @@ def process_out_xmls(out_xmls):
     result_dict = {}
     global_maximum = 0
     global_maximum_query = ""
-    global_average = 0
+    global_total_time = 0
     global_query_count = 0
 
     for out_xml in out_xmls:
@@ -37,29 +39,31 @@ def process_out_xmls(out_xmls):
         
         local_maximum = 0
         local_maximum_query = ""
-        local_average = 0
+        local_total_time = 0
 
         for query in queries:
             time = float(query[4].text)
             if time > local_maximum:
                 local_maximum = time
                 local_maximum_query = query[1].text
-            local_average += float(time)
+            local_total_time += float(time)
 
             if time > global_maximum:
                 global_maximum = time
                 global_maximum_query = f"{test_name} - {query[1].text}"
 
-            global_average += time
+            global_total_time += time
             global_query_count += 1
 
         result_dict[test_name] = [local_maximum, 
-                                  round(local_average/len(queries), 3),
-                                  local_maximum_query.replace("\n", "")]
+                                  local_total_time,
+                                  local_maximum_query.replace("\n", ""),
+                                  len(queries)]
     
     result_dict["Global"] = [global_maximum, 
-                             round(global_average/global_query_count, 3), 
-                             global_maximum_query.replace("\n", "")]
+                             global_total_time, 
+                             global_maximum_query.replace("\n", ""),
+                             global_query_count]
     return result_dict
 
 def write_results(result_dict, out_path, raw_out_path):
@@ -98,15 +102,22 @@ def format_statistic(test_name, result, previous_result):
     :param result: the current result of the test
     :param previous_result: the previous result of the test
     """
+
+    new_max, total_time, new_max_query, total_queries = result
+    new_avg = round(total_time / total_queries, 3) if total_queries else 0
+    
     if not previous_result:
-        previous_result = [0, 0, ""]
-    new_max, new_avg, new_max_query = result
-    prev_max, prev_avg, prev_max_query = previous_result
+        previous_result = [0, 0, "", 0]
+    prev_max, previous_total_time, prev_max_query, prev_total_queries = previous_result
+    prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 
     max_diff = f"({'↑' if new_max - prev_max > 0 else '↓'} {new_max - prev_max})"
     avg_diff = f"({'↑' if new_avg - prev_avg > 0 else '↓'} {new_avg - prev_avg})"
 
     return f"### {test_name}\n" + \
+           f"#### Overall statistics\n" + \
+           f"- Total time {round(total_time, 3)} (previously {round(previous_total_time, 3)})\n" + \
+           f"- {total_queries} queries, previously {prev_total_queries})\n\n" + \
            f"#### Maximum\n" + \
            f"- Current run: {new_max} {max_diff}\n" + \
            f"- Current query: {new_max_query}\n" + \

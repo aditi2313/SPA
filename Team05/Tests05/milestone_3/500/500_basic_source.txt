@@ -1,0 +1,544 @@
+procedure rock{
+if ((v3*d+v1-b+c*c*a*ils<d*procedure)||(ils-c+v2+variables*someString-someVariable/constants>=varx))then (c*procedure/c*someVariable/if+someString<someString+v2)&&(variables>=v2+if)else {
+read v2;
+read v3;
+print procedure;
+read procedure;
+print b;
+someVariable=constants*a/rapid/c;
+v1=procedure*v2/variables*rapid*constants/c+someString+b*b*v3;
+print varx;
+read v3;
+rapid=d*v1+procedure/rapid*someString*if;
+}
+varx=b-variables-variables/a/a/varx+varx;
+rapid=d*v1-constants/b+varx*a-c-c;
+if ((a<variables/v1-procedure+variables*a+someString)||(v3/procedure+someVariable+c+someString>=varx))then (constants-d/constants<if)||(variables*b/v1+b/if>=a*if/if-v3-variables-c+v3/v1+a+b-v3)else {
+read a;
+print constants;
+a=c-variables+someVariable+procedure+v2-someString-constants+someVariable+v3/a;
+read ils;
+d=a;
+print v1;
+procedure=d/ils/b-variables-rapid+c*v3+v3-b-a;
+print rapid;
+rapid=b*c/c/if+if+rapid*ils/rapid*variables*b+constants;
+if=variables;
+}
+v2=someString/a;
+print someString;
+while ((d-b+ils/v2*varx-v1/varx*b/someString<c+b+rapid/d/varx/c)||(variables-d-b/procedure*if*rapid+variables-rapid*constants*ils-variables>=d-v1/d+v2-constants*someVariable/varx+d-ils)){
+a=if*procedure+varx+a/v3-varx-a;
+someString=v3-varx+procedure*variables*ils-a+variables/someVariable;
+b=b;
+v2=c+b*d-variables+someVariable/ils;
+varx=a*ils*v3-v1-varx*someVariable*a/variables/if;
+if=variables+b/rapid;
+d=c-ils-ils+v1+variables;
+read varx;
+read variables;
+v1=constants-v3/v2/variables+d;
+}
+while ((c*ils<someString)&&(v2-constants+procedure-d>=b-someString-constants-b)){
+v3=someString-procedure+ils-someVariable*constants;
+c=a-ils*rapid+someVariable-variables-rapid*procedure+variables-ils/d;
+v1=constants+v3-c*b/constants/rapid-v1+constants+v1;
+c=v2+rapid+ils-constants*d;
+v3=d+rapid/someVariable;
+c=v3;
+print variables;
+print rapid;
+print procedure;
+read procedure;
+}
+read variables;
+varx=someString-constants/variables*c*varx;
+while ((someVariable*v3-d+c+rapid*v3<someVariable-someVariable*c+someString-ils-someVariable/if/d*someVariable)||(c*v2/d/constants+a/rapid/someString-d*v1/someVariable/if>=v2*procedure/someString-c*a/if)){
+procedure=variables/ils+v3;
+print a;
+c=constants/c-v2*c/someString*rapid*v2-varx;
+print v1;
+read ils;
+read rapid;
+print c;
+someString=variables/b/d;
+read rapid;
+someVariable=if/v1-a-c+constants/a*someString-constants/v1-someString;
+}
+print d;
+while ((b+c/someString/rapid+a*rapid*varx<c-b/a+someString+variables-a/v3*rapid)||(v2-constants/rapid+someVariable*if>=someVariable+procedure*rapid)){
+read varx;
+someString=v1/variables/b+variables*someVariable-v1-variables+constants/if+c-ils;
+procedure=v2*v2*varx*a*d;
+print someVariable;
+v3=ils-v2*constants-v3+procedure-constants*someVariable+variables/v1-rapid;
+read ils;
+print someVariable;
+print a;
+print constants;
+v1=rapid*someVariable/procedure;
+}
+if ((rapid*a+constants*ils/if*rapid*a+a+v2<varx/d/v2-ils)&&(varx+constants*someVariable+a-if*b+someString*varx*b*someVariable>=someString+v3/c*d+c))then (varx<ils+v3+someVariable)&&(varx>=procedure/rapid+constants*constants-v3/someString-ils/b)else {
+print v1;
+print someVariable;
+print v1;
+v1=variables/if-a*if;
+variables=v3-v1/v3;
+c=someString-someString+a+v2;
+print rapid;
+print d;
+a=ils-varx-someVariable-procedure*someVariable;
+read ils;
+}
+while ((if*variables-if/constants<someString-b/rapid-someVariable-v3*procedure)||(variables/c/c*procedure+a>=someString/procedure/someString+procedure+someString+v1/v3/a/v1-a)){
+print if;
+a=a+v2*b;
+rapid=procedure*rapid*someString*v3;
+ils=v2/procedure/someString-constants+c/rapid+ils;
+ils=ils+if/v2-varx-someVariable*a-variables+varx/c-v3*rapid;
+read a;
+print variables;
+varx=someString-c+varx+constants+if-varx+procedure*someVariable+someString;
+read rapid;
+v2=v2;
+}
+while ((d+a*variables*v2<if*v2/b*constants+c*b+someVariable*v3+ils*constants-v2)||(v1-rapid*procedure*constants+variables+ils/ils>=if/variables)){
+read b;
+v2=v2/d/ils+ils+ils*variables+c/ils-v1;
+read a;
+read v2;
+print procedure;
+variables=someVariable+v2-v2-d*procedure;
+d=if+if;
+b=v3-someString-variables/rapid*procedure+v2+if-variables/b*d;
+someString=procedure*rapid-varx;
+print procedure;
+}
+v2=varx-someVariable-v3/c;
+while ((b/b/v1<rapid/if+if-v1-someVariable)&&(someString-a/constants/rapid-a/procedure/v1/v1>=varx*someString-v3/procedure*constants*v1/someString/if/rapid/d/constants)){
+read procedure;
+read procedure;
+print v2;
+b=constants+varx/if/constants+v1/v3;
+print if;
+someVariable=v3/rapid*a*c+c*c/rapid*v3-c;
+read rapid;
+print someVariable;
+read c;
+read rapid;
+}
+print d;
+if ((b-constants*someVariable/c*variables*b<if+v3*someString/b-v2+v1)||(someVariable+someString/rapid-a*rapid/someString>=a-someString+v2-v2*procedure*v3))then (someVariable<d+someString)&&(procedure/v3-constants>=rapid/v3)else {
+someString=if-varx+v1*d;
+read ils;
+a=variables*v1*a;
+c=c+ils-if*v1+varx-v2+b*if/rapid*v1;
+v3=ils/someVariable+procedure*if;
+print ils;
+print v3;
+print ils;
+read d;
+read procedure;
+}
+print v3;
+while ((a/d-v1-procedure-c+a/if/if+constants-varx-procedure<rapid/a/c)||(someVariable>=constants/d)){
+variables=v1+rapid/c/someString;
+print constants;
+read someString;
+read constants;
+constants=if/v3/v1+if*procedure;
+print procedure;
+someString=ils/v1*varx+d-variables;
+v2=c/v1/d-b-b/v2;
+print c;
+constants=c/procedure/rapid+someVariable/d+variables/v3/v1*v3/varx*v2;
+}
+read if;
+if ((b/b/v3*procedure*if<rapid-v1-constants+c*someString)||(v3/v2>=rapid+ils+a+a/someVariable+ils+a/rapid+b*someString-varx))then (d/ils/variables/procedure/rapid/b+v1+v1<a+if+procedure*v1-someVariable/b/someString/constants+b)&&(someString-varx*someString+b>=ils*v3*ils/a*varx/if/c/c-c)else {
+someString=if*variables/v1;
+read if;
+constants=rapid-v3/variables*variables-someString/v2+v3-someString;
+read v3;
+print v2;
+read if;
+read a;
+v3=varx-someString+v2-variables-someVariable/procedure+v2-v3;
+constants=d-b-procedure-procedure*rapid+v2/d;
+print ils;
+}
+print b;
+read v3;
+print a;
+while ((v1<variables*varx/a-procedure+if*if)||(varx-c-ils>=ils*b*ils-someVariable-ils-c*a*ils-d)){
+read v3;
+v3=someVariable-varx;
+varx=varx+constants-d+constants+procedure-if*b/c/d/d;
+variables=someVariable+c*v3-someVariable+procedure;
+v1=d+v3/if*procedure-if-v2-procedure/b;
+read procedure;
+print someString;
+print variables;
+rapid=v3-varx+constants-c;
+print v2;
+}
+read v1;
+while ((variables*someString*procedure-b-variables/v1*b/someString+c/procedure+a<v1/if-procedure/ils*someVariable/procedure+someString+d)||(constants+variables/v1-v3*v3*a>=v3*d/v2+b-someVariable)){
+b=rapid-someVariable-if/someString-procedure/c*someVariable-variables+b;
+read someVariable;
+d=v3;
+print constants;
+read a;
+print v3;
+print v3;
+someVariable=variables-if/rapid-someVariable;
+read varx;
+print someVariable;
+}
+while ((someString*someString<d/a+d)||(varx-someString-varx*d*procedure/variables+c/variables>=v1-if/v3*v1-variables+c-d+d/someVariable+b)){
+print someVariable;
+print varx;
+print v3;
+procedure=someVariable+someVariable-if+variables-rapid;
+v1=v1*someVariable+someVariable*v1-v1*b-v3;
+read b;
+read ils;
+procedure=d-c*someVariable+someString;
+b=v3/someVariable-v2+constants-v3*procedure-rapid-ils+constants;
+d=someString+rapid+v3*rapid;
+}
+while ((a*someVariable*c/varx<v3+rapid*procedure+procedure*varx+someVariable/if-rapid)&&(someVariable*v2>=v1/d-v3*v2-if+someString)){
+if=varx/a-someString/v2/someVariable/c/c*v3/v1-variables;
+a=rapid-someString-if-b;
+v3=varx/a;
+v1=rapid+procedure+constants;
+print if;
+variables=v3*b-varx/v1/v3/constants-someVariable*a-ils+variables;
+read procedure;
+read c;
+someString=varx/someVariable/d*constants*variables*a+procedure;
+c=someVariable-c/someVariable*b+variables+v2-d;
+}
+varx=rapid+if-b-c+someString/someVariable/d;
+while ((variables/v1/someString+someString+if-c+b/varx<if+someVariable+b-someString/varx+v2)||(variables+c*procedure/v2/v2+v1-c/varx-v3/rapid/someString>=a+a)){
+ils=varx*v2+d/variables;
+someString=varx-variables-v2-someVariable-v1;
+rapid=v3+if*rapid/a*constants*v2;
+print ils;
+a=someVariable/b+b+d+constants+procedure*v3*procedure/constants;
+b=if+ils*v3/d*c/b;
+someVariable=v2/v3;
+read rapid;
+v3=v1*a;
+read procedure;
+}
+read variables;
+if ((someVariable+rapid<someVariable)||(someString+v2/variables+constants+v1+a-varx*someVariable-someString*variables/a>=v3/rapid-a*a*if*c))then (someVariable+a*ils-v3<procedure-v1*d-someVariable+a/a/ils+b/c/v2-d)||(a-d/v2-if>=v1-someString/varx/procedure*v2*v2)else {
+print if;
+read variables;
+d=someVariable*rapid*d/d-someString+variables-v1*ils+someString-b;
+read procedure;
+c=constants/someVariable*varx*constants-d;
+print b;
+print b;
+read varx;
+variables=constants/a*b*constants*someString/v2-if+d*rapid/v2;
+print rapid;
+}
+read varx;
+if ((constants*v2/rapid<a*someVariable*v2+a-d+procedure/someVariable*constants-v3)||(constants*someVariable-d>=d+someString/if+rapid/a-rapid+d/d-someString))then (v3<constants*v3*if)&&(b+a>=varx-constants-variables-b-variables+v2/ils-constants*varx/varx)else {
+variables=varx-someVariable/constants/someString*v2+varx/constants+c;
+if=variables/someString+variables/a;
+read variables;
+print b;
+procedure=rapid-variables-procedure/c+ils;
+print a;
+someString=v2-a/v2*rapid-rapid+someVariable*ils*if*procedure-varx*someVariable;
+procedure=b*someString+d/varx*v3-c/procedure+c+procedure*v1;
+varx=someVariable-variables/v1+someString/b*procedure+b*a+c;
+print ils;
+}
+while ((b*v3+d*procedure-someVariable<v1)&&(v1+d+procedure>=c-ils+a-a+v1-v3+a+c/d*a+if)){
+read someString;
+print varx;
+print if;
+procedure=a/c;
+if=v3*d/v2/rapid+varx/v2+someVariable-if;
+read v2;
+read varx;
+read someVariable;
+read variables;
+print v1;
+}
+while ((b+constants-procedure+procedure<c/procedure+v1-varx-ils)||(d*procedure/someString/rapid>=v3-v2/constants)){
+read b;
+read v3;
+a=v2-procedure+variables;
+variables=someString;
+variables=someVariable+v1-someString*v3-v2-c+v1-if+ils/a;
+ils=v3*ils/constants/v1*variables+constants*variables/v1+c-procedure*d;
+read variables;
+read someString;
+v3=v3+if;
+read ils;
+}
+while ((rapid-b-v1+someVariable*ils-v2/v1*c/c+rapid<ils/varx*varx*b-d-ils-variables*v3/varx+if+variables)||(v2-procedure*someVariable/c>=varx/rapid+b*c+varx+rapid)){
+print variables;
+read if;
+if=procedure;
+v1=ils/someString*c-procedure-v3-d*someVariable-if;
+read constants;
+constants=ils/v3*c-if+ils/ils-ils*someString;
+v2=d+c-v2-b+v2-constants-rapid-someVariable+variables/if*someVariable;
+someVariable=v1+b-b-someString/v3*someVariable/someVariable-variables*varx/varx;
+print v1;
+print varx;
+}
+b=someString+someVariable*someVariable-if*someString;
+if ((v1-ils/v3-v2-c<b/rapid-rapid/someVariable/someString-varx+ils/varx)||(if-constants/someVariable-v2>=v1+v2*varx-b-if/c))then (ils+someVariable*b/b*someString-b/d/d-varx<constants)||(d+c-v3*a/ils/b>=a-d+rapid+if+v2-rapid*v1-a-v2+procedure)else {
+read variables;
+read procedure;
+read d;
+v2=v1*constants;
+print if;
+print v2;
+if=v1-constants-variables-someString;
+v2=constants*a/c*v1;
+c=v2;
+print ils;
+}
+while ((procedure/if+rapid-rapid*constants/v2-constants<procedure)&&(d+constants+c>=b*constants-variables/if*d+v2*a+variables/c)){
+read b;
+v3=v3/c;
+ils=constants*ils/c+d-b*someVariable-a*v3;
+v2=procedure+someVariable*constants/v1/ils*rapid+varx/ils-c;
+v2=variables-procedure/ils*a+if;
+rapid=c-rapid/v1+a*if-c*constants+procedure;
+print someVariable;
+v3=c/constants/ils/d-constants-b-ils*v3*variables+if-d;
+d=ils/if/procedure/a/b*if/varx;
+print c;
+}
+a=a-varx+someVariable/v2+if*varx/varx;
+if ((variables-v3+someString*variables*b/v3/varx*someVariable-ils<v2+d-c)&&(someString-b*someString+ils/varx+c-v2-v3+a/if>=d*varx+d*c-varx/constants-constants+variables))then (v2+b<procedure+v3*variables+rapid*constants+someVariable/ils-v1)&&(a+v1-ils+ils/variables/if-ils+d+rapid>=varx+ils-v1/ils-varx-constants+d/variables*procedure)else {
+v2=varx*someVariable*v2/constants;
+read if;
+print v3;
+read c;
+print ils;
+rapid=a*v1;
+read c;
+c=ils*varx*c*c/constants+c-ils/v3/someVariable-if;
+read v1;
+print variables;
+}
+if ((procedure+v1/varx-a/procedure/someString*b<rapid)&&(v2/a+constants/procedure>=rapid))then (c<someVariable*procedure/variables-rapid+b-constants*constants*someVariable)||(if-variables+variables*someString*d-v2-b*if>=c+constants+varx+b*b*d+if*v3-v1/v1-ils)else {
+read procedure;
+read d;
+v1=d*ils+ils*rapid-if-b-b*if*variables/varx;
+read d;
+print c;
+read c;
+read c;
+b=c+someString+a-if/v3;
+variables=v1-varx*b;
+print d;
+}
+variables=constants*constants*a+if+v1-rapid-d*varx/varx;
+read v1;
+while ((b/v2+v1/someString*d+v1<b+rapid/constants*someVariable*variables)||(b/someString*d>=v3-rapid)){
+varx=ils+constants/v1/rapid/c+rapid+c/if-someString;
+if=v1-v2+someVariable*v2+varx+procedure/c*v3-v1;
+read v2;
+varx=d*if-someVariable-if/variables+someString/rapid/if;
+print v2;
+v3=varx/rapid*v1*varx/a;
+ils=varx+rapid/v2;
+read a;
+read someString;
+print v2;
+}
+read v3;
+print v2;
+while ((ils*variables-ils<v2*ils+a+someString-constants*d*variables/someString-ils)||(someVariable-someVariable-v2*v2-constants*if>=d/d*variables-d)){
+b=varx/v2*rapid-constants;
+v2=b;
+print v3;
+print if;
+variables=v1;
+print a;
+v1=v3+constants/if/a-c/varx-a-someString-b/varx+a;
+constants=someVariable/d/constants;
+b=v3+v2/someVariable/d-d*b-someVariable+rapid+v1/variables;
+variables=d/v2+v2*v1/varx/a*constants+v3;
+}
+print varx;
+if ((a*someString<v3+someString-v2+someString)&&(variables-someString*someString+a-a-constants+if+varx-if*someString>=procedure))then (varx/someVariable/v2/v1-rapid/someVariable-v2-procedure/v3-if*d<someString/b-someString/constants/a/constants*someString)&&(variables>=c+b*d-b/c*c+rapid*b/c*if)else {
+print b;
+d=v2/c-b+c-someString-procedure*a-ils;
+read c;
+a=rapid+rapid-variables/rapid-v1+someString;
+read v3;
+print v3;
+print rapid;
+ils=ils/v3+c;
+read a;
+v3=v2-constants/constants;
+}
+print ils;
+if ((someString+procedure+ils-v1*if+a*b-v2-varx/varx<d*v1-varx*v3/constants+someVariable)&&(a/a-varx+someString/v1+a+variables*v2+v1*d>=v2-v3+v2/variables))then (d-v3<ils+c*procedure*procedure-procedure-c/constants+d/v2/v1)&&(v1-someVariable/v1/someVariable*variables>=varx-c+constants/variables*variables)else {
+someString=variables/v1+constants/b;
+b=constants-varx-rapid*b-v3*c*ils*v1-someVariable+v3+v3;
+v2=a+d+varx+d+a-variables-variables;
+read procedure;
+read rapid;
+rapid=variables/rapid*ils+constants/v3*varx*a/ils-v1+ils;
+a=someString-v1/someVariable;
+print procedure;
+a=someString*someVariable+variables+c/b-v2-ils;
+print a;
+}
+print v3;
+if ((v2*someVariable*rapid-variables+rapid*variables+d+v1*variables<v2+constants+varx+rapid-if-d-c/someVariable+d)||(b*procedure+someVariable+v2+constants*d*v3+v2>=v3*rapid-rapid-a))then (rapid*varx*someVariable<variables/constants/constants*variables/constants)||(b+someVariable*b-v1/c-varx/v3+someString>=v1-constants)else {
+someString=v1-constants*varx+rapid;
+read constants;
+b=constants/v3*v3/d-v3+b/ils-varx/varx/procedure/someString;
+ils=procedure*rapid/v2-a;
+b=if*varx;
+if=rapid-constants-if*procedure/ils+ils*varx+v1;
+print if;
+b=procedure+d/someString-someString+someString/rapid/rapid*c-v2*someVariable/d;
+read v3;
+rapid=constants-variables*variables-c*if/b;
+}
+v1=someString-v1-d+if*someVariable+varx*someString-if*b*ils;
+if ((procedure/procedure+someString<ils*rapid*v2/a/ils-varx*varx)&&(ils-ils*rapid*ils+if*v1*rapid>=constants*d-constants*b*v1/v1-rapid*procedure*rapid+a))then (v2-variables+someString-b*someVariable<v1-c+v3*a+v1*ils/v3+d)&&(v1-constants>=variables+rapid/v2*rapid*variables/v1/b)else {
+c=if/someString*d-rapid*ils*someString+variables/a-rapid/someString-c;
+read c;
+print varx;
+c=someVariable/b+v3/procedure/v3;
+varx=procedure-if-rapid-c;
+v1=constants-v3;
+v1=c/b+variables/v3-variables+someVariable+ils/v2;
+constants=v2*varx*v1*procedure;
+someVariable=procedure-ils;
+read if;
+}
+someString=variables/variables/constants;
+print a;
+v2=a*variables-d*v1*constants/someVariable;
+if ((constants<someString*procedure*rapid/if)||(b-a/someString/variables+if+v3>=variables-ils*v2+rapid))then (varx-variables+variables*rapid<constants*if-d/someString*varx*ils/someString-someVariable*b-c-someVariable)&&(a/v2-d/ils/v3>=v3-someVariable-c+ils-b)else {
+read constants;
+v2=rapid+d+ils*someVariable+v3*b;
+v3=c/constants/procedure+procedure*v1-if;
+print someString;
+print v1;
+print b;
+v2=c-c+procedure-a/d*a*a;
+b=rapid-c-someVariable;
+variables=if/v3*a-procedure*c;
+read b;
+}
+print someVariable;
+someVariable=d-procedure-c-ils+varx*someVariable;
+read if;
+someVariable=ils;
+while ((v3-v2/procedure*b*a*rapid-v1*v3+constants<variables*constants)&&(v2+varx*ils+procedure*if/variables>=a/someString/constants)){
+d=if*v2*v2/ils*v2;
+print v3;
+ils=ils;
+ils=if-b+procedure*v3*v3/constants;
+ils=someString+rapid*a-v2*v3-d+b/v3/d-someString;
+rapid=rapid+procedure+c*c-d;
+someVariable=constants/someString*rapid/constants/someVariable;
+rapid=variables+ils/someString-varx*b*variables*variables+someVariable-ils/v2+d;
+variables=v3;
+constants=c+varx+v1+variables*v2*rapid*if-a*varx;
+}
+if ((c-b+ils-someString<v3-d+a*d+v3+if/b*someVariable-varx+b*someString)&&(rapid>=varx))then (someVariable<v2+v2+procedure)||(v2*procedure+if+varx/c>=varx/ils-v3/a-someString/varx/constants-d/c*varx-if)else {
+a=c/procedure/varx/c/rapid;
+print constants;
+c=procedure*v2/v1-b/b+if-someString*rapid+b;
+procedure=someString+variables-ils*constants-d;
+someVariable=rapid*varx/rapid-constants;
+read someString;
+procedure=v1*someString+b-v2-someVariable;
+c=if/rapid/ils;
+read someString;
+print someString;
+}
+if ((constants*if-someVariable-v3+v1/varx<someVariable*varx*constants-varx+d-v3*procedure+v3*someVariable)&&(rapid/if+v3/someVariable*procedure>=v3-varx))then (v3/ils+v2/if/if<procedure+procedure/a*v1)&&(b-d/d+someVariable/rapid*b/variables-rapid-d/ils>=a-v2-d/ils-v3/if-a*rapid+constants)else {
+varx=c/someVariable*a-rapid*b;
+d=varx-varx/variables-ils/v3/b-v2+v1+variables;
+print v2;
+print someString;
+print someVariable;
+print ils;
+print a;
+someString=variables+rapid*a-c;
+someVariable=v3-varx+d+someVariable+someVariable/ils;
+v1=procedure/a+d/procedure*variables/v3*v3/someString;
+}
+while ((variables*variables-if-if-rapid<variables-rapid)&&(someString*v1>=v3*d+procedure)){
+read d;
+someVariable=b*variables/b;
+print if;
+print someString;
+someString=someVariable/rapid*constants-varx-procedure+v2-ils/ils-varx-v2;
+b=v1-someString-varx-v2;
+procedure=rapid+v3-varx/d*v1-if*b-a-rapid-variables*ils;
+read b;
+print rapid;
+print variables;
+}
+while ((ils<c/procedure*rapid+c)||(rapid/a-d>=constants/constants-ils/v1*rapid)){
+read b;
+read varx;
+procedure=if-if*ils-someString;
+v3=ils/varx*c/someVariable*varx-v3-d+v3/someString/procedure/varx;
+procedure=c/someString/v2+v3/d*v2*v3/variables/variables*b;
+if=variables*ils*ils/procedure/if-v1+varx/variables/constants;
+read ils;
+read v3;
+read ils;
+varx=someVariable-ils*constants+procedure+v3-rapid-v1+v1/someString-v3;
+}
+while ((rapid+v3+variables<v2+d)&&(varx/v1+if/v2>=c+constants/v1/d/ils+v3*variables*v3+b*constants-someString)){
+c=constants;
+print d;
+read v2;
+rapid=d+ils+ils+if-someString*someString-someString;
+read variables;
+read v2;
+read someVariable;
+print constants;
+read d;
+read rapid;
+}
+print a;
+while ((a+v3/v3/varx+someString+someString<v1/if/ils*b)&&(b/if>=rapid+someVariable*rapid/v1-constants/d)){
+read constants;
+read v3;
+someVariable=constants-procedure/v1-if/procedure;
+print constants;
+print b;
+procedure=procedure*v2/b+constants;
+read c;
+read procedure;
+ils=v3/d-constants-v1-someString;
+ils=c+varx*v3*variables/someVariable*someVariable+varx/someString*varx*someVariable;
+}
+read c;
+constants=varx/someString/c-v2*someVariable*v1-procedure;
+while ((v3*v2+d-if+v1<b/if/someVariable-d)||(v3*a/c>=someString*varx+v2+b*v2*someVariable/someVariable-a-if-d)){
+print ils;
+print if;
+read v2;
+print rapid;
+if=if/someVariable+rapid-rapid/d/rapid+v2+if-variables-v3;
+print d;
+print variables;
+read constants;
+print rapid;
+v3=v2-b-procedure-v2*a+someString;
+}
+}

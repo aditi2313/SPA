@@ -113,7 +113,7 @@ def format_statistic(test_name, result, previous_result):
     prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 
     max_diff = f"({'↑' if round(new_max - prev_max, 3) > 0 else '↓'} {round(new_max - prev_max, 3)})"
-    avg_diff = f"({'↑' if new_avg - prev_avg > 0 else '↓'} {new_avg - prev_avg})"
+    avg_diff = f"({'↑' if round(new_avg - prev_avg, 3) > 0 else '↓'} {round(new_avg - prev_avg, 3)})"
 
     return f"### {test_name}\n" + \
            f"#### Overall statistics\n" + \

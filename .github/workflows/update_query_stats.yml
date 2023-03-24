@@ -13,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with: 
-        persist-credentials: false # otherwise the token used is the GITHUB_TOKEN, instead of your PAT
+        # persist-credentials: false # otherwise would use github token instead of PAT
         fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
         ref: ${{ github.ref }}
 
@@ -25,12 +25,6 @@ jobs:
       with:
         path: ${{github.workspace}}/Team05/Tests05/out
         key: ${{ runner.os }}-out-xml-cache-${{ hashFiles('**/Tests05/out/**') }}
-
-    # If the cache isn't hit, then we can't run the script
-    # so just exit the workflow
-    # - name: Check cache hit
-    #   if: steps.cache.outputs.cache-hit != 'true'
-    #   run: echo "Cache miss, might need to run the build workflow again first" && exit 1
 
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -47,13 +41,14 @@ jobs:
         git config --local user.name "aizatazhar"
         git commit -a -m "Update out_analysis files"
     
+    # Sadly need to use a PAT otherwise the on push workflows
+    # won't be triggered when the commit is added to the PR
+    # https://github.com/orgs/community/discussions/25702
+    # But since we don't own the organisation, we can't
+    # generate a PAT with write access
+    # Alternative is to close and reopen the PR to
+    # trigger the workflows
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ github.ref }}
-        # Sadly need to use a PAT otherwise the on push workflows
-        # won't be triggered when the commit is added to the PR
-        # https://github.com/orgs/community/discussions/25702
-        # Alternative is to close and reopen the PR to
-        # trigger the workflows
-        github_token: ${{ secrets.AIZAT_PAT }} 

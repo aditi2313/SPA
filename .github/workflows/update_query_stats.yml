@@ -1,6 +1,6 @@
 # Runs the python script for analysing query statistics and 
 # directly adds the updated statistics as a commit to your PR
-name: Update Query Statistics
+name: Update query statistics
 
 on:
   workflow_dispatch: {}
@@ -13,8 +13,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with: 
+        persist-credentials: false # otherwise the token used is the GITHUB_TOKEN, instead of your PAT
+        fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
         ref: ${{ github.ref }}
-        fetch-depth: 0
 
     # Use cache so that we don't have to rebuild autotester
     # and run system tests again
@@ -50,4 +51,9 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ github.ref }}
-        github_token: ${{ secrets.AIZAT_PAT }} # TODO(aizatazhar): do i need this
+        # Sadly need to use a PAT otherwise the on push workflows
+        # won't be triggered when the commit is added to the PR
+        # https://github.com/orgs/community/discussions/25702
+        # Alternative is to close and reopen the PR to
+        # trigger the workflows
+        github_token: ${{ secrets.AIZAT_PAT }} 

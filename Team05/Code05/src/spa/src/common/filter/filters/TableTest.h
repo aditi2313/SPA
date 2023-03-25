@@ -43,7 +43,7 @@ template <class Table, class Index>
 class ReverseIndexTest : public TableTest<Table> {
  public:
   bool FilterTable(const Table& table) override { return table.exists2(index); }
-  ReverseIndexTest(Index index) : index_(index) {}
+  explicit ReverseIndexTest(Index index) : index_(index) {}
   ~ReverseIndexTest() {}
 
  private:

@@ -3,9 +3,9 @@
 
 #include <exception>
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <vector>
-#include <string>
 
 #include "PKB/tables/DoubleIndexTable.h"
 
@@ -39,9 +39,9 @@ class ReverseIndexFilter : public TableFilter<Table> {
   // needed to store the result table.
   inline static ReverseIndexFilter<Table, Index>& of(Index index) {
     if (!filters_.count(index)) {
+      ReverseIndexFilter filter(index);
       filters_.insert(
-          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(
-                      ReverseIndexFilter(index))});
+          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(filter)});
     }
     return *filters_.at(index);
   }
@@ -73,8 +73,9 @@ class IndexDoubleFilter : public TableFilter<Table> {
 
   inline static IndexDoubleFilter<Table, Index>& of(Index index) {
     if (!filters_.count(index)) {
-      filters_.insert({index, std::make_unique<IndexDoubleFilter<Table, Index>>(
-                                  IndexDoubleFilter(index))});
+      IndexDoubleFilter filter(index);
+      filters_.insert(
+          {index, std::make_unique<IndexDoubleFilter<Table, Index>>(filter)});
     }
     return *filters_.at(index);
   }

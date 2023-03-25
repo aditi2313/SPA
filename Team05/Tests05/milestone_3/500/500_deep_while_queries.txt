@@ -1,6 +1,7 @@
 1 - get the immediate parent of 500
 stmt s;
 Select s such that Parent(s, 500)
+499
 5000
 2 - benchmark test case to generate all the parents of s
 stmt s;

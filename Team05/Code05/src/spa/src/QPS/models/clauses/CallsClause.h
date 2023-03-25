@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "Clause.h"
@@ -25,7 +26,6 @@ class CallsClause : public Clause {
     if (table.empty()) return;
     auto &data = table.get_row(callee);
     AddList(data.get_direct_calls(), results);
-
   }
 };
 

@@ -5,6 +5,7 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+#include <string>
 
 #include "PKB/tables/DoubleIndexTable.h"
 
@@ -35,9 +36,22 @@ class ReverseIndexFilter : public TableFilter<Table> {
     return result_;
   }
 
-  ReverseIndexFilter(Index index) : index_(index) {}
+  // needed to store the result table.
+  inline static ReverseIndexFilter<Table, Index>& of(Index index) {
+    if (!filters_.count(index)) {
+      filters_.insert(
+          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(
+                      ReverseIndexFilter(index))});
+    }
+    return *filters_.at(index);
+  }
 
  private:
+  explicit ReverseIndexFilter(Index index) : index_(index) {}
+
+  inline static std::unordered_map<
+      Index, std::unique_ptr<ReverseIndexFilter<Table, Index>>>
+      filters_;
   Table result_;
   Index index_;
 };
@@ -66,7 +80,7 @@ class IndexDoubleFilter : public TableFilter<Table> {
   }
 
  private:
-  IndexDoubleFilter(Index index) : index_(index) {}
+  explicit IndexDoubleFilter(Index index) : index_(index) {}
   inline static std::unordered_map<
       Index, std::unique_ptr<IndexDoubleFilter<Table, Index>>>
       filters_;

@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <utility>
+#include <string>
 
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"

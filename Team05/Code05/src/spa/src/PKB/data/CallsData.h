@@ -32,8 +32,7 @@ class CallsData : public Data<std::string, std::string> {
         total_calls_.insert(c);
     }
 
- private:    
-
+ private:
     // set of all calls
     std::unordered_set<std::string> total_calls_;
 };

@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <string>
 
 #include "IndexableTable.h"
 #include "PKB/data/Export.h"

@@ -10,7 +10,7 @@
 #include "PKBRelationTable.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
-#include "common/filter/filters/TableFilter.h"
+#include "common/filter/filters/TableTest.h"
 #include "tables/DoubleIndexTable.h"
 
 using filter::IndexableFilterPtr;
@@ -82,9 +82,6 @@ class PKBRead {
   std::unique_ptr<PKBResult<CallsTable>> Calls(
       IndexableFilterPtr<CallsData> filter);
 
-
-  CallsDTable& Calls(filter::TableFilter<CallsDTable>& filter);
-
   std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);
 
   std::unique_ptr<PKBResult<ConditionTable>> Condition(
@@ -125,6 +122,10 @@ class PKBRead {
   std::unordered_set<int> Affects(int);
 
   std::unordered_set<int> AffectsT(int);
+
+  inline bool Calls(filter::TableTest<CallsDTable>& test) {
+    return test.TestTable(relation_table_->calls_d_table_);
+  }
 
  private:
   inline bool IsContainerStmt(int v) {

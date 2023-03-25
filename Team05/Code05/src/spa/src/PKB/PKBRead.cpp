@@ -179,9 +179,4 @@ std::unordered_set<int> PKBRead::NextT(int v) {
 
   return result;
 }
-
-CallsDTable& PKBRead::Calls(filter::TableFilter<CallsDTable>& filter) {
-  return filter.FilterTable(relation_table_->calls_d_table_);
-}
-
 }  // namespace pkb

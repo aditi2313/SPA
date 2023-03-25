@@ -1,7 +1,9 @@
 #pragma once
 
+#include <memory>
 #include <unordered_map>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include "IndexableTable.h"
@@ -14,6 +16,9 @@ namespace pkb {
 // identifiable.
 template <class Data, class Index = Key, class SecondIndex = Key>
 class DoubleIndexTable {
+  using CurrentTable = DoubleIndexTable<Data, Index, SecondIndex>;
+  using CurrTablePtr = std::unique_ptr<CurrentTable>;
+
  public:
   DoubleIndexTable() {}
 
@@ -45,6 +50,11 @@ class DoubleIndexTable {
   }
 
   inline bool exists(Index id) const { return first_index_map_.count(id); }
+
+  inline bool exists(const Index& id, const SecondIndex& id2) {
+    return exists(id) && exists2(id2) &&
+           get_row(id).get_second_indexes().count(id2);
+  }
 
   inline bool exists2(SecondIndex id) const {
     return second_index_map_.count(id) && !second_index_map_.at(id).empty();

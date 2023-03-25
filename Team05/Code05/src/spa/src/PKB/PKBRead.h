@@ -10,6 +10,7 @@
 #include "PKBRelationTable.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
+#include "common/filter/filters/TableFilter.h"
 #include "common/filter/filters/TableTest.h"
 #include "tables/DoubleIndexTable.h"
 
@@ -125,6 +126,10 @@ class PKBRead {
 
   inline bool Calls(filter::TableTest<CallsDTable>& test) {
     return test.TestTable(relation_table_->calls_d_table_);
+  }
+
+  CallsDTable& Calls(filter::CallsTableFilter& filter) {
+    return filter.FilterTable(relation_table_->calls_d_table_);
   }
 
  private:

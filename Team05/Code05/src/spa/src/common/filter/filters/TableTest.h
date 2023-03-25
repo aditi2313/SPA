@@ -6,6 +6,9 @@
 
 namespace filter {
 
+// TODO(Gab) remove if no time
+// temporary code related to trying to make
+// use of a boolean return value in pkb for optimisations
 template <class Table>
 class TableTest {
  public:
@@ -16,7 +19,7 @@ class TableTest {
   /// <returns></returns>
   virtual bool TestTable(const Table&) = 0;
 
-  virtual ~TestTable() = default;
+  virtual ~TableTest() = default;
 };
 
 template <class Table, class Index, class SecondIndex>
@@ -25,6 +28,8 @@ class DoubleIndexTest : public TableTest<Table> {
   bool TestTable(const Table& table) override {
     return table.exists(index_, s_index_);
   }
+
+  ~DoubleIndexTest() {}
 
   DoubleIndexTest() : s_index_(s_index), index_(index) {}
 
@@ -37,7 +42,8 @@ template <class Table, class Index>
 class ReverseIndexTest : public TableTest<Table> {
  public:
   bool FilterTable(const Table& table) override { return table.exists2(index); }
-  ReverseIndexFilter(Index index) : index_(index) {}
+  ReverseIndexTest(Index index) : index_(index) {}
+  ~ReverseIndexTest() {}
 
  private:
   Index index_;
@@ -47,7 +53,11 @@ template <class Table, class Index>
 class IndexTest : public TableTest<Table> {
  public:
   IndexTest(Index index) : index_(index) {}
+  ~IndexTest() {}
   bool TestTable(const Table& table) override { return table.exists(index); }
+
+ private:
+  Index index_;
 };
 
 }  // namespace filter

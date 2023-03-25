@@ -19,16 +19,13 @@ class CallsTClause : public Clause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    Clause::Index<pkb::CallsData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<CallsIndexFilter>(key);
-          return std::move(pkb->Calls(std::move(filter))->get_result());
-        },
-        [&](EntitySet &result, pkb::CallsData data) {
-          AddList(data.get_total_calls(), result);
-        },
-        results);
+    auto key = index.get_value();
+    auto callee = std::get<std::string>(key);
+    auto &table =
+        pkb->Calls(filter::CallsDIndexFilter::of(std::get<std::string>(key)));
+    if (table.empty()) return;
+    auto &data = table.get_row(callee);
+    AddList(data.get_total_calls(), results);
   }
 };
 

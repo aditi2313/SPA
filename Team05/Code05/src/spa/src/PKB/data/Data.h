@@ -2,8 +2,11 @@
 
 #include <cassert>
 #include <unordered_set>
+#include <variant>
 
 namespace pkb {
+// todo: set this definition elsewhere
+using Key = std::variant<int, std::string>;
 template <class T, class SecondIndexes = Key>
 class Data {
  public:
@@ -11,7 +14,7 @@ class Data {
 
   inline T get_index() { return line_; }
 
-  inline std::unordered_set<SecondIndexes>& get_second_indexes() {
+  inline const std::unordered_set<SecondIndexes>& get_second_indexes() const {
     return second_indexes_;
   }
 

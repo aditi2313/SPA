@@ -3,6 +3,7 @@
 #include <cassert>
 #include <unordered_set>
 #include <variant>
+#include <string>
 
 namespace pkb {
 // todo: set this definition elsewhere

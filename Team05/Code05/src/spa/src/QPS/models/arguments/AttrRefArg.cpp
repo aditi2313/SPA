@@ -5,8 +5,7 @@
 namespace qps {
 void AttrRefArg::UpdateTableWithAttrValue(
     pkb::PKBReadPtr &pkb,
-    Table &query_table,
-    bool &is_table_initialized) {
+    Table &query_table) {
   // Update query_table with rows mapping from
   // Index to AttrValue
   // e.g. calls (line) to calls (procName)
@@ -26,12 +25,7 @@ void AttrRefArg::UpdateTableWithAttrValue(
   Table new_table(columns);
 
   new_table.add_values(col1, col2, rows);
-  if (!is_table_initialized) {
-    query_table = new_table;
-    is_table_initialized = true;
-  } else {
-    query_table = TableJoiner::Join(query_table, new_table);
-  }
+  query_table = TableJoiner::Join(query_table, new_table);
 }
 
 void AttrRefArg::InitializeEntities(

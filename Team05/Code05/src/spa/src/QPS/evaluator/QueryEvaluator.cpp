@@ -12,8 +12,6 @@ extern MasterEntityFactory master_entity_factory_;
 
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   auto &clauses = query->get_clauses();
-  has_table_been_intialized_ = false;
-
   // Order of evaluation
   auto order = ClauseOptimiser::GroupClauses(clauses);
 
@@ -34,8 +32,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 }
 
 bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
-  clause->Preprocess(
-      pkb_, table_, has_table_been_intialized_);
+  clause->Preprocess(pkb_, table_);
 
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
@@ -52,12 +49,8 @@ bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
       clause_evaluator_state);
 
   if (!clause_table.Empty()) {
-    if (!has_table_been_intialized_) {
-      table_ = clause_table;
-      has_table_been_intialized_ = true;
-    } else {
-      table_ = TableJoiner::Join(table_, clause_table);
-    }
+    table_ = TableJoiner::Join(table_, clause_table);
+
     if (table_.Empty()) return false;
   }
 
@@ -92,7 +85,7 @@ void QueryEvaluator::UpdateTableWithElem(
     AttrRefArg attr_ref_arg(syn_name, AttrRef::get_attr_type(attr_name));
     attr_ref_arg.set_entity_type(entity_type);
     attr_ref_arg.UpdateTableWithAttrValue(
-        pkb_, table_, has_table_been_intialized_);
+        pkb_, table_);
   } else {
     SynonymName syn_name = elem;
     EntityType entity_type = query->get_declared_synonym_entity_type(
@@ -101,12 +94,7 @@ void QueryEvaluator::UpdateTableWithElem(
         entity_type, pkb_);
 
     auto synonym_table = Table(syn_name, initial_entities);
-    if (!has_table_been_intialized_) {
-      table_ = synonym_table;
-      has_table_been_intialized_ = true;
-    } else {
-      table_ = TableJoiner::Join(table_, synonym_table);
-    }
+    table_ = TableJoiner::Join(table_, synonym_table);
   }
 }
 }  // namespace qps

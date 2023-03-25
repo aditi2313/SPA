@@ -17,8 +17,7 @@ class WithClause : public Clause {
 
   void Preprocess(
       pkb::PKBReadPtr &pkb,
-      Table &query_table,
-      bool &is_table_initialized) override;
+      Table &query_table) override;
 
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,

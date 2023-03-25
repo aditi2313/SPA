@@ -30,6 +30,7 @@ class Table {
       rows_.push_back(std::vector<Entity>());
       rows_.back().push_back(entity);
     }
+    is_initialized_ = true;
   }
 
   // Initialize table with columns but no entities
@@ -40,6 +41,11 @@ class Table {
       id_map_[col] = id++;
       columns_set_.insert(col);
     }
+    is_initialized_ = true;
+  }
+
+  inline bool is_initialized() {
+    return is_initialized_;
   }
 
   inline bool Empty() {
@@ -115,5 +121,7 @@ class Table {
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
   std::unordered_map<SynonymName, int> id_map_;
   std::vector<std::vector<Entity>> rows_;
+
+  bool is_initialized_ = false;
 };
 }  // namespace qps

@@ -31,7 +31,8 @@ class DoubleIndexTest : public TableTest<Table> {
 
   ~DoubleIndexTest() {}
 
-  DoubleIndexTest() : s_index_(s_index), index_(index) {}
+  DoubleIndexTest(Index index, SecondIndex s_index)
+      : s_index_(s_index), index_(index) {}
 
  private:
   Index& index_;

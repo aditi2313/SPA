@@ -7,11 +7,17 @@ namespace qps {
 // Returns true if there are results,
 // false otherwise
 bool ClauseEvaluator::EvaluateClause(
-    ClauseState &state) {
-  auto &clause = state.get_clause();
-  return clause->has_synonym_arg()
-         ? EvaluateSynonymClause(state)
-         : EvaluateExactClause(state);
+    ClausePtr &clause,
+    Table &clause_table,
+    EntitySet &LHS,
+    EntitySet &RHS) {
+  ArgumentPtr &arg1 = clause->get_arg1();
+  ArgumentPtr &arg2 = clause->get_arg2();
+
+  return (arg1->IsSynonym() || arg2->IsSynonym())
+         ? EvaluateSynonymClause(
+          clause, clause_table, LHS, RHS)
+         : EvaluateExactClause(clause, LHS, RHS);
 }
 
 // Handles these cases:
@@ -20,12 +26,14 @@ bool ClauseEvaluator::EvaluateClause(
 // (exact, _)
 // (_, _)
 bool ClauseEvaluator::EvaluateExactClause(
-    ClauseState &state) {
-  auto &clause = state.get_clause();
+    ClausePtr &clause,
+    EntitySet &LHS,
+    EntitySet &RHS) {
   AssertExactClauseArgs(
       clause->get_arg1(), clause->get_arg2());
 
-  return QueryPKBForExactClause(state);
+  return QueryPKBForExactClause(
+      clause, LHS, RHS);
 }
 
 // Handles these cases:
@@ -34,18 +42,25 @@ bool ClauseEvaluator::EvaluateExactClause(
 // (syn1, syn2) where syn1 != syn2
 // (syn, syn) where syn == syn
 bool ClauseEvaluator::EvaluateSynonymClause(
-    ClauseState &state) {
-  auto &clause = state.get_clause();
+    ClausePtr &clause,
+    Table &clause_table,
+    EntitySet &LHS,
+    EntitySet &RHS) {
   AssertSynonymClauseArgs(
       clause->get_arg1(), clause->get_arg2());
 
+  EntitySet RHS_results;
+  EntitySet LHS_results;
   Table::TwoSynonymRows rows;
 
-  QueryPKBForSynonymClause(state, rows);
+  QueryPKBForSynonymClause(
+      clause, LHS, RHS,
+      LHS_results, RHS_results, rows);
 
-  CreateClauseTable(state, rows);
+  CreateClauseTable(
+      clause, clause_table,
+      LHS_results, RHS_results, rows);
 
-  auto &clause_table = state.get_clause_table();
   return !clause_table.Empty();
 }
 
@@ -54,12 +69,9 @@ void ClauseEvaluator::AssertExactClauseArgs(
   assert(!arg1->IsSynonym() && !arg2->IsSynonym());
 }
 
-bool ClauseEvaluator::QueryPKBForExactClause(
-    ClauseState &state) {
-  auto &LHS = state.get_lhs();
-  auto &RHS = state.get_rhs();
-  auto &clause = state.get_clause();
-
+bool ClauseEvaluator::QueryPKBForExactClause(ClausePtr &clause,
+                                             EntitySet &LHS,
+                                             EntitySet &RHS) {
   // Using Index instead of Filter because
   // the method should return early instead of
   // looking through and returning the whole table
@@ -80,14 +92,12 @@ void ClauseEvaluator::AssertSynonymClauseArgs(
 }
 
 void ClauseEvaluator::QueryPKBForSynonymClause(
-    ClauseState &state,
+    ClausePtr &clause,
+    EntitySet &LHS,
+    EntitySet &RHS,
+    EntitySet &LHS_results,
+    EntitySet &RHS_results,
     Table::TwoSynonymRows &rows) {
-  auto &clause = state.get_clause();
-  auto &LHS = state.get_lhs();
-  auto &RHS = state.get_rhs();
-  auto &LHS_results = state.get_lhs_results();
-  auto &RHS_results = state.get_rhs_results();
-
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
@@ -115,13 +125,11 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
 }
 
 void ClauseEvaluator::CreateClauseTable(
-    ClauseState &state,
+    ClausePtr &clause,
+    Table &clause_table,
+    EntitySet &LHS_results,
+    EntitySet &RHS_results,
     Table::TwoSynonymRows &rows) {
-  auto &clause = state.get_clause();
-  auto &clause_table = state.get_clause_table();
-  auto &LHS_results = state.get_lhs_results();
-  auto &RHS_results = state.get_rhs_results();
-
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_arg1_syn = arg1->IsSynonym();

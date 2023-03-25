@@ -5,7 +5,6 @@
 
 #include "QPS/models/Query.h"
 #include "QPS/models/Table.h"
-#include "ClauseState.h"
 
 namespace qps {
 class ClauseEvaluator {
@@ -14,35 +13,52 @@ class ClauseEvaluator {
       : pkb_(pkb) {}
 
   bool EvaluateClause(
-      ClauseState &state);
+      ClausePtr &clause,
+      Table &clause_table,
+      EntitySet &LHS,
+      EntitySet &RHS);
 
  private:
   // Clauses where neither argument is a synonym
   bool EvaluateExactClause(
-      ClauseState &state);
+      ClausePtr &clause,
+      EntitySet &LHS,
+      EntitySet &RHS);
 
   // Clauses where there is at least one synonym
   // in the argument
   bool EvaluateSynonymClause(
-      ClauseState &state);
+      ClausePtr &clause,
+      Table &clause_table,
+      EntitySet &LHS,
+      EntitySet &RHS);
 
   // Helper methods for EvaluateExactClause
   void AssertExactClauseArgs(
       ArgumentPtr &arg1, ArgumentPtr &arg2);
 
   bool QueryPKBForExactClause(
-      ClauseState &state);
+      ClausePtr &clause,
+      EntitySet &LHS,
+      EntitySet &RHS);
 
   // Helper methods for EvaluateSynonymClause
   void AssertSynonymClauseArgs(
       ArgumentPtr &arg1, ArgumentPtr &arg2);
 
   void QueryPKBForSynonymClause(
-      ClauseState &state,
+      ClausePtr &clause,
+      EntitySet &LHS,
+      EntitySet &RHS,
+      EntitySet &LHS_results,
+      EntitySet &RHS_results,
       Table::TwoSynonymRows &rows);
 
   void CreateClauseTable(
-      ClauseState &state,
+      ClausePtr &clause,
+      Table &clause_table,
+      EntitySet &LHS_results,
+      EntitySet &RHS_results,
       Table::TwoSynonymRows &rows);
 
   pkb::PKBReadPtr &pkb_;

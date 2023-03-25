@@ -103,9 +103,6 @@ class Clause {
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
   inline ClauseType get_clause_type() { return clause_type_; }
-  inline bool has_synonym_arg() {
-    return arg1_->IsSynonym() || arg2_->IsSynonym();
-  }
 
   inline bool operator==(Clause const &other) const {
     const std::type_info &ti1 = typeid(*this);

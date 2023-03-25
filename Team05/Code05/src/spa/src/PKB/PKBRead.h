@@ -6,10 +6,12 @@
 #include <utility>
 #include <vector>
 
-#include "PKBRelationTable.h"
 #include "PKBCache.h"
+#include "PKBRelationTable.h"
 #include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
+#include "common/filter/filters/TableFilter.h"
+#include "tables/DoubleIndexTable.h"
 
 using filter::IndexableFilterPtr;
 
@@ -21,8 +23,7 @@ class PKBRead {
   /// </summary>
   /// <param name="relation_table">The table containing all
   /// relationships</param>
-  explicit PKBRead(
-      std::unique_ptr<PKBRelationTable> relation_table) {
+  explicit PKBRead(std::unique_ptr<PKBRelationTable> relation_table) {
     relation_table_ = std::move(relation_table);
     // Create new cache if not using passed in cache
     cache_ = std::make_unique<PKBCache>();
@@ -37,9 +38,8 @@ class PKBRead {
   /// relationships</param>
   /// <param name="cache"> Cache that may contain
   /// previously computed data from other queries</param>
-  PKBRead(
-      std::unique_ptr<PKBRelationTable> relation_table,
-      std::unique_ptr<PKBCache> cache) {
+  PKBRead(std::unique_ptr<PKBRelationTable> relation_table,
+          std::unique_ptr<PKBCache> cache) {
     relation_table_ = std::move(relation_table);
     cache_ = std::move(cache);
     read_end_ = false;
@@ -49,9 +49,7 @@ class PKBRead {
     return std::move(relation_table_);
   }
 
-  std::unique_ptr<PKBCache> RetrieveCache() {
-    return std::move(cache_);
-  }
+  std::unique_ptr<PKBCache> RetrieveCache() { return std::move(cache_); }
 
   /// <summary>
   /// Returns if the pkb read has ended.
@@ -81,7 +79,11 @@ class PKBRead {
 
   std::unordered_set<int> NextT(int);
 
-  std::unique_ptr<PKBResult<CallsTable>> Calls(IndexableFilterPtr<CallsData>);
+  std::unique_ptr<PKBResult<CallsTable>> Calls(
+      IndexableFilterPtr<CallsData> filter);
+
+
+  CallsDTable& Calls(filter::TableFilter<CallsDTable>& filter);
 
   std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);
 

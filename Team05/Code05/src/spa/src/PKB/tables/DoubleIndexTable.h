@@ -17,7 +17,7 @@ class DoubleIndexTable {
  public:
   DoubleIndexTable() {}
 
-  inline void add_row(Index id, SecondIndex& id2, Data& data) {
+  inline void add_row(const Index& id, const SecondIndex& id2, Data& data) {
     // deal with case where the data exists with id
     if (exists(id)) {
       int index = first_index_map_.at(id);
@@ -26,7 +26,7 @@ class DoubleIndexTable {
     }
     data_.push_back(data);
     first_index_map_[id] = data_.size() - 1;
-    second_index_map_[id2] = data_.size() - 1;
+    second_index_map_[id2].insert(data_.size() - 1);
   }
 
   template <class IterableSecondIndex>
@@ -53,6 +53,7 @@ class DoubleIndexTable {
   inline const Data& get_row(Index id) const {
     return data_.at(first_index_map_.at(id));
   }
+  inline Data& get_row(Index id) { return data_.at(first_index_map_.at(id)); }
 
   inline std::vector<Data> get_row_index2(SecondIndex id) const {
     std::vector<Data> result;
@@ -88,5 +89,7 @@ class DoubleIndexTable {
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
   std::vector<Data> data_;
 };
+
+typedef DoubleIndexTable<CallsData, std::string, std::string> CallsDTable;
 
 }  // namespace pkb

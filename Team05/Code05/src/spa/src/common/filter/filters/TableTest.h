@@ -31,7 +31,7 @@ class DoubleIndexTest : public TableTest<Table> {
 
   ~DoubleIndexTest() {}
 
-  DoubleIndexTest(Index index, SecondIndex s_index)
+  explicit DoubleIndexTest(Index index, SecondIndex s_index)
       : s_index_(s_index), index_(index) {}
 
  private:
@@ -53,7 +53,7 @@ class ReverseIndexTest : public TableTest<Table> {
 template <class Table, class Index>
 class IndexTest : public TableTest<Table> {
  public:
-  IndexTest(Index index) : index_(index) {}
+  explicit IndexTest(Index index) : index_(index) {}
   ~IndexTest() {}
   bool TestTable(const Table& table) override { return table.exists(index); }
 

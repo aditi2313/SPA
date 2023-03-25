@@ -104,7 +104,7 @@ class PKBRelationTable {
     CallsData c(caller);
     calls_d_table_.add_row(caller, callee, c);
     auto& data = calls_d_table_.get_row(caller);
-    data.add_to_direct_calls(callee); 
+    data.add_to_direct_calls(callee);
   }
 
   void add_next_data(const int line, const int next) {

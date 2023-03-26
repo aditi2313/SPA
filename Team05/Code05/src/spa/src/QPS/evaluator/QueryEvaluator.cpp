@@ -5,6 +5,7 @@
 #include "TableJoiner.h"
 #include "ClauseEvaluator.h"
 #include "ClauseOptimiser.h"
+#include "ClauseWrapper.h"
 
 namespace qps {
 extern MasterEntityFactory master_entity_factory_;
@@ -22,11 +23,9 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
       if (!res) {
         // Clause is false, can immediately return empty result.
-        if (query->is_boolean_query()) {
-          return std::make_unique<BooleanQueryResult>(false);
-        } else {
-          return std::make_unique<ListQueryResult>();
-        }
+        return query->is_boolean_query()
+               ? BooleanQueryResult::BuildFalse()
+               : ListQueryResult::BuildEmpty();
       }
     }
   }
@@ -46,8 +45,11 @@ bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
   arg1->InitializeEntities(table_, pkb_, LHS);
   arg2->InitializeEntities(table_, pkb_, RHS);
 
-  bool res = clause_evaluator_.EvaluateClause(
+  ClauseWrapper clause_evaluator_state(
       clause, clause_table, LHS, RHS);
+
+  bool res = clause_evaluator_.EvaluateClause(
+      clause_evaluator_state);
 
   if (!clause_table.Empty()) {
     if (!has_table_been_intialized_) {

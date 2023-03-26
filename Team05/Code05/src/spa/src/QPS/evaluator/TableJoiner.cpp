@@ -31,13 +31,11 @@ Table TableJoiner::CrossProduct(Table &LHS, Table &RHS) {
       Table::Row new_row;
 
       for (auto &col : new_columns) {
-        if (LHS.HasColumn(col)) {
-          new_row.emplace_back(
-              col, LHS.Index(i, col));
-        } else {
-          new_row.emplace_back(
-              col, RHS.Index(j, col));
-        }
+        LHS.HasColumn(col)
+        ? new_row.emplace_back(
+            col, LHS.Index(i, col))
+        : new_row.emplace_back(
+            col, RHS.Index(j, col));
       }
 
       new_table.add_row(new_row);
@@ -59,10 +57,7 @@ Table TableJoiner::Intersect(
     for (int j = 0, N2 = RHS.Size(); j < N2; ++j) {
       bool should_join = true;
       for (auto &col : join_columns) {
-        if (LHS.Index(i, col) != RHS.Index(j, col)) {
-          should_join = false;
-          break;
-        }
+        should_join &= LHS.Index(i, col) == RHS.Index(j, col);
       }
 
       if (!should_join) continue;
@@ -70,13 +65,11 @@ Table TableJoiner::Intersect(
       Table::Row new_row;
 
       for (auto &col : new_columns) {
-        if (LHS.HasColumn(col)) {
-          new_row.emplace_back(
-              col, LHS.Index(i, col));
-        } else {
-          new_row.emplace_back(
-              col, RHS.Index(j, col));
-        }
+        LHS.HasColumn(col)
+        ? new_row.emplace_back(
+            col, LHS.Index(i, col))
+        : new_row.emplace_back(
+            col, RHS.Index(j, col));
       }
 
       new_table.add_row(new_row);

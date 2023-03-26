@@ -11,12 +11,13 @@
 
 namespace pkb {
 
-template <class Data>
+template <class Data, class Table = IndexableTable<Data>, class K = Key>
 void ProcessIndexableTable(
-    IndexableTable<Data>& table,
-    std::function<void(Data&, Key)> adding_function,
-    std::function<std::unordered_set<Key>(Data&)> get_children) {
-  for (Key id : table.get_indexes()) {
+    Table& table, std::function<void(Data&, K)> adding_function,
+    std::unordered_set<K>& indexes,
+    std::function<std::unordered_set<K>(Data&)> get_children) {
+  for (K id : indexes) {
+    if (!table.exists(id)) continue;
     Data& data_to_update = table.get_row(id);
     // use dfs to add all possible children
     std::stack<Data> frontier;
@@ -105,19 +106,14 @@ void PKBWrite::ProcessParent() {
 }
 
 void PKBWrite::ProcessCalls() {
-  ProcessIndexableTable<CallsData>(
-      pkb_relation_table_->calls_table_,
-      [](CallsData& data, Key v) {
-        data.add_to_total_calls(std::get<std::string>(v));
+  ProcessIndexableTable<CallsData, CallsDTable, std::string>(
+      pkb_relation_table_->calls_d_table_,
+      [](CallsData& data, std::string v) {
+        data.add_to_total_calls(v);
       },
+      pkb_relation_table_->procedures_,
       [](CallsData& data) {
-        std::unordered_set<std::string> direct_calls_set =
-            data.get_direct_calls();
-        std::unordered_set<Key> variant_set;
-        for (const auto& i : direct_calls_set) {
-          variant_set.emplace(i);
-        }
-        return variant_set;
+        return data.get_direct_calls();
       });
 }
 }  // namespace pkb

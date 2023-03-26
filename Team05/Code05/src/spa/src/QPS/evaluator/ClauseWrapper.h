@@ -7,9 +7,9 @@
 namespace qps {
 // Container class that contains the multiple references
 // needed to be passed around in ClauseEvaluator functions
-class ClauseState {
+class ClauseWrapper {
  public:
-  ClauseState(
+  ClauseWrapper(
       ClausePtr &clause,
       Table &clause_table,
       EntitySet &LHS,

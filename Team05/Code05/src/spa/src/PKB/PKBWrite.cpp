@@ -35,19 +35,23 @@ void ProcessIndexableTable(
   }
 }
 
-template <class Data>
+template <class Data, class Table = IndexableTable<Data>, class K = Key>
 void ProcessIndexableTableInt(
-    IndexableTable<Data>& table,
+    Table& table,
+    std::unordered_set<K>& indexes,
     std::function<std::unordered_set<int>(Data&)> get_children) {
-  std::sort(table.get_indexes().begin(), table.get_indexes().end());
-  for (int i = table.get_indexes().size() - 1; i >= 0; --i) {
-    auto id = table.get_indexes().at(i);
-    Data& data_to_update = table.get_row(id);
-    for (auto& child : get_children(data_to_update)) {
-      if (!table.exists(child)) continue;
-      data_to_update.AddData(table.get_row(child));
+    std::vector<K> v(indexes.size());
+    std::copy(indexes.begin(), indexes.end(), v.begin());
+    std::sort(v.begin(), v.end());
+    for (int i = v.size() - 1; i >= 0; --i) {
+        auto id = v.at(i);
+        if (!table.exists(id)) continue;
+        Data& data_to_update = table.get_row(id);
+        for (auto& child : get_children(data_to_update)) {
+            if (!table.exists(child)) continue;
+            data_to_update.AddData(table.get_row(child));
+        }
     }
-  }
 }
 
 void PKBWrite::AddModifiesData(
@@ -93,8 +97,10 @@ void PKBWrite::AddConditionData(
 }
 
 void PKBWrite::ProcessFollows() {
-  ProcessIndexableTableInt<FollowsData>(
-      pkb_relation_table_->follows_table_, [&](FollowsData& data) {
+  ProcessIndexableTableInt<FollowsData, FollowsDTable>(
+      pkb_relation_table_->follows_d_table_,
+      pkb_relation_table_->stmts_,
+      [&](FollowsData& data) {
         return std::unordered_set<int>{data.get_follows()};
       });
 }
@@ -102,7 +108,10 @@ void PKBWrite::ProcessFollows() {
 void PKBWrite::ProcessParent() {
   ProcessIndexableTableInt<ParentData>(
       pkb_relation_table_->parent_table_,
-      [&](ParentData& data) { return data.get_direct_children(); });
+      pkb_relation_table_->stmts_,
+      [&](ParentData& data) {
+          return data.get_direct_children();
+      });
 }
 
 void PKBWrite::ProcessCalls() {

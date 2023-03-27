@@ -132,6 +132,18 @@ class PKBRead {
     return filter.FilterTable(relation_table_->calls_d_table_);
   }
 
+  ParentDTable& Parent(filter::ParentTableFilter& filter) {
+      return filter.FilterTable(relation_table_->parent_d_table_);
+  }
+
+  FollowsDTable& Follows(filter::FollowsTableFilter& filter) {
+      return filter.FilterTable(relation_table_->follows_d_table_);
+  }
+
+  NextDTable& Next(filter::NextTableFilter& filter) {
+      return filter.FilterTable(relation_table_->next_d_table_);
+  }
+
  private:
   inline bool IsContainerStmt(int v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);

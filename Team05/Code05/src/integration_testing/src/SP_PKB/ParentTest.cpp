@@ -140,4 +140,28 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION("Calls statements") {
+    std::string program =
+        "procedure parent { call helper; } procedure helper { print help; }";
+
+    auto actual_results = InitializeParent(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Calls within if statement") {
+    std::string program =
+        "procedure parent { if (x == 5) then { y = 3; } else { call helper; z "
+        "= 5; } } procedure helper { x = 3; }";
+
+    auto actual_results = InitializeParent(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
 }

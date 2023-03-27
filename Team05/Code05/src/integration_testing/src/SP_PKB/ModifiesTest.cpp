@@ -139,6 +139,28 @@ TEST_CASE("Test SP and PKB integration for Modifies data") {
 
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION("Multiple calls statements") {
+    std::string program =
+        "procedure modifies { read x; call helper1; call helper2; } procedure "
+        "helper1 { read y; } procedure helper2 { read z; call helper1; }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}},
+                            {2, {"y"}},
+                            {3, {"y", "z"}},
+                            {4, {"y"}},
+                            {5, {"z"}},
+                            {6, {"y"}},
+                            {"modifies", {"x", "y", "z"}},
+                            {"helper1", {"y"}},
+                            {"helper2", {"y", "z"}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
 }
 
 TEST_CASE("Test calls within modifies") {

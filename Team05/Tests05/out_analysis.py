@@ -118,7 +118,7 @@ def format_statistic(test_name, result, previous_result):
     return f"### {test_name}\n" + \
            f"#### Overall statistics\n" + \
            f"- Total time {round(total_time, 3)} (previously {round(previous_total_time, 3)})\n" + \
-           f"- {total_queries} queries, previously {prev_total_queries})\n\n" + \
+           f"- {total_queries} queries, (previously {prev_total_queries})\n\n" + \
            f"#### Maximum\n" + \
            f"- Current run: {new_max} {max_diff}\n" + \
            f"- Current query: {new_max_query}\n" + \

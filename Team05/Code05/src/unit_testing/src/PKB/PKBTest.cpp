@@ -29,8 +29,7 @@ TEST_CASE("PKB read and write test") {
 
     PKBRead pkb_read(std::move(table));
     std::unique_ptr<ModifiesTable> result =
-        pkb_read.Modifies(std::make_unique<filter::ModifiesIndexFilter>(10))
-            ->get_result();
+        pkb_read.Modifies(std::make_unique<filter::ModifiesIndexFilter>(10));
     REQUIRE(expected_table == *(result));
   }
 
@@ -54,7 +53,7 @@ TEST_CASE("PKB read and write test") {
 //    PKBRead pkb_read(std::move(table));
 //    auto result =
 //        pkb_read.Assigns(std::make_unique<filter::AssignFilterByLine>(10))
-//            ->get_result();
+//            ;
 //    // unable to require as Assign Table is all references
 //    // REQUIRE(expected_table == *(result));
 //  }

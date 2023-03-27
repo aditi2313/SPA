@@ -63,9 +63,8 @@ void UsesVisitor::AddVariablesFromStmtList(
   auto pkb = pkb_ptr_->EndWrite();
   pkb::PKBRead reader(std::move(pkb));
   for (auto& child : node.get_children()) {
-    auto table = reader
+    auto result = reader
             .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()));
-    auto result = table->get_result();
     if (result->empty()) continue;
     auto& uses_data = result->get_row(child->get_line());
     auto variables = uses_data.get_variables();

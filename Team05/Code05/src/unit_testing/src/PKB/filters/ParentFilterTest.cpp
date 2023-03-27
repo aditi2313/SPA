@@ -24,12 +24,12 @@ TEST_CASE("Test processing of multiple parents line") {
     std::unordered_set<int> expected{3, 4, 5, 6};
     auto ftr = std::make_unique<filter::IndexFilter<ParentData>>(2);
     auto result = reader.Parent(std::move(ftr));
-    REQUIRE(result->get_result()->get_row(2).get_all_children() == expected);
+    REQUIRE(result->get_row(2).get_all_children() == expected);
   }
   SECTION("Test slightly short list") {
     std::unordered_set<int> expected{5, 6};
     auto ftr = std::make_unique<filter::IndexFilter<ParentData>>(4);
     auto result = reader.Parent(std::move(ftr));
-    REQUIRE(result->get_result()->get_row(4).get_all_children() == expected);
+    REQUIRE(result->get_row(4).get_all_children() == expected);
   }
 }

@@ -19,6 +19,8 @@ class PatternIfFactory : public ClauseFactory {
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    InitializeWildcard(arg2, EntityType::kVariable);
+
     return std::make_unique<PatternIfClause>(std::move(arg1), std::move(arg2));
   }
 };

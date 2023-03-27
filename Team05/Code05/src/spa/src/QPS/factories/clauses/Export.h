@@ -10,7 +10,7 @@
 #include "NextTFactory.h"
 #include "ParentFactory.h"
 #include "ParentTFactory.h"
-#include "PatterWhileFactory.h"
+#include "PatternWhileFactory.h"
 #include "PatternAssignFactory.h"
 #include "PatternIfFactory.h"
 #include "UsesFactory.h"

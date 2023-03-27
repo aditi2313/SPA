@@ -8,7 +8,6 @@
 
 #include "PKBRelationTable.h"
 #include "PKBCache.h"
-#include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
 
 using filter::IndexableFilterPtr;
@@ -65,27 +64,27 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  std::unique_ptr<PKBResult<ModifiesTable>> Modifies(
+  std::unique_ptr<ModifiesTable> Modifies(
       IndexableFilterPtr<ModifiesData>);
 
-  std::unique_ptr<PKBResult<AssignTable>> Assigns(
+  std::unique_ptr<AssignTable> Assigns(
       IndexableFilterPtr<AssignData>);
 
-  std::unique_ptr<PKBResult<UsesTable>> Uses(IndexableFilterPtr<UsesData>);
+  std::unique_ptr<UsesTable> Uses(IndexableFilterPtr<UsesData>);
 
-  std::unique_ptr<PKBResult<FollowsTable>> Follows(
+  std::unique_ptr<FollowsTable> Follows(
       IndexableFilterPtr<FollowsData>);
 
-  std::unique_ptr<PKBResult<ParentTable>> Parent(
+  std::unique_ptr<ParentTable> Parent(
       IndexableFilterPtr<ParentData>);
 
   std::unordered_set<int> NextT(int);
 
-  std::unique_ptr<PKBResult<CallsTable>> Calls(IndexableFilterPtr<CallsData>);
+  std::unique_ptr<CallsTable> Calls(IndexableFilterPtr<CallsData>);
 
-  std::unique_ptr<PKBResult<NextTable>> Next(IndexableFilterPtr<NextData>);
+  std::unique_ptr<NextTable> Next(IndexableFilterPtr<NextData>);
 
-  std::unique_ptr<PKBResult<ConditionTable>> Condition(
+  std::unique_ptr<ConditionTable> Condition(
       IndexableFilterPtr<ConditionData>);
 
   std::unordered_set<std::string> get_variables() {

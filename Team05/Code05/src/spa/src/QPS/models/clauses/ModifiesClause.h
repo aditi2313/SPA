@@ -24,7 +24,7 @@ class ModifiesClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<ModifiesIndexFilter>(key);
-          return std::move(pkb->Modifies(std::move(filter))->get_result());
+          return std::move(pkb->Modifies(std::move(filter)));
         },
         [&](EntitySet &result, pkb::ModifiesData data) {
           AddList(data.get_variables(), result);

@@ -101,6 +101,7 @@ class DoubleIndexTable {
   std::vector<Data> data_;
 };
 
+
 typedef DoubleIndexTable<NextData, int, int> NextDTable;
 typedef DoubleIndexTable<FollowsData, int, int> FollowsDTable;
 typedef DoubleIndexTable<ParentData, int, int> ParentDTable;

@@ -4,7 +4,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/FollowsVisitor.h"
+#include "SP/visitors/Export.h"
 #include "common/filter/filters/PredicateFilter.h"
 
 std::unordered_map<int, std::unordered_set<int>> InitializeFollows(

@@ -115,6 +115,12 @@ jobs:
           ref: ${{ github.head_ref}}
           fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
 
+      - name: Skip if it is on master branch
+        run: |
+          if [ "${{ github.ref_name }}" = "master" ]; then
+            echo "should-skip=true" >> $GITHUB_ENV
+          fi
+
       - name: Check commit message contains [with stats]
         run: |
           if echo "$(git log -1 --format=%B)" | grep -q '\[with stats\]'; then

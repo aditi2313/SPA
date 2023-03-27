@@ -8,7 +8,6 @@
 
 #include "PKBCache.h"
 #include "PKBRelationTable.h"
-#include "PKBResult.h"
 #include "common/filter/filters/IndexableFilter.h"
 #include "common/filter/filters/TableFilter.h"
 #include "common/filter/filters/TableTest.h"

@@ -15,32 +15,6 @@ class AttrRef {
  public:
   inline static std::string kAttrRefDelimiter = PQL::kPeriodToken;
 
-  // Maps an AttrName (e.g stmt#) to a hashset of all
-  // entities that can be paired with that AttrName.
-  // e.g. varName is mapped to { variable, read, print }
-  inline static std::unordered_map<AttrType, std::unordered_set<EntityType>>
-      kAttrTypeToEntitiesMap{
-      {AttrType::kProcName, {EntityType::kProcedure, EntityType::kCall}},
-      {AttrType::kVarName,
-       {EntityType::kVariable, EntityType::kRead, EntityType::kPrint}},
-      {AttrType::kValue, {EntityType::kConstant}},
-      {AttrType::kStmtNum, Entity::get_all_stmt_entities()}
-  };
-
-  inline static std::unordered_map<AttrName, AttrType> kAttrNameToTypeMap{
-      {PQL::kProcedureAttrName, AttrType::kProcName},
-      {PQL::kVariableAttrName, AttrType::kVarName},
-      {PQL::kValueAttrName, AttrType::kValue},
-      {PQL::kStmtAttrName, AttrType::kStmtNum}
-  };
-
-  inline static std::unordered_map<AttrType, AttrName> kAttrTypeToNameMap{
-      {AttrType::kProcName, PQL::kProcedureAttrName},
-      {AttrType::kVarName, PQL::kVariableAttrName},
-      {AttrType::kValue, PQL::kValueAttrName},
-      {AttrType::kStmtNum, PQL::kStmtAttrName}
-  };
-
   inline static AttrType get_attr_type(AttrName attr_name) {
     return kAttrNameToTypeMap.at(attr_name);
   }
@@ -121,5 +95,32 @@ class AttrRef {
       }
     }
   }
+
+ private:
+  // Maps an AttrName (e.g stmt#) to a hashset of all
+  // entities that can be paired with that AttrName.
+  // e.g. varName is mapped to { variable, read, print }
+  inline static std::unordered_map<AttrType, std::unordered_set<EntityType>>
+      kAttrTypeToEntitiesMap{
+      {AttrType::kProcName, {EntityType::kProcedure, EntityType::kCall}},
+      {AttrType::kVarName,
+       {EntityType::kVariable, EntityType::kRead, EntityType::kPrint}},
+      {AttrType::kValue, {EntityType::kConstant}},
+      {AttrType::kStmtNum, Entity::get_all_stmt_entities()}
+  };
+
+  inline static std::unordered_map<AttrName, AttrType> kAttrNameToTypeMap{
+      {PQL::kProcedureAttrName, AttrType::kProcName},
+      {PQL::kVariableAttrName, AttrType::kVarName},
+      {PQL::kValueAttrName, AttrType::kValue},
+      {PQL::kStmtAttrName, AttrType::kStmtNum}
+  };
+
+  inline static std::unordered_map<AttrType, AttrName> kAttrTypeToNameMap{
+      {AttrType::kProcName, PQL::kProcedureAttrName},
+      {AttrType::kVarName, PQL::kVariableAttrName},
+      {AttrType::kValue, PQL::kValueAttrName},
+      {AttrType::kStmtNum, PQL::kStmtAttrName}
+  };
 };
 }  // namespace qps

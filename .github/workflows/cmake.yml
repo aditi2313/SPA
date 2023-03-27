@@ -20,6 +20,8 @@ jobs:
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ${{ matrix.os }}
+    env:
+      should-skip: false
     strategy:
       fail-fast: false # run a job even if other OS job fails
       matrix:
@@ -28,6 +30,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.head_ref}}
+        fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -90,80 +95,43 @@ jobs:
             exit 1
         }
 
-    - name: Cache system test out.xml files
-      if: runner.os == 'macOS'
-      uses: actions/cache@v3
-      with:
-        path: |
-          ${{github.workspace}}/Team05/Tests05/out
-        key: ${{ runner.os }}-out-xml-cache-${{ hashFiles('**/Team05/Tests05/out/**') }}
-        restore-keys: |
-          ${{ runner.os }}-out-xml-cache-
+    - name: Skip if it is on master branch
+      shell: bash
+      run: |
+        if [ "${{ github.ref_name }}" = "master" ]; then
+          echo "should-skip=true" >> $GITHUB_ENV
+        fi
+
+    - name: Check commit message contains [with stats]
+      shell: bash
+      run: |
+        if echo "$(git log -1 --format=%B)" | grep -q '\[with stats\]'; then
+          echo "Commit message contains [with stats]"
+        else
+          echo "should-skip=true" >> $GITHUB_ENV
+        fi
+
+    - name: Run query statistics analysis
+      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      run: |
+        python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
   
-  update_query_stats:
-    # Runs the python script for analysing query statistics and 
-    # directly adds the updated statistics as a commit to your PR
-    runs-on: macos-latest
-    needs: build
-    env: 
-      should-skip: false
+    - name: Commit query statistics files
+      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      run: |
+        git config --local user.email "39623254+aizatazhar@users.noreply.github.com"
+        git config --local user.name "aizatazhar"
+        git commit -a -m "Update out_analysis files"
     
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.head_ref}}
-          fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
-
-      - name: Skip if it is on master branch
-        run: |
-          if [ "${{ github.ref_name }}" = "master" ]; then
-            echo "should-skip=true" >> $GITHUB_ENV
-          fi
-
-      - name: Check commit message contains [with stats]
-        run: |
-          if echo "$(git log -1 --format=%B)" | grep -q '\[with stats\]'; then
-            echo "Commit message contains [with stats]"
-          else
-            echo "should-skip=true" >> $GITHUB_ENV
-          fi
-
-      - name: Restore cached out.xml files
-        uses: actions/cache@v3 
-        if: env.should-skip == 'false'
-        with:
-          fail-on-cache-miss: true
-          path: ${{github.workspace}}/Team05/Tests05/out
-          key: ${{ runner.os }}-out-xml-cache-${{ hashFiles('**/Team05/Tests05/out/**') }}
-
-      - name: Set up Python
-        if: env.should-skip == 'false'
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - name: Run query statistics analysis
-        if: env.should-skip == 'false'
-        run: |
-          python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
-    
-      - name: Commit query statistics files
-        if: env.should-skip == 'false'
-        run: |
-          git config --local user.email "39623254+aizatazhar@users.noreply.github.com"
-          git config --local user.name "aizatazhar"
-          git commit -a -m "Update out_analysis files"
-      
-      # Sadly need to use a PAT otherwise the on push workflows
-      # won't be triggered when the commit is added to the PR
-      # https://github.com/orgs/community/discussions/25702
-      # But since we don't own the organisation, we can't
-      # generate a PAT with write access :(
-      # Alternative is to close and reopen the PR to
-      # trigger the workflows
-      - name: Push changes
-        if: env.should-skip == 'false'
-        uses: ad-m/github-push-action@master
-        with:
-          branch: ${{ github.head_ref }}
+    # Sadly need to use a PAT otherwise the on push workflows
+    # won't be triggered when the commit is added to the PR
+    # https://github.com/orgs/community/discussions/25702
+    # But since we don't own the organisation, we can't
+    # generate a PAT with write access :(
+    # Alternative is to close and reopen the PR to
+    # trigger the workflows
+    - name: Push changes
+      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      uses: ad-m/github-push-action@master
+      with:
+        branch: ${{ github.head_ref }}

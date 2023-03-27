@@ -192,4 +192,17 @@ TEST_CASE("Test SP and PKB integration for FollowsT data") {
 
     REQUIRE(actual_results == expected_results);
   }
+
+  SECTION("Three consecutive while loops - transitive relationship holds") {
+    std::string program =
+        "procedure follows { while (x == 1) { read x; } while (y == 2) { read "
+        "y; } while (z == 3) { read z; } }";
+
+    auto actual_results = InitializeFollowsT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {3, 5}}, {3, {5}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
 }

@@ -23,6 +23,30 @@ std::unordered_map<int, std::unordered_set<int>> InitializeParent(
 
   for (auto result : results_table->get_indexes()) {
     auto data = results_table->get_row(result);
+    for (auto v : data.get_direct_children()) {
+      results[data.get_index()].insert(v);
+    }
+  }
+
+  return results;
+}
+
+std::unordered_map<int, std::unordered_set<int>> InitializeParentT(
+    std::string program) {
+  std::unique_ptr<pkb::PKBRelationTable> table =
+      std::make_unique<pkb::PKBRelationTable>();
+  auto root = sp::SourceProcessor::ParseProgram(program);
+  sp::SourceProcessor::ExtractRelationships(root, table);
+  pkb::PKBRead reader(std::move(table));
+  auto ftr = std::make_unique<filter::ParentPredicateFilter>(
+      [](pkb::ParentData data) { return true; });
+  auto results_ptr = reader.Parent(std::move(ftr));
+  auto results_table = results_ptr->get_result();
+
+  std::unordered_map<int, std::unordered_set<int>> results;
+
+  for (auto result : results_table->get_indexes()) {
+    auto data = results_table->get_row(result);
     for (auto v : data.get_all_children()) {
       results[data.get_index()].insert(v);
     }
@@ -31,7 +55,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeParent(
   return results;
 }
 
-TEST_CASE("Test SP and PKB integration for Parent Data") {
+TEST_CASE("Test SP and PKB integration for Parent data") {
   SECTION("One statement - empty table") {
     std::string program = "procedure parent { read x; }";
 
@@ -75,19 +99,19 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Double nested while loop - transitive relationship holds") {
+  SECTION("Double nested while loop") {
     std::string program =
         "procedure parent { while (y > 5) { while (x < 3) { read z; } } }";
 
     auto actual_results = InitializeParent(program);
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
-        {1, {2, 3}}, {2, {3}}};
+        {1, {2}}, {2, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Triple nested while loop - transitive relationship holds") {
+  SECTION("Triple nested while loop") {
     std::string program =
         "procedure parent { while (x > 3) { while (x < 3) { while (x == 3) { "
         "read while; } } } }";
@@ -95,12 +119,12 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     auto actual_results = InitializeParent(program);
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
-        {1, {2, 3, 4}}, {2, {3, 4}}, {3, {4}}};
+        {1, {2}}, {2, {3}}, {3, {4}}};
 
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Double nested if statement - transitive relationship holds") {
+  SECTION("Double nested if statement") {
     std::string program =
         "procedure parent { if (x > 5) then { if (z > 5) then { read y; } else "
         "{ read x; } } else { if (y > 5) then { read x; } else { read y; } } }";
@@ -108,7 +132,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     auto actual_results = InitializeParent(program);
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
-        {1, {2, 3, 4, 5, 6, 7}}, {2, {3, 4}}, {5, {6, 7}}};
+        {1, {2, 5}}, {2, {3, 4}}, {5, {6, 7}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -121,7 +145,7 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
     auto actual_results = InitializeParent(program);
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
-        {1, {2, 3, 4, 5, 6}}, {2, {3, 4}}, {5, {6}}};
+        {1, {2, 5}}, {2, {3, 4}}, {5, {6}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -161,6 +185,59 @@ TEST_CASE("Test SP and PKB integration for Parent Data") {
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
         {1, {2, 3, 4}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+}
+
+TEST_CASE("Test SP and PKB integration for ParentT data") {
+  SECTION("Double nested while loop - transitive relationship holds") {
+    std::string program =
+        "procedure parent { while (y > 5) { while (x < 3) { read z; } } }";
+
+    auto actual_results = InitializeParentT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}, {2, {3}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Triple nested while loop - transitive relationship holds") {
+    std::string program =
+        "procedure parent { while (x > 3) { while (x < 3) { while (x == 3) { "
+        "read while; } } } }";
+
+    auto actual_results = InitializeParentT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4}}, {2, {3, 4}}, {3, {4}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Double nested if statement - transitive relationship holds") {
+    std::string program =
+        "procedure parent { if (x > 5) then { if (z > 5) then { read y; } else "
+        "{ read x; } } else { if (y > 5) then { read x; } else { read y; } } }";
+
+    auto actual_results = InitializeParentT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4, 5, 6, 7}}, {2, {3, 4}}, {5, {6, 7}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Two loops within a loop - relationship holds only in same branch") {
+    std::string program =
+        "procedure parent { while (y == 2) { if (x == 2) then { read x; } else "
+        "{ read y; } while (x > 2) { read z; } } }";
+
+    auto actual_results = InitializeParentT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3, 4, 5, 6}}, {2, {3, 4}}, {5, {6}}};
 
     REQUIRE(actual_results == expected_results);
   }

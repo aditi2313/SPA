@@ -7,12 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "StmtStmtFactory.h"
+#include "StmtStmtClauseFactory.h"
 
 namespace qps {
-class FollowsTFactory : public StmtStmtFactory {
+class FollowsTFactory : public StmtStmtClauseFactory {
  public:
-  FollowsTFactory() : StmtStmtFactory() {
+  FollowsTFactory() : StmtStmtClauseFactory() {
     LHS_entity_types_ = Entity::get_all_stmt_entities();
     RHS_entity_types_ = Entity::get_all_stmt_entities();
   }

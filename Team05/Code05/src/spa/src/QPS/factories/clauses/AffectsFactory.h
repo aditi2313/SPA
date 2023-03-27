@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "ClauseFactory.h"
-#include "StmtStmtFactory.h"
+#include "StmtStmtClauseFactory.h"
 
 namespace qps {
-class AffectsFactory : public StmtStmtFactory {
+class AffectsFactory : public StmtStmtClauseFactory {
  public:
-  AffectsFactory() : StmtStmtFactory() {}
+  AffectsFactory() : StmtStmtClauseFactory() {}
 
   inline ClausePtr MakeClause(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<AffectsClause>(

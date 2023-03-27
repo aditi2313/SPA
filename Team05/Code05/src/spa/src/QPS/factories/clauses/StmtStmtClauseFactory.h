@@ -10,18 +10,16 @@
 #include "ClauseFactory.h"
 
 namespace qps {
-class StmtVarFactory : public ClauseFactory {
+class StmtStmtClauseFactory : public ClauseFactory {
  public:
-  StmtVarFactory() : ClauseFactory() {
+  StmtStmtClauseFactory() : ClauseFactory() {
     LHS_entity_types_ = Entity::get_all_stmt_entities();
-    LHS_entity_types_.insert(EntityType::kProcedure);
-    RHS_entity_types_.insert(EntityType::kVariable);
-    is_wildcard_allowed_as_first_arg_ = false;
+    RHS_entity_types_ = Entity::get_all_stmt_entities();
   }
 
   inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    // Note: arg1 cannot be wildcard
-    InitializeWildcard(arg2, EntityType::kVariable);
+    InitializeWildcard(arg1, EntityType::kStmt);
+    InitializeWildcard(arg2, EntityType::kStmt);
 
     return MakeClause(std::move(arg1), std::move(arg2));
   }

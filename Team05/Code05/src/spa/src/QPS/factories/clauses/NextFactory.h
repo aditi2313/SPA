@@ -10,9 +10,9 @@
 #include "ClauseFactory.h"
 
 namespace qps {
-class NextFactory : public StmtStmtFactory {
+class NextFactory : public StmtStmtClauseFactory {
  public:
-  NextFactory() : StmtStmtFactory() {}
+  NextFactory() : StmtStmtClauseFactory() {}
 
   inline ClausePtr MakeClause(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<NextClause>(

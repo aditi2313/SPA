@@ -7,12 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "StmtStmtFactory.h"
+#include "StmtStmtClauseFactory.h"
 
 namespace qps {
-class FollowsFactory : public StmtStmtFactory {
+class FollowsFactory : public StmtStmtClauseFactory {
  public:
-  FollowsFactory() : StmtStmtFactory() {}
+  FollowsFactory() : StmtStmtClauseFactory() {}
 
   inline ClausePtr MakeClause(ArgumentPtr arg1, ArgumentPtr arg2) override {
     return std::make_unique<FollowsClause>(

@@ -28,6 +28,7 @@ class PKBRelationTable {
   IndexableTable<UsesData> uses_table_;
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
+  CallsDTable calls_d_table_;
   IndexableTable<NextData> next_table_;
   IndexableTable<ConditionData> condition_table_;
 
@@ -99,11 +100,11 @@ class PKBRelationTable {
     parent_table_.get_row(line).add_direct_child(child_line);
   }
 
-  void add_calls_data(const std::string caller, const std::string callee) {
-    if (!calls_table_.exists(caller)) {
-      calls_table_.add_row(caller, CallsData(caller));
-    }
-    calls_table_.get_row(caller).add_to_direct_calls(callee);
+  void add_calls_data(const std::string& caller, const std::string& callee) {
+    CallsData c(caller);
+    calls_d_table_.add_row(caller, callee, c);
+    auto& data = calls_d_table_.get_row(caller);
+    data.add_to_direct_calls(callee);
   }
 
   void add_next_data(const int line, const int next) {

@@ -1,19 +1,27 @@
 #pragma once
 
 #include <cassert>
+#include <unordered_set>
+#include <variant>
+#include <string>
 
 namespace pkb {
-template <class T>
+// todo: set this definition elsewhere
+using Key = std::variant<int, std::string>;
+template <class T, class SecondIndexes = Key>
 class Data {
  public:
-    explicit Data(T line);
+  explicit Data(T line) : line_(line) {}
 
-    inline T get_index() { return line_; }
+  inline T get_index() { return line_; }
+
+  inline const std::unordered_set<SecondIndexes>& get_second_indexes() const {
+    return second_indexes_;
+  }
 
  protected:
-    T line_;
+  T line_;
+  std::unordered_set<SecondIndexes> second_indexes_;
 };
 
-template<class T>
-Data<T>::Data(T line) : line_(line) {}
 }  // namespace pkb

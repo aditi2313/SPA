@@ -6,18 +6,18 @@
 #include "Data.h"
 
 namespace pkb {
-class CallsData : public Data<std::string> {
+class CallsData : public Data<std::string, std::string> {
  public:
     explicit CallsData(std::string caller);
 
     friend bool operator==(const CallsData& LHS, const CallsData& RHS) {
         return LHS.line_ == RHS.line_
-        && LHS.direct_calls_ == RHS.direct_calls_
+        && LHS.second_indexes_ == RHS.second_indexes_
         && LHS.total_calls_ == RHS.total_calls_;
     }
 
     inline std::unordered_set<std::string>& get_direct_calls() {
-        return direct_calls_;
+        return second_indexes_;
     }
 
     inline std::unordered_set<std::string>& get_total_calls() {
@@ -25,7 +25,7 @@ class CallsData : public Data<std::string> {
     }
 
     inline void add_to_direct_calls(std::string c) {
-        direct_calls_.insert(c);
+        second_indexes_.insert(c);
     }
 
     inline void add_to_total_calls(std::string c) {
@@ -33,9 +33,6 @@ class CallsData : public Data<std::string> {
     }
 
  private:
-    // set of direct calls
-    std::unordered_set<std::string> direct_calls_;
-
     // set of all calls
     std::unordered_set<std::string> total_calls_;
 };

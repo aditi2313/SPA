@@ -7,23 +7,16 @@
 #include <utility>
 #include <vector>
 
-#include "ClauseFactory.h"
+#include "StmtVarFactory.h"
 
 namespace qps {
-class UsesFactory : public ClauseFactory {
+class UsesFactory : public StmtVarFactory {
  public:
-  UsesFactory() : ClauseFactory() {
-    LHS_entity_types_ = Entity::get_all_stmt_entities();
-    LHS_entity_types_.insert(EntityType::kProcedure);
-    RHS_entity_types_.insert(EntityType::kVariable);
-    is_wildcard_allowed_as_first_arg_ = false;
-  }
+  UsesFactory() : StmtVarFactory() {}
 
-  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    // Note: arg1 cannot be wildcard
-    InitializeWildcard(arg2, EntityType::kVariable);
-
-    return std::make_unique<UsesClause>(std::move(arg1), std::move(arg2));
+  inline ClausePtr MakeClause(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<UsesClause>(
+        std::move(arg1), std::move(arg2));
   }
 };
 

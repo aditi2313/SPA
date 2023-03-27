@@ -20,8 +20,11 @@ jobs:
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ${{ matrix.os }}
-    env:
-      should-skip: false
+    
+    env: 
+      skip-query-stats: false
+      skip-build: false
+
     strategy:
       fail-fast: false # run a job even if other OS job fails
       matrix:
@@ -34,13 +37,25 @@ jobs:
         ref: ${{ github.head_ref}}
         fetch-depth: 0 # otherwise there would be errors pushing refs to the destination repository
 
+    - name: Skip build if the latest commit is just updating statistics
+      shell: bash
+      run: |
+          # -2 because the latest commit is a temporary merge commit
+          if echo "$(git log -2 --format=%B)" | grep -q '\[Automated\] Update query statistics files'; then
+            echo "skip-build=true" >> $GITHUB_ENV
+          else
+            echo "$(git log -5 --format=%B)"
+          fi
+
     - name: Configure CMake
+      if: env.skip-build == 'false'
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       working-directory: Team05/Code05
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
     - name: Build
+      if: env.skip-build == 'false'
       # Build your program with the given configuration
       run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
 
@@ -48,7 +63,7 @@ jobs:
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
-      if: runner.os == 'macOS'
+      if: ${{ runner.os == 'macOS' && env.skip-build == 'false'}}
       run: ./unit_testing       
       shell: bash
 
@@ -56,29 +71,30 @@ jobs:
       working-directory: ${{github.workspace}}/build/src/unit_testing
       # Execute tests defined by the CMake configuration.
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail      
-      if: runner.os == 'Windows'
+      if: ${{ runner.os == 'Windows' && env.skip-build == 'false'}}
       run: ./Release/unit_testing.exe       
       shell: bash
 
     - name: Integration Tests on macOS
       working-directory: ${{github.workspace}}/build/src/integration_testing      
-      if: runner.os == 'macOS'
+      if: ${{ runner.os == 'macOS' && env.skip-build == 'false'}}
       run: ./integration_testing
       shell: bash
 
     - name: Integration Tests on Windows
       working-directory: ${{github.workspace}}/build/src/integration_testing      
-      if: runner.os == 'Windows'
+      if: ${{ runner.os == 'Windows' && env.skip-build == 'false'}}
       run: ./Release/integration_testing.exe
       shell: bash
 
     - name: Set up Python
+      if: env.skip-build == 'false'
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
         
     - name: Run system tests on macOS
-      if: runner.os == 'macOS'
+      if: ${{ runner.os == 'macOS' && env.skip-build == 'false'}}
       run: |
         python ${{github.workspace}}/Team05/Tests05/test_runner.py ${{github.workspace}}/build/src/autotester/autotester
         if [ "$?" -ne "0" ]; then
@@ -87,7 +103,7 @@ jobs:
         fi      
                 
     - name: Run system tests on Windows
-      if: runner.os == 'Windows'
+      if: ${{ runner.os == 'Windows' && env.skip-build == 'false'}}
       run: |
         python ${{github.workspace}}\Team05\Tests05\test_runner.py ${{github.workspace}}/build/src/autotester/Release/autotester.exe
         if ($LASTEXITCODE -ne 0) {
@@ -95,11 +111,14 @@ jobs:
             exit 1
         }
 
-    - name: Skip if it is on master branch
+    # -----
+    # From this point on, it is for running query eval stats
+    # -----
+    - name: Skip query stats if it is on master branch
       shell: bash
       run: |
         if [ "${{ github.ref_name }}" = "master" ]; then
-          echo "should-skip=true" >> $GITHUB_ENV
+          echo "skip-query-stats=true" >> $GITHUB_ENV
         fi
 
     - name: Check commit message contains [with stats]
@@ -108,20 +127,20 @@ jobs:
         if echo "$(git log -1 --format=%B)" | grep -q '\[with stats\]'; then
           echo "Commit message contains [with stats]"
         else
-          echo "should-skip=true" >> $GITHUB_ENV
+          echo "skip-query-stats=true" >> $GITHUB_ENV
         fi
 
     - name: Run query statistics analysis
-      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}
       run: |
         python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
   
     - name: Commit query statistics files
-      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}
       run: |
         git config --local user.email "39623254+aizatazhar@users.noreply.github.com"
         git config --local user.name "aizatazhar"
-        git commit -a -m "Update out_analysis files"
+        git commit -a -m "[Automated] Update query statistics files"
     
     # Sadly need to use a PAT otherwise the on push workflows
     # won't be triggered when the commit is added to the PR
@@ -131,7 +150,7 @@ jobs:
     # Alternative is to close and reopen the PR to
     # trigger the workflows
     - name: Push changes
-      if: ${{ runner.os == 'macOS' && env.should-skip == 'false'}}
+      if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}
       uses: ad-m/github-push-action@master
       with:
         branch: ${{ github.head_ref }}

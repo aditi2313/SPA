@@ -1,0 +1,5 @@
+1 - Follows
+stmt s;
+Select s such that Follows(6, s)
+7
+5000

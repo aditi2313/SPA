@@ -29,6 +29,9 @@ class PKBRelationTable {
   IndexableTable<AssignData> assign_table_;
   IndexableTable<CallsData> calls_table_;
   CallsDTable calls_d_table_;
+  ParentDTable parent_d_table_;
+  FollowsDTable follows_d_table_;
+  NextDTable next_d_table_;
   IndexableTable<NextData> next_table_;
   IndexableTable<ConditionData> condition_table_;
 
@@ -90,14 +93,15 @@ class PKBRelationTable {
   }
 
   void add_follows_data(const int line, const int follows) {
-    follows_table_.add_row(line, FollowsData(line, follows));
+    FollowsData f(line, follows);
+    follows_d_table_.add_row(line, follows, f);
   }
 
   void add_parent_data(const int line, const int child_line) {
-    if (!parent_table_.exists(line)) {
-      parent_table_.add_row(line, ParentData(line));
-    }
-    parent_table_.get_row(line).add_direct_child(child_line);
+    ParentData p(line);
+    parent_d_table_.add_row(line, child_line, p);
+    auto& data = parent_d_table_.get_row(line);
+    data.add_direct_child(child_line);
   }
 
   void add_calls_data(const std::string& caller, const std::string& callee) {
@@ -108,10 +112,10 @@ class PKBRelationTable {
   }
 
   void add_next_data(const int line, const int next) {
-    if (!next_table_.exists(line)) {
-      next_table_.add_row(line, NextData(line));
-    }
-    next_table_.get_row(line).add_to_next_im_list(next);
+    NextData n(line);
+    next_d_table_.add_row(line, next, n);
+    auto& data = next_d_table_.get_row(line);
+    data.add_to_next_im_list(next);
   }
 
   void add_condition_data(

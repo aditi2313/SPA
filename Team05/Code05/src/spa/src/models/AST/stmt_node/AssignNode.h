@@ -6,14 +6,14 @@
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
-#include "models/AST/stmt_node/NonContainerStmtNode.h"
+#include "models/AST/stmt_node/SingleVarStmtNode.h"
 
 namespace ast {
-class AssignNode : public NonContainerStmtNode {
+class AssignNode : public SingleVarStmtNode {
  public:
   explicit AssignNode(std::unique_ptr<VarNode> var,
                       std::unique_ptr<ExprNode> expr, int line)
-      : NonContainerStmtNode(std::move(var), line) {
+      : SingleVarStmtNode(std::move(var), line) {
     expr_ = std::move(expr);
   }
 

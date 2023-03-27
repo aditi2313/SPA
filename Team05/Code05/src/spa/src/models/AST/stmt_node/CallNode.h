@@ -6,14 +6,14 @@
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/stmt_node/SingleVarStmtNode.h"
 
 namespace ast {
-class CallNode : public NonContainerStmtNode {
+class CallNode : public SingleVarStmtNode {
  public:
   explicit CallNode(std::string parent_proc_name, std::unique_ptr<VarNode> var,
                     int line)
-      : NonContainerStmtNode(std::move(var), line) {
+      : SingleVarStmtNode(std::move(var), line) {
     parent_proc_name_ = parent_proc_name;
   }
 

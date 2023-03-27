@@ -6,13 +6,13 @@
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
-#include "models/AST/stmt_node/NonContainerStmtNode.h"
+#include "models/AST/stmt_node/SingleVarStmtNode.h"
 
 namespace ast {
-class ReadNode : public NonContainerStmtNode {
+class ReadNode : public SingleVarStmtNode {
  public:
   explicit ReadNode(std::unique_ptr<VarNode> var, int line)
-      : NonContainerStmtNode(std::move(var), line) {}
+      : SingleVarStmtNode(std::move(var), line) {}
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 };

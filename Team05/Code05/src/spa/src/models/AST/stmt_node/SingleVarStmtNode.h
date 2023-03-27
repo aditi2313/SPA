@@ -9,9 +9,9 @@
 
 namespace ast {
 
-class NonContainerStmtNode : public StmtNode {
+class SingleVarStmtNode : public StmtNode {
  public:
-  explicit NonContainerStmtNode(std::unique_ptr<VarNode> var, int line)
+  explicit SingleVarStmtNode(std::unique_ptr<VarNode> var, int line)
       : StmtNode(line) {
     var_ = std::move(var);
   }

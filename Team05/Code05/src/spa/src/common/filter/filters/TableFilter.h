@@ -23,6 +23,9 @@ class TableFilter {
   virtual ~TableFilter() = default;
 };
 typedef TableFilter<pkb::CallsDTable> CallsTableFilter;
+typedef TableFilter<pkb::ParentDTable> ParentTableFilter;
+typedef TableFilter<pkb::FollowsDTable> FollowsTableFilter;
+typedef TableFilter<pkb::NextDTable> NextTableFilter;
 
 template <class Table, class Index>
 class ReverseIndexFilter : public TableFilter<Table> {
@@ -90,5 +93,8 @@ class IndexDoubleFilter : public TableFilter<Table> {
 };
 
 typedef IndexDoubleFilter<pkb::CallsDTable, std::string> CallsDIndexFilter;
+typedef IndexDoubleFilter<pkb::ParentDTable, int> ParentDIndexFilter;
+typedef IndexDoubleFilter<pkb::FollowsDTable, int> FollowsDIndexFilter;
+typedef IndexDoubleFilter<pkb::NextDTable, int> NextDIndexFilter;
 
 }  // namespace filter

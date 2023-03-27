@@ -101,13 +101,9 @@ class DoubleIndexTable {
   std::vector<Data> data_;
 };
 
-typedef DoubleIndexTable<ModifiesData> ReverseModifiesTable;
-typedef DoubleIndexTable<UsesData> ReverseUsesTable;
-typedef DoubleIndexTable<AffectsData> ReverseAffectsTable;
-typedef DoubleIndexTable<NextData> ReverseNextTable;
-typedef DoubleIndexTable<FollowsData> ReverseFollowsTable;
-typedef DoubleIndexTable<ParentData> ReverseParentTable;
-typedef DoubleIndexTable<CallsData> ReverseCallsTable;
+typedef DoubleIndexTable<NextData, int, int> NextDTable;
+typedef DoubleIndexTable<FollowsData, int, int> FollowsDTable;
+typedef DoubleIndexTable<ParentData, int, int> ParentDTable;
 typedef DoubleIndexTable<CallsData, std::string, std::string> CallsDTable;
 
 }  // namespace pkb

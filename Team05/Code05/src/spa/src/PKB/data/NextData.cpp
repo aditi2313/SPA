@@ -2,5 +2,5 @@
 
 namespace pkb {
 pkb::NextData::NextData(int line)
-    : Data<int>(line) {}
+    : Data<int, int>(line) {}
 }  // namespace pkb

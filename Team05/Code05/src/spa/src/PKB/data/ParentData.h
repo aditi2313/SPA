@@ -18,8 +18,17 @@ class ParentData : public Data<int, int> {
     return second_indexes_;
   }
 
+  inline const std::unordered_set<int>& get_direct_children() const {
+    return second_indexes_;
+  }
+
   // all the children
   inline std::unordered_set<int>& get_all_children() {
+      return total_children_;
+  }
+
+  // all the children
+  inline const std::unordered_set<int>& get_all_children() const {
       return total_children_;
   }
 

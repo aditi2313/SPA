@@ -19,7 +19,16 @@ class IndexableReader : public TableReader<Data> {
   inline void increment() override { ptr_++; }
   inline bool reached_end() override { return ptr_ == keys_.end(); }
 
-  inline void AddIndex(Index key) { keys_.push_back(key); }
+
+  /// <summary>
+  /// Adds an index and resets the
+  /// ptr.
+  /// </summary>
+  /// <param name="key"></param>
+  inline void AddIndex(Index key) {
+    keys_.push_back(key);
+    ptr_ = keys_.begin();
+  }
 
   inline static std::unique_ptr<IndexableReader<Data, Table, Index>> of(
       const Table& table) {

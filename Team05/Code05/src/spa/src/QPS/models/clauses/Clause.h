@@ -58,8 +58,8 @@ class Clause {
       EntitySet &results) {
     Entity::Value key = index.get_value();
     auto reader = pkb_read_function(key);
-    if (reader->read_end()) return;
-    const Data& data = reader.read_data();
+    if (reader->reached_end()) return;
+    const Data& data = reader->read_data();
     add_function(results, data);
   }
 

@@ -19,16 +19,11 @@ class ParentTClause : public Clause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    Clause::Index<pkb::ParentData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<ParentIndexFilter>(key);
-          return std::move(pkb->Parent(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::ParentData data) {
-          AddList(data.get_all_children(), result);
-        },
-        results);
+    filter::ParentDIndexFilter filter(index.get_int());
+    auto& result = pkb->Parent(filter);
+    if (result.reached_end()) return;
+    auto& data = result.read_data();
+    AddList(data.get_all_children(), results);
   }
 };
 

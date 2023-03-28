@@ -5,6 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/double_index/Export.h"
 
 using namespace pkb;  // NOLINT
 
@@ -21,14 +22,18 @@ TEST_CASE("Test processing of multiple follows line") {
   PKBRead reader(std::move(table));
   SECTION("Test slightly long list") {
     std::unordered_set<int> expected{3, 4, 5, 6};
-    auto ftr = std::make_unique<filter::IndexFilter<FollowsData>>(2);
-    auto result = reader.Follows(std::move(ftr));
-    REQUIRE(result->get_row(2).get_follows_list() == expected);
+    filter::FollowsDIndexFilter filter(2);
+    auto& result = reader.Follows(filter);
+    REQUIRE(result.read_data().get_follows_list() == expected);
   }
   SECTION("Test slightly short list") {
     std::unordered_set<int> expected{5, 6};
-    auto ftr = std::make_unique<filter::IndexFilter<FollowsData>>(4);
-    auto result = reader.Follows(std::move(ftr));
-    REQUIRE(result->get_row(4).get_follows_list() == expected);
+    filter::FollowsDIndexFilter filter(4);
+    auto& result = reader.Follows(filter);
+    while (!result.reached_end()) {
+      if (result.read_data().get_index() == 4) break;
+
+    }
+    REQUIRE(result.read_data().get_follows_list() == expected);
   }
 }

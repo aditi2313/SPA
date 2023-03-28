@@ -32,6 +32,7 @@ class DoubleIndexReader : public TableReader<Data> {
     if (!table_->first_index_map_.count(index)) return;
     int id = table_->first_index_map_.at(index);
     indexes_.push_back(id);
+    ptr_ = keys_.begin();
   }
 
   inline void AddSecondIndex(SecondIndex s_index) {

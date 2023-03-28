@@ -22,10 +22,11 @@ class FollowsClause : public ReversableClause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    FollowsIndexFilter filter(index.get_int());
+    filter::FollowsDIndexFilter filter(index.get_int());
     auto& follows_reader = pkb->Follows(filter);
     if (follows_reader.reached_end()) return;
-    AddList(follows_reader.read_data().get_follows(), results);
+    auto& data = follows_reader.read_data();
+    results.insert(Entity(data.get_follows()));    
   }
 
   inline void ReverseIndex(

@@ -20,17 +20,11 @@ class FollowsTClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::FollowsData>(
-        index,
-        [&](Entity::Value key) {
-          FollowsIndexFilter filter(key);       
-          auto& follows_reader = pkb->Follows(filter);
-          return std::make_unique<pkb::FollowsDataReader>(follows_reader);
-        },
-        [&](EntitySet &result, pkb::FollowsData data) {
-          AddList(data.get_follows_list(), result);
-        },
-        results);
+    filter::FollowsDIndexFilter filter(index.get_int());  
+    auto& follows_reader = pkb->Follows(filter);
+    if (follows_reader.reached_end()) return;
+    auto &data = follows_reader.read_data();
+    AddList(data.get_follows_list(), results);    
   }
 };
 }  // namespace qps

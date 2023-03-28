@@ -27,7 +27,7 @@ class PredicateFilter : public IndexableFilter<T> {
   explicit PredicateFilter(std::function<bool(T)> predicate)
       : predicate_(predicate) {}
 
-  inline pkb::IndexableTablePtr<T> FilterTable(
+  inline pkb::TableReader<T>& FilterTable(
       const pkb::IndexableTable<T>& table) override {
     result_ = pkb::IndexableReader<T>(table);
     for (std::variant<int, std::string> line : table.get_indexes()) {

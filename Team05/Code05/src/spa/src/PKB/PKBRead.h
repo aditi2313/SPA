@@ -69,15 +69,7 @@ class PKBRead {
 
   UsesDataReader& Uses(IndexableFilter<UsesData>&);
 
-  FollowsDataReader& Follows(IndexableFilter<FollowsData>&);
-
-  ParentDataReader& Parent(IndexableFilter<ParentData>&);
-
   std::unordered_set<int> NextT(int);
-
-  CallsDataReader& Calls(IndexableFilter<CallsData>&);
-
-  NextDataReader& Next(IndexableFilter<NextData>&);
 
   ConditionDataReader& Condition(IndexableFilter<ConditionData>&);
 

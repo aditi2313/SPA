@@ -19,10 +19,11 @@ class NextClause : public ReversableClause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    NextIndexFilter filter(index.get_int());
+    filter::NextDIndexFilter filter(index.get_int());
     auto &reader = pkb->Next(filter);
     if (reader.reached_end()) return;
-    AddList(reader.read_data().get_next_im_list(), results);
+    auto &data = reader.read_data();
+    AddList(data.get_next_im_list(), results);
   }
 
   

@@ -27,9 +27,8 @@ class IndexDoubleFilter : public TableFilter<Table, Data> {
   inline static IndexDoubleFilter<Table, Index, Data>& of(Index index) {
     if (!filters_.count(index)) {
       IndexDoubleFilter filter(index);
-      filters_.insert(
-          {index,
-           std::make_unique<IndexDoubleFilter<Table, Index, Data>>(filter)});
+      filters_[index] =
+          std::make_unique<IndexDoubleFilter<Table, Index, Data>>(filter);
     }
     return *filters_.at(index);
   }

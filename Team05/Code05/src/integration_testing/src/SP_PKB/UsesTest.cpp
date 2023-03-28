@@ -15,16 +15,14 @@ InitializeUses(std::string program) {
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
   pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::UsesPredicateFilter>(
-      [](pkb::UsesData data) { return true; });
-  auto results_table = reader.Uses(std::move(ftr));
+  filter::UsesPredicateFilter ftr([](pkb::UsesData data) { return true; });
+  auto& results_table = reader.Uses(ftr);
 
   std::unordered_map<std::variant<int, std::string>,
                      std::unordered_set<std::string>>
       results;
-
-  for (auto result : results_table->get_indexes()) {
-    auto data = results_table->get_row(result);
+  while (!results_table.reached_end()) {
+    auto& data = results_table.read_data();
     for (auto v : data.get_variables()) {
       results[data.get_index()].insert(v);
     }

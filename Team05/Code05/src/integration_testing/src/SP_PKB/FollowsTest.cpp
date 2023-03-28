@@ -14,15 +14,15 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
   pkb::PKBRead reader(std::move(table));  
-  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
+  filter::FollowsPredicateFilter ftr(
       [](pkb::FollowsData data) { return true; });
   
-  auto results_table = reader.Follows(std::move(ftr));
+  auto& results_table = reader.Follows(ftr);
 
   std::unordered_map<int, std::unordered_set<int>> results;
 
-  for (auto result : results_table->get_indexes()) {
-    auto data = results_table->get_row(result);
+  while (!results_table.reached_end()) {
+    auto data = results_table.read_data();
     for (auto v : data.get_follows_list()) {
       results[data.get_index()].insert(v);
     }

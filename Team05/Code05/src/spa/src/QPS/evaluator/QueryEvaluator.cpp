@@ -30,13 +30,14 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
       }
     }
 
-	auto selected_columns = TableJoiner::IntersectColumns(
-		group_table.get_columns(), query_columns);
-	auto selected_table = group_table.Select(selected_columns);
+    auto selected_columns = TableJoiner::IntersectColumns(
+        group_table.get_columns(), query_columns);
+    Table selected_table;
+    group_table.Select(selected_columns, selected_table);
 
-	if (!selected_table.Empty()) {
-		query_table_ = TableJoiner::Join(query_table_, selected_table);
-	}
+    if (!selected_table.Empty()) {
+      query_table_ = TableJoiner::Join(query_table_, selected_table);
+    }
   }
 
   return BuildResult(query);
@@ -54,11 +55,11 @@ bool QueryEvaluator::EvaluateClause(
   arg1->InitializeEntities(group_table, pkb_, LHS);
   arg2->InitializeEntities(group_table, pkb_, RHS);
 
-  ClauseWrapper clause_evaluator_state(
+  ClauseWrapper clause_wrapper(
       clause, clause_table, LHS, RHS);
 
   bool res = clause_evaluator_.EvaluateClause(
-      clause, clause_table, LHS, RHS);
+      clause_wrapper);
 
   if (!clause_table.Empty()) {
     group_table = TableJoiner::Join(group_table, clause_table);

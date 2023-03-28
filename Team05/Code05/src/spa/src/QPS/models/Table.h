@@ -102,25 +102,25 @@ class Table {
     }
   }
 
-  inline Table &Select(
-	  std::vector<SynonymName> columns) {
-	  Table new_table(columns);
-	  std::set<Row> seen;
+  inline void Select(
+      std::vector<SynonymName> columns,
+      Table &result_table) {
+    result_table = Table(columns);
+    std::set<Row> seen;
 
-	  for (auto &arr : rows_) {
-		  Row new_row;
-		  for (auto col : columns) {
-			  new_row.emplace_back(
-				  col, arr[id_map_.at(col)]);
-		  }
-		  // Already added
-		  if (seen.count(new_row)) { continue; }
+    for (auto &arr : rows_) {
+      Row new_row;
+      for (auto col : columns) {
+        new_row.emplace_back(
+            col, arr[id_map_.at(col)]);
+      }
+      // Already added
+      if (seen.count(new_row)) { continue; }
 
-		  // Add to results
-		  new_table.add_row(new_row);
-		  seen.insert(new_row);
-	  }
-	  return new_table;
+      // Add to results
+      result_table.add_row(new_row);
+      seen.insert(new_row);
+    }
   }
 
   void PrintDebug();

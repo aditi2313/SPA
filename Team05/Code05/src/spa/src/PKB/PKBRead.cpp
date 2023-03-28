@@ -5,6 +5,7 @@
 #include <queue>
 #include <unordered_set>
 
+#include "tables/reader/DoubleIndexReader.h"
 #include "common/exceptions/QPSExceptions.h"
 #include "common/filter/filters/IndexFilter.h"
 

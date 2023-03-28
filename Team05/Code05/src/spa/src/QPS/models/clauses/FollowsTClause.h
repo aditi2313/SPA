@@ -3,17 +3,17 @@
 #include <memory>
 #include <utility>
 
-#include "ReversableClause.h"
+#include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
 
 using filter::FollowsIndexFilter;
 
 namespace qps {
 // RS between statements (transitive)
-class FollowsTClause : public ReversableClause {
+class FollowsTClause : public Clause {
  public:
   FollowsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : ReversableClause(
+      : Clause(
       ClauseType::kFollowsT, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(

@@ -1,16 +1,19 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
-#include <string>
 
 #include "IndexableTable.h"
 #include "PKB/data/Export.h"
 
 namespace pkb {
+
+template <class Data, class Index, class SecondIndex>
+class DoubleIndexReader;
 
 // Double index table where we assume that the first index is the primary
 // key and hence uniquely identifiable, and the secondary index is not uniquely
@@ -99,6 +102,7 @@ class DoubleIndexTable {
   std::unordered_map<Index, int> first_index_map_;
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
   std::vector<Data> data_;
+  friend class DoubleIndexReader<Data, Index, SecondIndex>;
 };
 
 typedef DoubleIndexTable<NextData, int, int> NextDTable;

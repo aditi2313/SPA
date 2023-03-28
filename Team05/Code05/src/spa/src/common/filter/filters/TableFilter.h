@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "PKB/tables/reader/TableReader.h"
 #include "PKB/tables/DoubleIndexTable.h"
 
 namespace filter {
@@ -34,7 +35,7 @@ class ReverseIndexFilter : public TableFilter<Table> {
     result_ = Table();
     auto datas = table.get_row_index2(index_);
     for (auto& data : datas) {
-      result_.add_row(data.get_index(), index_, data);
+      //result_.add_row(data.get_index(), index_, data);
     }
     return result_;
   }

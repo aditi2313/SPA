@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
+#include "ReversableClause.h"
 #include "common/filter/filters/IndexFilter.h"
 #include "common/filter/filters/TableFilter.h"
 
@@ -11,10 +12,10 @@ using filter::FollowsIndexFilter;
 
 namespace qps {
 // RS between statements
-class FollowsClause : public Clause {
+class FollowsClause : public ReversableClause {
  public:
   FollowsClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(
+      : ReversableClause(
       ClauseType::kFollows, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(
@@ -36,7 +37,7 @@ class FollowsClause : public Clause {
   inline void ReverseIndex(
     const Entity& index,
     const pkb::PKBReadPtr& pkb,
-    EntitySet& result) {
+    EntitySet& result) override {
     auto& filter = 
       filter::ReverseFollowFilter::of(index.get_int());
     auto& table = pkb->Follows(filter);

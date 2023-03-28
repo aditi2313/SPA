@@ -13,6 +13,7 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   auto &clauses = query->get_clauses();
   // Order of evaluation
   auto order = ClauseOptimiser::GroupClauses(clauses);
+  auto query_columns = query->get_selected_elems();
 
   for (auto &group : order) {
     Table group_table;  // Use own intermediate table for each group
@@ -28,7 +29,13 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
       }
     }
 
-    query_table_ = TableJoiner::Join(query_table_, group_table);
+	auto selected_columns = TableJoiner::IntersectColumns(
+		group_table.get_columns(), query_columns);
+	auto selected_table = group_table.Select(selected_columns);
+
+	if (!selected_table.Empty()) {
+		query_table_ = TableJoiner::Join(query_table_, selected_table);
+	}
   }
 
   return BuildResult(query);

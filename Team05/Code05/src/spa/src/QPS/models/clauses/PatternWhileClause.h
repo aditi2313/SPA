@@ -24,7 +24,7 @@ class PatternWhileClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<ConditionIndexFilter>(key);
-          return std::move(pkb->Condition(std::move(filter))->get_result());
+          return std::move(pkb->Condition(std::move(filter)));
         },
         [&](EntitySet &result, pkb::ConditionData data) {
           AddList(data.get_variables(), result);

@@ -16,8 +16,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeParent(
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::ParentPredicateFilter>(
       [](pkb::ParentData data) { return true; });
-  auto results_ptr = reader.Parent(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Parent(std::move(ftr));
 
   std::unordered_map<int, std::unordered_set<int>> results;
 

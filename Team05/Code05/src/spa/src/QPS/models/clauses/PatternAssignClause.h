@@ -25,7 +25,7 @@ class PatternAssignClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<AssignIndexFilter>(key);
-          return std::move(pkb->Assigns(std::move(filter))->get_result());
+          return std::move(pkb->Assigns(std::move(filter)));
         },
         [&](EntitySet &result, pkb::AssignData data) {
           result.insert(Entity(data.get_index()));
@@ -49,7 +49,7 @@ class PatternAssignClause : public Clause {
           data.TestExpression(AST, expr_arg->is_exact());
     });
 
-    auto pkb_res = pkb->Assigns(std::move(filter))->get_result();
+    auto pkb_res = pkb->Assigns(std::move(filter));
     if (pkb_res->empty()) return;
 
     results.insert(Entity(line));

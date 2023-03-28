@@ -28,7 +28,7 @@ class IndexDoubleFilter : public TableFilter<Table, Data> {
     if (!filters_.count(index)) {
       IndexDoubleFilter filter(index);
       filters_[index] =
-          std::make_unique<IndexDoubleFilter<Table, Index, Data>>(filter);
+          std::make_unique<IndexDoubleFilter<Table, Index, Data>>(std::move(filter));
     }
     return *filters_.at(index);
   }

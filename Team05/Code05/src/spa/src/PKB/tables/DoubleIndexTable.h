@@ -66,12 +66,12 @@ class DoubleIndexTable {
   }
   inline Data& get_row(Index id) { return data_.at(first_index_map_.at(id)); }
 
-  inline std::vector<Data> get_row_index2(SecondIndex id) const {
-    std::vector<Data> result;
+  inline std::vector<Index> get_row_index2(SecondIndex id) const {
+    std::vector<Index> result;
     int size = second_index_map_.at(id).size();
     result.reserve(size);
     for (int index : second_index_map_.at(id)) {
-      result.push_back(data_.at(index));
+      result.push_back(data_.at(index).get_index());
     }
     return result;
   }

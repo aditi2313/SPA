@@ -91,6 +91,11 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
+  if (!arg2->IsWildcard() && !is_symmetric) {
+    clause->Filter(LHS, RHS, rows, pkb_);
+    return;
+  }
+  
 
   for (auto &index : LHS) {
     EntitySet results;
@@ -98,10 +103,8 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
       // Just index and return all
       clause->Index(index, pkb_, results);
     } else {
-      // Is synonym or exact (int or ident), use filter
-      is_symmetric
-      ? clause->SymmetricFilter(index, pkb_, results)
-      : clause->Filter(index, RHS, pkb_, results);
+      // Is symmetric
+      clause->SymmetricFilter(index, pkb_, results);
     }
 
     if (results.empty()) continue;

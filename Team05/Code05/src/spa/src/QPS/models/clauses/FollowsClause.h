@@ -5,6 +5,7 @@
 
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/TableFilter.h"
 
 using filter::FollowsIndexFilter;
 
@@ -30,6 +31,16 @@ class FollowsClause : public Clause {
           result.insert(Entity(data.get_follows()));
         },
         results);
+  }
+
+  inline void ReverseIndex(
+    const Entity& index,
+    const pkb::PKBReadPtr& pkb,
+    EntitySet& result) {
+    auto& filter = 
+      filter::ReverseFollowFilter::of(index.get_int());
+    auto& table = pkb->Follows(filter);
+
   }
 };
 }  // namespace qps

@@ -58,6 +58,7 @@ class ReverseIndexFilter : public TableFilter<Table> {
   Table result_;
   Index index_;
 };
+typedef ReverseIndexFilter<pkb::FollowsDTable, int> ReverseFollowFilter;
 
 template <class Table, class Index>
 class IndexDoubleFilter : public TableFilter<Table> {

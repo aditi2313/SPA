@@ -73,6 +73,22 @@ class Clause {
   }
 
   inline virtual void Filter(
+    const EntitySet& lhs,
+    const EntitySet& rhs,
+    Table::TwoSynonymRows& results_r,
+    const pkb::PKBReadPtr& pkb) {
+    for (auto &index : lhs) {
+      EntitySet results;
+      Index(index, pkb, results);
+      if (results.empty()) continue;
+      for (auto &entity : results) {
+        if (!rhs.count(entity)) continue;
+        results_r.emplace_back(index, entity);
+      }
+    }
+  }
+
+  inline virtual void Filter(
       const Entity &index,
       const EntitySet &filter_values,
       const pkb::PKBReadPtr &pkb,

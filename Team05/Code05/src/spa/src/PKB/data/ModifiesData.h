@@ -23,7 +23,7 @@ class ModifiesData : public Data<std::variant<int, std::string>>{
     return LHS.line_ == RHS.line_ && LHS.variables_ == RHS.variables_;
   }
 
-  inline const std::unordered_set<std::string>& get_variables() {
+  inline const std::unordered_set<std::string>& get_variables() const {
     return variables_;
   }
 

@@ -14,6 +14,7 @@
 #include "PKB/data/ParentData.h"
 #include "PKB/data/UsesData.h"
 #include "PKB/tables/IndexableTable.h"
+#include "PKB/tables/reader/IndexableReader.h"
 #include "common/exceptions/QPSExceptions.h"
 
 namespace filter {
@@ -23,15 +24,11 @@ class IndexFilter : public IndexableFilter<T> {
  public:
   explicit IndexFilter(std::variant<int, std::string> line) : line_(line) {}
 
-  inline pkb::IndexableTablePtr<T> FilterTable(
+  inline pkb::IndexableReader<T>& FilterTable(
       const pkb::IndexableTable<T>& table) override {
-    pkb::IndexableTablePtr<T> result =
-        std::make_unique<pkb::IndexableTable<T>>();
-    if (table.exists(line_)) {
-      auto row = table.get_row(line_);
-      result->add_row(row.get_index(), row);
-    }
-    return result;
+    result_ = pkb::IndexableReader<T>(table);
+    result_.AddIndex(line_);
+    return result_;
   }
 
   static std::unique_ptr<IndexFilter<T>> of(
@@ -40,6 +37,7 @@ class IndexFilter : public IndexableFilter<T> {
   }
 
  private:
+  pkb::IndexableReader<T> result_;
   std::variant<int, std::string> line_;
 };
 

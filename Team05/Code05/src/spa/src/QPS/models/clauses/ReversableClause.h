@@ -10,7 +10,7 @@ class ReversableClause : public Clause {
 
   inline virtual void ReverseIndex(const Entity& index,
                                    const pkb::PKBReadPtr& pkb,
-                                   EntitySet& result) = 0;
+                                   EntitySet& results) = 0;
   inline virtual void Filter(const EntitySet& lhs, const EntitySet& rhs,
                              Table::TwoSynonymRows& results_r,
                              const pkb::PKBReadPtr& pkb) override {
@@ -24,6 +24,16 @@ class ReversableClause : public Clause {
         if (!rhs.count(entity)) continue;
         results_r.emplace_back(index, entity);
       }
+    }
+  }
+
+  template <class Reader>
+  void WriteSecondIndexesFromReader(Reader& reader, EntitySet& results) {
+    while (!reader.reached_end()) {
+      auto& data = reader.read_data();
+      auto copied = data.get_second_indexes();
+      AddList(copied, results);
+      reader.increment();
     }
   }
 };

@@ -19,6 +19,10 @@ class NextData : public Data<int, int> {
         return second_indexes_;
     }
 
+    inline const std::unordered_set<int>& get_next_im_list() const {
+        return second_indexes_;
+    }
+
     inline void add_to_next_im_list(int v) {
         assert(second_indexes_.size() < 2);
         second_indexes_.insert(v);

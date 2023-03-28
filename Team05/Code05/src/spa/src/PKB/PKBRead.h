@@ -9,11 +9,11 @@
 #include "PKBCache.h"
 #include "PKBRelationTable.h"
 #include "common/filter/filters/IndexableFilter.h"
-#include "common/filter/filters/double_index/TableFilter.h"
 #include "common/filter/filters/TableTest.h"
+#include "common/filter/filters/double_index/TableFilter.h"
 #include "tables/DoubleIndexTable.h"
 
-using filter::IndexableFilterPtr;
+using filter::IndexableFilter;
 
 namespace pkb {
 class PKBRead {
@@ -63,28 +63,23 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  std::unique_ptr<ModifiesTable> Modifies(
-      IndexableFilterPtr<ModifiesData>);
+  ModifiesDataReader& Modifies(IndexableFilter<ModifiesData>&);
 
-  std::unique_ptr<AssignTable> Assigns(
-      IndexableFilterPtr<AssignData>);
+  AssignDataReader& Assigns(IndexableFilter<AssignData>&);
 
-  std::unique_ptr<UsesTable> Uses(IndexableFilterPtr<UsesData>);
+  UsesDataReader& Uses(IndexableFilter<UsesData>&);
 
-  std::unique_ptr<FollowsTable> Follows(
-      IndexableFilterPtr<FollowsData>);
+  FollowsDataReader& Follows(IndexableFilter<FollowsData>&);
 
-  std::unique_ptr<ParentTable> Parent(
-      IndexableFilterPtr<ParentData>);
+  ParentDataReader& Parent(IndexableFilter<ParentData>&);
 
   std::unordered_set<int> NextT(int);
 
-  std::unique_ptr<CallsTable> Calls(IndexableFilterPtr<CallsData>);
+  CallsDataReader& Calls(IndexableFilter<CallsData>&);
 
-  std::unique_ptr<NextTable> Next(IndexableFilterPtr<NextData>);
+  NextDataReader& Next(IndexableFilter<NextData>&);
 
-  std::unique_ptr<ConditionTable> Condition(
-      IndexableFilterPtr<ConditionData>);
+  ConditionDataReader& Condition(IndexableFilter<ConditionData>&);
 
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
@@ -131,15 +126,15 @@ class PKBRead {
   }
 
   ParentDataReader& Parent(filter::ParentTableFilter& filter) {
-      return filter.FilterTable(relation_table_->parent_d_table_);
+    return filter.FilterTable(relation_table_->parent_d_table_);
   }
 
   FollowsDataReader& Follows(filter::FollowsTableFilter& filter) {
-      return filter.FilterTable(relation_table_->follows_d_table_);
+    return filter.FilterTable(relation_table_->follows_d_table_);
   }
 
   NextDataReader& Next(filter::NextTableFilter& filter) {
-      return filter.FilterTable(relation_table_->next_d_table_);
+    return filter.FilterTable(relation_table_->next_d_table_);
   }
 
  private:

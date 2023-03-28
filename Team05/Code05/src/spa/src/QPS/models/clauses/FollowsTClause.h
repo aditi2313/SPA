@@ -23,8 +23,9 @@ class FollowsTClause : public Clause {
     Clause::Index<pkb::FollowsData>(
         index,
         [&](Entity::Value key) {
-          auto filter = std::make_unique<FollowsIndexFilter>(key);
-          return std::move(pkb->Follows(std::move(filter)));
+          FollowsIndexFilter filter(key);       
+          auto& follows_reader = pkb->Follows(filter);
+          return std::make_unique<pkb::FollowsDataReader>(follows_reader);
         },
         [&](EntitySet &result, pkb::FollowsData data) {
           AddList(data.get_follows_list(), result);

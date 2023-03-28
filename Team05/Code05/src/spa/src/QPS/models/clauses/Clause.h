@@ -52,14 +52,14 @@ class Clause {
   inline static void Index(
       const Entity &index,
       std::function
-          <std::unique_ptr<pkb::IndexableTable<Data>>(
+          <std::unique_ptr<pkb::TableReader<Data>>(
               Entity::Value)> pkb_read_function,
-      std::function<void(EntitySet &, Data)> add_function,
+      std::function<void(EntitySet &, const Data&)> add_function,
       EntitySet &results) {
     Entity::Value key = index.get_value();
-    auto pkb_res = pkb_read_function(key);
-    if (pkb_res->empty()) return;
-    Data data = pkb_res->get_row(key);
+    auto reader = pkb_read_function(key);
+    if (reader->read_end()) return;
+    const Data& data = reader.read_data();
     add_function(results, data);
   }
 

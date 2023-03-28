@@ -63,12 +63,13 @@ void UsesVisitor::AddVariablesFromStmtList(
   auto pkb = pkb_ptr_->EndWrite();
   pkb::PKBRead reader(std::move(pkb));
   for (auto& child : node.get_children()) {
-    auto result = reader
-            .Uses(std::make_unique<filter::UsesIndexFilter>(child->get_line()));
-    if (result->empty()) continue;
-    auto& uses_data = result->get_row(child->get_line());
-    auto variables = uses_data.get_variables();
-    vars.merge(variables);
+    filter::UsesIndexFilter filter(child->get_line());
+    auto& result = reader.Uses(filter);
+    while (!result.reached_end()) {
+      auto& uses_data = result.read_data();
+      auto variables = uses_data.get_variables();
+      vars.merge(variables);
+    }
   }
   pkb = reader.EndRead();
   pkb_ptr_ = std::make_unique<pkb::PKBWrite>(std::move(pkb));

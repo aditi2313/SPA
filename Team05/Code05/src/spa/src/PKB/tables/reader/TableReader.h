@@ -5,6 +5,7 @@
 
 namespace pkb {
 
+// todo(Gab) use datawrapper when done by @aditi
 template <class Data>
 class TableReader {
  public:
@@ -20,5 +21,10 @@ typedef TableReader<FollowsData> FollowsDataReader;
 typedef TableReader<ParentData> ParentDataReader;
 typedef TableReader<NextData> NextDataReader;
 typedef TableReader<CallsData> CallsDataReader;
+typedef TableReader<AffectsData> AffectsDataReader;
+typedef TableReader<AssignData> AssignDataReader;
+typedef TableReader<ModifiesData> ModifiesDataReader;
+typedef TableReader<UsesData> UsesDataReader;
+typedef TableReader<ConditionData> ConditionDataReader;
 
 }  // namespace pkb

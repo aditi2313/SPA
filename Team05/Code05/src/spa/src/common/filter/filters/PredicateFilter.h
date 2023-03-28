@@ -17,6 +17,7 @@
 #include "PKB/data/UsesData.h"
 #include "PKB/tables/IndexableTable.h"
 #include "common/exceptions/QPSExceptions.h"
+#include "PKB/tables/reader/IndexableReader.h"
 
 namespace filter {
 
@@ -28,20 +29,19 @@ class PredicateFilter : public IndexableFilter<T> {
 
   inline pkb::IndexableTablePtr<T> FilterTable(
       const pkb::IndexableTable<T>& table) override {
-    pkb::IndexableTablePtr<T> result =
-        std::make_unique<pkb::IndexableTable<T>>();
-
+    result_ = pkb::IndexableReader<T>(table);
     for (std::variant<int, std::string> line : table.get_indexes()) {
       auto data = table.get_row(line);
       if (predicate_(data)) {
-        result->add_row(line, data);
+        result_.AddIndex(line);
       }
     }
-    return std::move(result);
+    return result_;
   }
 
  private:
   std::function<bool(T)> predicate_;
+  pkb::IndexableReader<T> result_;
 };
 
 using ModifiesPredicateFilter = PredicateFilter<pkb::ModifiesData>;

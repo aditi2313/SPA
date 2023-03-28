@@ -22,26 +22,19 @@ class FollowsClause : public ReversableClause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::FollowsData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<FollowsIndexFilter>(key);
-          return std::move(pkb->Follows(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::FollowsData data) {
-          result.insert(Entity(data.get_follows()));
-        },
-        results);
+    FollowsIndexFilter filter(index.get_int());
+    auto& follows_reader = pkb->Follows(filter);
+    if (follows_reader.reached_end()) return;
+    AddList(follows_reader.read_data().get_follows(), results);
   }
 
   inline void ReverseIndex(
     const Entity& index,
     const pkb::PKBReadPtr& pkb,
-    EntitySet& result) override {
-    filter::ReverseFollowFilter filter(index.get_int());
-    
-    auto& table = pkb->Follows(filter);
-
+    EntitySet& results) override {
+    filter::ReverseFollowFilter filter(index.get_int());    
+    auto& reader = pkb->Follows(filter);
+    WriteSecondIndexesFromReader(reader, results);
   }
 };
 }  // namespace qps

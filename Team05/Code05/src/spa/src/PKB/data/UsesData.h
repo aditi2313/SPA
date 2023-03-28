@@ -28,7 +28,7 @@ class UsesData : public Data<std::variant<int, std::string>> {
         LHS.variable_names_ == RHS.variable_names_;
     }
 
-    inline const std::unordered_set<std::string>& get_variables() {
+    inline const std::unordered_set<std::string>& get_variables() const {
         return variable_names_;
     }
     inline void add_variables(std::unordered_set<std::string> vars) {

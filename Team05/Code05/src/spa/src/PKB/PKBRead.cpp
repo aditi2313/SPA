@@ -5,57 +5,27 @@
 #include <queue>
 #include <unordered_set>
 
-#include "tables/reader/DoubleIndexReader.h"
 #include "common/exceptions/QPSExceptions.h"
 #include "common/filter/filters/IndexFilter.h"
+#include "tables/reader/DoubleIndexReader.h"
 
 namespace pkb {
-std::unique_ptr<ModifiesTable> PKBRead::Modifies(
-    IndexableFilterPtr<ModifiesData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->modifies_table_);
-  return std::move(result_table);
+ModifiesDataReader& PKBRead::Modifies(
+    filter::IndexableFilter<ModifiesData>& filter) {
+  return filter.FilterTable(relation_table_->modifies_table_);
 }
 
-std::unique_ptr<AssignTable> PKBRead::Assigns(
-    IndexableFilterPtr<AssignData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->assign_table_);
-  return std::move(result_table);
+AssignDataReader& PKBRead::Assigns(IndexableFilter<AssignData>& filter) {
+  return filter.FilterTable(relation_table_->assign_table_);
 }
 
-std::unique_ptr<UsesTable> PKBRead::Uses(
-    IndexableFilterPtr<UsesData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->uses_table_);
-  return std::move(result_table);
+UsesDataReader& PKBRead::Uses(IndexableFilter<UsesData>& filter) {
+  return filter.FilterTable(relation_table_->uses_table_);
 }
 
-std::unique_ptr<FollowsTable> PKBRead::Follows(
-    IndexableFilterPtr<FollowsData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->follows_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<ParentTable> PKBRead::Parent(
-    IndexableFilterPtr<ParentData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->parent_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<CallsTable> PKBRead::Calls(
-    IndexableFilterPtr<CallsData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->calls_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<NextTable> PKBRead::Next(
-    IndexableFilterPtr<NextData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->next_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<ConditionTable> PKBRead::Condition(
-    IndexableFilterPtr<ConditionData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->condition_table_);
-  return std::move(result_table);
+ConditionDataReader& PKBRead::Condition(
+    IndexableFilter<ConditionData>& filter) {
+  return filter.FilterTable(relation_table_->condition_table_);  
 }
 
 std::unordered_set<int> PKBRead::Affects(int s) {

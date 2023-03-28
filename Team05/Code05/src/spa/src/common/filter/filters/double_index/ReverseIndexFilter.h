@@ -12,27 +12,13 @@ class ReverseIndexFilter
  public:
   pkb::TableReader<Data>& FilterTable(const Table& table) override {
     result_ = pkb::DoubleIndexReader<Data, Index, SecondIndex>(table);
-    result_->AddSecondIndex(index_);
+    result_.AddSecondIndex(index_);
     return result_;
-  }
-
-  // needed to store the result table.
-  inline static ReverseIndexFilter<Table, Index>& of(Index index) {
-    if (!filters_.count(index)) {
-      ReverseIndexFilter filter(index);
-      filters_.insert(
-          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(filter)});
-    }
-    return *filters_.at(index);
   }
 
   explicit ReverseIndexFilter(Index index) : index_(index) {}
 
  private:
-  inline static std::unordered_map<
-      Index, std::unique_ptr<ReverseIndexFilter<Table, Index>>>
-      filters_;
-
   pkb::DoubleIndexReader<Data, Index, SecondIndex> result_;
   Index index_;
 };

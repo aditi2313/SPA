@@ -24,22 +24,9 @@ class IndexDoubleFilter : public TableFilter<Table, Data> {
     return *result_;
   }
 
-  inline static IndexDoubleFilter<Table, Index, Data>& of(Index index) {
-    if (!filters_.count(index)) {
-      IndexDoubleFilter filter(index);
-      filters_[index] =
-          std::make_unique<IndexDoubleFilter<Table, Index, Data>>(std::move(filter));
-    }
-    return *filters_.at(index);
-  }
-
   explicit IndexDoubleFilter(Index index) : index_(index) {}
 
  private:
-  
-  inline static std::unordered_map<
-      Index, std::unique_ptr<IndexDoubleFilter<Table, Index, Data>>>
-      filters_;
   std::unique_ptr<pkb::IndexableReader<Data, Table, Index>> result_;
   Index index_;
 };

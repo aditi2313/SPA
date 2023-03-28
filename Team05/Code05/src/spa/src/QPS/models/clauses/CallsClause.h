@@ -21,8 +21,8 @@ class CallsClause : public Clause {
                     EntitySet &results) override {
     auto key = index.get_value();
     auto callee = std::get<std::string>(key);
-    auto &table =
-        pkb->Calls(filter::CallsDIndexFilter::of(std::get<std::string>(key)));
+    auto filter = filter::CallsDIndexFilter(std::get<std::string>(key));
+    auto &table = pkb->Calls(filter);
     if (table.reached_end()) return;
     auto &data = table.read_data();
     AddList(data.get_direct_calls(), results);

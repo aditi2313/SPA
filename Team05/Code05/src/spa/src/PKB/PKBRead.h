@@ -51,6 +51,10 @@ class PKBRead {
 
   std::unique_ptr<PKBCache> RetrieveCache() { return std::move(cache_); }
 
+  inline void ClearCache() {
+    cache_->clear();
+  }
+
   /// <summary>
   /// Returns if the pkb read has ended.
   /// </summary>

@@ -9,7 +9,7 @@
 #include "PKBCache.h"
 #include "PKBRelationTable.h"
 #include "common/filter/filters/IndexableFilter.h"
-#include "common/filter/filters/TableFilter.h"
+#include "common/filter/filters/double_index/TableFilter.h"
 #include "common/filter/filters/TableTest.h"
 #include "tables/DoubleIndexTable.h"
 
@@ -126,19 +126,19 @@ class PKBRead {
     return test.TestTable(relation_table_->calls_d_table_);
   }
 
-  CallsDTable& Calls(filter::CallsTableFilter& filter) {
+  CallsDataReader& Calls(filter::CallsTableFilter& filter) {
     return filter.FilterTable(relation_table_->calls_d_table_);
   }
 
-  ParentDTable& Parent(filter::ParentTableFilter& filter) {
+  ParentDataReader& Parent(filter::ParentTableFilter& filter) {
       return filter.FilterTable(relation_table_->parent_d_table_);
   }
 
-  FollowsDTable& Follows(filter::FollowsTableFilter& filter) {
+  FollowsDataReader& Follows(filter::FollowsTableFilter& filter) {
       return filter.FilterTable(relation_table_->follows_d_table_);
   }
 
-  NextDTable& Next(filter::NextTableFilter& filter) {
+  NextDataReader& Next(filter::NextTableFilter& filter) {
       return filter.FilterTable(relation_table_->next_d_table_);
   }
 

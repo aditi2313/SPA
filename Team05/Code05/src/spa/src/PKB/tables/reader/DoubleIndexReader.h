@@ -1,16 +1,18 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "PKB/PKBRead.h"
 #include "TableReader.h"
+#include "IndexableReader.h"
 
 namespace pkb {
 template <class Data, class Index, class SecondIndex>
 class DoubleIndexReader : public TableReader<Data> {
  public:
-  DoubleIndexReader(DoubleIndexTable<Data, Index, SecondIndex>& table)
+  DoubleIndexReader(const DoubleIndexTable<Data, Index, SecondIndex>& table)
       : table_(table) {
     ptr_ = indexes_.begin();
   }
@@ -19,14 +21,16 @@ class DoubleIndexReader : public TableReader<Data> {
 
   inline void increment() override { ptr_++; }
 
-  inline void reached_end() override { return ptr_ == indexes_.end(); }
+  inline bool reached_end() override { return ptr_ == indexes_.end(); }
 
   inline void AddIndex(Index index) {
+    if (!table.first_index_map_.count(index)) return;
     int index = table_.first_index_map_.at(index);
     indexes_.push_back(index);
   }
 
   inline void AddSecondIndex(SecondIndex s_index) {
+    if (!table_.second_index_map_.count(s_index)) return;
     auto& s_indexes = table_.second_index_map_.at(s_index);
     for (auto index : s_indexes) {
       indexes_.push_back(index);
@@ -34,15 +38,18 @@ class DoubleIndexReader : public TableReader<Data> {
   }
 
   inline static std::unique_ptr<DoubleIndexReader<Data, Index, SecondIndex>> of(
-      DoubleIndexTable<Data, Index, SecondIndex>& table) {
+      const DoubleIndexTable<Data, Index, SecondIndex>& table) {
     return std::make_unique<DoubleIndexReader<Data, Index, SecondIndex>>(
-        DoubleIndexReader<Data, Index, SecondIndex>(table))
+        DoubleIndexReader<Data, Index, SecondIndex>(table));
   }
 
  private:
   std::vector<int> indexes_;
   std::vector<int>::iterator ptr_;
-  DoubleIndexTable<Data, Index, SecondIndex>& table_;
+  const DoubleIndexTable<Data, Index, SecondIndex>& table_;
 };
+
+typedef DoubleIndexReader<CallsData, std::string, std::string> CallTableReader; 
+typedef DoubleIndexReader<ParentData, int, int> ParentTableReader;
 
 }  // namespace pkb

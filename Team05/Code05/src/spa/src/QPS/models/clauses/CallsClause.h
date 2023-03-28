@@ -6,7 +6,7 @@
 
 #include "Clause.h"
 #include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/TableFilter.h"
+#include "common/filter/filters/double_index/Export.h"
 
 using filter::CallsIndexFilter;
 
@@ -23,8 +23,8 @@ class CallsClause : public Clause {
     auto callee = std::get<std::string>(key);
     auto &table =
         pkb->Calls(filter::CallsDIndexFilter::of(std::get<std::string>(key)));
-    if (table.empty()) return;
-    auto &data = table.get_row(callee);
+    if (table.reached_end()) return;
+    auto &data = table.read_data();
     AddList(data.get_direct_calls(), results);
   }
 };

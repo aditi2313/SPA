@@ -6,7 +6,7 @@
 #include "Clause.h"
 #include "ReversableClause.h"
 #include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/TableFilter.h"
+#include "common/filter/filters/double_index/Export.h"
 
 using filter::FollowsIndexFilter;
 
@@ -38,8 +38,8 @@ class FollowsClause : public ReversableClause {
     const Entity& index,
     const pkb::PKBReadPtr& pkb,
     EntitySet& result) override {
-    auto& filter = 
-      filter::ReverseFollowFilter::of(index.get_int());
+    filter::ReverseFollowFilter filter(index.get_int());
+    
     auto& table = pkb->Follows(filter);
 
   }

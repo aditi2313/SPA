@@ -16,11 +16,13 @@ class CallsData : public Data<std::string, std::string> {
         && LHS.total_calls_ == RHS.total_calls_;
     }
 
-    inline std::unordered_set<std::string>& get_direct_calls() {
-        return second_indexes_;
+    inline const std::unordered_set<std::string>& get_direct_calls() 
+      const {
+      return second_indexes_;
     }
 
-    inline std::unordered_set<std::string>& get_total_calls() {
+    inline const std::unordered_set<std::string>& get_total_calls() 
+      const {
         return total_calls_;
     }
 

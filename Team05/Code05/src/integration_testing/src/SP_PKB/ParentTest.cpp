@@ -5,7 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/ParentVisitor.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 std::unordered_map<int, std::unordered_set<int>> InitializeParent(
     std::string program) {

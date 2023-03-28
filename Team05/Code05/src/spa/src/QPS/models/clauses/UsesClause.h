@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::UsesIndexFilter;
 

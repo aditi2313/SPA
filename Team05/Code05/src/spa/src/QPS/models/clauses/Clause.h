@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "PKB/PKBRead.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 #include "QPS/models/arguments/Export.h"
 #include "QPS/factories/MasterEntityFactory.h"
 #include "QPS/models/QueryResult.h"

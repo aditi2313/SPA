@@ -5,7 +5,7 @@
 #include "PKB/PKBRead.h"
 #include "SP/utils/TopologicalSorter.h"
 #include "SP/visitors/VarCollector.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 namespace sp {
 

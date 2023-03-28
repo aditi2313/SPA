@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::ParentIndexFilter;
 
@@ -19,7 +19,7 @@ class ParentTClause : public Clause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    filter::ParentDIndexFilter filter(index.get_int());
+    filter::ParentIndexFilter filter(index.get_int());
     auto& result = pkb->Parent(filter);
     if (result.reached_end()) return;
     auto& data = result.read_data();

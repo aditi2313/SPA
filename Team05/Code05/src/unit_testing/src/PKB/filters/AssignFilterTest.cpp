@@ -3,7 +3,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 #include "models/AST/factor_node/FactorNode.h"
 
 TEST_CASE("Assign Filter test") {

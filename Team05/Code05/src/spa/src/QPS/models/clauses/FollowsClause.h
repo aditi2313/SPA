@@ -5,8 +5,7 @@
 
 #include "Clause.h"
 #include "ReversableClause.h"
-#include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/double_index/Export.h"
+#include "common/filter/filters/Export.h"
 
 using filter::FollowsIndexFilter;
 
@@ -22,7 +21,7 @@ class FollowsClause : public ReversableClause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    filter::FollowsDIndexFilter filter(index.get_int());
+    filter::FollowsIndexFilter filter(index.get_int());
     auto& follows_reader = pkb->Follows(filter);
     if (follows_reader.reached_end()) return;
     auto& data = follows_reader.read_data();

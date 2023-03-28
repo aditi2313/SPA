@@ -18,6 +18,7 @@ class DoubleIndexReader;
 // Double index table where we assume that the first index is the primary
 // key and hence uniquely identifiable, and the secondary index is not uniquely
 // identifiable.
+// TODO(Gab) abstract out similarities with indexable table
 template <class Data, class Index = Key, class SecondIndex = Key>
 class DoubleIndexTable {
   using CurrentTable = DoubleIndexTable<Data, Index, SecondIndex>;
@@ -25,6 +26,18 @@ class DoubleIndexTable {
 
  public:
   DoubleIndexTable() {}
+
+  inline std::unordered_set<Index> get_indexes() const {
+    std::unordered_set<Index> indexes;
+    for (auto& [key, val] : first_index_map_) {
+      indexes.insert(key);
+    }
+    return indexes;
+  }
+
+  inline void add_row(const Index& index, Data& data) {
+    add_row(index, data.get_second_indexes(), data);
+  }
 
   inline void add_row(const Index& id, const SecondIndex& id2, Data& data) {
     // deal with case where the data exists with id
@@ -86,7 +99,7 @@ class DoubleIndexTable {
       const DoubleIndexTable<Data, Index, SecondIndex>& RHS) {
     if (LHS.data_.size() != RHS.data_.size()) return false;
     for (auto& [id, index] : LHS.first_index_map_) {
-      if (LHS.get_row(id) != RHS.get_row(id)) {
+      if (!(LHS.get_row(id) == RHS.get_row(id))) {
         return false;
       }
     }

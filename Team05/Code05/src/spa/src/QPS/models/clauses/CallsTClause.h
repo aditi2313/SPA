@@ -5,8 +5,7 @@
 #include <string>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/double_index/Export.h"
+#include "common/filter/filters/Export.h"
 
 using filter::CallsIndexFilter;
 
@@ -23,7 +22,7 @@ class CallsTClause : public Clause {
                     EntitySet &results) override {
     auto key = index.get_value();
     auto callee = std::get<std::string>(key);
-    auto filter = filter::CallsDIndexFilter(std::get<std::string>(key));
+    auto filter = filter::CallsIndexFilter(std::get<std::string>(key));
     auto &table =
         pkb->Calls(filter);
     if (table.reached_end()) return;

@@ -11,7 +11,7 @@
 #include "PKB/PKBWrite.h"
 #include "ProcedureProcessingVisitor.h"
 #include "SP/visitors/TNodeVisitor.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 #include "common/logging/Logger.h"
 
 namespace sp {

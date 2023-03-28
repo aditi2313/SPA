@@ -5,7 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/FollowsVisitor.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
     std::string program) {
@@ -13,9 +13,10 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
-  pkb::PKBRead reader(std::move(table));
+  pkb::PKBRead reader(std::move(table));  
   auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
       [](pkb::FollowsData data) { return true; });
+  
   auto results_table = reader.Follows(std::move(ftr));
 
   std::unordered_map<int, std::unordered_set<int>> results;

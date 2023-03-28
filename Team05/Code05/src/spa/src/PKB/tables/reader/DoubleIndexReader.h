@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "IndexableReader.h"
-#include "PKB/PKBRead.h"
 #include "TableReader.h"
 
 namespace pkb {

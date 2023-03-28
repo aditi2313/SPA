@@ -3,7 +3,7 @@
 #include <memory>
 #include <utility>
 
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 #include "ReversableClause.h"
 
 using filter::NextIndexFilter;
@@ -19,7 +19,7 @@ class NextClause : public ReversableClause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    filter::NextDIndexFilter filter(index.get_int());
+    filter::NextIndexFilter filter(index.get_int());
     auto &reader = pkb->Next(filter);
     if (reader.reached_end()) return;
     auto &data = reader.read_data();

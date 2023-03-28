@@ -5,8 +5,7 @@
 #include <catch.hpp>
 
 #include "PKB/data/UsesData.h"
-#include "common/filter/filters/IndexFilter.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 using std::string;
 using std::vector;
@@ -60,7 +59,7 @@ TEST_CASE("Test Uses by string line filter") {
     expected_table->add_row("main", pkb::UsesData("main", vars.at(0)));
 
     filter::UsesIndexFilter line_filter("main");
-    auto actual_table = line_filter.FilterTable(*table);
+    auto& actual_table = line_filter.FilterTable(*table);
 
     //REQUIRE(*actual_table == *expected_table);
 }

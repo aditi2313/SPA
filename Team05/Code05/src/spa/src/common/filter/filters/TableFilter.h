@@ -28,5 +28,11 @@ typedef TableFilter<pkb::CallsDTable, pkb::CallsData> CallsTableFilter;
 typedef TableFilter<pkb::ParentDTable, pkb::ParentData> ParentTableFilter;
 typedef TableFilter<pkb::FollowsDTable, pkb::FollowsData> FollowsTableFilter;
 typedef TableFilter<pkb::NextDTable, pkb::NextData> NextTableFilter;
+typedef TableFilter<pkb::ModifiesTable, pkb::ModifiesData> ModifiesTableFilter;
+typedef TableFilter<pkb::AffectsTable, pkb::AffectsData> AffectsTableFilter;
+typedef TableFilter<pkb::ConditionTable, pkb::ConditionData>
+    ConditionTableFilter;
+typedef TableFilter<pkb::UsesTable, pkb::UsesData> UsesTableFilter;
+typedef TableFilter<pkb::AssignTable, pkb::AssignData> AssignTableFilter;
 
 }  // namespace filter

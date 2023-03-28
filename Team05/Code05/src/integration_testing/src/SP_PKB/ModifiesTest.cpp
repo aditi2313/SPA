@@ -1,11 +1,12 @@
 #include <catch.hpp>
 
+#include "Utility.h"
 #include "../../spa/src/SP/SourceProcessor.h"
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/procedure/ModifiesVisitor.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 std::unordered_map<std::variant<int, std::string>,
                    std::unordered_set<std::string>>
@@ -15,16 +16,15 @@ InitializeModifies(std::string program) {
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
   pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::ModifiesPredicateFilter>(
-      [](pkb::ModifiesData data) { return true; });
-  auto results_table = reader.Modifies(std::move(ftr));
+  filter::ModifiesPredicateFilter filter(TruePredicate<pkb::ModifiesData>());
+  auto& results_table = reader.Modifies(filter);
 
   std::unordered_map<std::variant<int, std::string>,
                      std::unordered_set<std::string>>
       results;
 
-  for (auto result : results_table->get_indexes()) {
-    auto data = results_table->get_row(result);
+  while (!results_table.reached_end()) {
+    auto& data = results_table.read_data();
     for (auto v : data.get_variables()) {
       results[data.get_index()].insert(v);
     }

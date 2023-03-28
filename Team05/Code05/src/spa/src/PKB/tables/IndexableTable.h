@@ -71,11 +71,8 @@ typedef IndexableTable<AffectsData> AffectsTable;
 typedef IndexableTable<AffectsTData> AffectsTTable;
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<UsesData> UsesTable;
-typedef IndexableTable<FollowsData> FollowsTable;
-typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 typedef IndexableTable<CallsData> CallsTable;
-typedef IndexableTable<NextData> NextTable;
 typedef IndexableTable<ConditionData> ConditionTable;
 
 template <typename T>

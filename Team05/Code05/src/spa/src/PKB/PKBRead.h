@@ -8,12 +8,8 @@
 
 #include "PKBCache.h"
 #include "PKBRelationTable.h"
-#include "common/filter/filters/IndexableFilter.h"
-#include "common/filter/filters/TableTest.h"
-#include "common/filter/filters/double_index/TableFilter.h"
+#include "common/filter/filters/TableFilter.h"
 #include "tables/DoubleIndexTable.h"
-
-using filter::IndexableFilter;
 
 namespace pkb {
 class PKBRead {
@@ -67,15 +63,15 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  ModifiesDataReader& Modifies(IndexableFilter<ModifiesData>&);
+  ModifiesDataReader& Modifies(filter::ModifiesTableFilter&);
 
-  AssignDataReader& Assigns(IndexableFilter<AssignData>&);
+  AssignDataReader& Assigns(filter::AssignTableFilter&);
 
-  UsesDataReader& Uses(IndexableFilter<UsesData>&);
+  UsesDataReader& Uses(filter::UsesTableFilter&);
 
   std::unordered_set<int> NextT(int);
 
-  ConditionDataReader& Condition(IndexableFilter<ConditionData>&);
+  ConditionDataReader& Condition(filter::ConditionTableFilter&);
 
   std::unordered_set<std::string> get_variables() {
     return relation_table_->variables_;
@@ -111,26 +107,22 @@ class PKBRead {
 
   std::unordered_set<int> Affects(int);
 
-  std::unordered_set<int> AffectsT(int);
+  std::unordered_set<int> AffectsT(int);  
 
-  inline bool Calls(filter::TableTest<CallsDTable>& test) {
-    return test.TestTable(relation_table_->calls_d_table_);
+  CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->calls_d_table_);
   }
 
-  CallsDataReader& Calls(filter::CallsTableFilter& filter) {
-    return filter.FilterTable(relation_table_->calls_d_table_);
+  ParentDataReader& Parent(filter::ParentTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->parent_d_table_);
   }
 
-  ParentDataReader& Parent(filter::ParentTableFilter& filter) {
-    return filter.FilterTable(relation_table_->parent_d_table_);
+  FollowsDataReader& Follows(filter::FollowsTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->follows_d_table_);
   }
 
-  FollowsDataReader& Follows(filter::FollowsTableFilter& filter) {
-    return filter.FilterTable(relation_table_->follows_d_table_);
-  }
-
-  NextDataReader& Next(filter::NextTableFilter& filter) {
-    return filter.FilterTable(relation_table_->next_d_table_);
+  NextDataReader& Next(filter::NextTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->next_d_table_);
   }
 
  private:

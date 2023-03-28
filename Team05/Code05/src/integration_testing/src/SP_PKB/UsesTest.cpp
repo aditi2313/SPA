@@ -5,7 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/Export.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 std::unordered_map<std::variant<int, std::string>,
                    std::unordered_set<std::string>>

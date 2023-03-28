@@ -6,26 +6,24 @@
 #include <unordered_set>
 
 #include "common/exceptions/QPSExceptions.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 #include "tables/reader/DoubleIndexReader.h"
 
 namespace pkb {
-ModifiesDataReader& PKBRead::Modifies(
-    filter::IndexableFilter<ModifiesData>& filter) {
+ModifiesDataReader& PKBRead::Modifies(filter::ModifiesTableFilter& filter) {
   return filter.FilterTable(relation_table_->modifies_table_);
 }
 
-AssignDataReader& PKBRead::Assigns(IndexableFilter<AssignData>& filter) {
+AssignDataReader& PKBRead::Assigns(filter::AssignTableFilter& filter) {
   return filter.FilterTable(relation_table_->assign_table_);
 }
 
-UsesDataReader& PKBRead::Uses(IndexableFilter<UsesData>& filter) {
+UsesDataReader& PKBRead::Uses(filter::UsesTableFilter& filter) {
   return filter.FilterTable(relation_table_->uses_table_);
 }
 
-ConditionDataReader& PKBRead::Condition(
-    IndexableFilter<ConditionData>& filter) {
-  return filter.FilterTable(relation_table_->condition_table_);  
+ConditionDataReader& PKBRead::Condition(filter::ConditionTableFilter& filter) {
+  return filter.FilterTable(relation_table_->condition_table_);
 }
 
 std::unordered_set<int> PKBRead::Affects(int s) {

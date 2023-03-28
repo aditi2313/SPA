@@ -11,9 +11,9 @@ class ReverseIndexFilter
 
  public:
   pkb::TableReader<Data>& FilterTable(const Table& table) override {
-    result_ = pkb::DoubleIndexReader<Data, Index, SecondIndex>::of(table);
+    result_ = pkb::DoubleIndexReader<Data, Index, SecondIndex>(table);
     result_->AddSecondIndex(index_);
-    return *result_;
+    return result_;
   }
 
   // needed to store the result table.
@@ -21,7 +21,7 @@ class ReverseIndexFilter
     if (!filters_.count(index)) {
       ReverseIndexFilter filter(index);
       filters_.insert(
-          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(std::move(filter))});
+          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(filter)});
     }
     return *filters_.at(index);
   }
@@ -33,7 +33,7 @@ class ReverseIndexFilter
       Index, std::unique_ptr<ReverseIndexFilter<Table, Index>>>
       filters_;
 
-  std::unique_ptr<pkb::DoubleIndexReader<Data, Index, SecondIndex>> result_;
+  pkb::DoubleIndexReader<Data, Index, SecondIndex> result_;
   Index index_;
 };
 typedef ReverseIndexFilter<pkb::FollowsData> ReverseFollowFilter;

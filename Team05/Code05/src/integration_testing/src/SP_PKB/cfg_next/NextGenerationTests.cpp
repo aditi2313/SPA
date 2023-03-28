@@ -26,6 +26,7 @@ void TestNext(std::unordered_map<int, std::unordered_set<int>> next,
     for (auto v : data.get_next_im_list()) {
       vals[data.get_index()].insert(v);
     }
+    results_table.increment();
   }
   REQUIRE(next == vals);
 }

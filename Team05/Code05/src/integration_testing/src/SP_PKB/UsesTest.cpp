@@ -26,6 +26,7 @@ InitializeUses(std::string program) {
     for (auto v : data.get_variables()) {
       results[data.get_index()].insert(v);
     }
+    results_table.increment();
   }
 
   return results;

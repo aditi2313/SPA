@@ -61,7 +61,7 @@ TEST_CASE("Test PKB and QPS integration for CallsT clause") {
     std::list<std::string> expected_results{"proc1", "proc2", "proc3", "proc4"};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
-
+  
   SECTION("Calls*(ProcSyn, IdentArg) should return correct results") {
     std::string query_string = "procedure p; "
                                "Select p such that Calls*(p, \"proc2\")";

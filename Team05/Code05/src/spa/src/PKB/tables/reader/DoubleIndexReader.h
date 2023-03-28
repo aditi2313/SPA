@@ -25,13 +25,15 @@ class DoubleIndexReader : public TableReader<Data> {
 
   inline void increment() override { ptr_++; }
 
-  inline bool reached_end() override { return ptr_ == indexes_.end(); }
+  inline bool reached_end() override {
+    return indexes_.size() == 0 || ptr_ == indexes_.end();
+  }
 
   inline void AddIndex(Index index) {
     if (!table_->first_index_map_.count(index)) return;
     int id = table_->first_index_map_.at(index);
     indexes_.push_back(id);
-    ptr_ = keys_.begin();
+    ptr_ = indexes_.begin();
   }
 
   inline void AddSecondIndex(SecondIndex s_index) {
@@ -40,6 +42,7 @@ class DoubleIndexReader : public TableReader<Data> {
     for (auto index : s_indexes) {
       indexes_.push_back(index);
     }
+    ptr_ = indexes_.begin();
   }
 
   inline static std::unique_ptr<DoubleIndexReader<Data, Index, SecondIndex>> of(

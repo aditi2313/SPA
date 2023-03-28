@@ -69,6 +69,7 @@ void UsesVisitor::AddVariablesFromStmtList(
       auto& uses_data = result.read_data();
       auto variables = uses_data.get_variables();
       vars.merge(variables);
+      result.increment();
     }
   }
   pkb = reader.EndRead();

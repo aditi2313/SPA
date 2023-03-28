@@ -43,6 +43,7 @@ class ModifiesVisitor : public ProcedureProcessingVisitor {
         auto& modifies_data = result.read_data();
         auto variables = modifies_data.get_variables();
         vars.merge(variables);
+        result.increment();
       }
     }
     pkb = reader.EndRead();

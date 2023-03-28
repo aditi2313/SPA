@@ -26,6 +26,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
     for (auto v : data.get_follows_list()) {
       results[data.get_index()].insert(v);
     }
+    results_table.increment();
   }
 
   return results;

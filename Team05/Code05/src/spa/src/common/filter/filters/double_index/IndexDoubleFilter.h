@@ -33,8 +33,10 @@ class IndexDoubleFilter : public TableFilter<Table, Data> {
     return *filters_.at(index);
   }
 
- private:
   explicit IndexDoubleFilter(Index index) : index_(index) {}
+
+ private:
+  
   inline static std::unordered_map<
       Index, std::unique_ptr<IndexDoubleFilter<Table, Index, Data>>>
       filters_;

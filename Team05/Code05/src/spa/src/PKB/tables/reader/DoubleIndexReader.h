@@ -24,9 +24,9 @@ class DoubleIndexReader : public TableReader<Data> {
   inline bool reached_end() override { return ptr_ == indexes_.end(); }
 
   inline void AddIndex(Index index) {
-    if (!table.first_index_map_.count(index)) return;
-    int index = table_.first_index_map_.at(index);
-    indexes_.push_back(index);
+    if (!table_.first_index_map_.count(index)) return;
+    int id = table_.first_index_map_.at(index);
+    indexes_.push_back(id);
   }
 
   inline void AddSecondIndex(SecondIndex s_index) {

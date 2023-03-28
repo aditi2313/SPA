@@ -40,16 +40,16 @@ std::unordered_set<int> PKBRead::Affects(int s) {
     return {};
   }
   std::unordered_set<int> empt{};
-  auto& table = relation_table_->next_table_;
+  auto& table = relation_table_->next_d_table_;
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
   auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
   util::GraphSearch<int, std::unordered_set<int>>::BFS(
       [&](int& v) {
-        if (!relation_table_->next_table_.exists(v))
+        if (!table.exists(v))
           return std::unordered_set<int>{};
-        auto& next = relation_table_->next_table_.get_row(v);
+        auto& next = table.get_row(v);
         return next.get_next_im_list();
       },
       n_im_l,

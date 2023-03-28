@@ -107,7 +107,7 @@ void PKBWrite::ProcessFollows() {
 
 void PKBWrite::ProcessParent() {
   ProcessIndexableTableInt<ParentData>(
-      pkb_relation_table_->parent_table_,
+      pkb_relation_table_->parent_d_table_,
       pkb_relation_table_->stmts_,
       [&](ParentData& data) {
           return data.get_direct_children();

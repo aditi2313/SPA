@@ -91,10 +91,10 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
-  if (!arg2->IsWildcard() && !is_symmetric) {
-    clause->Filter(LHS, RHS, rows, pkb_);
-    return;
-  }
+  //if (!arg2->IsWildcard() && !is_symmetric) {
+  //  clause->Filter(LHS, RHS, rows, pkb_);
+  //  return;
+  //}
   
 
   for (auto &index : LHS) {
@@ -104,7 +104,9 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
       clause->Index(index, pkb_, results);
     } else {
       // Is symmetric
-      clause->SymmetricFilter(index, pkb_, results);
+      is_symmetric ? clause->SymmetricFilter(index, pkb_, results)
+                   : clause->Filter(index, RHS, pkb_, results);
+
     }
 
     if (results.empty()) continue;

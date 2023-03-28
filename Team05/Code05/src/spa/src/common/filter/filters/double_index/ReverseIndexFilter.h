@@ -21,7 +21,7 @@ class ReverseIndexFilter
     if (!filters_.count(index)) {
       ReverseIndexFilter filter(index);
       filters_.insert(
-          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(filter)});
+          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(std::move(filter))});
     }
     return *filters_.at(index);
   }

@@ -97,13 +97,23 @@ class DoubleIndexTable {
   friend bool operator==(
       const DoubleIndexTable<Data, Index, SecondIndex>& LHS,
       const DoubleIndexTable<Data, Index, SecondIndex>& RHS) {
+    // current implementation doesn't
+    // provide a comprehensive equality
+    // as the RHS can have extra second index values
+    // Relies on the storage of second index in data as well.
     if (LHS.data_.size() != RHS.data_.size()) return false;
-    for (auto& [id, index] : LHS.first_index_map_) {
+    for (auto& [id, index] : LHS.first_index_map_) {      
+      if (!RHS.exists(id)) {
+        return false;
+      }
       if (!(LHS.get_row(id) == RHS.get_row(id))) {
         return false;
       }
     }
     for (auto& [sid, indexes] : LHS.second_index_map_) {
+      if (!RHS.exists2(sid)) {
+        return false;
+      }
       if (LHS.get_row_index2(sid) != RHS.get_row_index2(sid)) {
         return false;
       }

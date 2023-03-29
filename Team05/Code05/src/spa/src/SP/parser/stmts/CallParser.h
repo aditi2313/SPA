@@ -19,11 +19,13 @@ class CallParser : Parser<ast::CallNode> {
       throw ParseCallSyntaxException("call should be followed by a name");
     }
 
+    std::string var_name = lxr.get_ident();
+
     AssertExpectedToken(ParseCallSyntaxException::kParseCallSyntaxMessage,
                         lxr.GetTokAndIncrement(), Token::kTokSemicolon);
 
     return std::make_unique<ast::CallNode>(lxr.get_current_procedure(),
-                                           lxr.get_ident(),
+                                           var_name,
                                            lxr.GetAndIncrementStmtCtr());
   }
 };

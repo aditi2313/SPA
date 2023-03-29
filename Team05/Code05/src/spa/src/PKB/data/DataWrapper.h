@@ -1,14 +1,22 @@
-//
-// Created by Aditi Gupta on 29/3/23.
-//
+#pragma once
 
-#ifndef SPA_DATAWRAPPER_H
-#define SPA_DATAWRAPPER_H
+#include <cassert>
+#include <variant>
+#include "DataWrapper.h"
 
+namespace pkb {
+    template <class Key = std::variant<int, std::string>>
+    class DataWrapper {
+    public:
+        explicit DataWrapper(Key line);
 
-class DataWrapper {
+        inline Key get_index() { return line_; }
 
-};
+    protected:
+        Key line_;
+    };
 
-
-#endif //SPA_DATAWRAPPER_H
+    template<class Key>
+    DataWrapper<Key>::DataWrapper(Key line)
+            : line_(line) {}
+}  // namespace pkb

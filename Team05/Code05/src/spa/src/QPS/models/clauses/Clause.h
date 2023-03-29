@@ -83,11 +83,9 @@ class Clause {
     const pkb::PKBReadPtr& pkb) {
     for (auto &index : lhs) {
       EntitySet results;
-      Index(index, pkb, results);
-      if (results.empty()) continue;
-      for (auto &entity : results) {        
-        if (!rhs.count(entity)) continue;
-        results_r.emplace_back(index, entity);
+      Filter(index, rhs, pkb, results);
+      for (auto &result : results) {
+        results_r.emplace_back(index, result);
       }
     }
   }
@@ -100,13 +98,10 @@ class Clause {
     EntitySet index_results;
     Index(index, pkb, index_results);
     for (auto &entity : index_results) {
-      for (auto &filter_entity : filter_values) {
-        // todo(Gab): Remove this weak equal functionality?
-        // It seems useless now.
-        if (entity.WeakEqual(filter_entity)) {
-          results.insert(entity);
-        }
+      if (filter_values.count(entity)) {
+        results.insert(entity);
       }
+      
     }
   }
 

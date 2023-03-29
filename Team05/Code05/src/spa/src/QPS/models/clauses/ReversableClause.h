@@ -16,23 +16,24 @@ class ReversableClause : public Clause {
                              const pkb::PKBReadPtr& pkb) override {
     bool reverse = lhs.size() > rhs.size();
     auto& curr_indexes = reverse ? rhs : lhs;
+    auto& filter_indexes = reverse ? lhs : rhs;
     for (auto& index : curr_indexes) {
       EntitySet results;
-      reverse ? ReverseIndex(index, pkb, results) : Index(index, pkb, results);
-      if (results.empty()) continue;
+      reverse ? ReverseIndex(index, pkb, results) : Index(index, pkb, results);      
       for (auto& entity : results) {
-        if (!rhs.count(entity)) continue;
-        results_r.emplace_back(index, entity);
+        if (!filter_indexes.count(entity)) continue;
+        reverse ? results_r.emplace_back(entity, index)
+                : results_r.emplace_back(index, entity);
       }
     }
-  }
+  }  
 
   template <class Reader>
   void WriteSecondIndexesFromReader(Reader& reader, EntitySet& results) {
     while (!reader.reached_end()) {
       auto& data = reader.read_data();
-      auto copied = data.get_second_indexes();
-      AddList(copied, results);
+      auto copied = data.get_index();
+      results.insert(Entity(copied));
       reader.increment();
     }
   }

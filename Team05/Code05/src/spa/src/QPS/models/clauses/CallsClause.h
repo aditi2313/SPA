@@ -23,7 +23,7 @@ class CallsClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<CallsIndexFilter>(key);
-          return std::move(pkb->Calls(std::move(filter))->get_result());
+          return std::move(pkb->Calls(std::move(filter)));
         },
         [&](EntitySet &result, pkb::CallsData data) {
           AddList(data.get_direct_calls(), result);

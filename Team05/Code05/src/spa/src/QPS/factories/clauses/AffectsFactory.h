@@ -8,20 +8,16 @@
 #include <vector>
 
 #include "ClauseFactory.h"
+#include "StmtStmtClauseFactory.h"
 
 namespace qps {
-class AffectsFactory : public ClauseFactory {
+class AffectsFactory : public StmtStmtClauseFactory {
  public:
-  AffectsFactory() : ClauseFactory() {
-    LHS_entity_types_ = Entity::get_all_stmt_entities();
-    RHS_entity_types_ = Entity::get_all_stmt_entities();
-  }
+  AffectsFactory() : StmtStmtClauseFactory() {}
 
-  inline ClausePtr Create(ArgumentPtr arg1, ArgumentPtr arg2) override {
-    InitializeWildcard(arg1, EntityType::kStmt);
-    InitializeWildcard(arg2, EntityType::kStmt);
-
-    return std::make_unique<AffectsClause>(std::move(arg1), std::move(arg2));
+  inline ClausePtr MakeClause(ArgumentPtr arg1, ArgumentPtr arg2) override {
+    return std::make_unique<AffectsClause>(
+        std::move(arg1), std::move(arg2));
   }
 };
 }  // namespace qps

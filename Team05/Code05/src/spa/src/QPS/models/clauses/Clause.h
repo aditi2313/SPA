@@ -101,7 +101,6 @@ class Clause {
       if (filter_values.count(entity)) {
         results.insert(entity);
       }
-      
     }
   }
 

@@ -26,7 +26,8 @@ class ReverseIndexFilter
 };
 typedef ReverseIndexFilter<pkb::FollowsData> ReverseFollowFilter;
 typedef ReverseIndexFilter<pkb::ParentData> ReverseParentFilter;
-typedef ReverseIndexFilter<pkb::CallsData, std::string, std::string> ReverseCallsFilter;
+typedef ReverseIndexFilter<pkb::CallsData, std::string, std::string>
+    ReverseCallsFilter;
 typedef ReverseIndexFilter<pkb::NextData> ReverseNextFilter;
 
 }  // namespace filter

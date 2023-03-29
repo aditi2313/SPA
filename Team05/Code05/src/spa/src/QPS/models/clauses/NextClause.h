@@ -25,13 +25,11 @@ class NextClause : public ReversableClause {
     auto &data = reader.read_data();
     AddList(data.get_next_im_list(), results);
   }
-
-  
   inline virtual void ReverseIndex(const Entity& index,
     const pkb::PKBReadPtr& pkb,
     EntitySet& results) {
-    filter::ReverseNextFilter filter(index.get_int());    
-    auto &reader = pkb->Next(filter);    
+    filter::ReverseNextFilter filter(index.get_int());
+    auto &reader = pkb->Next(filter);
     WriteSecondIndexesFromReader(reader, results);
   }
 };

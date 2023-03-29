@@ -30,7 +30,7 @@ class ParentClause : public ReversableClause {
     const Entity& index,
     const pkb::PKBReadPtr& pkb,
     EntitySet& results) override {
-    filter::ReverseParentFilter filter(index.get_int());    
+    filter::ReverseParentFilter filter(index.get_int());
     auto& reader = pkb->Parent(filter);
     WriteSecondIndexesFromReader(reader, results);
   }

@@ -107,7 +107,7 @@ class PKBRead {
 
   std::unordered_set<int> Affects(int);
 
-  std::unordered_set<int> AffectsT(int);  
+  std::unordered_set<int> AffectsT(int);
 
   CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
     return ftr.FilterTable(relation_table_->calls_d_table_);

@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <catch.hpp>
+#include <vector>
 
 #include "PKB/tables/reader/TableReader.h"
 
@@ -21,5 +21,4 @@ bool CheckReaderEquality(std::vector<Data> datas, TableReader<Data>& reader) {
     reader.increment();
   }
   return true;
-
 }

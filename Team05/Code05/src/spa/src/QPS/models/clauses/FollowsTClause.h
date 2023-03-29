@@ -20,11 +20,11 @@ class FollowsTClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    filter::FollowsIndexFilter filter(index.get_int());  
+    filter::FollowsIndexFilter filter(index.get_int());
     auto& follows_reader = pkb->Follows(filter);
     if (follows_reader.reached_end()) return;
     auto &data = follows_reader.read_data();
-    AddList(data.get_follows_list(), results);    
+    AddList(data.get_follows_list(), results);
   }
 };
 }  // namespace qps

@@ -13,10 +13,10 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
       std::make_unique<pkb::PKBRelationTable>();
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
-  pkb::PKBRead reader(std::move(table));  
+  pkb::PKBRead reader(std::move(table));
   filter::FollowsPredicateFilter ftr(
       [](pkb::FollowsData data) { return true; });
-  
+
   auto& results_table = reader.Follows(ftr);
 
   std::unordered_map<int, std::unordered_set<int>> results;

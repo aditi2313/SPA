@@ -26,7 +26,6 @@ class PatternAssignClause : public Clause {
     if (reader.reached_end()) return;
     auto &data = reader.read_data();
     results.insert(Entity(data.get_index()));
-    
   }
 
   inline void Filter(
@@ -34,8 +33,7 @@ class PatternAssignClause : public Clause {
       const EntitySet &RHS_filter_values,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    int line = index.get_int();    
-
+    int line = index.get_int();
     auto expr_arg = dynamic_cast<ExpressionArg *>(arg2_.get());
     auto &AST = expr_arg->get_expression();
 

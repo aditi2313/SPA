@@ -102,7 +102,7 @@ class DoubleIndexTable {
     // as the RHS can have extra second index values
     // Relies on the storage of second index in data as well.
     if (LHS.data_.size() != RHS.data_.size()) return false;
-    for (auto& [id, index] : LHS.first_index_map_) {      
+    for (auto& [id, index] : LHS.first_index_map_) {
       if (!RHS.exists(id)) {
         return false;
       }

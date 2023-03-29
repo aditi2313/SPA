@@ -11,14 +11,15 @@ namespace pkb {
 template <class Data, class Table = IndexableTable<Data>, class Index = Key>
 class IndexableReader : public TableReader<Data> {
  public:
-  IndexableReader(const Table& table) : table_(&table) { ptr_ = keys_.begin(); }
+  explicit IndexableReader(const Table& table) : table_(&table) {
+    ptr_ = keys_.begin();
+  }
   IndexableReader() : table_(nullptr) { ptr_ = keys_.begin(); }
 
   inline const Data& read_data() override { return table_->get_row(*ptr_); }
 
   inline void increment() override { ptr_++; }
   inline bool reached_end() override { return ptr_ == keys_.end(); }
-
 
   /// <summary>
   /// Adds an index and resets the

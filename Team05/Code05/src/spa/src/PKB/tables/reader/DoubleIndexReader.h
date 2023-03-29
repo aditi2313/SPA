@@ -11,7 +11,8 @@ namespace pkb {
 template <class Data, class Index, class SecondIndex>
 class DoubleIndexReader : public TableReader<Data> {
  public:
-  DoubleIndexReader(const DoubleIndexTable<Data, Index, SecondIndex>& table)
+  explicit DoubleIndexReader(
+      const DoubleIndexTable<Data, Index, SecondIndex>& table)
       : table_(&table) {
     ptr_ = indexes_.begin();
   }

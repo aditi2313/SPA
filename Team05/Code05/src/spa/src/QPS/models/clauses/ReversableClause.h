@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Clause.h"
 
 namespace qps {
@@ -11,22 +13,22 @@ class ReversableClause : public Clause {
   inline virtual void ReverseIndex(const Entity& index,
                                    const pkb::PKBReadPtr& pkb,
                                    EntitySet& results) = 0;
-  inline virtual void Filter(const EntitySet& lhs, const EntitySet& rhs,
-                             Table::TwoSynonymRows& results_r,
-                             const pkb::PKBReadPtr& pkb) override {
+  inline void Filter(const EntitySet& lhs, const EntitySet& rhs,
+                     Table::TwoSynonymRows& results_r,
+                     const pkb::PKBReadPtr& pkb) override {
     bool reverse = lhs.size() > rhs.size();
     auto& curr_indexes = reverse ? rhs : lhs;
     auto& filter_indexes = reverse ? lhs : rhs;
     for (auto& index : curr_indexes) {
       EntitySet results;
-      reverse ? ReverseIndex(index, pkb, results) : Index(index, pkb, results);      
+      reverse ? ReverseIndex(index, pkb, results) : Index(index, pkb, results);
       for (auto& entity : results) {
         if (!filter_indexes.count(entity)) continue;
         reverse ? results_r.emplace_back(entity, index)
                 : results_r.emplace_back(index, entity);
       }
     }
-  }  
+  }
 
   template <class Reader>
   void WriteSecondIndexesFromReader(Reader& reader, EntitySet& results) {

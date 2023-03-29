@@ -17,8 +17,7 @@ InitializeUses(std::string program) {
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::UsesPredicateFilter>(
       [](pkb::UsesData data) { return true; });
-  auto results_ptr = reader.Uses(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Uses(std::move(ftr));
 
   std::unordered_map<std::variant<int, std::string>,
                      std::unordered_set<std::string>>

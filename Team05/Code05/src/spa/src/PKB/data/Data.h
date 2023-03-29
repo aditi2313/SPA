@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <string>
 #include "DataWrapper.h"
 
 namespace pkb {
@@ -15,7 +16,7 @@ class Data : public DataWrapper {
         return line_;
     }
 
-protected:
+ protected:
     T line_;
 };
 

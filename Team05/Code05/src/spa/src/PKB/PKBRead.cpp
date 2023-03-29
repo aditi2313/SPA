@@ -121,17 +121,17 @@ std::unordered_set<int> PKBRead::NextT(int v) {
   std::queue<int> frontier;
   std::unordered_set<int> result;
 
-  auto& next_table = relation_table_->next_table_;
-  if (!relation_table_->next_table_.exists(v)) {
+  auto& next_table = relation_table_->next_d_table_;
+  if (!next_table.exists(v)) {
     return {};
   }
-  auto& data = relation_table_->next_table_.get_row(v);
+  auto& data = next_table.get_row(v);
 
   util::GraphSearch<int, std::unordered_set<int>>::BFS(
       [&](int& curr) {
-        if (!relation_table_->next_table_.exists(curr))
+        if (!next_table.exists(curr))
           return std::unordered_set<int>{};
-        auto& child_data = relation_table_->next_table_.get_row(curr);
+        auto& child_data = next_table.get_row(curr);
         return child_data.get_next_im_list();
       },
       data.get_next_im_list(),

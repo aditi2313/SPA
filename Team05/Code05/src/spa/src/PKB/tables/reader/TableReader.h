@@ -3,6 +3,8 @@
 #include <memory>
 #include <vector>
 
+#include "PKB/data/Export.h"
+
 namespace pkb {
 
 // todo(Gab) use datawrapper when done by @aditi
@@ -17,14 +19,14 @@ class TableReader {
 
 template <class Data>
 using TableReaderPtr = std::unique_ptr<TableReader<Data>>;
-typedef TableReader<FollowsData> FollowsDataReader;
-typedef TableReader<ParentData> ParentDataReader;
-typedef TableReader<NextData> NextDataReader;
-typedef TableReader<CallsData> CallsDataReader;
-typedef TableReader<AffectsData> AffectsDataReader;
-typedef TableReader<AssignData> AssignDataReader;
-typedef TableReader<ModifiesData> ModifiesDataReader;
-typedef TableReader<UsesData> UsesDataReader;
-typedef TableReader<ConditionData> ConditionDataReader;
+typedef TableReader<pkb::FollowsData> FollowsDataReader;
+typedef TableReader<pkb::ParentData> ParentDataReader;
+typedef TableReader<pkb::NextData> NextDataReader;
+typedef TableReader<pkb::CallsData> CallsDataReader;
+typedef TableReader<pkb::AffectsData> AffectsDataReader;
+typedef TableReader<pkb::AssignData> AssignDataReader;
+typedef TableReader<pkb::ModifiesData> ModifiesDataReader;
+typedef TableReader<pkb::UsesData> UsesDataReader;
+typedef TableReader<pkb::ConditionData> ConditionDataReader;
 
 }  // namespace pkb

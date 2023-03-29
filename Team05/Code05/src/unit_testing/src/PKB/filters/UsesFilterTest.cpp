@@ -1,8 +1,8 @@
-#include <catch.hpp>
 #include <memory>
 #include <string>
 #include <unordered_set>
 #include <vector>
+#include <catch.hpp>
 
 #include "PKB/data/UsesData.h"
 #include "Utility.h"

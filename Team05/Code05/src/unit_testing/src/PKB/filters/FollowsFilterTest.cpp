@@ -5,7 +5,6 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "common/filter/filters/Export.h"
-#include "common/filter/filters/Export.h"
 
 using namespace pkb;  // NOLINT
 
@@ -35,7 +34,6 @@ TEST_CASE("Test processing of multiple follows line") {
     auto& result = reader.Follows(filter);
     while (!result.reached_end()) {
       if (result.read_data().get_index() == 4) break;
-
     }
     REQUIRE(result.read_data().get_follows_list() == expected);
   }

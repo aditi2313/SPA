@@ -1,6 +1,7 @@
 #pragma once
-#include <catch.hpp>
 #include <vector>
+#include <catch.hpp>
+
 
 #include "PKB/tables/reader/TableReader.h"
 

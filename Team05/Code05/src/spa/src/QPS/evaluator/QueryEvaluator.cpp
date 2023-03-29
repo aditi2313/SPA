@@ -11,6 +11,9 @@ namespace qps {
 extern MasterEntityFactory master_entity_factory_;
 
 QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
+  // Requirement to clear cache for each query
+  pkb_->ClearCache();
+
   auto &clauses = query->get_clauses();
   has_table_been_intialized_ = false;
 

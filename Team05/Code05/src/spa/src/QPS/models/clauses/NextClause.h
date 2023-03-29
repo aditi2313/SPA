@@ -23,7 +23,7 @@ class NextClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<NextIndexFilter>(key);
-          return std::move(pkb->Next(std::move(filter))->get_result());
+          return std::move(pkb->Next(std::move(filter)));
         },
         [&](EntitySet &result, pkb::NextData data) {
           AddList(data.get_next_im_list(), result);

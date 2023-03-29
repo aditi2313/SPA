@@ -17,8 +17,7 @@ InitializeModifies(std::string program) {
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::ModifiesPredicateFilter>(
       [](pkb::ModifiesData data) { return true; });
-  auto results_ptr = reader.Modifies(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Modifies(std::move(ftr));
 
   std::unordered_map<std::variant<int, std::string>,
                      std::unordered_set<std::string>>

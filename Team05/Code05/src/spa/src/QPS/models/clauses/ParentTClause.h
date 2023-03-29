@@ -23,7 +23,7 @@ class ParentTClause : public Clause {
         index,
         [&](Entity::Value key) {
           auto filter = std::make_unique<ParentIndexFilter>(key);
-          return std::move(pkb->Parent(std::move(filter))->get_result());
+          return std::move(pkb->Parent(std::move(filter)));
         },
         [&](EntitySet &result, pkb::ParentData data) {
           AddList(data.get_all_children(), result);

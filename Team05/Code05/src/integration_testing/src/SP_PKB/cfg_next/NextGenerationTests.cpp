@@ -22,11 +22,10 @@ void TestNext(std::unordered_map<int, std::unordered_set<int>> next,
       std::make_unique<PKBRelationTable>();
   SourceProcessor::ExtractRelationships(ast, table);
   PKBRead reader(std::move(table));
-  auto res = reader.Next(generate_true<NextData>());
-  auto res_table = res->get_result();
+  auto results_table = reader.Next(generate_true<NextData>());
   std::unordered_map<int, std::unordered_set<int>> vals;
-  for (std::variant<int, std::string> val : res_table->get_indexes()) {
-    auto data = res_table->get_row(val);
+  for (std::variant<int, std::string> val : results_table->get_indexes()) {
+    auto data = results_table->get_row(val);
     for (auto v : data.get_next_im_list()) {
       vals[data.get_index()].insert(v);
     }

@@ -6,12 +6,16 @@
 
 #include "PKB/data/UsesData.h"
 #include "common/filter/filters/Export.h"
+#include "Utility.h"
 
 using std::string;
 using std::vector;
 
 std::unique_ptr<pkb::UsesTable> InitialiseUsesTestTable(
         vector<std::unordered_set<string>> variables);
+
+vector<pkb::UsesData> InitialiseTestData(
+    vector<std::unordered_set<string>> variables);
 
 TEST_CASE("Test Uses by variable Filter") {
     vector<std::unordered_set<string>> variables = {
@@ -31,8 +35,8 @@ TEST_CASE("Test Uses by variable Filter") {
                 return false;
             });
     auto& new_table = variable_filter.FilterTable(*table);
-    auto expected = InitialiseUsesTestTable(result_variables);
-    //REQUIRE(*expected == *new_table);
+    auto expected = InitialiseTestData(result_variables);
+    REQUIRE(CheckReaderEquality(expected, new_table));    
 }
 
 TEST_CASE("Test Uses by int line filter") {
@@ -44,9 +48,9 @@ TEST_CASE("Test Uses by int line filter") {
     filter::UsesIndexFilter line_filter(0);
 
     auto& new_table = line_filter.FilterTable(*table);
-    auto expected = InitialiseUsesTestTable(result_variables);
+    auto expected = InitialiseTestData(result_variables);
 
-    //REQUIRE(*expected == *new_table);
+    REQUIRE(CheckReaderEquality(expected, new_table));
 }
 
 TEST_CASE("Test Uses by string line filter") {
@@ -55,13 +59,13 @@ TEST_CASE("Test Uses by string line filter") {
     table->add_row("main", pkb::UsesData("main", vars.at(0)));
     table->add_row("helper", pkb::UsesData("helper", vars.at(1)));
 
-    auto expected_table = std::make_unique<pkb::UsesTable>();
-    expected_table->add_row("main", pkb::UsesData("main", vars.at(0)));
+    std::vector<pkb::UsesData> expected_table;
+    expected_table.push_back(pkb::UsesData("main", vars.at(0)));
 
     filter::UsesIndexFilter line_filter("main");
     auto& actual_table = line_filter.FilterTable(*table);
 
-    //REQUIRE(*actual_table == *expected_table);
+    REQUIRE(CheckReaderEquality(expected_table, actual_table));
 }
 
 std::unique_ptr<pkb::UsesTable> InitialiseUsesTestTable(
@@ -71,4 +75,15 @@ std::unique_ptr<pkb::UsesTable> InitialiseUsesTestTable(
         result->add_row(i, pkb::UsesData(i, variables.at(i)));
     }
     return std::move(result);
+}
+
+
+vector<pkb::UsesData> InitialiseTestData(
+  vector<std::unordered_set<string>> variables) {
+  std::vector<pkb::UsesData> result;
+  for (int i = 0; i < variables.size(); ++i) {
+        result.push_back(pkb::UsesData(i, variables.at(i)));
+    }
+    return result;
+
 }

@@ -30,7 +30,7 @@ TEST_CASE("Test Next by next lines Filter") {
             });
     auto& new_table = next_lines_filter.FilterTable(*table);
     auto expected = InitialiseNextTestTable(result_lines);
-    //REQUIRE(*expected == *new_table);
+    // REQUIRE(*expected == *new_table);
 }
 
 TEST_CASE("Test Next by line filter") {
@@ -43,7 +43,7 @@ TEST_CASE("Test Next by line filter") {
     auto &new_table = caller_filter.FilterTable(*table);
     auto expected = InitialiseNextTestTable(result_lines);
 
-    //REQUIRE(*expected == *new_table);
+    // REQUIRE(*expected == *new_table);
 }
 
 std::unique_ptr<pkb::NextDTable> InitialiseNextTestTable(

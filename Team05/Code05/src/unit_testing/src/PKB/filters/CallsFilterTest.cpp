@@ -32,7 +32,7 @@ TEST_CASE("Test Calls by callee Filter") {
             });
     auto &new_table = callee_filter.FilterTable(*table);
     auto expected = InitialiseCallsTestTable(result_callees);
-    //REQUIRE(*expected == *new_table);
+    // REQUIRE(*expected == *new_table);
 }
 
 TEST_CASE("Test Calls by Caller filter") {
@@ -46,7 +46,7 @@ TEST_CASE("Test Calls by Caller filter") {
     auto& new_table = caller_filter.FilterTable(*table);
     auto expected = InitialiseCallsTestTable(result_callees);
 
-    //REQUIRE(*expected == *new_table);
+    // REQUIRE(*expected == *new_table);
 }
 
 std::unique_ptr<pkb::CallsDTable> InitialiseCallsTestTable(

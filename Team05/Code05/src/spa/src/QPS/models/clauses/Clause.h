@@ -72,6 +72,10 @@ class Clause {
     }
   }
 
+  /// <summary>
+  /// Generates the two synonym rows
+  /// from the given lhs and rhs.
+  /// </summary>
   inline virtual void Filter(
     const EntitySet& lhs,
     const EntitySet& rhs,
@@ -81,7 +85,7 @@ class Clause {
       EntitySet results;
       Index(index, pkb, results);
       if (results.empty()) continue;
-      for (auto &entity : results) {
+      for (auto &entity : results) {        
         if (!rhs.count(entity)) continue;
         results_r.emplace_back(index, entity);
       }
@@ -97,6 +101,8 @@ class Clause {
     Index(index, pkb, index_results);
     for (auto &entity : index_results) {
       for (auto &filter_entity : filter_values) {
+        // todo(Gab): Remove this weak equal functionality?
+        // It seems useless now.
         if (entity.WeakEqual(filter_entity)) {
           results.insert(entity);
         }

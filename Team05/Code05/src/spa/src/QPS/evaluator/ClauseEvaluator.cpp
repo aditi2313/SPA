@@ -79,6 +79,14 @@ void ClauseEvaluator::AssertSynonymClauseArgs(
   assert(arg1->IsSynonym() || arg2->IsSynonym());
 }
 
+void PopulateResults(Table::TwoSynonymRows& rows, EntitySet& LHS,
+  EntitySet& RHS) {
+  for (auto &[l, r] : rows) {
+    LHS.insert(l);
+    RHS.insert(r);
+  }
+}
+
 void ClauseEvaluator::QueryPKBForSynonymClause(
     ClauseWrapper &state,
     Table::TwoSynonymRows &rows) {
@@ -91,10 +99,12 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
-  //if (!arg2->IsWildcard() && !is_symmetric) {
-  //  clause->Filter(LHS, RHS, rows, pkb_);
-  //  return;
-  //}
+  bool double_syn = arg1->IsSynonym() && arg1->IsSynonym();
+  if (!arg2->IsWildcard() && !is_symmetric) {
+    clause->Filter(LHS, RHS, rows, pkb_);
+    PopulateResults(rows, LHS_results, RHS_results);
+    return;
+  }
   
 
   for (auto &index : LHS) {

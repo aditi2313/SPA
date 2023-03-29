@@ -4,10 +4,31 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/FollowsVisitor.h"
+#include "SP/visitors/Export.h"
 #include "common/filter/filters/PredicateFilter.h"
 
 std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
+    std::string program) {
+  std::unique_ptr<pkb::PKBRelationTable> table =
+      std::make_unique<pkb::PKBRelationTable>();
+  auto root = sp::SourceProcessor::ParseProgram(program);
+  sp::SourceProcessor::ExtractRelationships(root, table);
+  pkb::PKBRead reader(std::move(table));
+  auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
+      [](pkb::FollowsData data) { return true; });
+  auto results_table = reader.Follows(std::move(ftr));
+
+  std::unordered_map<int, std::unordered_set<int>> results;
+
+  for (auto result : results_table->get_indexes()) {
+    auto data = results_table->get_row(result);
+    results[data.get_index()].insert(data.get_follows());
+  }
+
+  return results;
+}
+
+std::unordered_map<int, std::unordered_set<int>> InitializeFollowsT(
     std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =
       std::make_unique<pkb::PKBRelationTable>();
@@ -109,13 +130,13 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
     REQUIRE(actual_results == expected_results);
   }
 
-  SECTION("Three read statements - transitive relationship holds") {
+  SECTION("Three read statements") {
     std::string program = "procedure follows { read x; read y; read z; }";
 
     auto actual_results = InitializeFollows(program);
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
-        {1, {2, 3}}, {2, {3}}};
+        {1, {2}}, {2, {3}}};
 
     REQUIRE(actual_results == expected_results);
   }
@@ -129,6 +150,56 @@ TEST_CASE("Test SP and PKB integration for Follows data") {
 
     std::unordered_map<int, std::unordered_set<int>> expected_results = {
         {2, {3}}, {4, {5}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Calls statements") {
+    std::string program =
+        "procedure follows { call helper; } procedure helper { print help; }";
+
+    auto actual_results = InitializeFollows(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Calls within if statement") {
+    std::string program =
+        "procedure follows { if (x == 5) then { y = 3; } else { call helper; z "
+        "= 5; } } procedure helper { x = 3; }";
+
+    auto actual_results = InitializeFollows(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {3, {4}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+}
+
+TEST_CASE("Test SP and PKB integration for FollowsT data") {
+  SECTION("Three read statements - transitive relationship holds") {
+    std::string program = "procedure follows { read x; read y; read z; }";
+
+    auto actual_results = InitializeFollowsT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {2, 3}}, {2, {3}}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Three consecutive while loops - transitive relationship holds") {
+    std::string program =
+        "procedure follows { while (x == 1) { read x; } while (y == 2) { read "
+        "y; } while (z == 3) { read z; } }";
+
+    auto actual_results = InitializeFollowsT(program);
+
+    std::unordered_map<int, std::unordered_set<int>> expected_results = {
+        {1, {3, 5}}, {3, {5}}};
 
     REQUIRE(actual_results == expected_results);
   }

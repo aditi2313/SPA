@@ -16,8 +16,7 @@ InitializeCalls(std::string program) {
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::CallsPredicateFilter>(
       [](pkb::CallsData data) { return true; });
-  auto results_ptr = reader.Calls(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Calls(std::move(ftr));
 
   std::unordered_map<std::string, std::unordered_set<std::string>> results;
 

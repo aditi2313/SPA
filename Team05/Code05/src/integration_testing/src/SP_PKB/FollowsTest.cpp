@@ -37,8 +37,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollowsT(
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::FollowsPredicateFilter>(
       [](pkb::FollowsData data) { return true; });
-  auto results_ptr = reader.Follows(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Follows(std::move(ftr));
 
   std::unordered_map<int, std::unordered_set<int>> results;
 

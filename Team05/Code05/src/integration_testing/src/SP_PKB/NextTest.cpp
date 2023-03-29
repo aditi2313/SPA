@@ -16,8 +16,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeNext(
   pkb::PKBRead reader(std::move(table));
   auto ftr = std::make_unique<filter::NextPredicateFilter>(
       [](pkb::NextData data) { return true; });
-  auto results_ptr = reader.Next(std::move(ftr));
-  auto results_table = results_ptr->get_result();
+  auto results_table = reader.Next(std::move(ftr));
 
   std::unordered_map<int, std::unordered_set<int>> results;
 

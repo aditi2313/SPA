@@ -46,37 +46,3 @@ void VerifySingleKeys(
     REQUIRE(test_table.get_row(p1) == second_indexes.first);
   }
 }
-//
-//TEST_CASE("Test indexable table") {
-//  TestedTable test_table;
-//
-//  VerifyMultipleKeys({{1, {"lemonade", {2, 3, 4, 5}}}, {2, {"rocks", {3, 5}}}},
-//                     test_table);
-//
-//  SECTION("Check reverse map") {
-//    CompareContents<std::vector<std::string>, std::string>(
-//        test_table.get_row_index2(3),
-//        std::vector<std::string>{"rocks", "lemonade"});
-//  }
-//
-//  SECTION("Check reverse map for single") {
-//    CompareContents<std::vector<std::string>, std::string>(
-//        test_table.get_row_index2(2), std::vector<std::string>{"lemonade"});
-//  }
-//}
-//
-//TEST_CASE("Test single index insertion") {
-//  TestedTable test_table;
-//  VerifySingleKeys({{1, {"lemonade", {2, 3, 4, 5}}}, {2, {"rocks", {3, 5}}}},
-//                   test_table);
-//  SECTION("Check reverse map") {
-//    CompareContents<std::vector<std::string>, std::string>(
-//        test_table.get_row_index2(3),
-//        std::vector<std::string>{"rocks", "lemonade"});
-//  }
-//
-//  SECTION("Check reverse map for single") {
-//    CompareContents<std::vector<std::string>, std::string>(
-//        test_table.get_row_index2(2), std::vector<std::string>{"lemonade"});
-//  }
-//}

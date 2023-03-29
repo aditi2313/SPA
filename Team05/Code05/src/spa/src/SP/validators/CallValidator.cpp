@@ -28,7 +28,7 @@ void CallValidator::Accept(ast::ProcNode &proc_node) {
 }
 
 void CallValidator::Accept(ast::CallNode &call_node) {
-  auto called_proc = call_node.get_called_proc()->get_name();
+  auto called_proc = call_node.get_called_proc();
   call_names_set_.insert(called_proc);
   called_by_[called_proc].insert(call_node.get_parent_proc());
 }

@@ -12,17 +12,13 @@ namespace ast {
 class CallNode : public StmtNode {
  public:
   explicit CallNode(std::string parent_proc_name,
-                    std::unique_ptr<VarNode> called_proc, int line)
+                    std::string called_proc_name, int line)
       : StmtNode(line) {
     parent_proc_name_ = parent_proc_name;
-    called_proc_ = std::move(called_proc);
+    called_proc_name_ = called_proc_name;
   }
 
-  inline std::unique_ptr<VarNode>& get_called_proc() { return called_proc_; }
-
-  inline std::string& get_called_proc_name() {
-    return called_proc_->get_name();
-  }
+  inline std::string& get_called_proc() { return called_proc_name_; }
 
   inline std::string& get_parent_proc() { return parent_proc_name_; }
 
@@ -30,6 +26,6 @@ class CallNode : public StmtNode {
 
  private:
   std::string parent_proc_name_;
-  std::unique_ptr<VarNode> called_proc_;
+  std::string called_proc_name_;
 };
 }  // namespace ast

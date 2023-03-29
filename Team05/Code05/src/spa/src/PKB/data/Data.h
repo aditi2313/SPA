@@ -12,7 +12,7 @@ class Data : public DataWrapper {
 
     inline T get_index() { return line_; }
 
-    inline std::variant<int, std::string> get_key() {
+    inline std::variant<int, std::string> get_key() override {
         return line_;
     }
 

@@ -1,0 +1,2500 @@
+1 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(_, _) pattern w(_, _) pattern a(_, _) such that Follows(s, _) such that Affects(_, 7) such that Affects*(17, 15) such that Follows*(_, s) 
+none
+5000
+2 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(s, v) with v.varName = read.varName such that Calls*(_, _) pattern ifs(_, _, _) pattern w(_, _) such that Follows(s, _) such that Calls(p, p) 
+none
+5000
+3 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("x", _) such that Parent(s, 18) such that Calls(_, "First") such that Follows(s, s) such that Calls*("Third", _) such that Parent*(_, s) pattern ifs(v, _, _) 
+none
+5000
+4 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with a.stmt# = c.value such that Next*(_, _) such that Affects*(_, s) pattern w("x", _) with read.varName = p.procName such that Calls*(_, "Second") such that Calls(p, _) 
+none
+5000
+5 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(8, s) such that Parent(9, s) pattern a("y", _) with s.stmt# = ifs.stmt# such that Calls(_, "Third") such that Next(_, s) with pn.varName = pn.varName 
+none
+5000
+6 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, "i") pattern w("v", _) with s.stmt# = call.stmt# such that Parent*(4, 10) such that Next*(17, _) such that Parent(_, _) pattern a("z", _"z"_) 
+none
+5000
+7 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(17, _) such that Follows(18, 4) with call.procName = p.procName such that Calls*(_, _) such that Affects*(11, _) such that Uses(_, _) such that Parent*(s, s) 
+none
+5000
+8 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(s, s) such that Parent(_, _) such that Uses(s, _) pattern w(_, _) pattern a(_, v) such that Modifies(p, "y") such that Next(s, s) 
+none
+5000
+9 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(17, s) such that Next(16, 13) such that Next*(14, _) with c.value = s.stmt# with read.varName = pn.varName such that Calls*("Second", "Third") such that Parent*(_, 8) 
+none
+5000
+10 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = pn.varName pattern a("z", _"i"_) such that Next*(10, 1) such that Follows*(_, _) such that Modifies(2, _) such that Affects(s, s) pattern ifs(_, _, _) 
+none
+5000
+11 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("v", _, _) such that Next*(s, s) such that Next(s, _) pattern a(_, v) with w.stmt# = s.stmt# such that Calls*("Second", _) such that Affects*(_, 9) 
+none
+5000
+12 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, _) pattern w(_, _) pattern a("y", i) such that Affects*(18, _) such that Follows(s, _) such that Follows*(s, s) such that Affects(_, 17) 
+none
+5000
+13 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(p, _) with pn.varName = read.varName such that Follows(10, _) such that Uses(10, _) pattern a(v, _) such that Next*(8, 15) such that Next(_, _) 
+none
+5000
+14 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(1, _) such that Next(s, _) such that Affects(17, _) such that Parent*(s, 11) pattern a(_, z) such that Calls("Third", p) such that Follows(s, 7) 
+none
+5000
+15 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, _) such that Affects*(s, s) pattern ifs("z", _, _) pattern w(_, _) with pn.stmt# = w.stmt# such that Next*(17, 15) pattern a("x", _"x"_) 
+none
+5000
+16 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(12, _) such that Uses(16, _) such that Calls(p, _) such that Next(7, 3) pattern w(v, _) such that Calls*(_, p) with read.varName = v.varName 
+none
+5000
+17 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(_, _) pattern ifs(_, _, _) such that Modifies(s, v) such that Uses(s, _) such that Follows(s, 15) such that Parent*(18, s) with r.stmt# = pn.stmt# 
+none
+5000
+18 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects*(15, _) such that Modifies(_, v) such that Next(_, s) such that Parent*(18, 13) pattern w("i", _) such that Calls*("First", p) such that Follows*(s, 2) 
+none
+5000
+19 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(_, v) such that Modifies(s, _) pattern ifs("i", _, _) such that Follows(s, s) with w.stmt# = w.stmt# such that Calls*("Third", p) such that Affects(s, s) 
+none
+5000
+20 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(p, v) pattern a(v, z) such that Follows(12, _) such that Calls*(_, _) such that Follows*(s, 4) such that Calls(p, _) such that Affects*(_, 9) 
+none
+5000
+21 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, "x") such that Calls*(_, "First") with a.stmt# = c.value such that Modifies(s, _) such that Parent(_, s) such that Next(s, _) pattern a(_, v) 
+none
+5000
+22 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a(_, z) such that Modifies(7, _) such that Affects*(_, s) such that Next*(s, 10) such that Next(s, _) such that Parent*(s, s) such that Follows(11, s) 
+none
+5000
+23 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x pattern w(v, _) pattern a(_, x) such that Affects*(11, 18) such that Affects(10, 12) such that Calls*(_, _) with call.procName = pn.varName such that Follows(3, 5) 
+none
+5000
+24 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(12, s) such that Calls*(p, "Third") such that Modifies(s, _) with p.procName = p.procName with call.stmt# = r.stmt# such that Next*(s, 4) such that Affects(s, s) 
+none
+5000
+25 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(s, 14) pattern a(v, _"i"_) such that Parent(_, 10) such that Parent*(5, s) such that Calls(p, "First") pattern w("v", _) such that Next*(_, 13) 
+none
+5000
+26 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(_, s) such that Parent*(_, _) such that Uses(s, _) such that Affects*(_, _) such that Follows(_, 7) such that Calls(p, p) pattern a(_, y) 
+none
+5000
+27 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(p, v) such that Modifies(_, _) such that Parent*(16, _) with pn.varName = v.varName such that Affects(s, 13) such that Parent(s, _) such that Calls("First", _) 
+none
+5000
+28 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(8, "x") pattern a(v, _"z"_) such that Follows*(s, s) such that Affects(_, _) such that Next*(_, 4) such that Parent*(s, s) such that Affects*(s, s) 
+none
+5000
+29 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(_, p) such that Affects(_, _) such that Next(s, 14) such that Modifies(_, v) with p.procName = v.varName such that Parent(17, 19) such that Uses(18, _) 
+none
+5000
+30 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a(v, _) such that Modifies(p, v) such that Parent(2, s) pattern ifs("z", _, _) such that Parent*(s, _) such that Next*(s, s) such that Calls*("First", "Third") 
+none
+5000
+31 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(_, _) such that Calls*(p, _) such that Parent*(14, 3) such that Next*(_, 18) with s.stmt# = s.stmt# such that Next(_, s) such that Affects*(_, 10) 
+none
+5000
+32 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, 9) such that Calls*("First", p) such that Next*(7, s) such that Calls("Second", "Third") pattern ifs("x", _, _) such that Follows*(11, 1) pattern a("v", x) 
+none
+5000
+33 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, v) such that Follows(_, s) such that Next*(s, 19) such that Affects(7, _) with pn.stmt# = a.stmt# such that Modifies(_, "z") such that Parent(_, _) 
+none
+5000
+34 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(_, s) such that Affects*(s, _) such that Modifies(p, v) such that Follows*(19, _) such that Calls*(_, "Second") pattern a(_, _"z"_) such that Uses(_, _) 
+none
+5000
+35 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(v, _, _) such that Affects(s, _) such that Calls*(_, "First") such that Calls(_, _) with ifs.stmt# = call.stmt# with p.procName = read.varName such that Uses(s, v) 
+none
+5000
+36 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls("Third", _) such that Follows*(_, s) such that Calls*(p, _) such that Parent*(_, 18) with p.procName = p.procName such that Uses(_, "i") such that Affects*(7, s) 
+none
+5000
+37 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, "z") pattern w(_, _) such that Affects*(15, _) pattern ifs(_, _, _) with read.varName = read.varName pattern a("v", _) such that Calls(p, _) 
+none
+5000
+38 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with ifs.stmt# = call.stmt# such that Next*(_, _) with v.varName = call.procName pattern ifs(v, _, _) such that Calls(_, p) such that Uses(19, _) pattern a(v, v) 
+none
+5000
+39 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(17, "v") such that Follows(_, 7) such that Follows*(3, _) with s.stmt# = c.value with read.varName = read.varName such that Affects(_, s) such that Next(17, 19) 
+none
+5000
+40 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next*(10, 17) such that Follows*(_, s) such that Follows(_, 9) pattern a(v, y) pattern w(_, _) with pn.stmt# = call.stmt# such that Calls*("First", _) 
+none
+5000
+41 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, 8) pattern a("x", _"y"_) such that Modifies(s, "v") such that Affects*(_, _) with pn.varName = pn.varName such that Next(7, _) such that Follows*(_, _) 
+none
+5000
+42 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(12, s) such that Uses(p, _) such that Affects*(_, _) such that Parent*(_, s) such that Modifies(p, "y") pattern w(v, _) with read.varName = p.procName 
+none
+5000
+43 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(v, _) with pn.varName = read.varName pattern ifs("z", _, _) such that Next*(5, 9) such that Parent*(_, 17) with pn.stmt# = w.stmt# such that Parent(_, 3) 
+none
+5000
+44 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(9, _) pattern ifs(_, _, _) such that Follows(s, 7) with c.value = w.stmt# such that Modifies(p, "i") such that Next*(4, _) such that Affects(s, 10) 
+none
+5000
+45 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with r.stmt# = call.stmt# pattern ifs("i", _, _) such that Modifies(_, v) such that Follows(_, _) pattern a("x", v) such that Uses(_, "y") such that Next(_, s) 
+none
+5000
+46 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(v, _, _) with ifs.stmt# = ifs.stmt# such that Follows(_, _) such that Parent*(s, s) such that Follows*(s, s) such that Calls("First", _) such that Affects*(s, 10) 
+none
+5000
+47 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, v) such that Next(s, s) such that Affects*(s, 19) with v.varName = v.varName such that Calls*(p, _) such that Follows*(s, 4) such that Parent(_, 16) 
+none
+5000
+48 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(_, "Second") such that Calls*("Third", _) such that Affects*(_, _) pattern ifs(_, _, _) such that Follows*(19, s) such that Parent*(_, 5) such that Parent(s, 6) 
+none
+5000
+49 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, 3) pattern w(_, _) pattern ifs(_, _, _) such that Modifies(11, _) such that Calls*(_, p) such that Next*(s, _) such that Calls("First", p) 
+none
+5000
+50 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(14, v) such that Calls(_, p) such that Follows(_, s) such that Parent(_, _) pattern ifs(_, _, _) such that Next(_, 9) with read.varName = p.procName 
+none
+5000
+51 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, _) pattern ifs(_, _, _) such that Follows*(9, s) pattern a(v, i) with read.varName = pn.varName such that Next*(_, _) pattern w("y", _) 
+none
+5000
+52 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = p.procName such that Affects*(_, 7) such that Calls*("Second", "First") such that Next*(_, 12) such that Follows*(s, s) such that Affects(s, 7) such that Next(_, _) 
+none
+5000
+53 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(_, _) pattern ifs("x", _, _) with call.stmt# = a.stmt# pattern a("x", _"x"_) pattern w(_, _) such that Follows(14, _) such that Calls(p, "First") 
+none
+5000
+54 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, v) with c.value = w.stmt# such that Next(s, 12) such that Affects(s, _) such that Calls("First", p) with p.procName = pn.varName pattern w(v, _) 
+none
+5000
+55 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(_, _, _) such that Uses(_, v) such that Next(14, _) pattern a("z", _"i"_) such that Affects(s, s) such that Calls(_, _) with ifs.stmt# = ifs.stmt# 
+none
+5000
+56 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "Second") such that Affects*(_, _) pattern w(v, _) such that Follows(_, 1) such that Parent*(16, _) with ifs.stmt# = a.stmt# such that Modifies(s, v) 
+none
+5000
+57 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, 15) such that Affects*(s, _) with read.varName = call.procName such that Next*(s, 3) pattern w(v, _) such that Calls*(_, p) with r.stmt# = c.value 
+none
+5000
+58 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(p, _) such that Affects(s, s) such that Follows(_, 12) pattern ifs("i", _, _) pattern a(_, _) such that Affects*(8, s) such that Uses(s, _) 
+none
+5000
+59 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, _) such that Parent*(10, s) pattern a("z", _"y"_) such that Calls(_, _) such that Parent(s, s) pattern ifs(_, _, _) such that Modifies(s, _) 
+none
+5000
+60 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(_, _) such that Follows*(11, _) pattern a(v, _"v"_) such that Modifies(10, _) such that Calls*(p, p) such that Calls(_, _) such that Follows(_, s) 
+none
+5000
+61 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls("Second", p) such that Follows(_, s) such that Modifies(s, _) with r.stmt# = call.stmt# such that Calls*("Second", p) such that Parent*(_, 17) pattern a("y", v) 
+none
+5000
+62 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a(v, _) with call.stmt# = c.value such that Affects(5, 5) such that Affects*(s, 8) such that Next*(7, s) such that Uses(_, v) such that Next(_, 10) 
+none
+5000
+63 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(3, _) such that Next(s, s) pattern a(_, _"y"_) such that Next*(_, 5) with v.varName = read.varName such that Calls*("First", _) such that Follows(s, s) 
+none
+5000
+64 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = read.varName such that Uses(p, _) such that Calls*(p, "Second") with a.stmt# = call.stmt# such that Affects(_, s) pattern w(_, _) such that Next*(15, 9) 
+none
+5000
+65 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(_, 9) such that Parent(16, _) such that Next(s, 7) with call.procName = call.procName with call.stmt# = c.value such that Next*(s, s) such that Modifies(p, v) 
+none
+5000
+66 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, _) such that Next*(2, 18) such that Affects(18, _) such that Modifies(_, _) such that Follows*(9, s) with r.stmt# = s.stmt# such that Affects*(5, s) 
+none
+5000
+67 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(_, v) such that Parent(13, _) pattern a(_, _) with c.value = call.stmt# such that Next(_, _) pattern w("x", _) such that Follows(s, 12) 
+none
+5000
+68 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(s, 15) such that Parent(16, s) such that Modifies(_, "v") pattern a("y", _) such that Calls("First", p) with s.stmt# = c.value such that Follows(_, _) 
+none
+5000
+69 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(s, s) such that Modifies(2, v) with pn.varName = call.procName such that Calls(_, "First") such that Affects*(_, 18) such that Uses(p, _) such that Follows*(_, s) 
+none
+5000
+70 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(5, 9) such that Parent*(18, _) such that Uses(13, v) such that Next(13, s) such that Calls("Third", _) with c.value = c.value pattern a(_, _) 
+none
+5000
+71 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(_, s) such that Modifies(s, "z") such that Next*(s, s) pattern ifs(_, _, _) such that Follows*(_, s) such that Calls(_, "Third") pattern w(v, _) 
+none
+5000
+72 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, "x") such that Next*(_, s) such that Calls("Third", p) such that Affects*(13, s) pattern a(v, _"i"_) such that Parent(_, 3) with ifs.stmt# = s.stmt# 
+none
+5000
+73 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(19, _) such that Modifies(_, v) with pn.stmt# = a.stmt# such that Parent*(16, s) such that Affects(14, _) such that Uses(s, _) with call.procName = read.varName 
+none
+5000
+74 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(p, "Second") such that Calls("Second", "Third") pattern a(v, _) such that Parent*(_, 8) with w.stmt# = c.value such that Follows(s, 2) pattern ifs("x", _, _) 
+none
+5000
+75 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(p, _) such that Follows(s, _) such that Modifies(p, v) such that Calls(p, p) pattern w("y", _) pattern ifs("x", _, _) such that Parent(9, 6) 
+none
+5000
+76 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = p.procName such that Affects(s, s) such that Parent(8, _) such that Parent*(15, 2) such that Next*(_, _) pattern w("i", _) pattern ifs(_, _, _) 
+none
+5000
+77 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(s, _) such that Calls(_, _) such that Affects(18, 4) such that Follows*(7, s) such that Follows(15, _) with read.varName = pn.varName such that Parent*(_, _) 
+none
+5000
+78 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(8, _) pattern ifs("x", _, _) such that Uses(p, _) with r.stmt# = c.value such that Follows(s, _) such that Calls(p, _) with call.procName = p.procName 
+none
+5000
+79 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.procName = v.varName such that Follows*(5, s) such that Affects*(s, s) such that Modifies(15, "z") such that Follows(s, s) such that Parent(_, s) with pn.stmt# = r.stmt# 
+none
+5000
+80 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(_, 8) such that Affects(_, s) such that Uses(p, v) such that Parent*(5, s) with v.varName = read.varName such that Calls("Second", _) such that Parent(s, 8) 
+none
+5000
+81 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(13, _) with pn.varName = v.varName pattern w(v, _) with a.stmt# = r.stmt# pattern ifs(v, _, _) such that Parent(s, s) such that Calls(_, _) 
+none
+5000
+82 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(_, 7) such that Calls*("Third", "Second") such that Follows*(_, s) such that Parent*(_, s) such that Next(s, _) such that Next*(s, s) such that Modifies(p, v) 
+none
+5000
+83 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(5, _) with pn.stmt# = call.stmt# such that Calls(p, _) pattern a("v", x) pattern w(_, _) such that Next*(_, _) with pn.varName = p.procName 
+none
+5000
+84 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(5, 13) such that Parent(2, s) such that Affects(11, 10) with read.varName = read.varName such that Follows*(s, _) such that Modifies(p, v) such that Next(_, 14) 
+none
+5000
+85 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, _) with pn.stmt# = s.stmt# such that Affects*(_, s) such that Next(_, 10) such that Modifies(14, _) such that Follows(1, _) such that Affects(1, s) 
+none
+5000
+86 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(_, p) such that Uses(s, _) such that Follows(s, _) with pn.stmt# = pn.stmt# pattern a("y", _"y"_) such that Affects*(19, s) such that Modifies(p, "v") 
+none
+5000
+87 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*("Second", p) such that Follows*(s, 1) such that Parent*(_, _) with call.procName = p.procName such that Next*(_, 5) such that Uses(p, _) pattern ifs(v, _, _) 
+none
+5000
+88 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(_, s) such that Affects*(_, _) such that Follows(_, _) pattern a(v, _) pattern w(v, _) such that Next*(11, 3) such that Calls(_, _) 
+none
+5000
+89 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w("x", _) such that Modifies(s, _) such that Calls*(p, _) such that Affects(16, 1) such that Parent*(s, s) such that Affects*(_, s) such that Parent(_, 17) 
+none
+5000
+90 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a("z", i) such that Affects*(_, 12) such that Follows*(s, 8) such that Next*(s, s) such that Calls(_, p) such that Parent(10, _) such that Affects(s, s) 
+none
+5000
+91 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(15, _) such that Affects*(_, _) such that Modifies(s, "y") with p.procName = read.varName such that Calls*("Second", p) such that Affects(_, 17) such that Parent*(_, s) 
+none
+5000
+92 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(19, s) such that Next*(_, _) such that Follows(s, 7) such that Parent*(_, 12) such that Affects*(_, _) with pn.varName = read.varName such that Affects(s, _) 
+none
+5000
+93 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(s, s) pattern a(_, _"i"_) such that Parent(s, _) such that Calls*(_, _) such that Uses(p, v) such that Affects(s, s) such that Parent*(_, 11) 
+none
+5000
+94 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls("First", _) pattern ifs(v, _, _) such that Uses(_, v) such that Next(_, s) such that Parent(s, s) such that Follows(s, s) such that Follows*(s, _) 
+none
+5000
+95 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(_, _) such that Affects(3, _) such that Calls(_, "Third") such that Parent(_, s) pattern ifs(v, _, _) such that Follows(14, _) such that Calls*("Third", _) 
+none
+5000
+96 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, s) such that Follows*(10, _) pattern ifs("x", _, _) with c.value = s.stmt# such that Affects*(s, 18) pattern a(_, _"v"_) such that Affects(_, _) 
+none
+5000
+97 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(_, _) such that Modifies(_, "v") such that Follows*(s, s) such that Affects(_, s) such that Follows(s, _) pattern ifs(v, _, _) pattern w("v", _) 
+none
+5000
+98 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(_, _, _) such that Modifies(p, _) such that Calls("Second", "Second") pattern a("y", _) such that Affects*(s, s) with p.procName = pn.varName pattern w("x", _) 
+none
+5000
+99 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(s, s) pattern a("v", _"y"_) such that Affects*(16, s) pattern ifs(v, _, _) such that Uses(s, v) such that Follows*(4, s) such that Parent*(6, s) 
+none
+5000
+100 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(19, _) such that Follows(11, 7) such that Affects*(s, s) such that Next*(9, s) such that Calls*(_, p) such that Modifies(s, "i") with pn.stmt# = c.value 
+none
+5000
+101 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(19, 19) such that Follows(_, _) such that Uses(13, _) such that Follows*(17, s) such that Parent(_, s) pattern ifs(v, _, _) such that Parent*(s, s) 
+none
+5000
+102 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(p, "First") such that Affects(s, 7) such that Parent(s, 10) such that Next(_, _) such that Follows(_, 10) pattern ifs(v, _, _) such that Uses(_, _) 
+none
+5000
+103 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(s, s) with p.procName = read.varName such that Uses(_, v) pattern ifs("z", _, _) pattern w(_, _) such that Calls*(p, _) such that Affects*(_, s) 
+none
+5000
+104 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(v, _) with w.stmt# = w.stmt# such that Follows*(2, s) such that Parent(_, _) such that Affects(s, s) such that Parent*(18, 19) such that Calls(p, "Third") 
+none
+5000
+105 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("i", _) such that Calls*(_, p) such that Follows(_, _) such that Uses(p, _) such that Next*(s, _) such that Follows*(_, _) such that Parent(s, s) 
+none
+5000
+106 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls("Third", _) such that Follows*(11, 17) such that Affects*(14, s) such that Modifies(p, _) such that Calls*(p, p) pattern w(v, _) such that Follows(16, _) 
+none
+5000
+107 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(_, 19) such that Calls(_, "First") such that Follows*(s, _) with read.varName = pn.varName such that Modifies(s, v) such that Uses(s, _) such that Parent(s, 11) 
+none
+5000
+108 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("v", _, _) with p.procName = call.procName such that Uses(p, _) such that Follows(3, _) such that Parent*(14, 14) such that Follows*(6, s) such that Modifies(15, v) 
+none
+5000
+109 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("First", p) pattern ifs("v", _, _) such that Next(19, 6) pattern w(v, _) such that Follows*(s, s) such that Calls*(p, _) such that Affects(2, 19) 
+none
+5000
+110 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(_, 7) such that Affects*(s, s) such that Affects(1, 14) such that Uses(17, _) pattern ifs(_, _, _) such that Modifies(p, _) such that Calls*(p, p) 
+none
+5000
+111 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(p, p) such that Follows*(s, 9) such that Affects*(_, 2) such that Affects(_, _) such that Calls("First", p) such that Follows(_, s) pattern a("x", _"v"_) 
+none
+5000
+112 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(p, v) such that Follows(_, _) pattern w(v, _) such that Calls*(_, "Third") with p.procName = call.procName such that Uses(s, "z") such that Affects*(_, 18) 
+none
+5000
+113 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w("v", _) with r.stmt# = s.stmt# such that Calls("First", p) such that Affects*(_, s) such that Parent(s, s) such that Next*(_, s) such that Follows*(s, 10) 
+none
+5000
+114 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("Second", p) such that Calls*(p, "First") pattern a("v", _) such that Next(s, s) with read.varName = read.varName such that Uses(s, "x") such that Modifies(3, _) 
+none
+5000
+115 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(s, s) such that Parent(1, _) with w.stmt# = s.stmt# pattern ifs(_, _, _) such that Calls*("First", _) such that Follows(3, _) such that Modifies(12, _) 
+none
+5000
+116 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(s, _) such that Calls(p, p) such that Parent(10, 7) such that Affects*(6, 11) such that Uses(p, v) such that Next*(_, _) such that Next(3, _) 
+none
+5000
+117 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(s, 19) such that Next(s, s) such that Next*(7, s) such that Calls*(p, "Second") such that Follows(s, s) such that Follows*(1, 4) such that Affects*(s, s) 
+none
+5000
+118 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w("x", _) with a.stmt# = s.stmt# such that Uses(s, "y") such that Calls*(p, "Second") such that Next(_, _) such that Affects*(_, _) such that Affects(s, 7) 
+none
+5000
+119 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(_, _) such that Follows(_, s) pattern ifs(v, _, _) with read.varName = pn.varName such that Calls*("Third", "First") such that Affects*(s, s) with pn.stmt# = c.value 
+none
+5000
+120 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(12, _) such that Affects*(_, _) such that Parent(_, _) such that Modifies(s, v) such that Follows(s, s) such that Affects(6, s) with r.stmt# = call.stmt# 
+none
+5000
+121 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(_, s) pattern a(_, _"i"_) such that Calls(_, "Second") such that Next*(s, _) such that Modifies(_, v) such that Next(_, 18) with r.stmt# = a.stmt# 
+none
+5000
+122 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(p, "y") such that Next(s, 17) with s.stmt# = s.stmt# pattern ifs(v, _, _) pattern a(v, _"x"_) such that Follows(_, 18) such that Modifies(s, v) 
+none
+5000
+123 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(1, s) such that Follows*(_, 16) such that Next(10, s) pattern ifs(_, _, _) such that Parent(s, 16) such that Uses(s, v) with call.procName = v.varName 
+none
+5000
+124 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, 5) such that Parent(14, _) such that Calls*("Third", _) such that Modifies(7, _) such that Next(_, s) with v.varName = p.procName with c.value = w.stmt# 
+none
+5000
+125 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(s, _) such that Follows(_, _) such that Modifies(18, v) such that Follows*(s, 11) pattern ifs(_, _, _) with pn.varName = v.varName such that Affects(3, s) 
+none
+5000
+126 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(_, "First") such that Parent*(_, s) such that Calls("Second", p) such that Affects*(_, s) pattern ifs(v, _, _) such that Uses(_, v) such that Next(s, _) 
+none
+5000
+127 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*("First", _) such that Follows(_, 18) such that Next(s, s) such that Next*(13, 5) pattern ifs("v", _, _) such that Calls("First", _) pattern w(_, _) 
+none
+5000
+128 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.procName = call.procName such that Affects*(s, s) such that Uses(6, _) pattern w("y", _) such that Calls*("Third", p) such that Affects(s, _) such that Modifies(19, _) 
+none
+5000
+129 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(12, 2) with s.stmt# = r.stmt# such that Calls("Second", p) such that Parent(_, 13) pattern ifs(_, _, _) such that Affects*(11, _) such that Follows(17, _) 
+none
+5000
+130 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(_, _) such that Affects*(_, 13) such that Modifies(_, v) such that Parent*(_, s) with pn.varName = pn.varName such that Follows(_, _) pattern ifs(_, _, _) 
+none
+5000
+131 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with call.procName = read.varName such that Affects*(11, _) such that Uses(p, _) such that Follows*(_, _) pattern a(v, _) pattern ifs("v", _, _) such that Parent(s, 13) 
+none
+5000
+132 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(_, s) with p.procName = read.varName such that Follows*(_, _) such that Follows(_, _) pattern a(v, x) such that Parent*(_, 2) pattern w(v, _) 
+none
+5000
+133 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(13, 15) with pn.varName = p.procName pattern a(_, _) such that Calls("Third", p) such that Modifies(4, v) such that Affects(_, s) pattern ifs(_, _, _) 
+none
+5000
+134 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(8, 10) pattern ifs(_, _, _) such that Calls*("Second", _) such that Affects*(16, s) pattern w(_, _) pattern a("y", _"v"_) such that Calls("Second", "Second") 
+none
+5000
+135 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a("v", _"v"_) with read.varName = p.procName such that Follows(_, 9) such that Follows*(5, _) such that Affects(_, s) pattern ifs(_, _, _) such that Parent*(_, 4) 
+none
+5000
+136 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(s, _) such that Affects*(s, 10) such that Parent*(_, _) such that Modifies(_, v) such that Follows(15, 11) pattern w(v, _) such that Next(19, _) 
+none
+5000
+137 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a(v, _"v"_) such that Parent*(_, 11) such that Next(_, 19) such that Follows*(_, 3) pattern ifs(_, _, _) such that Calls*(_, "Second") such that Calls(_, p) 
+none
+5000
+138 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next*(5, s) pattern ifs(v, _, _) such that Follows*(_, _) such that Modifies(_, _) pattern a(v, _) with p.procName = p.procName with r.stmt# = c.value 
+none
+5000
+139 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(8, 12) such that Calls("Second", p) such that Affects*(_, s) such that Follows(_, _) such that Calls*(_, _) with a.stmt# = a.stmt# such that Affects(_, 10) 
+none
+5000
+140 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(_, s) pattern w("x", _) such that Follows(s, _) such that Affects*(11, _) such that Calls(p, p) with a.stmt# = call.stmt# such that Calls*(_, "Second") 
+none
+5000
+141 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(p, v) such that Next*(s, 8) such that Affects(17, s) with read.varName = pn.varName pattern ifs(_, _, _) such that Calls*("First", "First") such that Modifies(_, _) 
+none
+5000
+142 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(_, 8) such that Parent*(_, _) pattern w("x", _) pattern ifs("i", _, _) such that Uses(p, _) such that Calls(p, p) with call.procName = read.varName 
+none
+5000
+143 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(_, 16) such that Calls(p, _) with pn.varName = read.varName such that Next(s, s) such that Modifies(s, _) such that Next*(s, s) with r.stmt# = w.stmt# 
+none
+5000
+144 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(s, 3) with ifs.stmt# = w.stmt# such that Uses(4, "i") pattern a(v, _"z"_) such that Follows(s, 5) pattern ifs("v", _, _) pattern w("i", _) 
+none
+5000
+145 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x pattern a(v, x) such that Affects*(s, 11) such that Parent(13, _) such that Uses(11, _) such that Next(17, s) with w.stmt# = call.stmt# such that Calls*("Second", p) 
+none
+5000
+146 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select i with read.varName = v.varName such that Follows*(s, _) such that Modifies(s, "z") such that Next*(s, s) such that Next(s, s) such that Affects*(_, s) pattern a("z", i) 
+none
+5000
+147 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(s, 13) such that Modifies(s, v) such that Follows*(_, 5) such that Calls*(_, _) pattern w(v, _) such that Next*(6, s) with v.varName = v.varName 
+none
+5000
+148 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, _) such that Next(s, _) such that Uses(p, _) pattern a(_, _"x"_) such that Affects(s, _) such that Next*(4, _) such that Follows(s, 5) 
+none
+5000
+149 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(7, _) pattern a("v", _) such that Next*(_, _) such that Next(13, _) such that Follows(_, s) such that Affects*(s, _) with a.stmt# = a.stmt# 
+none
+5000
+150 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x pattern a(v, x) such that Modifies(16, "x") pattern w("v", _) such that Parent(3, 15) such that Uses(s, _) such that Parent*(19, 11) such that Follows*(_, 11) 
+none
+5000
+151 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a(_, _"y"_) such that Calls(p, _) pattern w("v", _) such that Next*(_, _) such that Uses(1, _) such that Parent(9, 4) with v.varName = call.procName 
+none
+5000
+152 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(14, s) such that Calls*(_, _) such that Parent*(s, s) such that Parent(_, s) with pn.stmt# = c.value pattern ifs("z", _, _) such that Next(_, _) 
+none
+5000
+153 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, "v") such that Calls*(_, _) pattern a("z", _"z"_) such that Follows*(s, s) such that Parent(s, _) pattern ifs("z", _, _) such that Parent*(_, 5) 
+none
+5000
+154 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(_, _, _) pattern a(v, _) such that Modifies(s, _) such that Calls(p, "Third") such that Parent*(s, _) such that Parent(s, s) pattern w("y", _) 
+none
+5000
+155 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a("y", i) such that Calls*(p, _) pattern w("y", _) with call.stmt# = call.stmt# such that Follows(3, 5) such that Uses(_, "z") such that Calls(p, "Third") 
+none
+5000
+156 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(s, 12) such that Calls(_, p) such that Follows(s, s) such that Parent(s, _) pattern a(v, _) such that Follows*(s, _) such that Next*(_, _) 
+none
+5000
+157 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(s, _) such that Affects*(_, _) with pn.stmt# = pn.stmt# such that Parent(2, _) such that Affects(16, 19) such that Uses(_, _) pattern w(v, _) 
+none
+5000
+158 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(13, _) such that Next*(s, _) such that Follows(_, s) such that Parent*(_, _) such that Follows*(13, _) such that Next(10, s) with pn.varName = p.procName 
+none
+5000
+159 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with c.value = a.stmt# such that Calls*("Second", "Third") such that Next*(_, _) such that Follows(17, _) pattern ifs(v, _, _) such that Affects(14, s) such that Calls(p, "Third") 
+none
+5000
+160 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x such that Uses(s, v) such that Next*(7, s) pattern a("i", x) with read.varName = v.varName such that Affects(s, _) such that Next(s, s) with r.stmt# = r.stmt# 
+none
+5000
+161 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(_, _) such that Uses(p, "x") such that Follows*(9, _) with pn.stmt# = w.stmt# such that Follows(_, s) pattern a(_, _) such that Parent(s, 1) 
+none
+5000
+162 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, 11) such that Modifies(s, v) such that Affects(17, _) pattern ifs("v", _, _) such that Uses(10, v) such that Calls*("Third", p) such that Follows*(10, s) 
+none
+5000
+163 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(_, "Second") such that Parent(_, _) pattern a(v, _) with a.stmt# = a.stmt# such that Affects*(_, 12) such that Follows(9, s) such that Parent*(9, _) 
+none
+5000
+164 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(v, _, _) such that Affects*(_, 14) such that Modifies(_, v) such that Follows(7, _) such that Calls(_, "First") such that Follows*(s, _) with a.stmt# = ifs.stmt# 
+none
+5000
+165 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(p, _) pattern ifs("v", _, _) with s.stmt# = a.stmt# such that Next(12, _) such that Parent(_, 14) such that Uses(p, _) such that Next*(10, s) 
+none
+5000
+166 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(_, _) with r.stmt# = s.stmt# pattern a(v, v) such that Next*(_, s) pattern ifs(_, _, _) such that Follows(_, s) such that Parent*(_, s) 
+none
+5000
+167 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "First") such that Follows(_, _) with w.stmt# = r.stmt# pattern ifs("x", _, _) pattern a(_, x) such that Affects*(_, _) such that Next*(s, _) 
+none
+5000
+168 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(s, _) such that Modifies(14, v) such that Follows*(16, s) such that Affects*(_, _) such that Calls(p, _) with call.procName = v.varName pattern ifs(v, _, _) 
+none
+5000
+169 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(s, _) with call.procName = p.procName such that Uses(5, v) such that Modifies(p, _) such that Affects(_, s) such that Next(s, s) such that Calls(_, p) 
+none
+5000
+170 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(17, _) such that Follows*(_, _) such that Parent(5, _) such that Next(s, 3) such that Calls*("Third", _) with call.procName = call.procName such that Uses(p, "y") 
+none
+5000
+171 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(_, 19) such that Parent*(13, _) such that Modifies(p, "i") pattern a(v, _"y"_) pattern w(_, _) such that Affects*(_, _) with p.procName = pn.varName 
+none
+5000
+172 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(_, _) pattern ifs(_, _, _) pattern a(_, _"v"_) such that Next(_, _) such that Parent*(s, s) such that Follows*(s, 18) such that Calls*(p, _) 
+none
+5000
+173 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(s, 4) such that Uses(s, _) such that Parent(5, _) with a.stmt# = a.stmt# such that Follows(14, 16) such that Calls*(p, "First") with p.procName = call.procName 
+none
+5000
+174 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*("First", p) such that Follows*(10, s) such that Affects(s, 11) pattern w("i", _) with pn.stmt# = w.stmt# pattern a(v, _"z"_) such that Follows(_, 6) 
+none
+5000
+175 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls("Second", p) such that Next*(_, s) such that Next(s, s) such that Affects(18, s) such that Parent*(s, 18) such that Follows*(_, _) pattern ifs(v, _, _) 
+none
+5000
+176 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("x", _, _) such that Calls(_, _) pattern a("x", _"i"_) such that Uses(12, v) pattern w(v, _) such that Affects*(9, s) such that Parent(_, s) 
+none
+5000
+177 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(p, v) pattern a(v, _"z"_) pattern ifs(_, _, _) such that Follows*(14, s) with call.stmt# = ifs.stmt# pattern w(_, _) such that Calls(p, p) 
+none
+5000
+178 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(11, v) such that Next(3, s) such that Calls(_, _) pattern ifs("i", _, _) such that Follows(s, 14) such that Parent*(7, s) such that Calls*(_, _) 
+none
+5000
+179 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects*(s, 8) such that Modifies(p, v) pattern ifs("i", _, _) such that Follows*(2, _) such that Follows(_, _) such that Affects(_, 5) with call.stmt# = r.stmt# 
+none
+5000
+180 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(_, v) with call.procName = p.procName such that Calls*(p, "First") such that Next*(s, s) such that Next(1, 15) such that Calls(p, "Second") such that Parent*(_, 10) 
+none
+5000
+181 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with read.varName = v.varName such that Uses(p, _) such that Next(s, _) such that Parent(_, _) such that Affects(11, 17) such that Affects*(s, s) such that Follows(s, s) 
+none
+5000
+182 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with r.stmt# = pn.stmt# such that Modifies(s, _) such that Next(6, _) pattern ifs("i", _, _) such that Parent*(s, 5) such that Next*(s, 1) such that Follows*(11, 9) 
+none
+5000
+183 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, s) such that Affects(13, s) such that Next(18, s) with a.stmt# = c.value such that Calls*(_, p) such that Follows*(14, s) such that Parent*(s, s) 
+none
+5000
+184 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, 16) such that Next*(2, _) with pn.stmt# = pn.stmt# with pn.varName = p.procName such that Affects*(_, _) such that Affects(s, _) such that Parent*(_, s) 
+none
+5000
+185 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(_, _, _) such that Calls*(_, p) with p.procName = pn.varName such that Affects*(19, _) such that Parent(12, s) such that Modifies(p, v) with call.stmt# = s.stmt# 
+none
+5000
+186 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(_, s) pattern ifs(v, _, _) such that Parent(_, 9) such that Next(18, _) such that Calls*(_, p) such that Follows*(6, 19) with call.procName = pn.varName 
+none
+5000
+187 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls(p, "Third") such that Uses(_, v) pattern a("v", _"x"_) pattern ifs("y", _, _) such that Affects*(16, s) with v.varName = pn.varName such that Next(6, s) 
+none
+5000
+188 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(_, _) such that Calls("First", _) such that Next*(s, 17) such that Uses(p, _) such that Follows(_, s) pattern a(v, _"i"_) with p.procName = v.varName 
+none
+5000
+189 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with pn.stmt# = ifs.stmt# such that Parent*(s, s) such that Parent(_, s) such that Calls*(_, "Second") such that Affects(_, _) such that Modifies(s, _) such that Next*(14, _) 
+none
+5000
+190 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w("i", _) such that Follows(s, s) such that Parent(s, _) such that Calls(p, _) with call.procName = pn.varName such that Calls*(_, p) such that Next(s, 10) 
+none
+5000
+191 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(s, s) such that Next*(1, _) with ifs.stmt# = ifs.stmt# with pn.varName = read.varName such that Parent(6, 8) such that Next(_, _) such that Calls*(p, p) 
+none
+5000
+192 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, s) such that Next*(12, s) pattern w("i", _) such that Next(_, s) such that Modifies(s, "v") with s.stmt# = s.stmt# such that Follows*(s, s) 
+none
+5000
+193 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(15, "i") such that Parent(5, s) such that Follows(s, _) such that Parent*(s, s) with pn.varName = p.procName pattern w(_, _) such that Uses(s, "y") 
+none
+5000
+194 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls("First", p) such that Next*(_, s) such that Modifies(p, _) such that Affects*(s, _) such that Parent*(s, 10) such that Parent(s, _) with p.procName = v.varName 
+none
+5000
+195 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(v, _, _) such that Parent(s, _) such that Next(s, 11) such that Calls*("Second", _) with r.stmt# = a.stmt# such that Calls(p, _) such that Affects*(s, s) 
+none
+5000
+196 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select z such that Next*(s, 9) such that Uses(p, _) such that Calls*(p, _) such that Modifies(p, v) such that Follows(9, 19) with r.stmt# = s.stmt# pattern a("y", z) 
+none
+5000
+197 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with read.varName = call.procName pattern a(v, _"v"_) such that Modifies(_, v) such that Parent(3, s) pattern w(_, _) such that Calls*(_, _) such that Next*(_, s) 
+none
+5000
+198 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a(_, _"v"_) such that Parent*(_, s) such that Follows*(11, _) pattern ifs(_, _, _) such that Calls(p, p) such that Follows(s, 7) such that Affects*(s, _) 
+none
+5000
+199 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, s) with call.stmt# = s.stmt# with pn.varName = call.procName pattern w("z", _) such that Follows(_, 11) such that Affects*(_, s) such that Parent(s, 12) 
+none
+5000
+200 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, 10) pattern a("x", x) such that Next*(_, 10) such that Calls(_, "Third") such that Next(s, 8) with v.varName = call.procName such that Follows(_, 17) 
+none
+5000
+201 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(s, s) such that Follows*(s, _) such that Follows(7, _) pattern ifs("z", _, _) such that Modifies(p, _) with v.varName = v.varName such that Next(s, s) 
+none
+5000
+202 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(_, v) pattern a(v, _) such that Calls(_, _) such that Parent(_, _) with c.value = w.stmt# such that Modifies(_, _) pattern w(_, _) 
+none
+5000
+203 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(v, _) such that Calls(_, "Second") such that Follows(9, 4) such that Next*(_, s) pattern ifs("v", _, _) such that Modifies(s, v) such that Affects*(s, 1) 
+none
+5000
+204 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = call.procName such that Calls*("Third", p) such that Follows*(11, s) pattern w(_, _) such that Modifies(p, v) such that Parent*(_, s) pattern a(_, _) 
+none
+5000
+205 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, 17) such that Calls("First", "Second") such that Modifies(_, "v") such that Calls*(_, _) with c.value = ifs.stmt# such that Next(_, s) such that Parent(s, _) 
+none
+5000
+206 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, s) with c.value = call.stmt# such that Calls*(_, p) with v.varName = p.procName such that Affects*(s, 18) such that Modifies(_, _) such that Next*(s, 19) 
+none
+5000
+207 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with pn.varName = v.varName such that Calls("Third", "Second") such that Next*(_, 4) pattern w("v", _) such that Follows*(_, s) such that Affects*(19, s) such that Parent(_, 17) 
+none
+5000
+208 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(10, s) pattern w("z", _) with pn.varName = read.varName such that Uses(_, v) such that Follows*(_, 18) such that Calls*(p, p) such that Parent*(s, 15) 
+none
+5000
+209 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(4, v) such that Next(_, _) such that Affects(5, 1) such that Follows(10, s) with call.stmt# = a.stmt# with call.procName = p.procName pattern ifs("z", _, _) 
+none
+5000
+210 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(_, _) such that Next*(_, _) with r.stmt# = c.value such that Calls(p, "First") pattern ifs("y", _, _) such that Follows(_, _) such that Modifies(_, _) 
+none
+5000
+211 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, 18) pattern w("x", _) such that Next*(_, _) such that Calls*(p, p) such that Uses(s, _) such that Affects*(13, _) pattern a(_, _) 
+none
+5000
+212 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(10, 1) with v.varName = pn.varName such that Uses(13, v) with ifs.stmt# = c.value such that Follows(_, s) such that Parent(11, _) pattern ifs(v, _, _) 
+none
+5000
+213 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, s) such that Follows(_, 7) such that Calls*(p, p) such that Follows*(s, s) with a.stmt# = s.stmt# pattern a(v, _"i"_) pattern ifs(v, _, _) 
+none
+5000
+214 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with call.stmt# = c.value such that Next*(s, _) such that Next(s, 1) such that Follows(_, _) pattern w(v, _) pattern a(v, _) such that Modifies(17, v) 
+none
+5000
+215 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(13, s) such that Affects*(5, s) such that Parent*(s, s) pattern w("y", _) such that Modifies(_, "i") such that Calls(p, p) such that Affects(_, _) 
+none
+5000
+216 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(v, i) such that Affects(9, 6) such that Uses(p, v) with r.stmt# = a.stmt# such that Parent(s, s) such that Next(s, s) such that Modifies(s, _) 
+none
+5000
+217 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(p, _) with call.procName = p.procName such that Follows*(_, _) such that Follows(5, 15) pattern ifs("i", _, _) such that Parent(_, s) with call.stmt# = c.value 
+none
+5000
+218 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(s, _) such that Calls(p, _) pattern a(_, _"y"_) such that Parent(13, 4) such that Affects*(1, s) such that Calls*(_, p) such that Parent*(7, 7) 
+none
+5000
+219 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, _) such that Follows(_, s) with p.procName = v.varName such that Uses(s, _) such that Next(11, s) pattern ifs("v", _, _) such that Parent(s, _) 
+none
+5000
+220 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(19, _) such that Uses(p, "v") such that Calls(_, _) pattern a(v, _) such that Calls*(p, _) with read.varName = pn.varName such that Parent(s, _) 
+none
+5000
+221 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with pn.varName = read.varName such that Modifies(s, v) such that Parent(s, 10) such that Calls(_, "Third") such that Next(15, 19) such that Follows(1, _) such that Affects*(_, s) 
+none
+5000
+222 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(16, _) such that Parent*(s, 3) with pn.stmt# = call.stmt# pattern ifs(v, _, _) with v.varName = read.varName such that Next(17, 8) pattern a(_, _"y"_) 
+none
+5000
+223 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w("x", _) such that Uses(4, v) such that Next(5, s) such that Follows(s, _) such that Affects*(16, s) with read.varName = v.varName such that Modifies(p, _) 
+none
+5000
+224 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(_, "y") such that Parent*(s, s) such that Calls*("First", "Third") with call.stmt# = w.stmt# such that Affects(s, s) such that Calls("Third", "Second") pattern w(_, _) 
+none
+5000
+225 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("x", _) with c.value = pn.stmt# such that Next(_, 15) such that Follows(_, s) such that Next*(_, 6) such that Parent(s, _) pattern ifs(_, _, _) 
+none
+5000
+226 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with v.varName = pn.varName such that Uses(s, "z") such that Calls*(p, _) with pn.stmt# = s.stmt# such that Next(s, _) pattern a("i", _"i"_) pattern w(v, _) 
+none
+5000
+227 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("v", _) such that Next*(s, _) such that Uses(_, "i") such that Follows*(s, _) pattern a("y", _"x"_) such that Parent*(_, s) such that Follows(10, _) 
+none
+5000
+228 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*("Second", p) such that Uses(16, v) such that Follows*(_, _) such that Next*(s, _) such that Follows(s, s) pattern a(v, v) such that Calls(p, _) 
+none
+5000
+229 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("y", _) such that Uses(s, "v") with r.stmt# = ifs.stmt# such that Calls("Second", p) such that Next*(_, 17) such that Calls*(_, _) such that Parent(3, 16) 
+none
+5000
+230 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(s, 2) such that Modifies(_, "i") such that Parent*(s, s) such that Uses(_, v) such that Parent(_, s) such that Affects(11, 10) such that Follows*(s, _) 
+none
+5000
+231 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(_, 2) pattern a(v, _) with read.varName = read.varName such that Next*(19, _) such that Modifies(7, "z") with w.stmt# = r.stmt# such that Next(5, _) 
+none
+5000
+232 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, s) such that Affects*(_, 2) such that Parent(_, _) pattern ifs(_, _, _) such that Calls(p, _) with a.stmt# = s.stmt# pattern a(v, _) 
+none
+5000
+233 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select BOOLEAN such that Affects(13, 9) with r.stmt# = s.stmt# such that Next(_, _) such that Follows(_, _) such that Modifies(10, "i") such that Follows*(_, 6) such that Affects*(_, _) 
+none
+5000
+234 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(7, _) pattern a("y", _) such that Uses(16, v) such that Next(_, 3) pattern w(v, _) pattern ifs(_, _, _) such that Affects(_, _) 
+none
+5000
+235 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, _) such that Next*(13, 18) such that Follows(_, 8) such that Calls*(_, _) such that Next(s, 8) such that Modifies(_, "i") with a.stmt# = c.value 
+none
+5000
+236 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.procName = p.procName such that Next(_, s) such that Affects(2, _) such that Calls*(p, p) pattern a("z", x) such that Next*(5, _) pattern ifs(_, _, _) 
+none
+5000
+237 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(_, _) such that Parent*(13, s) such that Parent(_, 11) pattern a("i", _) such that Calls*(_, p) with call.stmt# = s.stmt# such that Follows*(_, 14) 
+none
+5000
+238 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(14, 9) pattern a("z", _"z"_) such that Affects(s, _) such that Parent*(_, s) with w.stmt# = call.stmt# such that Affects*(_, _) such that Next*(_, 4) 
+none
+5000
+239 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(17, s) such that Calls(_, p) such that Uses(_, "v") such that Follows(_, s) such that Next(19, _) such that Modifies(7, "y") pattern a(v, _"v"_) 
+none
+5000
+240 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(8, s) such that Affects*(8, 2) such that Modifies(p, "z") such that Calls(p, p) such that Follows(_, _) such that Follows*(_, _) such that Next(_, s) 
+none
+5000
+241 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("y", _, _) such that Parent(s, s) with ifs.stmt# = r.stmt# such that Parent*(_, 13) pattern a(v, _"v"_) such that Follows(s, s) such that Calls("Second", p) 
+none
+5000
+242 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with call.procName = read.varName pattern ifs("v", _, _) such that Affects*(11, s) such that Calls*("First", _) with call.stmt# = c.value such that Modifies(s, v) such that Parent*(_, s) 
+none
+5000
+243 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(16, 9) such that Affects*(s, s) such that Parent(_, _) such that Next*(s, 7) such that Uses(s, v) pattern a(v, _"z"_) such that Calls(_, p) 
+none
+5000
+244 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(17, 5) with p.procName = pn.varName such that Parent(_, s) pattern a(_, _) such that Calls(_, "Second") such that Calls*(_, p) such that Modifies(_, v) 
+none
+5000
+245 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a("z", x) such that Next*(s, _) pattern w(_, _) such that Modifies(6, _) such that Calls(_, _) such that Next(_, 13) with pn.varName = pn.varName 
+none
+5000
+246 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(p, p) with w.stmt# = s.stmt# such that Affects*(s, 7) such that Follows*(_, 17) such that Calls*("Second", _) such that Parent(6, _) pattern a(_, _"y"_) 
+none
+5000
+247 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(_, 1) pattern a(v, _) with read.varName = p.procName such that Affects*(s, s) such that Next(_, 9) such that Next*(s, _) pattern ifs(v, _, _) 
+none
+5000
+248 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(13, _) such that Modifies(s, _) pattern a("v", _"i"_) such that Affects*(11, 7) such that Follows*(_, 13) with pn.varName = p.procName such that Follows(s, s) 
+none
+5000
+249 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(12, 7) such that Parent*(4, _) pattern ifs(v, _, _) such that Parent(19, _) pattern w("y", _) such that Follows*(_, s) such that Calls*("Third", p) 
+none
+5000
+250 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with w.stmt# = r.stmt# such that Affects(s, 11) with pn.varName = pn.varName such that Follows*(_, 6) such that Parent(13, _) such that Next(15, s) such that Uses(p, _) 
+none
+5000
+251 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select z with pn.varName = read.varName with pn.stmt# = w.stmt# pattern a(_, z) such that Calls("First", p) such that Calls*("First", _) pattern w("x", _) such that Modifies(_, "y") 
+none
+5000
+252 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.procName = v.varName such that Follows(s, _) such that Parent(s, 8) such that Next*(13, s) such that Affects*(s, s) with s.stmt# = a.stmt# pattern w(_, _) 
+none
+5000
+253 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(19, s) pattern w("i", _) with c.value = r.stmt# such that Parent*(_, 16) such that Affects*(_, s) with pn.varName = pn.varName such that Parent(s, 18) 
+none
+5000
+254 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(4, s) with c.value = s.stmt# such that Modifies(s, v) such that Affects*(18, s) such that Follows*(9, 13) pattern w(v, _) such that Uses(s, "v") 
+none
+5000
+255 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with pn.varName = read.varName such that Affects(_, s) pattern w(v, _) such that Follows*(1, s) pattern a(v, _"x"_) such that Modifies(_, _) such that Parent(18, _) 
+none
+5000
+256 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(s, 18) with p.procName = call.procName such that Follows(_, _) such that Calls*(_, "Second") such that Parent(s, _) such that Next(10, _) such that Next*(_, _) 
+none
+5000
+257 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(s, _) such that Next*(_, _) with pn.varName = pn.varName pattern w("z", _) such that Parent(s, 17) such that Follows(s, s) such that Calls*("First", "Third") 
+none
+5000
+258 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(_, _) such that Uses(p, "y") such that Calls*("Second", p) such that Follows*(15, s) pattern a(v, _) pattern w("v", _) such that Affects*(s, 17) 
+none
+5000
+259 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*("Third", "First") such that Modifies(p, "i") such that Parent(5, s) with read.varName = read.varName pattern a("y", _) with a.stmt# = a.stmt# such that Follows(18, s) 
+none
+5000
+260 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, 14) such that Affects(_, s) such that Follows(s, s) with ifs.stmt# = a.stmt# with read.varName = v.varName pattern a(_, _"y"_) such that Calls(_, "Third") 
+none
+5000
+261 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(p, "v") such that Affects*(s, _) such that Calls("First", p) with w.stmt# = call.stmt# with read.varName = read.varName such that Follows(s, 2) such that Affects(_, 12) 
+none
+5000
+262 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(_, _) such that Affects*(14, s) with call.stmt# = c.value such that Next*(_, _) with p.procName = v.varName such that Uses(4, "y") pattern ifs(v, _, _) 
+none
+5000
+263 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(4, 7) such that Parent*(s, _) such that Calls*(p, p) such that Parent(_, 19) such that Next*(8, 3) such that Uses(_, v) such that Modifies(s, v) 
+none
+5000
+264 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(15, v) such that Parent(s, _) pattern ifs("y", _, _) such that Calls(p, p) such that Affects*(s, _) such that Follows(s, 11) such that Affects(13, s) 
+none
+5000
+265 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("x", _, _) such that Uses(s, "z") such that Modifies(p, "y") such that Parent*(_, 4) such that Calls*("First", p) such that Affects(_, 10) with pn.varName = pn.varName 
+none
+5000
+266 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(12, 12) with c.value = a.stmt# pattern w(_, _) with call.procName = v.varName pattern ifs(_, _, _) such that Calls(_, _) such that Follows(4, s) 
+none
+5000
+267 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(_, s) such that Modifies(p, _) with a.stmt# = pn.stmt# such that Uses(s, v) such that Next(_, 10) such that Calls(_, p) such that Calls*(p, p) 
+none
+5000
+268 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*("Third", p) such that Parent(_, _) such that Follows(_, _) pattern w(_, _) such that Modifies(s, "y") such that Affects*(s, _) such that Next*(s, _) 
+none
+5000
+269 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select BOOLEAN such that Uses(19, _) pattern ifs("x", _, _) such that Follows*(18, 8) pattern w(_, _) such that Parent(18, _) such that Modifies(_, "x") such that Affects*(_, _) 
+none
+5000
+270 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(_, s) pattern ifs("i", _, _) pattern a(_, _"y"_) such that Next*(s, _) such that Affects*(16, 15) such that Calls*("First", "First") such that Next(s, s) 
+none
+5000
+271 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(19, s) with v.varName = pn.varName such that Calls("First", "Third") such that Affects(_, 12) such that Next(_, _) with a.stmt# = w.stmt# such that Parent(11, s) 
+none
+5000
+272 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(v, _, _) such that Parent*(s, 9) pattern a(v, _"x"_) such that Calls(_, _) such that Follows(s, 11) such that Parent(_, s) such that Follows*(15, _) 
+none
+5000
+273 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(11, _) pattern ifs(_, _, _) pattern w(_, _) such that Affects(18, s) such that Uses(s, v) pattern a("x", _"v"_) such that Calls*(_, p) 
+none
+5000
+274 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(16, 4) such that Affects(s, s) with pn.stmt# = ifs.stmt# such that Uses(s, "i") such that Affects*(_, s) such that Follows*(18, 5) such that Calls*(_, p) 
+none
+5000
+275 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("v", _) such that Calls(_, p) such that Parent(18, 13) such that Next*(s, s) with s.stmt# = pn.stmt# such that Parent*(s, _) such that Next(s, s) 
+none
+5000
+276 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(4, _) such that Next(s, 8) with v.varName = call.procName such that Affects(s, s) with s.stmt# = s.stmt# such that Affects*(_, _) pattern a(v, v) 
+none
+5000
+277 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(s, _) such that Next*(s, s) such that Modifies(p, _) pattern ifs(_, _, _) such that Parent*(_, 16) such that Next(_, _) such that Affects(13, s) 
+none
+5000
+278 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(_, s) pattern w("z", _) such that Next(5, _) such that Follows*(16, s) such that Calls*(p, "Third") such that Parent*(19, _) such that Uses(p, v) 
+none
+5000
+279 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(s, 11) with read.varName = read.varName such that Follows*(_, _) such that Uses(_, _) pattern a(_, y) with pn.stmt# = r.stmt# pattern ifs(_, _, _) 
+none
+5000
+280 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(_, _) such that Calls*("Third", "Second") pattern a("i", y) pattern ifs("z", _, _) with pn.stmt# = pn.stmt# pattern w(_, _) such that Next(s, _) 
+none
+5000
+281 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(12, s) such that Uses(s, _) with call.stmt# = pn.stmt# such that Modifies(p, "i") such that Parent(_, 8) pattern w("y", _) such that Calls*("Second", _) 
+none
+5000
+282 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(s, 8) such that Calls*(_, _) such that Next(_, _) such that Affects*(s, s) with p.procName = v.varName such that Parent(s, _) such that Follows(8, s) 
+none
+5000
+283 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("i", _, _) such that Parent*(_, _) pattern w("v", _) such that Next(s, _) such that Parent(_, s) such that Follows(s, 6) such that Affects(_, s) 
+none
+5000
+284 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, 1) such that Next(_, _) such that Parent(s, s) such that Calls(_, "Second") with pn.stmt# = s.stmt# such that Parent*(19, s) such that Calls*("Second", "First") 
+none
+5000
+285 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with c.value = s.stmt# pattern w(v, _) such that Next*(s, 2) such that Calls(p, p) pattern a("i", x) with p.procName = v.varName such that Calls*(_, p) 
+none
+5000
+286 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(s, 7) such that Modifies(11, "v") such that Next(_, _) such that Affects*(_, _) with v.varName = p.procName such that Parent*(s, s) such that Calls(p, "Second") 
+none
+5000
+287 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(p, _) such that Modifies(p, v) pattern w(v, _) pattern a("i", v) such that Parent*(_, s) pattern ifs("v", _, _) with pn.varName = call.procName 
+none
+5000
+288 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, s) such that Affects(_, _) with pn.varName = v.varName such that Follows*(8, s) with w.stmt# = pn.stmt# such that Uses(_, _) such that Parent(16, _) 
+none
+5000
+289 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(18, _) with w.stmt# = pn.stmt# such that Modifies(_, v) pattern w(v, _) such that Next*(2, s) pattern ifs(_, _, _) pattern a("i", _"z"_) 
+none
+5000
+290 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x such that Follows(s, _) such that Calls*(p, p) such that Uses(s, "i") such that Calls("Third", _) pattern a("i", x) such that Parent*(s, _) such that Affects(s, 12) 
+none
+5000
+291 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, s) such that Uses(s, "x") pattern w(_, _) with pn.varName = pn.varName such that Next*(2, s) such that Calls(_, p) such that Affects*(_, 19) 
+none
+5000
+292 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with read.varName = v.varName such that Calls(_, "Third") such that Next(s, _) such that Next*(s, s) such that Affects(11, s) such that Parent(18, s) such that Modifies(p, v) 
+none
+5000
+293 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next*(_, s) such that Uses(_, v) with pn.stmt# = r.stmt# pattern w(_, _) such that Next(s, _) such that Calls*("Third", "Second") such that Follows(_, 4) 
+none
+5000
+294 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(1, s) with w.stmt# = r.stmt# such that Uses(p, v) such that Modifies(s, v) pattern ifs(_, _, _) such that Parent*(8, _) pattern w(v, _) 
+none
+5000
+295 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(12, s) such that Calls*(p, p) pattern a("y", z) such that Affects*(11, s) pattern w(_, _) pattern ifs(v, _, _) such that Follows(15, s) 
+none
+5000
+296 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(s, s) such that Calls*(p, _) such that Follows*(13, 15) such that Affects*(_, _) such that Uses(_, v) such that Modifies(p, "z") with r.stmt# = r.stmt# 
+none
+5000
+297 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, s) such that Parent(s, _) such that Affects(_, _) such that Parent*(s, _) such that Follows(_, _) pattern w(_, _) such that Modifies(_, v) 
+none
+5000
+298 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, _) such that Affects(_, _) such that Calls("First", "Third") such that Affects*(s, 11) such that Next(19, s) with a.stmt# = c.value such that Follows(_, _) 
+none
+5000
+299 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("i", _) such that Next*(_, 9) pattern a("v", i) such that Uses(p, v) with v.varName = v.varName such that Calls*("First", p) such that Next(4, s) 
+none
+5000
+300 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, 14) such that Calls(_, _) such that Parent(18, 19) pattern w(v, _) with p.procName = call.procName with w.stmt# = a.stmt# such that Next*(s, _) 
+none
+5000
+301 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = pn.varName such that Affects*(s, _) such that Calls*("First", p) with c.value = pn.stmt# such that Follows(_, _) pattern ifs(v, _, _) such that Affects(_, _) 
+none
+5000
+302 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(v, _, _) such that Calls("First", "Third") such that Affects(15, 14) such that Parent(_, s) such that Next(_, 16) such that Next*(1, _) such that Follows(16, 5) 
+none
+5000
+303 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(p, "Second") such that Affects(s, 7) such that Follows(_, _) such that Affects*(s, s) with v.varName = call.procName such that Parent(s, 12) such that Uses(p, "v") 
+none
+5000
+304 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*("Third", "Third") such that Calls("Second", _) such that Follows(_, s) such that Modifies(_, _) pattern w(v, _) pattern a(v, _) such that Uses(p, _) 
+none
+5000
+305 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(19, _) such that Next(_, 10) such that Follows(s, 12) such that Uses(p, _) such that Affects(s, s) such that Parent*(3, 16) with p.procName = pn.varName 
+none
+5000
+306 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(2, s) pattern ifs(v, _, _) with pn.varName = pn.varName such that Uses(_, _) such that Calls("Second", _) such that Follows*(15, 11) such that Follows(s, _) 
+none
+5000
+307 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls("Third", _) with ifs.stmt# = call.stmt# such that Calls*("Second", "Second") pattern a(v, _"x"_) with pn.varName = v.varName pattern w(_, _) such that Follows(s, _) 
+none
+5000
+308 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(1, s) pattern ifs(_, _, _) such that Affects*(3, _) such that Calls(_, _) pattern a(_, _) pattern w(v, _) such that Calls*("First", _) 
+none
+5000
+309 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(s, _) such that Parent(14, 8) such that Calls*("First", p) such that Modifies(_, _) such that Next*(s, s) with c.value = s.stmt# such that Parent*(s, s) 
+none
+5000
+310 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(s, s) such that Calls*("Third", _) such that Calls(_, "First") such that Modifies(_, v) pattern a("v", _"i"_) with ifs.stmt# = a.stmt# such that Affects*(_, 11) 
+none
+5000
+311 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select y such that Parent(_, s) with r.stmt# = a.stmt# such that Uses(_, "z") pattern w(_, _) such that Affects*(3, s) pattern ifs(_, _, _) pattern a(_, y) 
+none
+5000
+312 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(4, 6) pattern ifs("v", _, _) pattern a(_, v) such that Affects(3, 15) such that Next*(17, s) with s.stmt# = s.stmt# such that Next(10, 11) 
+none
+5000
+313 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x such that Follows(s, _) such that Calls*("First", "Third") such that Next*(_, 18) pattern a(v, x) with c.value = s.stmt# such that Calls(_, p) such that Follows*(s, s) 
+none
+5000
+314 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(_, p) such that Calls*(p, _) such that Follows(17, s) such that Next(13, 16) such that Follows*(_, s) such that Next*(_, s) pattern ifs("y", _, _) 
+none
+5000
+315 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next*(s, _) such that Modifies(_, "v") such that Uses(p, "i") such that Follows(_, 3) such that Calls*(_, _) such that Parent*(9, _) pattern ifs(v, _, _) 
+none
+5000
+316 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(_, _) pattern a(v, i) such that Parent(s, s) such that Modifies(2, _) such that Affects*(s, 16) such that Uses(s, _) such that Affects(16, 7) 
+none
+5000
+317 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 7) such that Calls*(_, _) such that Next(_, s) such that Parent(s, s) with pn.varName = pn.varName such that Affects(18, 15) pattern a(_, i) 
+none
+5000
+318 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(_, 6) such that Next*(8, _) such that Affects(17, 7) such that Calls("First", p) such that Calls*(p, p) with w.stmt# = r.stmt# such that Affects*(s, 5) 
+none
+5000
+319 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x such that Parent*(_, _) such that Parent(s, 13) such that Modifies(p, v) such that Affects*(4, _) such that Next(3, s) pattern a(_, x) such that Uses(_, v) 
+none
+5000
+320 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("i", _, _) with p.procName = read.varName such that Follows*(11, 18) such that Next(14, s) pattern a(v, _"z"_) such that Calls*(_, "Third") pattern w("z", _) 
+none
+5000
+321 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(_, 18) such that Affects*(_, _) such that Follows*(s, _) such that Next(_, _) such that Calls*(_, _) pattern ifs(v, _, _) such that Follows(s, _) 
+none
+5000
+322 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(v, _"x"_) such that Uses(s, _) pattern w("y", _) such that Affects*(s, s) such that Follows*(10, s) such that Calls(p, "Third") with pn.stmt# = ifs.stmt# 
+none
+5000
+323 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(8, s) such that Affects(5, _) such that Modifies(12, _) such that Calls*(_, "First") pattern w("i", _) such that Parent*(s, 4) such that Follows*(s, 4) 
+none
+5000
+324 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(_, _) pattern w(_, _) pattern ifs("y", _, _) such that Next(_, _) such that Follows(_, 10) such that Follows*(_, 9) pattern a(v, _"y"_) 
+none
+5000
+325 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(17, _) pattern ifs(v, _, _) pattern w(_, _) such that Parent*(_, _) such that Follows(13, s) such that Uses(p, _) such that Follows*(_, _) 
+none
+5000
+326 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(p, _) such that Parent(_, 15) with p.procName = call.procName such that Modifies(s, _) such that Affects*(s, _) such that Follows*(14, s) pattern ifs(v, _, _) 
+none
+5000
+327 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(_, _, _) such that Affects*(s, s) such that Uses(s, v) such that Next(_, _) such that Parent(s, s) with v.varName = read.varName such that Follows*(_, _) 
+none
+5000
+328 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(_, "First") pattern ifs("z", _, _) such that Parent*(_, s) such that Parent(_, 5) such that Next(_, _) such that Calls*(p, p) pattern w("x", _) 
+none
+5000
+329 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a("z", _"z"_) such that Affects(17, _) such that Calls(_, "First") such that Follows*(19, _) such that Calls*(_, "Second") such that Modifies(7, v) such that Parent*(10, 6) 
+none
+5000
+330 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(14, s) such that Next*(_, 14) such that Parent*(9, 8) such that Calls(_, p) pattern w(v, _) such that Uses(19, "v") such that Follows*(19, 15) 
+none
+5000
+331 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(_, s) with v.varName = v.varName pattern ifs("z", _, _) such that Calls*(p, p) such that Follows(17, 11) such that Parent*(3, _) such that Parent(_, s) 
+none
+5000
+332 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(s, 4) such that Next(s, _) such that Affects*(s, s) such that Parent(s, s) such that Uses(_, "y") such that Calls*(_, "First") pattern a(v, _) 
+none
+5000
+333 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(s, s) with pn.varName = p.procName pattern ifs(v, _, _) pattern w("v", _) such that Follows(s, 14) pattern a("x", _"x"_) such that Affects(10, _) 
+none
+5000
+334 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, s) pattern w("v", _) such that Affects*(_, 8) such that Follows*(s, _) such that Next(_, _) with a.stmt# = r.stmt# such that Next*(15, s) 
+none
+5000
+335 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with s.stmt# = c.value such that Next(s, 18) such that Follows(_, _) such that Parent(4, 13) such that Modifies(8, "x") such that Affects(_, _) such that Calls*(p, "Second") 
+none
+5000
+336 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(19, 3) such that Parent*(_, 7) such that Calls("Second", _) with p.procName = pn.varName such that Follows(17, _) such that Calls*("Third", _) such that Affects(_, s) 
+none
+5000
+337 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("y", _, _) such that Next(19, 6) such that Affects(s, 4) such that Follows*(_, s) such that Follows(_, 18) such that Calls*(_, _) such that Parent*(s, _) 
+none
+5000
+338 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("y", _, _) with call.procName = read.varName such that Uses(s, _) such that Follows(_, s) such that Modifies(_, "x") such that Next(_, 14) such that Affects(2, s) 
+none
+5000
+339 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("First", p) such that Calls*(p, _) such that Uses(8, v) such that Next*(_, s) such that Parent(_, 12) such that Follows*(_, _) pattern w(_, _) 
+none
+5000
+340 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = call.procName pattern w(v, _) pattern ifs(v, _, _) such that Modifies(s, v) pattern a("x", _"z"_) such that Follows*(2, _) such that Affects*(s, _) 
+none
+5000
+341 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(v, _, _) such that Follows(_, 15) with call.procName = p.procName such that Parent(_, 12) pattern w("z", _) such that Uses(1, _) with pn.stmt# = w.stmt# 
+none
+5000
+342 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(19, "x") such that Next*(8, 4) with v.varName = v.varName such that Next(9, 6) such that Follows(_, 16) such that Parent*(_, s) such that Calls*(_, "Third") 
+none
+5000
+343 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(s, v) such that Parent*(_, 9) such that Calls*(p, _) pattern a("x", _) with w.stmt# = c.value such that Calls(p, _) such that Parent(s, 11) 
+none
+5000
+344 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(_, p) such that Follows(5, _) pattern a(_, _"v"_) such that Affects*(s, 3) pattern w(v, _) such that Follows*(_, 12) with w.stmt# = c.value 
+none
+5000
+345 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, _) pattern ifs(v, _, _) such that Parent(_, 5) such that Modifies(s, v) such that Next*(s, s) such that Calls(p, _) such that Affects(_, _) 
+none
+5000
+346 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(_, s) such that Affects(s, 1) such that Calls(p, "Second") with v.varName = v.varName pattern w(v, _) such that Affects*(s, 10) such that Uses(15, _) 
+none
+5000
+347 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(17, "y") such that Affects*(_, 3) such that Parent(_, _) such that Calls(p, "Second") such that Follows(_, 14) with ifs.stmt# = call.stmt# with call.procName = call.procName 
+none
+5000
+348 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls(_, p) pattern a(_, _) such that Follows(4, s) pattern ifs(v, _, _) with pn.varName = v.varName such that Affects(7, _) such that Next*(12, _) 
+none
+5000
+349 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(2, s) with call.procName = call.procName such that Affects*(s, 11) such that Calls(p, p) pattern a("z", _"i"_) such that Calls*("First", p) such that Next*(s, s) 
+none
+5000
+350 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(s, s) such that Follows*(_, 8) pattern w("x", _) such that Modifies(s, _) such that Calls*("First", p) such that Next(7, _) pattern a("x", _"v"_) 
+none
+5000
+351 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, s) such that Next*(s, _) pattern w(_, _) such that Calls*("Second", _) such that Calls("Third", _) such that Affects(_, s) pattern ifs(_, _, _) 
+none
+5000
+352 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(s, 14) pattern a("x", _"v"_) such that Next(_, s) such that Affects*(s, 1) such that Affects(s, s) such that Calls*(p, p) such that Uses(p, v) 
+none
+5000
+353 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.procName = call.procName such that Uses(s, v) such that Affects(6, s) pattern ifs(_, _, _) such that Follows*(_, _) with call.stmt# = r.stmt# such that Parent*(4, _) 
+none
+5000
+354 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(_, _) with s.stmt# = c.value such that Parent*(7, s) such that Next*(9, 19) such that Modifies(p, _) such that Calls(p, p) pattern a("v", x) 
+none
+5000
+355 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, 11) such that Next(_, _) such that Affects*(_, 15) such that Next*(19, 12) pattern w("i", _) such that Uses(s, _) such that Calls(_, "Third") 
+none
+5000
+356 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(_, _) pattern a("x", _) such that Follows(10, 14) such that Calls*(_, p) such that Uses(s, "z") such that Affects(_, 13) such that Next*(8, _) 
+none
+5000
+357 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select z pattern ifs("x", _, _) such that Calls*(p, p) such that Follows*(s, _) such that Parent(4, 4) pattern a(_, z) pattern w("x", _) with ifs.stmt# = s.stmt# 
+none
+5000
+358 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, _) such that Follows(3, 6) pattern ifs(_, _, _) pattern a("v", _"x"_) such that Next*(_, s) such that Parent(_, 18) such that Uses(s, "y") 
+none
+5000
+359 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(12, 7) such that Parent*(_, 4) such that Follows*(18, s) such that Next*(_, s) with w.stmt# = c.value such that Parent(s, 1) such that Modifies(s, _) 
+none
+5000
+360 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = read.varName such that Parent(1, 4) such that Affects(2, s) such that Affects*(4, _) such that Follows*(s, _) pattern ifs(v, _, _) pattern w("y", _) 
+none
+5000
+361 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(s, s) pattern ifs("z", _, _) pattern a(v, v) such that Modifies(_, "i") such that Uses(s, v) such that Follows(_, s) such that Calls(p, "First") 
+none
+5000
+362 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("Second", _) such that Calls*(_, p) pattern ifs("v", _, _) such that Modifies(p, "v") such that Affects*(s, _) such that Parent*(s, s) with call.procName = p.procName 
+none
+5000
+363 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(s, _) with call.procName = v.varName pattern ifs(_, _, _) such that Affects*(1, 16) with pn.stmt# = call.stmt# such that Calls*(p, _) such that Parent*(14, 19) 
+none
+5000
+364 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(p, _) pattern ifs("z", _, _) such that Modifies(s, v) such that Parent*(_, s) with pn.varName = read.varName such that Follows(s, 6) such that Next(19, s) 
+none
+5000
+365 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(_, "v") such that Calls*(_, "First") such that Parent(_, s) such that Modifies(s, v) with call.procName = pn.varName such that Next(6, 12) pattern a("v", z) 
+none
+5000
+366 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("i", _) such that Next(s, 14) such that Follows(11, 8) pattern ifs("z", _, _) with call.procName = call.procName such that Parent*(s, 2) such that Affects*(_, 9) 
+none
+5000
+367 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("v", _) such that Parent(s, s) such that Follows*(_, s) such that Follows(15, 4) such that Parent*(_, s) such that Next*(s, _) pattern ifs("z", _, _) 
+none
+5000
+368 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(9, 11) with call.procName = p.procName pattern ifs(_, _, _) such that Follows(2, s) pattern w(v, _) such that Next(_, _) such that Uses(s, _) 
+none
+5000
+369 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, s) such that Modifies(s, _) with s.stmt# = a.stmt# such that Affects(13, s) pattern ifs(_, _, _) such that Follows*(s, 19) pattern w(v, _) 
+none
+5000
+370 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, p) pattern a("x", _) such that Parent(_, s) such that Affects(s, s) such that Follows*(s, _) such that Follows(s, _) with p.procName = v.varName 
+none
+5000
+371 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(_, _) such that Follows(_, s) with pn.varName = p.procName such that Parent(s, 2) pattern a("x", y) such that Follows*(3, _) such that Calls(p, "First") 
+none
+5000
+372 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(_, _, _) pattern w(v, _) such that Calls*(_, "Second") such that Follows*(1, s) with pn.stmt# = call.stmt# such that Next*(_, _) such that Parent(_, s) 
+none
+5000
+373 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(p, _) such that Calls(p, "Second") with s.stmt# = w.stmt# pattern a(v, _) such that Modifies(5, "z") such that Follows*(_, s) such that Next*(2, 12) 
+none
+5000
+374 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(_, _) such that Calls*(p, p) such that Next*(s, 18) such that Modifies(_, _) such that Affects*(_, _) such that Calls(_, "Third") pattern ifs(v, _, _) 
+none
+5000
+375 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(15, 14) such that Affects(_, s) pattern ifs(v, _, _) such that Calls*(p, _) such that Parent*(_, _) such that Next(_, 11) such that Next*(_, 7) 
+none
+5000
+376 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(2, 13) such that Affects(s, _) with call.procName = v.varName such that Parent*(19, s) pattern w(v, _) with ifs.stmt# = s.stmt# such that Next(14, 6) 
+none
+5000
+377 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x such that Uses(_, v) such that Calls*(p, "Second") such that Next(_, 7) such that Follows(7, s) such that Parent*(s, 8) pattern a(v, x) pattern ifs(v, _, _) 
+none
+5000
+378 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(_, _) such that Affects(11, s) such that Modifies(s, v) such that Parent(s, 18) such that Calls("Second", p) with p.procName = call.procName with w.stmt# = c.value 
+none
+5000
+379 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(_, _) such that Uses(8, "i") with r.stmt# = call.stmt# such that Parent*(14, _) such that Affects(_, _) such that Modifies(p, v) such that Parent(_, 13) 
+none
+5000
+380 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(p, "First") pattern ifs("x", _, _) pattern w(_, _) pattern a(_, v) such that Uses(p, "z") such that Affects(5, s) such that Affects*(_, 4) 
+none
+5000
+381 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(18, s) pattern a(v, _) such that Follows*(_, s) such that Follows(s, _) such that Affects*(_, s) such that Next*(s, 13) such that Modifies(s, v) 
+none
+5000
+382 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*("Third", _) such that Follows*(4, s) such that Follows(2, _) such that Calls("Third", _) pattern ifs(_, _, _) such that Next*(s, _) such that Affects*(_, s) 
+none
+5000
+383 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, 2) pattern a("x", i) with call.procName = p.procName such that Parent(s, 17) pattern ifs(_, _, _) such that Follows(11, 4) such that Affects(4, s) 
+none
+5000
+384 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(p, _) with read.varName = call.procName such that Uses(s, _) with a.stmt# = s.stmt# such that Next(_, _) such that Parent*(6, 5) such that Follows*(s, s) 
+none
+5000
+385 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(_, s) such that Follows(_, s) such that Next(16, _) with pn.stmt# = r.stmt# pattern w(v, _) such that Modifies(p, _) pattern a(_, _"v"_) 
+none
+5000
+386 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(_, p) such that Follows(s, 11) such that Uses(p, "z") pattern w(_, _) such that Calls(p, "First") such that Next*(5, _) pattern ifs(_, _, _) 
+none
+5000
+387 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(v, _) such that Next(16, 1) with pn.varName = pn.varName such that Modifies(p, v) such that Affects*(4, 11) with r.stmt# = w.stmt# such that Calls("Second", p) 
+none
+5000
+388 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "First") such that Next(13, _) with ifs.stmt# = ifs.stmt# such that Uses(_, "i") such that Parent(_, s) such that Affects(_, 1) such that Follows(s, 18) 
+none
+5000
+389 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(_, s) such that Next*(_, 4) such that Modifies(p, "z") such that Parent*(_, _) with read.varName = p.procName such that Calls*(p, _) such that Parent(_, _) 
+none
+5000
+390 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with pn.varName = call.procName such that Parent(s, s) such that Affects*(s, s) pattern ifs(_, _, _) such that Parent*(6, 14) such that Calls(p, _) such that Follows*(_, _) 
+none
+5000
+391 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*("Third", p) such that Parent(16, _) such that Follows(13, _) pattern a("x", _) pattern w("i", _) such that Calls("First", "First") pattern ifs(v, _, _) 
+none
+5000
+392 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(_, 7) such that Affects(17, _) pattern ifs("z", _, _) with call.stmt# = a.stmt# such that Parent*(s, s) such that Modifies(p, v) such that Parent(s, s) 
+none
+5000
+393 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with w.stmt# = pn.stmt# such that Modifies(_, v) such that Uses(_, "i") such that Affects*(18, _) pattern ifs("v", _, _) with call.procName = p.procName such that Follows(s, _) 
+none
+5000
+394 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(6, "i") pattern ifs(_, _, _) pattern a(v, z) such that Parent(s, 7) such that Follows*(s, 13) such that Parent*(s, s) such that Calls*("Third", p) 
+none
+5000
+395 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(_, 5) such that Modifies(p, "z") with r.stmt# = r.stmt# such that Follows*(_, _) such that Parent(_, _) such that Calls*(_, "First") pattern ifs(_, _, _) 
+none
+5000
+396 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with a.stmt# = ifs.stmt# such that Uses(p, _) pattern w(_, _) such that Affects*(_, _) such that Calls("Second", p) such that Follows*(14, s) pattern ifs("y", _, _) 
+none
+5000
+397 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("First", _) such that Next(12, s) pattern a("y", _) such that Affects*(_, 8) pattern w("y", _) such that Parent(17, 4) with pn.varName = p.procName 
+none
+5000
+398 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, 15) such that Next*(s, 13) pattern ifs("y", _, _) such that Next(13, _) with p.procName = call.procName such that Calls*(_, _) such that Affects*(s, s) 
+none
+5000
+399 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = v.varName pattern w(_, _) such that Affects*(7, _) with w.stmt# = w.stmt# such that Calls*("Second", p) such that Parent(s, _) such that Follows(s, s) 
+none
+5000
+400 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(14, s) with ifs.stmt# = w.stmt# such that Follows(_, _) such that Calls(_, "First") such that Parent(3, _) with pn.varName = read.varName pattern a(v, z) 
+none
+5000
+401 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(4, s) such that Follows(12, _) such that Modifies(p, v) pattern a(_, _) such that Calls*(_, "Third") such that Affects*(s, s) such that Next*(11, _) 
+none
+5000
+402 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(1, _) such that Next(6, 14) such that Calls("First", "Second") with a.stmt# = s.stmt# such that Next*(_, 15) such that Modifies(p, _) such that Follows(2, s) 
+none
+5000
+403 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with s.stmt# = ifs.stmt# such that Calls*(_, _) such that Calls("Third", "Third") such that Modifies(p, "i") pattern a(v, _"i"_) such that Next*(s, _) such that Affects*(s, _) 
+none
+5000
+404 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, _) pattern ifs(v, _, _) with w.stmt# = r.stmt# such that Calls*(p, p) such that Affects(s, 4) such that Modifies(11, "y") with pn.varName = v.varName 
+none
+5000
+405 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with call.stmt# = s.stmt# with p.procName = pn.varName such that Follows*(_, 4) pattern ifs(v, _, _) such that Next(s, s) such that Follows(s, _) such that Affects*(_, _) 
+none
+5000
+406 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern ifs("z", _, _) with call.procName = p.procName such that Calls*("Third", p) with pn.stmt# = w.stmt# pattern a(v, _"y"_) such that Modifies(_, v) such that Affects*(1, _) 
+none
+5000
+407 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(v, _) such that Calls*("First", p) such that Affects*(s, s) such that Next*(s, 1) such that Next(5, s) such that Parent(s, s) such that Follows*(s, 9) 
+none
+5000
+408 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, 2) pattern ifs(_, _, _) such that Affects*(s, 17) such that Next*(_, _) such that Next(s, s) such that Follows(_, _) with v.varName = read.varName 
+none
+5000
+409 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs("z", _, _) such that Parent*(_, s) with call.procName = v.varName with ifs.stmt# = pn.stmt# such that Next(s, _) such that Next*(12, s) such that Follows(s, 9) 
+none
+5000
+410 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(_, _) such that Affects(_, 5) such that Modifies(p, "i") such that Next(s, s) pattern a(_, y) such that Follows*(10, 11) such that Uses(10, v) 
+none
+5000
+411 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(_, s) pattern a("i", _"v"_) such that Follows(_, s) such that Uses(_, _) such that Affects(s, s) with pn.stmt# = a.stmt# pattern w("z", _) 
+none
+5000
+412 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(_, _) such that Follows*(s, _) pattern ifs(v, _, _) such that Next*(s, _) such that Next(_, 8) such that Calls(_, p) such that Follows(_, 6) 
+none
+5000
+413 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, 5) such that Affects(_, s) such that Next*(_, 8) such that Calls(_, p) such that Affects*(_, s) pattern ifs("v", _, _) pattern w("v", _) 
+none
+5000
+414 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(18, 11) such that Uses(s, v) such that Next*(_, s) pattern a("z", _) with p.procName = pn.varName such that Affects*(5, _) with ifs.stmt# = a.stmt# 
+none
+5000
+415 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern ifs(v, _, _) pattern a("z", _) such that Calls*(_, p) pattern w(v, _) such that Affects*(5, s) such that Parent(2, _) such that Affects(s, _) 
+none
+5000
+416 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "Third") such that Next*(s, 6) such that Calls(_, "First") such that Parent(13, _) such that Follows(s, _) with v.varName = pn.varName pattern a(_, _"y"_) 
+none
+5000
+417 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select i with call.stmt# = c.value such that Calls*("Third", p) with p.procName = read.varName such that Parent*(s, _) pattern w(_, _) pattern a(_, i) pattern ifs(_, _, _) 
+none
+5000
+418 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(_, v) pattern w("y", _) pattern a("i", y) pattern ifs(v, _, _) such that Affects*(s, s) with a.stmt# = a.stmt# such that Calls(_, "First") 
+none
+5000
+419 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(7, _) such that Modifies(s, v) such that Follows(_, 16) such that Parent(s, s) such that Next*(_, _) pattern ifs(_, _, _) pattern a(v, y) 
+none
+5000
+420 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a("x", _"z"_) such that Parent*(s, s) such that Next*(_, _) such that Affects(_, 19) such that Next(14, 18) such that Follows*(_, _) such that Calls*(p, p) 
+none
+5000
+421 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(2, s) with r.stmt# = r.stmt# pattern a(_, _) such that Follows(_, _) such that Follows*(16, 4) such that Affects(19, 7) pattern ifs(v, _, _) 
+none
+5000
+422 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = p.procName such that Next*(s, 12) such that Parent(10, _) such that Affects(_, 4) pattern ifs(v, _, _) with w.stmt# = ifs.stmt# such that Modifies(3, "i") 
+none
+5000
+423 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("z", _) such that Next(s, s) such that Follows*(_, s) such that Follows(s, s) such that Uses(_, _) with v.varName = call.procName such that Affects(s, _) 
+none
+5000
+424 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a("v", _) such that Parent*(19, s) such that Next*(s, 11) such that Affects(s, s) with p.procName = read.varName with pn.stmt# = w.stmt# such that Modifies(4, v) 
+none
+5000
+425 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(s, _) such that Parent(7, 4) such that Calls*(_, "Second") such that Calls(_, _) such that Modifies(4, _) with w.stmt# = r.stmt# pattern ifs("y", _, _) 
+none
+5000
+426 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent(8, s) such that Affects(s, _) such that Follows*(s, s) such that Calls(_, p) such that Uses(_, v) with ifs.stmt# = call.stmt# such that Next*(s, s) 
+none
+5000
+427 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(_, s) such that Modifies(14, _) such that Next*(_, 2) such that Parent*(_, s) pattern ifs("z", _, _) such that Follows(_, 11) with w.stmt# = r.stmt# 
+none
+5000
+428 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(_, _) such that Next(s, s) such that Parent*(6, _) such that Calls("Third", "First") such that Follows(s, _) such that Follows*(_, 8) such that Uses(s, "i") 
+none
+5000
+429 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(s, _) such that Follows*(s, _) such that Affects*(18, _) such that Next(_, s) such that Calls(_, _) pattern w("z", _) such that Parent*(s, _) 
+none
+5000
+430 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(p, "v") such that Next*(8, s) such that Next(_, s) with call.stmt# = s.stmt# pattern w(v, _) such that Parent*(16, 13) such that Follows*(_, s) 
+none
+5000
+431 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(11, _) with pn.stmt# = pn.stmt# such that Modifies(s, "v") such that Next*(6, s) such that Parent*(s, s) such that Follows(2, _) such that Next(9, s) 
+none
+5000
+432 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(v, _) pattern ifs(_, _, _) such that Uses(9, v) such that Next*(_, 17) pattern a(_, _"y"_) such that Modifies(p, _) such that Calls*(p, p) 
+none
+5000
+433 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with s.stmt# = ifs.stmt# such that Affects(s, _) such that Follows(s, _) pattern ifs("i", _, _) such that Parent*(s, 10) such that Parent(s, _) such that Calls("Second", _) 
+none
+5000
+434 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with read.varName = call.procName pattern ifs(v, _, _) with pn.stmt# = a.stmt# such that Affects*(9, _) such that Parent*(_, s) such that Next*(2, s) such that Affects(s, 8) 
+none
+5000
+435 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(6, v) such that Affects(_, 7) such that Calls*("Second", p) such that Follows*(_, 9) with p.procName = read.varName pattern w(_, _) pattern ifs(_, _, _) 
+none
+5000
+436 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(9, _) pattern ifs(v, _, _) such that Follows*(s, 5) with pn.varName = read.varName such that Parent*(_, _) such that Parent(6, s) such that Next*(_, 14) 
+none
+5000
+437 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with a.stmt# = s.stmt# such that Affects*(1, s) pattern w("v", _) such that Uses(_, v) such that Calls(p, p) such that Next*(_, _) such that Parent*(_, s) 
+none
+5000
+438 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(s, s) such that Follows*(s, _) pattern w("v", _) such that Parent*(s, 8) such that Modifies(2, v) such that Calls*(_, "Third") such that Affects(_, s) 
+none
+5000
+439 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects(10, s) such that Modifies(3, v) with pn.varName = v.varName with a.stmt# = s.stmt# such that Parent*(13, _) such that Uses(s, _) pattern ifs(_, _, _) 
+none
+5000
+440 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(s, _) such that Parent(_, _) such that Modifies(p, _) pattern ifs(_, _, _) with v.varName = read.varName such that Follows*(_, 2) such that Follows(s, 2) 
+none
+5000
+441 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(_, s) with v.varName = read.varName such that Follows*(s, s) such that Affects*(s, 19) such that Parent(_, _) such that Affects(s, s) such that Parent*(12, 1) 
+none
+5000
+442 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "First") such that Follows(_, 10) pattern ifs("v", _, _) such that Next(_, 16) such that Uses(s, v) such that Parent*(s, 1) pattern a("i", _"z"_) 
+none
+5000
+443 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(7, _) with v.varName = pn.varName such that Follows(10, 4) such that Next*(s, 11) pattern a("v", _) pattern ifs("v", _, _) with a.stmt# = ifs.stmt# 
+none
+5000
+444 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(s, 15) such that Affects(7, s) such that Modifies(p, "z") such that Uses(13, "i") such that Parent(_, 13) with c.value = s.stmt# pattern w("z", _) 
+none
+5000
+445 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*("First", p) such that Follows(17, 19) such that Next*(6, s) pattern ifs(v, _, _) pattern w("i", _) pattern a(v, _"y"_) such that Parent*(8, _) 
+none
+5000
+446 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs(_, _, _) such that Calls(p, "Second") such that Parent*(11, _) such that Uses(_, "v") with pn.stmt# = ifs.stmt# such that Calls*("First", "Second") pattern w(v, _) 
+none
+5000
+447 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with c.value = a.stmt# pattern ifs("z", _, _) pattern w(v, _) such that Uses(11, "z") such that Modifies(p, v) such that Affects(s, _) with v.varName = call.procName 
+none
+5000
+448 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(18, 8) such that Parent(_, _) such that Next(s, _) such that Uses(p, _) such that Parent*(s, s) such that Follows*(_, _) such that Calls*("Second", p) 
+none
+5000
+449 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(v, _) such that Follows(3, 14) such that Uses(s, _) such that Affects*(s, s) pattern w(_, _) such that Affects(5, 9) such that Next*(4, s) 
+none
+5000
+450 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select i such that Follows(11, _) pattern ifs("y", _, _) such that Calls(_, "Second") such that Parent(1, 7) such that Next*(_, s) pattern a(_, i) such that Calls*(_, "First") 
+none
+5000
+451 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(_, 5) with call.procName = call.procName such that Calls("Second", p) such that Parent*(_, s) such that Follows*(_, 13) such that Affects*(_, _) such that Next(_, s) 
+none
+5000
+452 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(19, _) such that Parent*(s, s) such that Parent(s, _) such that Next*(_, _) such that Calls*(p, p) pattern a(v, i) such that Next(16, s) 
+none
+5000
+453 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(p, p) such that Follows(s, s) pattern a(v, v) pattern w(_, _) such that Modifies(p, v) such that Calls*(_, _) such that Next*(2, s) 
+none
+5000
+454 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("v", _, _) such that Calls("Third", _) pattern w(v, _) with w.stmt# = pn.stmt# such that Follows*(_, _) such that Uses(7, _) such that Affects*(15, _) 
+none
+5000
+455 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(s, 9) with p.procName = read.varName pattern ifs(v, _, _) such that Uses(_, _) such that Next(s, _) pattern w(v, _) such that Parent*(10, 15) 
+none
+5000
+456 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with v.varName = p.procName with a.stmt# = c.value such that Calls("First", _) such that Affects(_, _) pattern ifs(v, _, _) such that Next*(_, s) such that Follows(s, 2) 
+none
+5000
+457 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, _) such that Parent(18, 14) pattern a(_, _) such that Calls("First", _) pattern ifs("z", _, _) such that Follows*(s, s) such that Calls*(_, _) 
+none
+5000
+458 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select i with pn.stmt# = w.stmt# such that Follows*(15, 12) pattern a(v, i) such that Follows(s, s) with p.procName = call.procName such that Calls(p, p) such that Uses(s, v) 
+none
+5000
+459 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, v) such that Affects*(s, _) such that Next*(s, 15) such that Parent(s, 19) such that Affects(s, 14) with c.value = c.value such that Calls*(_, _) 
+none
+5000
+460 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects(s, 13) such that Modifies(p, "y") such that Follows(11, s) pattern w("y", _) such that Uses(p, "x") such that Next(19, _) pattern ifs(v, _, _) 
+none
+5000
+461 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select z such that Uses(_, _) such that Parent*(_, _) pattern a(_, z) pattern ifs(_, _, _) such that Follows*(12, _) such that Next(_, _) pattern w(_, _) 
+none
+5000
+462 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Modifies(_, _) such that Parent(9, _) such that Next(18, _) such that Affects(_, s) pattern a("x", _) with c.value = a.stmt# such that Follows*(_, s) 
+none
+5000
+463 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select x pattern ifs("z", _, _) such that Next*(s, _) pattern a(_, x) such that Affects(15, s) such that Affects*(_, s) such that Modifies(_, _) such that Parent(16, _) 
+none
+5000
+464 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(1, 10) with ifs.stmt# = pn.stmt# with call.procName = v.varName such that Follows*(_, _) such that Affects*(10, _) such that Calls*("First", p) such that Parent*(13, 12) 
+none
+5000
+465 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(s, s) such that Calls(p, "Second") such that Parent*(s, s) such that Modifies(12, "y") such that Calls*(_, p) such that Uses(s, v) pattern a(_, z) 
+none
+5000
+466 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = call.procName with ifs.stmt# = ifs.stmt# such that Follows(s, s) such that Affects*(_, _) such that Affects(s, 15) such that Follows*(s, s) such that Uses(_, v) 
+none
+5000
+467 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(13, _) with p.procName = call.procName pattern w("i", _) such that Uses(p, _) such that Next*(s, s) pattern a(v, _) such that Follows*(_, 7) 
+none
+5000
+468 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w("z", _) such that Calls("First", _) with call.procName = v.varName such that Parent(1, 19) such that Follows*(19, 16) such that Next*(_, s) such that Follows(s, 4) 
+none
+5000
+469 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with r.stmt# = r.stmt# such that Next*(_, s) such that Follows*(s, s) pattern a(v, _"i"_) with read.varName = p.procName such that Affects(10, s) such that Follows(14, 12) 
+none
+5000
+470 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(s, s) such that Parent(_, _) pattern ifs(v, _, _) pattern a(v, _) pattern w(v, _) such that Parent*(2, 10) with v.varName = v.varName 
+none
+5000
+471 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(s, s) pattern a(_, x) such that Follows(s, 12) such that Affects*(_, _) such that Modifies(_, _) such that Parent(17, _) pattern w(v, _) 
+none
+5000
+472 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(_, s) such that Next*(_, 16) such that Uses(_, "v") such that Affects(_, _) pattern ifs("x", _, _) such that Affects*(_, 5) such that Follows*(15, _) 
+none
+5000
+473 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(_, _) with c.value = w.stmt# such that Next*(15, s) such that Modifies(_, _) such that Calls("Third", "Third") with call.procName = p.procName such that Uses(_, "x") 
+none
+5000
+474 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*("Third", p) such that Calls("Second", p) such that Uses(s, "v") pattern a(_, z) such that Next(s, 9) such that Parent*(_, _) such that Affects(_, _) 
+none
+5000
+475 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls("Second", _) such that Parent(9, _) such that Affects*(19, s) with read.varName = call.procName such that Affects(_, _) such that Next*(_, _) such that Parent*(_, s) 
+none
+5000
+476 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(15, s) such that Uses(s, "z") with c.value = s.stmt# such that Affects*(1, _) such that Calls(_, p) pattern a(_, y) such that Next*(s, _) 
+none
+5000
+477 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, "i") such that Follows*(_, 15) such that Affects(s, 17) such that Affects*(_, _) such that Next*(_, 7) such that Calls*(_, _) such that Next(13, s) 
+none
+5000
+478 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(p, _) such that Follows*(_, 13) pattern w(_, _) such that Calls*(_, _) with w.stmt# = pn.stmt# such that Affects*(_, 11) pattern ifs(v, _, _) 
+none
+5000
+479 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(_, _) such that Calls*("First", "Second") such that Follows*(_, _) such that Parent(15, s) such that Parent*(s, 1) such that Follows(9, s) such that Modifies(_, _) 
+none
+5000
+480 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent(5, 7) such that Affects*(s, s) such that Next(1, 5) pattern ifs(v, _, _) pattern a(v, _) such that Parent*(s, _) with pn.varName = call.procName 
+none
+5000
+481 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with w.stmt# = r.stmt# such that Calls*(_, "Second") such that Parent(_, _) such that Modifies(_, _) pattern w(_, _) such that Follows(8, _) such that Uses(s, "z") 
+none
+5000
+482 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a(v, _"v"_) such that Follows*(_, 14) such that Parent*(_, _) such that Next(2, 2) such that Affects(_, s) with pn.varName = pn.varName such that Parent(_, 13) 
+none
+5000
+483 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern w(v, _) such that Follows(11, s) such that Uses(s, _) such that Affects(s, 19) such that Follows*(_, s) with a.stmt# = ifs.stmt# such that Parent*(_, s) 
+none
+5000
+484 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with s.stmt# = ifs.stmt# such that Affects*(13, s) pattern ifs("i", _, _) such that Modifies(p, _) such that Affects(18, 5) pattern a("v", z) such that Follows*(11, _) 
+none
+5000
+485 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(s, _) such that Uses(17, v) such that Next*(15, _) such that Calls*(p, "First") such that Follows*(_, s) pattern ifs(_, _, _) such that Follows(s, s) 
+none
+5000
+486 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with p.procName = pn.varName such that Parent*(8, _) pattern ifs("x", _, _) with r.stmt# = a.stmt# such that Follows*(7, s) such that Next(8, _) such that Next*(s, 3) 
+none
+5000
+487 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(2, 14) with p.procName = read.varName such that Parent*(7, s) with r.stmt# = a.stmt# such that Calls*(_, "Second") pattern ifs("i", _, _) pattern w("v", _) 
+none
+5000
+488 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next(s, 15) such that Affects(s, 3) such that Calls*(_, "Second") with a.stmt# = w.stmt# such that Next*(10, s) such that Follows*(s, _) such that Calls(p, "Third") 
+none
+5000
+489 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s pattern a(v, _"z"_) such that Affects*(_, 7) such that Next*(_, s) such that Modifies(s, v) such that Calls("First", "First") such that Parent(3, 9) with pn.varName = v.varName 
+none
+5000
+490 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(s, 13) such that Next*(17, _) pattern ifs(v, _, _) such that Affects*(_, _) such that Follows*(4, s) such that Modifies(_, v) such that Calls(_, _) 
+none
+5000
+491 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(v, _) such that Follows*(_, _) such that Parent(9, s) such that Affects*(s, 8) such that Calls*(p, "First") such that Next(_, 6) pattern w(_, _) 
+none
+5000
+492 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(_, _) pattern w("y", _) such that Affects*(s, _) pattern a("x", _) such that Calls(_, p) such that Next*(s, 12) such that Follows*(s, s) 
+none
+5000
+493 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(_, p) such that Follows(_, 4) such that Parent(s, _) such that Modifies(5, _) such that Next*(9, s) such that Calls*("First", _) such that Affects*(s, _) 
+none
+5000
+494 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(7, 4) such that Uses(18, "v") such that Parent(_, s) such that Follows(_, _) such that Follows*(s, s) such that Calls*("First", _) such that Next*(s, _) 
+none
+5000
+495 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(12, 6) with s.stmt# = call.stmt# such that Uses(s, _) such that Modifies(10, v) with read.varName = read.varName such that Calls(p, "Second") pattern w("i", _) 
+none
+5000
+496 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(3, s) such that Next(_, _) such that Next*(11, s) such that Uses(15, _) such that Calls*("Second", p) such that Affects(s, 7) such that Modifies(4, _) 
+none
+5000
+497 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next*(s, s) such that Parent*(_, 10) such that Calls("Third", "Second") pattern ifs("i", _, _) pattern w(v, _) such that Follows(7, s) with a.stmt# = w.stmt# 
+none
+5000
+498 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("i", _, _) with ifs.stmt# = call.stmt# pattern w(v, _) such that Uses(s, _) such that Parent*(_, _) such that Affects(_, _) with call.procName = pn.varName 
+none
+5000
+499 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Uses(_, _) pattern ifs("z", _, _) such that Parent(s, 13) pattern w(_, _) such that Next*(6, _) such that Affects*(s, _) with call.procName = p.procName 
+none
+5000
+500 - comment
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(8, 3) such that Affects(6, _) such that Parent(s, 4) such that Next(4, 13) such that Affects*(_, _) pattern w(v, _) such that Uses(18, v) 
+none
+5000

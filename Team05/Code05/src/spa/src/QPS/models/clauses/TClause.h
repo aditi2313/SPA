@@ -4,6 +4,7 @@
 
 #include "Clause.h"
 
+
 namespace qps {
 
 class TClause : public Clause {

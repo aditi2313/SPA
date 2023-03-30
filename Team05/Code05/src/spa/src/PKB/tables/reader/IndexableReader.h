@@ -36,6 +36,8 @@ class IndexableReader : public TableReader<Data> {
     return std::make_unique<IndexableReader<Data, Table, Index>>(table);
   }
 
+  void reset() override { ptr_ = keys_.begin(); }
+
  private:
   const Table* table_;
   std::vector<Index> keys_;

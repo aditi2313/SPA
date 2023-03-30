@@ -46,9 +46,9 @@ void TestWrapper::parse(std::string filename) {
   // autotester_path_windows = ../Code05/out/build/x64-Debug/src/autotester
   std::string logger_path;
   #ifdef _WIN32
-    logger_path = "..\\..\\..\\..\\..\\src\\spa\\src\\common\\logging\\logging_output.txt";
+    logger_path = "..\\..\\..\\..\\..\\..\\Tests05\\logging_output.txt";
   #else
-    logger_path = "../../../src/spa/src/common/logging/logging_output.txt";
+    logger_path = "../../../../Tests05/logging_output.txt";
   #endif
   std::filesystem::path cwd = std::filesystem::current_path();
   std::filesystem::path output_path = cwd / logger_path;

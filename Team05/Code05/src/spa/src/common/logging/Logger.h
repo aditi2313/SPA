@@ -55,10 +55,16 @@ class Logger {
               << std::endl;
   }
 
+  // Used to separate runs to easily see in the log output
+  static void PrintDivider() {
+    std::cout << kDivider;
+  }
+
  private:
   inline static bool disabled_ = false;
   inline static std::stack<Clock::time_point> times_;
   inline static const char kSection[] = " <===========================> ";
+  inline static const char kDivider[] = "\n----\n\n";
 };
 
 }  // namespace logging

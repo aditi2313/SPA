@@ -5,13 +5,13 @@ namespace logging {
 class OutputRedirector {
  public:
   OutputRedirector(std::ostream &out, const char *filename)
-      : original_stream_(out), file(filename) {
+      : original_stream_(out), file(filename, std::ios::app) {
     original_buffer_ = out.rdbuf();
     out.rdbuf(file.rdbuf());
   }
 
   OutputRedirector(std::ostream &out, const wchar_t *filename)
-      : original_stream_(out), file(filename) {
+      : original_stream_(out), file(filename, std::ios::app) {
     original_buffer_ = out.rdbuf();
     out.rdbuf(file.rdbuf());
   }

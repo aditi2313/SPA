@@ -97,6 +97,7 @@ class SourceProcessor {
     pkb_relation = writer->ProcessTableAndEndWrite();
     logging::Logger::ExitSection("Pkb Processing");
     logging::Logger::ExitSection("Extract Relationships");
+    logging::Logger::PrintDivider();
   }
 };
 

@@ -10,6 +10,12 @@ class OutputRedirector {
     out.rdbuf(file.rdbuf());
   }
 
+  OutputRedirector(std::ostream &out, const wchar_t *filename)
+      : originalStream(out), file(filename) {
+    originalBuf = out.rdbuf();
+    out.rdbuf(file.rdbuf());
+  }
+
   ~OutputRedirector() {
     // Restore original stream buffer
     // File is automatically closed when the std::ofstream object is destroyed

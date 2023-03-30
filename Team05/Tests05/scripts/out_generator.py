@@ -5,7 +5,6 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 def process_out_xml(out_xml):
-    result_dict = {}
     root = ET.parse(out_xml).getroot()
     queries = root.findall(".//query")
     corrected_queries = []

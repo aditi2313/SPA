@@ -22,28 +22,31 @@ int_attrname = ["c.value", "s.stmt#", "r.stmt#",
                  "pn.stmt#", "call.stmt#", "w.stmt#", 
                  "ifs.stmt#", "a.stmt#"]
 ident_attrname = ["p.procName", "call.procName", "v.varName",
-                   "read.varName", "pn.varName"]
+                   "r.varName", "pn.varName"]
 get_wildcard = lambda : "_"
+stmt_syn = "s"
+var_syn = "v"
+proc_syn = "p"
 
 # INTEGER | synonym | wildcard
 stmt_ref = [
    lambda : str(random.randint(1, num_stmts+1)), 
-   lambda : "s", 
+   lambda : stmt_syn, 
    get_wildcard]
 var_ent_ref = [
-   lambda : "\"" + random.choice(variables) + "\"", 
-   lambda : "v",
+   lambda : f"\"{random.choice(variables)}\"", 
+   lambda : var_syn,
    get_wildcard]
 proc_ent_ref = [
-   lambda : "\"" + random.choice(procedures) + "\"", 
-   lambda : "p",
+   lambda : f"\"{random.choice(procedures)}\"", 
+   lambda : proc_syn,
    get_wildcard]
-modifies_uses_lhs = stmt_ref + [lambda : "p"]
+modifies_uses_lhs = [lambda : stmt_syn, lambda : proc_syn]
 int_attr_ref = [lambda str=str: str for str in int_attrname]
 ident_attr_ref = [lambda str=str: str for str in ident_attrname]
 # exact expr, wildcard expr, wildcard
-expr_spec = [lambda : random.choice(variables),
-             lambda : "_\"" + random.choice(variables) + "\"_", 
+expr_spec = [lambda : f"\"{random.choice(variables)}\"",
+             lambda : f"_\"{random.choice(variables)}\"_", 
              get_wildcard]
 
 def is_synonym(arg):
@@ -65,7 +68,8 @@ class OneArgGenerator:
   def __init__(self, params, generator_type):
     self.__generator_type = generator_type
     self.__params = params
-  def generate(self):
+    
+  def generate_exhaustive(self):
     result = []
     for param in self.__params:
       if self.__generator_type == GeneratorType.PATTERN_IF:
@@ -93,7 +97,8 @@ class TwoArgGenerator:
     self.__clause = clause
     self.__left_params = left_params
     self.__right_params = right_params
-  def generate(self):
+
+  def generate_exhaustive(self):
     result = []
     for left in self.__left_params:
       for right in self.__right_params:

@@ -8,9 +8,9 @@
 #include "Types.h"
 
 namespace pkb {
-class ModifiesData : public Data<Index>{
+class ModifiesData : public Data<Key>{
  public:
-  ModifiesData(Index line,
+  ModifiesData(Key line,
                const StringSet& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||

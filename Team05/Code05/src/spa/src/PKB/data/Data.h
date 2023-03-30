@@ -9,7 +9,7 @@
 
 namespace pkb {
 // todo: set this definition elsewhere
-template <class T, class SecondIndexes = Index>
+template <class T, class SecondIndexes = Key>
 class Data {
  public:
   explicit Data(T line) : line_(line) {}

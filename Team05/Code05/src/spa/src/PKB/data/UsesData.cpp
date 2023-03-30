@@ -2,8 +2,8 @@
 #include <unordered_set>
 
 namespace pkb {
-pkb::UsesData::UsesData(Index line,
+pkb::UsesData::UsesData(Key line,
                         const StringSet& variable_names)
-    : Data<Index>(line),
+    : Data<Key>(line),
     variable_names_(variable_names) {}
 }  // namespace pkb

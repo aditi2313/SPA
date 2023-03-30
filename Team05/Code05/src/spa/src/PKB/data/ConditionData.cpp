@@ -1,8 +1,8 @@
 #include "ConditionData.h"
 
 namespace pkb {
-pkb::ConditionData::ConditionData(Index line,
+pkb::ConditionData::ConditionData(Key line,
                         const StringSet& variable_names)
-    : Data<Index>(line),
+    : Data<Key>(line),
     variable_names_(variable_names) {}
 }  // namespace pkb

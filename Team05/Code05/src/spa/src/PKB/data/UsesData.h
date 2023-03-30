@@ -9,9 +9,9 @@
 
 namespace pkb {
 
-class UsesData : public Data<Index> {
+class UsesData : public Data<Key> {
  public:
-  UsesData(Index line,
+  UsesData(Key line,
            const StringSet& variable_names);
 
 

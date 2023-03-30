@@ -8,10 +8,10 @@
 #include "Types.h"
 
 namespace pkb {
-class ConditionData : public Data<Index>{
+class ConditionData : public Data<Key>{
  public:
   ConditionData(
-          Index line,
+          Key line,
       const StringSet &variable_names);
 
   friend bool operator<(const ConditionData& LHS, const ConditionData& RHS) {

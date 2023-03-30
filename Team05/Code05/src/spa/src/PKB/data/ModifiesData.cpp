@@ -2,7 +2,7 @@
 #include <unordered_set>
 
 namespace pkb {
-ModifiesData::ModifiesData(Index line,
+ModifiesData::ModifiesData(Key line,
                            const StringSet& variables)
-    : Data<Index>(line), variables_(variables) {}
+    : Data<Key>(line), variables_(variables) {}
 }  // namespace pkb

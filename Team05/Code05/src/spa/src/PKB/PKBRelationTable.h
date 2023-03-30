@@ -65,8 +65,8 @@ class PKBRelationTable {
            LHS.procedures_ == RHS.procedures_;
   }
 
-  void add_modifies_data(const std::variant<int, std::string> line,
-                         const std::unordered_set<std::string>& variables) {
+  void add_modifies_data(const Key line,
+                         const VarSet& variables) {
     if (modifies_table_.exists(line)) {
       auto& data = modifies_table_.get_row(line);
       data.add_variables(variables);
@@ -82,8 +82,8 @@ class PKBRelationTable {
                           AssignData(variable, line, std::move(expression)));
   }
 
-  void add_uses_data(const std::variant<int, std::string> line,
-                     const std::unordered_set<std::string>& variable_names) {
+  void add_uses_data(const Key line,
+                     const VarSet& variable_names) {
     if (uses_table_.exists(line)) {
       auto& data = uses_table_.get_row(line);
       data.add_variables(variable_names);
@@ -119,8 +119,8 @@ class PKBRelationTable {
   }
 
   void add_condition_data(
-      const std::variant<int, std::string> line,
-      const std::unordered_set<std::string>& variable_names) {
+      const Key line,
+      const VarSet& variable_names) {
     condition_table_.add_row(line, ConditionData(line, variable_names));
   }
 };

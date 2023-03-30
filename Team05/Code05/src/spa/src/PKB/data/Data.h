@@ -5,9 +5,10 @@
 #include <variant>
 #include <string>
 
+#include "Types.h"
+
 namespace pkb {
 // todo: set this definition elsewhere
-using Key = std::variant<int, std::string>;
 template <class T, class SecondIndexes = Key>
 class Data {
  public:

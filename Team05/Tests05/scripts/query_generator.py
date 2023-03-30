@@ -1,13 +1,20 @@
 import random
 from enum import Enum
+import sys
 
 # Python script for generating random queries
-
+# INTENDED USAGE:
+# First set the following three variables below according to
+# the variables/procedures/number of statements in your own
+# source program
+# Then run python3 query_generator.py `num_clauses` `num_queries`
+# Example: python3 query_generator.py 7 100
+# will generate 100 random queries with 7 clauses each
 
 # VARIABLE - SET ACCORDING TO YOUR PROGRAM #
-num_stmts = 40
-variables = ["x", "y", "z"]
-procedures = ["proc1", "proc2"]
+num_stmts = 18
+variables = ["x", "y", "z", "i", "v",]
+procedures = ["First", "Second", "Third"]
 
 # CONSTANTS - DO NOT CHANGE #
 declarations = "stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;"
@@ -16,7 +23,6 @@ int_attrname = ["c.value", "s.stmt#", "r.stmt#",
                  "ifs.stmt#", "a.stmt#"]
 ident_attrname = ["p.procName", "call.procName", "v.varName",
                    "read.varName", "pn.varName"]
-
 get_wildcard = lambda : "_"
 
 # INTEGER | synonym | wildcard
@@ -40,7 +46,14 @@ expr_spec = [lambda : random.choice(variables),
              lambda : "_\"" + random.choice(variables) + "\"_", 
              get_wildcard]
 
-
+def is_synonym(arg):
+   if not arg[0].isalpha():
+      return False
+   for c in arg:
+      if not c.isalnum():
+         return False
+   return True
+    
 class GeneratorType(Enum):
   SUCH_THAT = 1
   WITH = 2
@@ -63,10 +76,14 @@ class OneArgGenerator:
   
   def generate_random(self):
       param = random.choice(self.__params)()
+      used_synonyms = []
+      if is_synonym(param):
+         used_synonyms.append(param)
+
       if self.__generator_type == GeneratorType.PATTERN_IF:
-          return f"pattern ifs({param}, _, _)"
+          return f"pattern ifs({param}, _, _)", used_synonyms
       elif self.__generator_type == GeneratorType.PATTERN_WHILE:
-          return f"pattern w({param}, _)"
+          return f"pattern w({param}, _)", used_synonyms
       
 ## Generator for clauses with two arguments
 ## To generate permutations of clauses
@@ -91,12 +108,19 @@ class TwoArgGenerator:
   def generate_random(self):
      lhs = random.choice(self.__left_params)()
      rhs = random.choice(self.__right_params)()
+     used_synonyms = []
+     if is_synonym(lhs):
+      used_synonyms.append(lhs)
+
+     if is_synonym(rhs):
+       used_synonyms.append(rhs)
+
      if self.__generator_type == GeneratorType.SUCH_THAT:
-          return f"such that {self.__clause}({lhs}, {rhs})"
+          return f"such that {self.__clause}({lhs}, {rhs})", used_synonyms
      elif self.__generator_type == GeneratorType.WITH:
-          return f"with {lhs} = {rhs}"
+          return f"with {lhs} = {rhs}", used_synonyms
      elif self.__generator_type == GeneratorType.PATTERN_ASSIGN:
-        return f"pattern a({lhs}, {rhs})"
+        return f"pattern a({lhs}, {rhs})", used_synonyms
 
 def create_generators():
   generators = [
@@ -138,16 +162,27 @@ def CreateSingleSuchThatQueries():
 
 
 def CreateMultiClauseQuery(num_clauses, num_queries):
-  selected_elem = ["BOOLEAN"]
   generators = create_generators()
   for ctr in range(1, num_queries+1):
-    print(ctr, "-", "comment")
-    print(declarations)
-    print("Select BOOLEAN", end=" ")
-    # Choose num_clauses random clauses
+    clauses = []
+    used_synonyms = set()
+     # Choose num_clauses random clauses
     rand_gens = random.sample(generators, num_clauses)
     for gen in rand_gens:
-       print(gen.generate_random(), end=" ")
+       clause, synonyms_in_clause = gen.generate_random()
+       clauses.append(clause)
+       used_synonyms.update(synonyms_in_clause)
+
+    used_synonyms = list(used_synonyms)
+    selected_elem = "BOOLEAN" \
+            if len(used_synonyms) == 0 \
+            else random.choice(used_synonyms)
+    # Print query
+    print(ctr, "-", "comment")
+    print(declarations)
+    print("Select", selected_elem, end=" ")
+    for clause in clauses:
+       print(clause, end=" ")
     print("") # newline
     print("none")
     print(5000)
@@ -156,7 +191,10 @@ def CreateMultiClauseQuery(num_clauses, num_queries):
 
 if __name__ == "__main__":
   # CreateSingleSuchThatQueries()
-  CreateMultiClauseQuery(7, 100)
+  if len(sys.argv) < 3:
+     raise Exception(f"Intended usage: python3 query_generator.py num_clauses num_queries")
+  
+  CreateMultiClauseQuery(int(sys.argv[1]), int(sys.argv[2]))
   
 
 

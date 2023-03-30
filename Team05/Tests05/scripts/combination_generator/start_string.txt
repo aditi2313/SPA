@@ -1,3 +1,0 @@
-Multi_clause 7 of the same type of clause
-stmt s1, s2, s3, s4, s5, s6;
-Select s1 such that 

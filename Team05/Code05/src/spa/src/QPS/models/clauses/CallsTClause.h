@@ -16,7 +16,7 @@ class CallsTClause : public TClause {
  public:
   CallsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : TClause(
-      ClauseType::kCallsT, std::move(arg1), std::move(arg2)) {  
+      ClauseType::kCallsT, std::move(arg1), std::move(arg2)) {
   }
 
   inline void Index(const Entity &index,
@@ -37,7 +37,7 @@ class CallsTClause : public TClause {
     auto filter = filter::CallsIndexFilter(index.get_str());
     auto &reader = pkb->Calls(filter);
     if (reader.reached_end()) return false;
-    auto &data = reader.read_data();    
+    auto &data = reader.read_data();
     auto &calls = data.get_total_calls();
     return calls.count(reference.get_str());
   }

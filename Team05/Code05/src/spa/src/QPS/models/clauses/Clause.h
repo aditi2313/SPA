@@ -109,7 +109,7 @@ class Clause {
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) {
     EntitySet index_results;
-    Index(index, pkb, index_results);    
+    Index(index, pkb, index_results);
     for (auto &entity : index_results) {
       if (entity.WeakEqual(index)) {
         results.insert(entity);

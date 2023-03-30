@@ -1,5 +1,6 @@
 import os
 import glob
+import argparse
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -130,8 +131,19 @@ def format_statistic(test_name, result, previous_result):
            f"{divider}"
 
 if __name__ == "__main__":
+    arg_parser = argparse.ArgumentParser(description='Script to extract query evaluation statistics')
+    arg_parser.add_argument('-l', dest='local', action='store_true', help='Set to run locally')
+    args = arg_parser.parse_args()
+    
+    if args.local:
+        out_path = os.path.join(test_dir, "out_analysis_local.md")
+        raw_out_path = os.path.join(test_dir, "out_analysis_raw_local.txt")
+    else:
+        out_path = os.path.join(test_dir, out_analysis_filename)
+        raw_out_path = os.path.join(test_dir, raw_out_analysis_filename)
+    
     out_xmls = get_out_xmls()
     result_dict = process_out_xmls(out_xmls)
     write_results(result_dict,
-                  os.path.join(test_dir, out_analysis_filename),
-                  os.path.join(test_dir, raw_out_analysis_filename))
+                  out_path,
+                  raw_out_path)

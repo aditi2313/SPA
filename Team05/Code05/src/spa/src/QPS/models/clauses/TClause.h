@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "Clause.h"
 
 namespace qps {

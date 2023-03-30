@@ -57,12 +57,10 @@ class Logger {
     Duration interval = curr - times_.top();
     times_.pop();
     out << kSection << "Exit Section: " << desc
-              << " With interval: " << interval.count() << kSection
-              << std::endl;
+        << " With interval: " << interval.count() << kSection << std::endl;
 
     close();
   }
-  
 
  private:
   static void open() { out.open("Logger_out.txt", std::ios::app); }

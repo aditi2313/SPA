@@ -16,7 +16,7 @@ class CallsTClause : public TClause {
  public:
   CallsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
       : TClause(
-      ClauseType::kCallsT, std::move(arg1), std::move(arg2)) {    
+      ClauseType::kCallsT, std::move(arg1), std::move(arg2)) {  
   }
 
   inline void Index(const Entity &index,
@@ -31,9 +31,9 @@ class CallsTClause : public TClause {
     auto &data = table.read_data();
     AddList(data.get_total_calls(), results);
   }
-  
-  virtual bool TIndex(const Entity &index, const pkb::PKBReadPtr &pkb,
-                      const Entity &reference) override{
+
+  bool TIndex(const Entity &index, const pkb::PKBReadPtr &pkb,
+                      const Entity &reference) override {
     auto filter = filter::CallsIndexFilter(index.get_str());
     auto &reader = pkb->Calls(filter);
     if (reader.reached_end()) return false;

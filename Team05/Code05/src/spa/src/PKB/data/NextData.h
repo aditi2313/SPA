@@ -15,10 +15,6 @@ class NextData : public Data<int, int> {
         LHS.second_indexes_ == RHS.second_indexes_;
     }
 
-    inline std::unordered_set<int>& get_next_im_list() {
-        return second_indexes_;
-    }
-
     inline const std::unordered_set<int>& get_next_im_list() const {
         return second_indexes_;
     }

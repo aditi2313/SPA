@@ -20,7 +20,8 @@ class ModifiesData : public Data<std::variant<int, std::string>>{
   }
 
   friend bool operator==(const ModifiesData& LHS, const ModifiesData& RHS) {
-    return LHS.line_ == RHS.line_ && LHS.variables_ == RHS.variables_;
+    return LHS.line_ == RHS.line_ &&
+           LHS.variables_ == RHS.variables_;
   }
 
   inline const std::unordered_set<std::string>& get_variables() const {

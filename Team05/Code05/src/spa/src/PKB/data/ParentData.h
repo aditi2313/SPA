@@ -14,10 +14,6 @@ class ParentData : public Data<int, int> {
            LHS.total_children_ == RHS.total_children_;
   }
 
-  inline std::unordered_set<int> get_direct_children() {
-    return second_indexes_;
-  }
-
   inline const std::unordered_set<int>& get_direct_children() const {
     return second_indexes_;
   }

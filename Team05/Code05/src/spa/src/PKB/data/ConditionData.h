@@ -24,7 +24,7 @@ class ConditionData : public Data<std::variant<int, std::string>>{
 
   friend bool operator==(const ConditionData& LHS, const ConditionData& RHS) {
     return LHS.line_ == RHS.line_ &&
-        LHS.variable_names_ == RHS.variable_names_;
+           LHS.variable_names_ == RHS.variable_names_;
   }
 
   inline const std::unordered_set<std::string>& get_variables() const {

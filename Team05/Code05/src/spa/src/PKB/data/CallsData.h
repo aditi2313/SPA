@@ -24,9 +24,13 @@ class CallsData : public Data<std::string, std::string> {
     return total_calls_;
   }
 
-  inline void add_to_direct_calls(std::string c) { second_indexes_.insert(c); }
+  inline void add_to_direct_calls(std::string c) {
+      second_indexes_.insert(c);
+  }
 
-  inline void add_to_total_calls(std::string c) { total_calls_.insert(c); }
+  inline void add_to_total_calls(std::string c) {
+      total_calls_.insert(c);
+  }
 
  private:
   // set of all calls

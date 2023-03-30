@@ -15,6 +15,7 @@ class TableReader {
   virtual const Data& read_data() = 0;
   virtual void increment() = 0;
   virtual bool reached_end() = 0;
+  virtual void reset() = 0;
 };
 
 template <class Data>

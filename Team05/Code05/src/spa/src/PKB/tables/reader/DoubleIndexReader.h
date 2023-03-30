@@ -52,6 +52,8 @@ class DoubleIndexReader : public TableReader<Data> {
         DoubleIndexReader<Data, Index, SecondIndex>(table));
   }
 
+  void reset() override { ptr_ = indexes_.begin(); }
+
  private:
   std::vector<int> indexes_;
   std::vector<int>::iterator ptr_;

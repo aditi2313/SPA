@@ -1,0 +1,1 @@
+Follows(s1,s2) Follows(s2,s3) Follows(s3,s4) Follows(s4,s5) Follows(s5,s6) Follows(s6,_) Follows(_,s3)

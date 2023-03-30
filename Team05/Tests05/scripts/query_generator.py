@@ -18,34 +18,40 @@ procedures = ["First", "Second", "Third"]
 
 # CONSTANTS - DO NOT CHANGE #
 declarations = "stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;"
-int_attrname = ["c.value", "s.stmt#", "r.stmt#", 
-                 "pn.stmt#", "call.stmt#", "w.stmt#", 
-                 "ifs.stmt#", "a.stmt#"]
+stmt_syns = ["s", "r", "pn", "call", "w", "ifs", "a"]
+int_attrname = ["c.value"] + [syn + ".stmt#" for syn in stmt_syns]
 ident_attrname = ["p.procName", "call.procName", "v.varName",
                    "r.varName", "pn.varName"]
 get_wildcard = lambda : "_"
-stmt_syn = "s"
+get_rand_stmt = lambda : str(random.randint(1, num_stmts))
+get_rand_proc = lambda : f"\"{random.choice(procedures)}\""
+get_rand_var = lambda : f"\"{random.choice(variables)}\""
+get_rand_symt_syn = lambda : random.choice(stmt_syns)
 var_syn = "v"
 proc_syn = "p"
 
 # INTEGER | synonym | wildcard
 stmt_ref = [
-   lambda : str(random.randint(1, num_stmts+1)), 
-   lambda : stmt_syn, 
+   get_rand_stmt, 
+   get_rand_symt_syn,
    get_wildcard]
 var_ent_ref = [
-   lambda : f"\"{random.choice(variables)}\"", 
+   get_rand_var, 
    lambda : var_syn,
    get_wildcard]
 proc_ent_ref = [
-   lambda : f"\"{random.choice(procedures)}\"", 
+   get_rand_proc, 
    lambda : proc_syn,
    get_wildcard]
-modifies_uses_lhs = [lambda : stmt_syn, lambda : proc_syn]
+modifies_uses_lhs = [
+   get_rand_symt_syn, 
+   lambda : proc_syn,
+   get_rand_stmt,
+   get_rand_proc]
 int_attr_ref = [lambda str=str: str for str in int_attrname]
 ident_attr_ref = [lambda str=str: str for str in ident_attrname]
 # exact expr, wildcard expr, wildcard
-expr_spec = [lambda : f"\"{random.choice(variables)}\"",
+expr_spec = [get_rand_var,
              lambda : f"_\"{random.choice(variables)}\"_", 
              get_wildcard]
 
@@ -68,7 +74,7 @@ class OneArgGenerator:
   def __init__(self, params, generator_type):
     self.__generator_type = generator_type
     self.__params = params
-    
+
   def generate_exhaustive(self):
     result = []
     for param in self.__params:
@@ -83,11 +89,12 @@ class OneArgGenerator:
       used_synonyms = []
       if is_synonym(param):
          used_synonyms.append(param)
-
+      query_str = ""
       if self.__generator_type == GeneratorType.PATTERN_IF:
-          return f"pattern ifs({param}, _, _)", used_synonyms
+          query_str = f"pattern ifs({param}, _, _)"
       elif self.__generator_type == GeneratorType.PATTERN_WHILE:
-          return f"pattern w({param}, _)", used_synonyms
+          query_str = f"pattern w({param}, _)"
+      return query_str, used_synonyms
       
 ## Generator for clauses with two arguments
 ## To generate permutations of clauses
@@ -119,13 +126,14 @@ class TwoArgGenerator:
 
      if is_synonym(rhs):
        used_synonyms.append(rhs)
-
+     query_str = ""
      if self.__generator_type == GeneratorType.SUCH_THAT:
-          return f"such that {self.__clause}({lhs}, {rhs})", used_synonyms
+        query_str = f"such that {self.__clause}({lhs}, {rhs})"
      elif self.__generator_type == GeneratorType.WITH:
-          return f"with {lhs} = {rhs}", used_synonyms
+        query_str = f"with {lhs} = {rhs}"
      elif self.__generator_type == GeneratorType.PATTERN_ASSIGN:
-        return f"pattern a({lhs}, {rhs})", used_synonyms
+        query_str = f"pattern a({lhs}, {rhs})"
+     return query_str, used_synonyms
 
 def create_generators():
   generators = [
@@ -155,7 +163,7 @@ def CreateSingleSuchThatQueries():
   generators = create_generators()
   ctr = 1
   for generator in generators:
-    clauses = generator.generate()
+    clauses = generator.generate_exhaustive()
     for clause in clauses:
       for entity in entities:
         print(ctr, "-", "comment")

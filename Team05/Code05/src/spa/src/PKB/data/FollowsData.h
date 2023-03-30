@@ -3,6 +3,7 @@
 #include <unordered_set>
 
 #include "Data.h"
+#include "Types.h"
 
 namespace pkb {
 class FollowsData : public Data<int, int> {
@@ -17,7 +18,7 @@ class FollowsData : public Data<int, int> {
 
   inline int get_follows() const { return follows_; }
 
-  inline const std::unordered_set<int>& get_follows_list() const {
+  inline const LineSet& get_follows_list() const {
     return second_indexes_;
   }
 

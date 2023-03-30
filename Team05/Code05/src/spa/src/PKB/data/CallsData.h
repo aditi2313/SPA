@@ -4,6 +4,7 @@
 #include <unordered_set>
 
 #include "Data.h"
+#include "Types.h"
 
 namespace pkb {
 class CallsData : public Data<std::string, std::string> {
@@ -16,11 +17,11 @@ class CallsData : public Data<std::string, std::string> {
            LHS.total_calls_ == RHS.total_calls_;
   }
 
-  inline const std::unordered_set<std::string>& get_direct_calls() const {
+  inline const StringSet& get_direct_calls() const {
     return second_indexes_;
   }
 
-  inline const std::unordered_set<std::string>& get_total_calls() const {
+  inline const StringSet& get_total_calls() const {
     return total_calls_;
   }
 
@@ -34,6 +35,6 @@ class CallsData : public Data<std::string, std::string> {
 
  private:
   // set of all calls
-  std::unordered_set<std::string> total_calls_;
+  StringSet total_calls_;
 };
 }  // namespace pkb

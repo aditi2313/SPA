@@ -5,12 +5,13 @@
 #include <variant>
 
 #include "Data.h"
+#include "Types.h"
 
 namespace pkb {
-class ModifiesData : public Data<std::variant<int, std::string>>{
+class ModifiesData : public Data<Index>{
  public:
-  ModifiesData(std::variant<int, std::string> line,
-               const std::unordered_set<std::string>& variables);
+  ModifiesData(Index line,
+               const StringSet& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
            (LHS.line_ == RHS.line_ &&
@@ -24,15 +25,15 @@ class ModifiesData : public Data<std::variant<int, std::string>>{
            LHS.variables_ == RHS.variables_;
   }
 
-  inline const std::unordered_set<std::string>& get_variables() const {
+  inline const StringSet& get_variables() const {
     return variables_;
   }
 
-  inline void add_variables(std::unordered_set<std::string> variables) {
+  inline void add_variables(StringSet variables) {
     variables_.merge(variables);
   }
 
  private:
-  std::unordered_set<std::string> variables_;
+  StringSet variables_;
 };
 }  // namespace pkb

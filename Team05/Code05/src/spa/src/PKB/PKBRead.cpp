@@ -26,29 +26,29 @@ ConditionDataReader& PKBRead::Condition(filter::ConditionTableFilter& filter) {
   return filter.FilterTable(relation_table_->condition_table_);
 }
 
-std::unordered_set<int> PKBRead::Affects(int s) {
+LineSet PKBRead::Affects(int s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffects(s)) {
     return cache_->GetAffects(s);
   }
 
-  std::unordered_set<int> result;
+  LineSet result;
 
   if (!relation_table_->assign_.count(s)) {
     cache_->WriteAffects(s, {});
     return {};
   }
-  std::unordered_set<int> empt{};
+  LineSet empt{};
   auto& table = relation_table_->next_d_table_;
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
   auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
-  util::GraphSearch<int, std::unordered_set<int>>::BFS(
+  util::GraphSearch<int, LineSet>::BFS(
       [&](int& v) {
         if (!table.exists(v))
-          return std::unordered_set<int>{};
+          return LineSet{};
         auto& next = table.get_row(v);
         return next.get_next_im_list();
       },
@@ -77,18 +77,18 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   return result;
 }
 
-std::unordered_set<int> PKBRead::AffectsT(int s) {
+LineSet PKBRead::AffectsT(int s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffectsT(s)) {
     return cache_->GetAffectsT(s);
   }
 
-  std::unordered_set<int> affected_lines = Affects(s);
-  std::unordered_set<int> affectedT_lines(affected_lines);
+  LineSet affected_lines = Affects(s);
+  LineSet affectedT_lines(affected_lines);
 
   std::queue<int> q;
-  std::unordered_set<int> visited;
+  LineSet visited;
 
   // Initialize BFS queue
   for (auto& line : affected_lines) {
@@ -116,10 +116,10 @@ std::unordered_set<int> PKBRead::AffectsT(int s) {
   return affectedT_lines;
 }
 
-std::unordered_set<int> PKBRead::NextT(int v) {
-  std::unordered_set<int> visited;
+LineSet PKBRead::NextT(int v) {
+  LineSet visited;
   std::queue<int> frontier;
-  std::unordered_set<int> result;
+  LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;
   if (!next_table.exists(v)) {
@@ -127,10 +127,10 @@ std::unordered_set<int> PKBRead::NextT(int v) {
   }
   auto& data = next_table.get_row(v);
 
-  util::GraphSearch<int, std::unordered_set<int>>::BFS(
+  util::GraphSearch<int, LineSet>::BFS(
       [&](int& curr) {
         if (!next_table.exists(curr))
-          return std::unordered_set<int>{};
+          return LineSet{};
         auto& child_data = next_table.get_row(curr);
         return child_data.get_next_im_list();
       },

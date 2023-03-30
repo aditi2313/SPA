@@ -39,7 +39,7 @@ template <class Data, class Table = IndexableTable<Data>, class K = Key>
 void ProcessIndexableTableInt(
     Table& table,
     std::unordered_set<K>& indexes,
-    std::function<std::unordered_set<int>(Data&)> get_children) {
+    std::function<LineSet(Data&)> get_children) {
     std::vector<K> v(indexes.size());
     std::copy(indexes.begin(), indexes.end(), v.begin());
     std::sort(v.begin(), v.end());
@@ -55,8 +55,8 @@ void ProcessIndexableTableInt(
 }
 
 void PKBWrite::AddModifiesData(
-    const std::variant<int, std::string> line,
-    const std::unordered_set<std::string>& variables) {
+    const Key line,
+    const StringSet& variables) {
   if (variables.empty()) {
     return;
   }
@@ -69,8 +69,8 @@ void PKBWrite::AddAssignData(std::string variable, int line,
 }
 
 void PKBWrite::AddUsesData(
-    const std::variant<int, std::string> line,
-    const std::unordered_set<std::string>& variable_names) {
+    const Key line,
+    const StringSet& variable_names) {
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
@@ -91,8 +91,8 @@ void PKBWrite::AddNextData(int line, int next) {
 }
 
 void PKBWrite::AddConditionData(
-    const std::variant<int, std::string> line,
-    const std::unordered_set<std::string>& variable_names) {
+    const Key line,
+    const StringSet& variable_names) {
   pkb_relation_table_->add_condition_data(line, variable_names);
 }
 
@@ -101,7 +101,7 @@ void PKBWrite::ProcessFollows() {
       pkb_relation_table_->follows_d_table_,
       pkb_relation_table_->stmts_,
       [&](FollowsData& data) {
-        return std::unordered_set<int>{data.get_follows()};
+        return LineSet{data.get_follows()};
       });
 }
 

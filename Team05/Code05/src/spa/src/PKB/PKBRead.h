@@ -71,47 +71,47 @@ class PKBRead {
 
   UsesDataReader& Uses(filter::UsesTableFilter&);
 
-  std::unordered_set<int> NextT(int);
+  LineSet NextT(int);
 
   ConditionDataReader& Condition(filter::ConditionTableFilter&);
 
-  std::unordered_set<std::string> get_variables() {
+  StringSet get_variables() {
     return relation_table_->variables_;
   }
 
-  std::unordered_set<int> get_constants() {
+  LineSet get_constants() {
     return relation_table_->constants_;
   }
 
-  const std::unordered_set<int>& get_whiles() {
+  const LineSet& get_whiles() {
     return relation_table_->whiles_;
   }
 
-  const std::unordered_set<int>& get_stmts() {
+  const LineSet& get_stmts() {
       return relation_table_->stmts_;
   }
 
-  const std::unordered_set<int>& get_calls() {
+  const LineSet& get_calls() {
       return relation_table_->calls_;
   }
 
-  const std::unordered_set<int>& get_assign() {
+  const LineSet& get_assign() {
       return relation_table_->assign_;
   }
 
-  const std::unordered_set<int>& get_print() {
+  const LineSet& get_print() {
       return relation_table_->print_;
   }
 
-  const std::unordered_set<int>& get_read() {
+  const LineSet& get_read() {
       return relation_table_->read_;
   }
 
-  const std::unordered_set<int>& get_if() {
+  const LineSet& get_if() {
       return relation_table_->if_;
   }
 
-  const std::unordered_set<std::string>& get_procedures() {
+  const StringSet& get_procedures() {
     return relation_table_->procedures_;
   }
 
@@ -123,9 +123,9 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
-  std::unordered_set<int> Affects(int);
+  LineSet Affects(int);
 
-  std::unordered_set<int> AffectsT(int);
+  LineSet AffectsT(int);
 
   CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
     return ftr.FilterTable(relation_table_->calls_d_table_);

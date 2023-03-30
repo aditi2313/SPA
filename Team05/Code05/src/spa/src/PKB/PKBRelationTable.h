@@ -66,7 +66,7 @@ class PKBRelationTable {
   }
 
   void add_modifies_data(const Key line,
-                         const StringSet& variables) {
+                         const VarSet& variables) {
     if (modifies_table_.exists(line)) {
       auto& data = modifies_table_.get_row(line);
       data.add_variables(variables);
@@ -83,7 +83,7 @@ class PKBRelationTable {
   }
 
   void add_uses_data(const Key line,
-                     const StringSet& variable_names) {
+                     const VarSet& variable_names) {
     if (uses_table_.exists(line)) {
       auto& data = uses_table_.get_row(line);
       data.add_variables(variable_names);
@@ -120,7 +120,7 @@ class PKBRelationTable {
 
   void add_condition_data(
       const Key line,
-      const StringSet& variable_names) {
+      const VarSet& variable_names) {
     condition_table_.add_row(line, ConditionData(line, variable_names));
   }
 };

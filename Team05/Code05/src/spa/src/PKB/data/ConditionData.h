@@ -12,7 +12,7 @@ class ConditionData : public Data<Key>{
  public:
   ConditionData(
           Key line,
-      const StringSet &variable_names);
+      const VarSet &variable_names);
 
   friend bool operator<(const ConditionData& LHS, const ConditionData& RHS) {
     return LHS.line_ < RHS.line_ ||
@@ -28,12 +28,12 @@ class ConditionData : public Data<Key>{
            LHS.variable_names_ == RHS.variable_names_;
   }
 
-  inline const StringSet& get_variables() const {
+  inline const VarSet& get_variables() const {
     return variable_names_;
   }
 
  private:
   // Variable names that appear in the condition
-  StringSet variable_names_;
+  VarSet variable_names_;
 };
 }  // namespace pkb

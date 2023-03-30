@@ -56,7 +56,7 @@ void ProcessIndexableTableInt(
 
 void PKBWrite::AddModifiesData(
     const Key line,
-    const StringSet& variables) {
+    const VarSet& variables) {
   if (variables.empty()) {
     return;
   }
@@ -70,7 +70,7 @@ void PKBWrite::AddAssignData(std::string variable, int line,
 
 void PKBWrite::AddUsesData(
     const Key line,
-    const StringSet& variable_names) {
+    const VarSet& variable_names) {
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
@@ -92,7 +92,7 @@ void PKBWrite::AddNextData(int line, int next) {
 
 void PKBWrite::AddConditionData(
     const Key line,
-    const StringSet& variable_names) {
+    const VarSet& variable_names) {
   pkb_relation_table_->add_condition_data(line, variable_names);
 }
 

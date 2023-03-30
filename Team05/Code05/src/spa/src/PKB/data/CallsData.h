@@ -17,11 +17,11 @@ class CallsData : public Data<std::string, std::string> {
            LHS.total_calls_ == RHS.total_calls_;
   }
 
-  inline const StringSet& get_direct_calls() const {
+  inline const ProcSet& get_direct_calls() const {
     return second_indexes_;
   }
 
-  inline const StringSet& get_total_calls() const {
+  inline const ProcSet& get_total_calls() const {
     return total_calls_;
   }
 
@@ -35,6 +35,6 @@ class CallsData : public Data<std::string, std::string> {
 
  private:
   // set of all calls
-  StringSet total_calls_;
+  ProcSet total_calls_;
 };
 }  // namespace pkb

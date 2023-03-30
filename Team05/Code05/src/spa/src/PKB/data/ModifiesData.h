@@ -11,7 +11,7 @@ namespace pkb {
 class ModifiesData : public Data<Key>{
  public:
   ModifiesData(Key line,
-               const StringSet& variables);
+               const VarSet& variables);
   friend bool operator<(const ModifiesData& LHS, const ModifiesData& RHS) {
     return LHS.line_ < RHS.line_ ||
            (LHS.line_ == RHS.line_ &&
@@ -25,15 +25,15 @@ class ModifiesData : public Data<Key>{
            LHS.variables_ == RHS.variables_;
   }
 
-  inline const StringSet& get_variables() const {
+  inline const VarSet& get_variables() const {
     return variables_;
   }
 
-  inline void add_variables(StringSet variables) {
+  inline void add_variables(VarSet variables) {
     variables_.merge(variables);
   }
 
  private:
-  StringSet variables_;
+    VarSet variables_;
 };
 }  // namespace pkb

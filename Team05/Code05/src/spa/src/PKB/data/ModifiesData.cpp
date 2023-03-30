@@ -3,6 +3,6 @@
 
 namespace pkb {
 ModifiesData::ModifiesData(Key line,
-                           const StringSet& variables)
+                           const VarSet& variables)
     : Data<Key>(line), variables_(variables) {}
 }  // namespace pkb

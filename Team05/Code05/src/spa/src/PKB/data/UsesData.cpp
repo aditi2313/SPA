@@ -3,7 +3,7 @@
 
 namespace pkb {
 pkb::UsesData::UsesData(Key line,
-                        const StringSet& variable_names)
+                        const VarSet& variable_names)
     : Data<Key>(line),
     variable_names_(variable_names) {}
 }  // namespace pkb

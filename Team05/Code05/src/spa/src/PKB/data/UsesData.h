@@ -12,7 +12,7 @@ namespace pkb {
 class UsesData : public Data<Key> {
  public:
   UsesData(Key line,
-           const StringSet& variable_names);
+           const VarSet& variable_names);
 
 
     friend bool operator<(const UsesData& LHS, const UsesData& RHS) {
@@ -29,15 +29,15 @@ class UsesData : public Data<Key> {
         LHS.variable_names_ == RHS.variable_names_;
     }
 
-    inline const StringSet& get_variables() const {
+    inline const VarSet& get_variables() const {
         return variable_names_;
     }
-    inline void add_variables(StringSet vars) {
+    inline void add_variables(VarSet vars) {
         variable_names_.merge(vars);
     }
 
  private:
-    StringSet variable_names_;
+    VarSet variable_names_;
 };
 }  // namespace pkb
 

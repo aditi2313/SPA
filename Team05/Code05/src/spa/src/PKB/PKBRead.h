@@ -75,7 +75,7 @@ class PKBRead {
 
   ConditionDataReader& Condition(filter::ConditionTableFilter&);
 
-  StringSet get_variables() {
+  VarSet get_variables() {
     return relation_table_->variables_;
   }
 
@@ -111,7 +111,7 @@ class PKBRead {
       return relation_table_->if_;
   }
 
-  const StringSet& get_procedures() {
+  const ProcSet& get_procedures() {
     return relation_table_->procedures_;
   }
 

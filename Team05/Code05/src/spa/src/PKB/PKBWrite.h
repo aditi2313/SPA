@@ -27,7 +27,7 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="variables"></param>
   void AddModifiesData(Key line,
-                       const StringSet& variables);
+                       const VarSet& variables);
 
   /// <summary>
   /// Adds assign data.
@@ -45,7 +45,7 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
   void AddUsesData(const Key line,
-                   const StringSet& variable_names);
+                   const VarSet& variable_names);
 
   /// <summary>
   /// Adds a follows row.
@@ -86,7 +86,7 @@ class PKBWrite {
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
   void AddConditionData(const Key line,
-                   const StringSet& variable_names);
+                   const VarSet& variable_names);
 
   void add_variable(std::string variable) {
     pkb_relation_table_->variables_.insert(variable);

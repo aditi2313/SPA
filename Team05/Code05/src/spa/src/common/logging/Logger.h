@@ -56,7 +56,7 @@ class Logger {
   }
 
  private:
-  inline static bool disabled_ = true;
+  inline static bool disabled_ = false;
   inline static std::stack<Clock::time_point> times_;
   inline static const char kSection[] = " <===========================> ";
 };

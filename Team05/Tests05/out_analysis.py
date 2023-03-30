@@ -1,6 +1,7 @@
 import os
 import glob
 import argparse
+import subprocess
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -68,7 +69,7 @@ def process_out_xmls(out_xmls):
                              global_query_count]
     return result_dict
 
-def write_results(result_dict, out_path, raw_out_path):
+def write_results(result_dict, out_path, raw_out_path, branch):
     """
     Writes out the resulting dictionary to the out file.
 
@@ -77,9 +78,13 @@ def write_results(result_dict, out_path, raw_out_path):
     """
 
     previous_run = {}
+    if branch: # compare output from master branch
+        subprocess.run(['git', 'checkout', branch])
     if os.path.exists(raw_out_path):
         with open(raw_out_path, "r") as raw_out:
             previous_run = eval(raw_out.read())
+    if branch:
+        subprocess.run(['git', 'checkout', '-'])
 
     # Overwrite the raw file
     with open(raw_out_path, "w") as raw_out:
@@ -133,6 +138,7 @@ def format_statistic(test_name, result, previous_result):
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='Script to extract query evaluation statistics')
     arg_parser.add_argument('-l', dest='local', action='store_true', help='Set to run locally')
+    arg_parser.add_argument('-b', dest='branch', help='The branch to compare to')
     args = arg_parser.parse_args()
     
     if args.local:
@@ -146,4 +152,5 @@ if __name__ == "__main__":
     result_dict = process_out_xmls(out_xmls)
     write_results(result_dict,
                   out_path,
-                  raw_out_path)
+                  raw_out_path,
+                  args.branch)

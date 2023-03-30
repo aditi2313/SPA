@@ -45,7 +45,9 @@ class PKBRead {
     return std::move(relation_table_);
   }
 
-  std::unique_ptr<PKBCache> RetrieveCache() { return std::move(cache_); }
+  std::unique_ptr<PKBCache> RetrieveCache() {
+      return std::move(cache_);
+  }
 
   inline void ClearCache() {
     cache_->clear();
@@ -84,14 +86,30 @@ class PKBRead {
   const std::unordered_set<int>& get_whiles() {
     return relation_table_->whiles_;
   }
-  const std::unordered_set<int>& get_stmts() { return relation_table_->stmts_; }
-  const std::unordered_set<int>& get_calls() { return relation_table_->calls_; }
-  const std::unordered_set<int>& get_assign() {
-    return relation_table_->assign_;
+
+  const std::unordered_set<int>& get_stmts() {
+      return relation_table_->stmts_;
   }
-  const std::unordered_set<int>& get_print() { return relation_table_->print_; }
-  const std::unordered_set<int>& get_read() { return relation_table_->read_; }
-  const std::unordered_set<int>& get_if() { return relation_table_->if_; }
+
+  const std::unordered_set<int>& get_calls() {
+      return relation_table_->calls_;
+  }
+
+  const std::unordered_set<int>& get_assign() {
+      return relation_table_->assign_;
+  }
+
+  const std::unordered_set<int>& get_print() {
+      return relation_table_->print_;
+  }
+
+  const std::unordered_set<int>& get_read() {
+      return relation_table_->read_;
+  }
+
+  const std::unordered_set<int>& get_if() {
+      return relation_table_->if_;
+  }
 
   const std::unordered_set<std::string>& get_procedures() {
     return relation_table_->procedures_;

@@ -62,7 +62,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
             result.insert(curr);
           }
         }
-        // if this stmt modifies the variable then dont do anything
+        // if this stmt modifies the variable then don't do anything
         if (relation_table_->modifies_table_.exists(curr) &&
             !IsContainerStmt(curr)) {
           auto& data = relation_table_->modifies_table_.get_row(curr);

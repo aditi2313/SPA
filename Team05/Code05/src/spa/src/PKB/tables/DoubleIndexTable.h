@@ -66,7 +66,9 @@ class DoubleIndexTable {
     }
   }
 
-  inline bool exists(Index id) const { return first_index_map_.count(id); }
+  inline bool exists(Index id) const {
+      return first_index_map_.count(id);
+  }
 
   inline bool exists(const Index& id, const SecondIndex& id2) {
     return exists(id) && exists2(id2) &&
@@ -80,7 +82,9 @@ class DoubleIndexTable {
   inline const Data& get_row(Index id) const {
     return data_.at(first_index_map_.at(id));
   }
-  inline Data& get_row(Index id) { return data_.at(first_index_map_.at(id)); }
+  inline Data& get_row(Index id) {
+      return data_.at(first_index_map_.at(id));
+  }
 
   inline std::vector<Index> get_row_index2(SecondIndex id) const {
     std::vector<Index> result;

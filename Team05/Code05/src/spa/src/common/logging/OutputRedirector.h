@@ -5,20 +5,20 @@ namespace logging {
 class OutputRedirector {
  public:
   OutputRedirector(std::ostream &out, const char *filename)
-      : originalStream(out), file(filename) {
-    originalBuf = out.rdbuf();
+      : original_stream_(out), file(filename) {
+    original_buffer_ = out.rdbuf();
     out.rdbuf(file.rdbuf());
   }
 
   ~OutputRedirector() {
     // Restore original stream buffer
     // File is automatically closed when the std::ofstream object is destroyed
-    originalStream.rdbuf(originalBuf);
+    original_stream_.rdbuf(original_buffer_);
   }
 
  private:
-  std::ostream &originalStream;
-  std::streambuf *originalBuf;
+  std::ostream &original_stream_;
+  std::streambuf *original_buffer_;
   std::ofstream file;
 };
 }  // namespace logging

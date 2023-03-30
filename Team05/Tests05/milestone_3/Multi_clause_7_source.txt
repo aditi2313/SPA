@@ -4,6 +4,7 @@ procedure name {
 	} else {
 		c=d*c/d+a/d+c-b/b;
 		b=b*c+d/a-c*b+b*a;
+		b = b+1;
 		print a;
 		x = x+1;
 		x = x+2;
@@ -13,7 +14,7 @@ procedure name {
 }
 procedure first {
 	if (x == 2) then {
-		while(y == 4) {
+		while(x == 4) {
 			x = x + 1;
 		}
 		v = 1 + s + s + d;

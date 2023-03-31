@@ -6,11 +6,12 @@
 #include <string>
 
 #include "Types.h"
+#include "DataWrapper.h"
 
 namespace pkb {
 // todo: set this definition elsewhere
 template <class T, class SecondIndexes = Key>
-class Data {
+class Data : public DataWrapper {
  public:
   explicit Data(T line) : line_(line) {}
 
@@ -19,6 +20,10 @@ class Data {
   inline const std::unordered_set<SecondIndexes>& get_second_indexes() const {
     return second_indexes_;
   }
+
+    inline std::variant<int, std::string> get_key() override {
+        return line_;
+    }
 
  protected:
   T line_;

@@ -89,7 +89,6 @@ jobs:
       shell: bash
 
     - name: Set up Python
-      if: env.skip-build == 'false'
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -134,7 +133,7 @@ jobs:
     - name: Run query statistics analysis
       if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}
       run: |
-        python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
+        python ${{github.workspace}}/Team05/Tests05/out_analysis.py -b ${{github.base_ref}}
   
     - name: Commit query statistics files
       if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}

@@ -5,7 +5,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "SP/visitors/procedure/ModifiesVisitor.h"
+#include "SP/visitors/Export.h"
 #include "common/filter/filters/Export.h"
 
 std::unordered_map<std::variant<int, std::string>,
@@ -136,6 +136,28 @@ TEST_CASE("Test SP and PKB integration for Modifies data") {
                        std::unordered_set<std::string>>
         expected_results = {{1, {"x"}}, {2, {"v"}},        {3, {"v"}},
                             {4, {"v"}}, {"helper", {"v"}}, {"modifies", vars}};
+
+    REQUIRE(actual_results == expected_results);
+  }
+
+  SECTION("Multiple calls statements") {
+    std::string program =
+        "procedure modifies { read x; call helper1; call helper2; } procedure "
+        "helper1 { read y; } procedure helper2 { read z; call helper1; }";
+
+    auto actual_results = InitializeModifies(program);
+
+    std::unordered_map<std::variant<int, std::string>,
+                       std::unordered_set<std::string>>
+        expected_results = {{1, {"x"}},
+                            {2, {"y"}},
+                            {3, {"y", "z"}},
+                            {4, {"y"}},
+                            {5, {"z"}},
+                            {6, {"y"}},
+                            {"modifies", {"x", "y", "z"}},
+                            {"helper1", {"y"}},
+                            {"helper2", {"y", "z"}}};
 
     REQUIRE(actual_results == expected_results);
   }

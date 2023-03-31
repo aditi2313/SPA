@@ -6,21 +6,14 @@
 #include "models/AST/TNode.h"
 #include "models/AST/factor_node/FactorNode.h"
 #include "models/AST/relations/CondExprNode.h"
-#include "models/AST/stmt_node/StmtNode.h"
+#include "models/AST/stmt_node/SingleVarStmtNode.h"
 
 namespace ast {
-class PrintNode : public StmtNode {
+class PrintNode : public SingleVarStmtNode {
  public:
-  explicit PrintNode(std::unique_ptr<VarNode> var, int line) : StmtNode(line) {
-    var_ = std::move(var);
-  }
-
-  inline std::unique_ptr<VarNode>& get_var() { return var_; }
-  inline std::string get_var_name() { return var_->get_name(); }
+  explicit PrintNode(std::unique_ptr<VarNode> var, int line)
+      : SingleVarStmtNode(std::move(var), line) {}
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
-
- private:
-  std::unique_ptr<VarNode> var_;
 };
 }  // namespace ast

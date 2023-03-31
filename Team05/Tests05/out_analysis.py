@@ -1,5 +1,7 @@
 import os
 import glob
+import argparse
+import subprocess
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -43,7 +45,10 @@ def process_out_xmls(out_xmls):
         local_total_time = 0
 
         for query in queries:
-            time = float(query[4].text)
+            if query.find("timeout") is not None:
+                time = 5000
+            else:
+                time = float(query[4].text)
             if time > local_maximum:
                 local_maximum = time
                 local_maximum_query = query[1].text
@@ -67,7 +72,7 @@ def process_out_xmls(out_xmls):
                              global_query_count]
     return result_dict
 
-def write_results(result_dict, out_path, raw_out_path):
+def write_results(result_dict, out_path, raw_out_path, branch):
     """
     Writes out the resulting dictionary to the out file.
 
@@ -76,9 +81,13 @@ def write_results(result_dict, out_path, raw_out_path):
     """
 
     previous_run = {}
+    if branch: # compare output from master branch
+        subprocess.run(['git', 'checkout', branch])
     if os.path.exists(raw_out_path):
         with open(raw_out_path, "r") as raw_out:
             previous_run = eval(raw_out.read())
+    if branch:
+        subprocess.run(['git', 'checkout', '-'])
 
     # Overwrite the raw file
     with open(raw_out_path, "w") as raw_out:
@@ -130,8 +139,21 @@ def format_statistic(test_name, result, previous_result):
            f"{divider}"
 
 if __name__ == "__main__":
+    arg_parser = argparse.ArgumentParser(description='Script to extract query evaluation statistics')
+    arg_parser.add_argument('-l', dest='local', action='store_true', help='Set to run locally')
+    arg_parser.add_argument('-b', dest='branch', help='The branch to compare to')
+    args = arg_parser.parse_args()
+    
+    if args.local:
+        out_path = os.path.join(test_dir, "out_analysis_local.md")
+        raw_out_path = os.path.join(test_dir, "out_analysis_raw_local.txt")
+    else:
+        out_path = os.path.join(test_dir, out_analysis_filename)
+        raw_out_path = os.path.join(test_dir, raw_out_analysis_filename)
+    
     out_xmls = get_out_xmls()
     result_dict = process_out_xmls(out_xmls)
     write_results(result_dict,
-                  os.path.join(test_dir, out_analysis_filename),
-                  os.path.join(test_dir, raw_out_analysis_filename))
+                  out_path,
+                  raw_out_path,
+                  args.branch)

@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::UsesIndexFilter;
 
@@ -20,16 +20,10 @@ class UsesClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::UsesData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<UsesIndexFilter>(key);
-          return std::move(pkb->Uses(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::UsesData data) {
-          AddList(data.get_variables(), result);
-        },
-        results);
+    UsesIndexFilter filter(index.get_value());
+    auto& reader = pkb->Uses(filter);
+    if (reader.reached_end()) return;
+    AddList(reader.read_data().get_variables(), results);
   }
 };
 }  // namespace qps

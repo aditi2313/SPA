@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::ConditionIndexFilter;
 
@@ -20,16 +20,11 @@ class PatternIfClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::ConditionData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<ConditionIndexFilter>(key);
-          return std::move(pkb->Condition(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::ConditionData data) {
-          AddList(data.get_variables(), result);
-        },
-        results);
+    ConditionIndexFilter filter(index.get_value());
+    auto& reader = pkb->Condition(filter);
+    if (reader.reached_end()) return;
+    auto &data = reader.read_data();
+    AddList(data.get_variables(), results);
   }
 };
 

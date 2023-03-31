@@ -2,10 +2,11 @@ name: cpplint
 on: 
     push:
         branches:
-        - master
+        - master        
     pull_request:
         branches:
         - master
+        - pkb/optimisations
     workflow_dispatch: {}
 jobs:
   cpplint:

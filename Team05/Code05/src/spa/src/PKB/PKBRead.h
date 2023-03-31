@@ -6,11 +6,10 @@
 #include <utility>
 #include <vector>
 
-#include "PKBRelationTable.h"
 #include "PKBCache.h"
-#include "common/filter/filters/IndexableFilter.h"
-
-using filter::IndexableFilterPtr;
+#include "PKBRelationTable.h"
+#include "common/filter/filters/TableFilter.h"
+#include "tables/DoubleIndexTable.h"
 
 namespace pkb {
 class PKBRead {
@@ -20,8 +19,7 @@ class PKBRead {
   /// </summary>
   /// <param name="relation_table">The table containing all
   /// relationships</param>
-  explicit PKBRead(
-      std::unique_ptr<PKBRelationTable> relation_table) {
+  explicit PKBRead(std::unique_ptr<PKBRelationTable> relation_table) {
     relation_table_ = std::move(relation_table);
     // Create new cache if not using passed in cache
     cache_ = std::make_unique<PKBCache>();
@@ -36,9 +34,8 @@ class PKBRead {
   /// relationships</param>
   /// <param name="cache"> Cache that may contain
   /// previously computed data from other queries</param>
-  PKBRead(
-      std::unique_ptr<PKBRelationTable> relation_table,
-      std::unique_ptr<PKBCache> cache) {
+  PKBRead(std::unique_ptr<PKBRelationTable> relation_table,
+          std::unique_ptr<PKBCache> cache) {
     relation_table_ = std::move(relation_table);
     cache_ = std::move(cache);
     read_end_ = false;
@@ -49,7 +46,7 @@ class PKBRead {
   }
 
   std::unique_ptr<PKBCache> RetrieveCache() {
-    return std::move(cache_);
+      return std::move(cache_);
   }
 
   inline void ClearCache() {
@@ -60,7 +57,9 @@ class PKBRead {
   /// Returns if the pkb read has ended.
   /// </summary>
   /// <returns></returns>
-  inline bool HasEnded() { return read_end_; }
+  inline bool HasEnded() {
+      return read_end_;
+  }
 
   /// <summary>
   /// Returns an indexable table for the modifies which satisfies the filter
@@ -68,67 +67,86 @@ class PKBRead {
   /// </summary>
   /// <param name=""></param>
   /// <returns></returns>
-  std::unique_ptr<ModifiesTable> Modifies(
-      IndexableFilterPtr<ModifiesData>);
+  ModifiesDataReader& Modifies(filter::ModifiesTableFilter&);
 
-  std::unique_ptr<AssignTable> Assigns(
-      IndexableFilterPtr<AssignData>);
+  AssignDataReader& Assigns(filter::AssignTableFilter&);
 
-  std::unique_ptr<UsesTable> Uses(IndexableFilterPtr<UsesData>);
+  UsesDataReader& Uses(filter::UsesTableFilter&);
 
-  std::unique_ptr<FollowsTable> Follows(
-      IndexableFilterPtr<FollowsData>);
+  LineSet NextT(Line);
 
-  std::unique_ptr<ParentTable> Parent(
-      IndexableFilterPtr<ParentData>);
+  ConditionDataReader& Condition(filter::ConditionTableFilter&);
 
-  std::unordered_set<int> NextT(int);
-
-  std::unique_ptr<CallsTable> Calls(IndexableFilterPtr<CallsData>);
-
-  std::unique_ptr<NextTable> Next(IndexableFilterPtr<NextData>);
-
-  std::unique_ptr<ConditionTable> Condition(
-      IndexableFilterPtr<ConditionData>);
-
-  std::unordered_set<std::string> get_variables() {
+  VarSet get_variables() {
     return relation_table_->variables_;
   }
 
-  std::unordered_set<int> get_constants() {
+  LineSet get_constants() {
     return relation_table_->constants_;
   }
 
-  const std::unordered_set<int>& get_whiles() {
+  const LineSet& get_whiles() {
     return relation_table_->whiles_;
   }
-  const std::unordered_set<int>& get_stmts() { return relation_table_->stmts_; }
-  const std::unordered_set<int>& get_calls() { return relation_table_->calls_; }
-  const std::unordered_set<int>& get_assign() {
-    return relation_table_->assign_;
-  }
-  const std::unordered_set<int>& get_print() { return relation_table_->print_; }
-  const std::unordered_set<int>& get_read() { return relation_table_->read_; }
-  const std::unordered_set<int>& get_if() { return relation_table_->if_; }
 
-  const std::unordered_set<std::string>& get_procedures() {
+  const LineSet& get_stmts() {
+      return relation_table_->stmts_;
+  }
+
+  const LineSet& get_calls() {
+      return relation_table_->calls_;
+  }
+
+  const LineSet& get_assign() {
+      return relation_table_->assign_;
+  }
+
+  const LineSet& get_print() {
+      return relation_table_->print_;
+  }
+
+  const LineSet& get_read() {
+      return relation_table_->read_;
+  }
+
+  const LineSet& get_if() {
+      return relation_table_->if_;
+  }
+
+  const ProcSet& get_procedures() {
     return relation_table_->procedures_;
   }
 
-  const std::string get_var_name_from_line(int line) {
+  const Var get_var_name_from_line(Line line) {
     return relation_table_->line_to_var_name_[line];
   }
 
-  const std::string get_proc_name_from_line(int line) {
+  const Proc get_proc_name_from_line(Line line) {
     return relation_table_->line_to_proc_name_[line];
   }
 
-  std::unordered_set<int> Affects(int);
+  LineSet Affects(Line);
 
-  std::unordered_set<int> AffectsT(int);
+  LineSet AffectsT(Line);
+
+  CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->calls_d_table_);
+  }
+
+  ParentDataReader& Parent(filter::ParentTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->parent_d_table_);
+  }
+
+  FollowsDataReader& Follows(filter::FollowsTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->follows_d_table_);
+  }
+
+  NextDataReader& Next(filter::NextTableFilter& ftr) {
+    return ftr.FilterTable(relation_table_->next_d_table_);
+  }
 
  private:
-  inline bool IsContainerStmt(int v) {
+  inline bool IsContainerStmt(Line v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);
   }
 

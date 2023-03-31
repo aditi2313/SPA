@@ -5,7 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/Export.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 std::unordered_map<std::string, std::unordered_set<std::string>>
 InitializeCalls(std::string program) {
@@ -14,17 +14,18 @@ InitializeCalls(std::string program) {
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, table);
   pkb::PKBRead reader(std::move(table));
-  auto ftr = std::make_unique<filter::CallsPredicateFilter>(
+  filter::CallsPredicateFilter ftr(
       [](pkb::CallsData data) { return true; });
-  auto results_table = reader.Calls(std::move(ftr));
+  auto& results_table = reader.Calls(ftr);
 
   std::unordered_map<std::string, std::unordered_set<std::string>> results;
 
-  for (auto result : results_table->get_indexes()) {
-    auto data = results_table->get_row(result);
+  while (!results_table.reached_end()) {
+    auto data = results_table.read_data();
     for (auto v : data.get_total_calls()) {
       results[data.get_index()].insert(v);
     }
+    results_table.increment();
   }
 
   return results;

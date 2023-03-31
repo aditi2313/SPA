@@ -45,7 +45,10 @@ def process_out_xmls(out_xmls):
         local_total_time = 0
 
         for query in queries:
-            time = float(query[4].text)
+            if query.find("timeout") is not None:
+                time = 5000
+            else:
+                time = float(query[4].text)
             if time > local_maximum:
                 local_maximum = time
                 local_maximum_query = query[1].text

@@ -63,7 +63,7 @@ void ProcedureProcessingVisitor::Process(ast::ProcNode* proc_node) {
 
 void ProcedureProcessingVisitor::Process(ast::CallNode* call_node) {
   auto parent_proc = call_node->get_parent_proc();
-  auto called_proc = call_node->get_var()->get_name();
+  auto called_proc = call_node->get_called_proc();
   called_by_[called_proc].insert(parent_proc);
   proc_calls_[parent_proc].insert(called_proc);
   proc_called_by_line_[called_proc].insert(call_node->get_line());

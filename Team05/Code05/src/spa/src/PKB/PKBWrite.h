@@ -35,7 +35,7 @@ class PKBWrite {
   /// <param name="line">The line of the assignment</param>
   /// <param name="expression">The unique pointer to the expression on the
   /// rhs</param>
-  void AddAssignData(std::string variable, Line line,
+  void AddAssignData(Var variable, Line line,
                      std::unique_ptr<ast::ExprNode> expression);
 
   /// <summary>

@@ -121,7 +121,7 @@ class PKBRead {
     return relation_table_->line_to_var_name_[line];
   }
 
-  const Var get_proc_name_from_line(Line line) {
+  const Proc get_proc_name_from_line(Line line) {
     return relation_table_->line_to_proc_name_[line];
   }
 

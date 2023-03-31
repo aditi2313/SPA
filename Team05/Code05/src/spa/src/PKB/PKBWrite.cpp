@@ -63,7 +63,7 @@ void PKBWrite::AddModifiesData(
   pkb_relation_table_->add_modifies_data(line, variables);
 }
 
-void PKBWrite::AddAssignData(std::string variable, Line line,
+void PKBWrite::AddAssignData(Var variable, Line line,
                              std::unique_ptr<ast::ExprNode> expression) {
   pkb_relation_table_->add_assign_data(variable, line, std::move(expression));
 }

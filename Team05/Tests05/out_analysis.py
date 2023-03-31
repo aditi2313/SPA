@@ -154,10 +154,10 @@ if __name__ == "__main__":
     
     if args.tests:
         cwd = os.getcwd()
-        out_xmls = [os.path.join(cwd, "Team05/Tests05/out", test_name) for test_name in args.tests]
+        out_xmls = [os.path.join(cwd, "Team05/Tests05/out", f"{test_name}_out.xml") for test_name in args.tests]
     else:
         out_xmls = get_out_xmls()
-        
+
     result_dict = process_out_xmls(out_xmls)
     write_results(result_dict,
                   out_path,

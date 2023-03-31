@@ -142,6 +142,7 @@ if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='Script to extract query evaluation statistics')
     arg_parser.add_argument('-l', dest='local', action='store_true', help='Set to run locally')
     arg_parser.add_argument('-b', dest='branch', help='The branch to compare to')
+    arg_parser.add_argument('-t', dest='tests', nargs="*", help='The test names to analyse')
     args = arg_parser.parse_args()
     
     if args.local:
@@ -151,7 +152,12 @@ if __name__ == "__main__":
         out_path = os.path.join(test_dir, out_analysis_filename)
         raw_out_path = os.path.join(test_dir, raw_out_analysis_filename)
     
-    out_xmls = get_out_xmls()
+    if args.tests:
+        cwd = os.getcwd()
+        out_xmls = [os.path.join(cwd, "Team05/Tests05/out", test_name) for test_name in args.tests]
+    else:
+        out_xmls = get_out_xmls()
+        
     result_dict = process_out_xmls(out_xmls)
     write_results(result_dict,
                   out_path,

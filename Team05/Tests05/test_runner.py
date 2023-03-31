@@ -91,7 +91,7 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     
     if (args.autotester_path):
-        autotester_path = autotester_path # passed in from github actions
+        autotester_path = args.autotester_path # passed in from github actions
 
     testcases = find_all_testcases(args.tests)
     errors = []

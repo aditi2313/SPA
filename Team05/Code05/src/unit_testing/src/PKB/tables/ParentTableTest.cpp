@@ -3,6 +3,7 @@
 
 #include "PKB/data/ParentData.h"
 #include "PKB/tables/IndexableTable.h"
+#include "PKB/tables/DoubleIndexTable.h"
 
 using namespace pkb;  // NOLINT
 
@@ -13,7 +14,7 @@ TEST_CASE("Test ParentTable") {
     parent_data1.add_direct_child(11);
     parent_data2.add_direct_child(3);
 
-    ParentTable parent_table1, parent_table2;
+    ParentDTable parent_table1, parent_table2;
     parent_table1.add_row(5, parent_data1);
     parent_table2.add_row(5, parent_data2);
 

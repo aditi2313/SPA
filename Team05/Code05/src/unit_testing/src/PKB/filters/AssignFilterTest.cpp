@@ -3,7 +3,7 @@
 #include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 #include "models/AST/factor_node/FactorNode.h"
 
 TEST_CASE("Assign Filter test") {
@@ -33,8 +33,9 @@ TEST_CASE("Assign Filter test") {
     table = writer.ProcessTableAndEndWrite();
 
     pkb::PKBRead reader(std::move(table));
-    auto result =
-        reader.Assigns(std::make_unique<filter::AssignPredicateFilter>(
-            [&](auto data) { return data.TestExpression(plus1, true); }));
+    filter::AssignPredicateFilter filter(
+        [&](auto data) { return data.TestExpression(plus1, true); });
+    auto& result =
+        reader.Assigns(filter);
   }
 }

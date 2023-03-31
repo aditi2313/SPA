@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::FollowsIndexFilter;
 
@@ -20,16 +20,11 @@ class FollowsTClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::FollowsData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<FollowsIndexFilter>(key);
-          return std::move(pkb->Follows(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::FollowsData data) {
-          AddList(data.get_follows_list(), result);
-        },
-        results);
+    filter::FollowsIndexFilter filter(index.get_int());
+    auto& follows_reader = pkb->Follows(filter);
+    if (follows_reader.reached_end()) return;
+    auto &data = follows_reader.read_data();
+    AddList(data.get_follows_list(), results);
   }
 };
 }  // namespace qps

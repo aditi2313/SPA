@@ -4,12 +4,14 @@
 #include <string>
 #include <unordered_set>
 #include <utility>
+#include <vector>
 
 #include "PKBRelationTable.h"
 #include "data/ModifiesData.h"
 #include "common/logging/Logger.h"
 #include "models/AST/factor_node/FactorNode.h"
 
+// optimisations snuff
 namespace pkb {
 class PKBWrite {
  public:
@@ -24,8 +26,8 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variables"></param>
-  void AddModifiesData(std::variant<int, std::string> line,
-                       const std::unordered_set<std::string>& variables);
+  void AddModifiesData(Key line,
+                       const VarSet& variables);
 
   /// <summary>
   /// Adds assign data.
@@ -33,7 +35,7 @@ class PKBWrite {
   /// <param name="line">The line of the assignment</param>
   /// <param name="expression">The unique pointer to the expression on the
   /// rhs</param>
-  void AddAssignData(std::string variable, int line,
+  void AddAssignData(Var variable, Line line,
                      std::unique_ptr<ast::ExprNode> expression);
 
   /// <summary>
@@ -42,8 +44,8 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
-  void AddUsesData(const std::variant<int, std::string> line,
-                   const std::unordered_set<std::string>& variable_names);
+  void AddUsesData(const Key line,
+                   const VarSet& variable_names);
 
   /// <summary>
   /// Adds a follows row.
@@ -51,7 +53,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="follows"></param>
-  void AddFollowsData(int line, const int follows);
+  void AddFollowsData(Line line, const Line follows);
 
   /// <summary>
   /// Adds a parent row.
@@ -59,7 +61,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="parent_line"></param>
-  void AddParentData(int line, const int parent_line);
+  void AddParentData(Line line, const Line parent_line);
 
   /// <summary>
   /// Adds a calls row.
@@ -67,7 +69,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="caller"></param>
   /// <param name="callee"></param>
-  void AddCallsData(std::string caller, std::string callee);
+  void AddCallsData(Proc caller, Proc callee);
 
   /// <summary>
   /// Adds a next row.
@@ -75,7 +77,7 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="next"></param>
-  void AddNextData(int line, const int next);
+  void AddNextData(Line line, const Line next);
 
   /// <summary>
   /// Adds a conditions row.
@@ -83,41 +85,55 @@ class PKBWrite {
   /// </summary>
   /// <param name="line"></param>
   /// <param name="variable_names"></param>
-  void AddConditionData(const std::variant<int, std::string> line,
-                   const std::unordered_set<std::string>& variable_names);
+  void AddConditionData(const Key line,
+                   const VarSet& variable_names);
 
-  void add_variable(std::string variable) {
+  void add_variable(Var variable) {
     pkb_relation_table_->variables_.insert(variable);
   }
 
-  void add_constant(int constant) {
+  void add_constant(Line constant) {
     pkb_relation_table_->constants_.insert(constant);
   }
 
-  void add_stmt(int stmt) { pkb_relation_table_->stmts_.insert(stmt); }
-
-  void add_while(int w) { pkb_relation_table_->whiles_.insert(w); }
-
-  void add_assign(int a) { pkb_relation_table_->assign_.insert(a); }
-
-  void add_call(int c) { pkb_relation_table_->calls_.insert(c); }
-
-  void add_procedure(std::string p) {
-    pkb_relation_table_->procedures_.insert(p);
+  void add_stmt(Line stmt) {
+      pkb_relation_table_->stmts_.insert(stmt);
   }
 
-  void add_print(int p) { pkb_relation_table_->print_.insert(p); }
-
-  void add_read(int r) { pkb_relation_table_->read_.insert(r); }
-
-  void add_if(int i) { pkb_relation_table_->if_.insert(i); }
-
-  void set_var_name_for_line(int line, std::string var_name) {
-    pkb_relation_table_->line_to_var_name_[line] = var_name;
+  void add_while(Line w) {
+      pkb_relation_table_->whiles_.insert(w);
   }
 
-  void set_proc_name_for_line(int line, std::string proc_name) {
-    pkb_relation_table_->line_to_proc_name_[line] = proc_name;
+  void add_assign(Line a) {
+      pkb_relation_table_->assign_.insert(a);
+  }
+
+  void add_call(Line c) {
+      pkb_relation_table_->calls_.insert(c);
+  }
+
+  void add_procedure(Proc p) {
+      pkb_relation_table_->procedures_.insert(p);
+  }
+
+  void add_print(Line p) {
+      pkb_relation_table_->print_.insert(p);
+  }
+
+  void add_read(Line r) {
+      pkb_relation_table_->read_.insert(r);
+  }
+
+  void add_if(Line i) {
+      pkb_relation_table_->if_.insert(i);
+  }
+
+  void set_var_name_for_line(Line line, Var var_name) {
+      pkb_relation_table_->line_to_var_name_[line] = var_name;
+  }
+
+  void set_proc_name_for_line(Line line, Proc proc_name) {
+      pkb_relation_table_->line_to_proc_name_[line] = proc_name;
   }
 
 

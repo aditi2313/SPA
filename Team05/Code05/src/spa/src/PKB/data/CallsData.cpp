@@ -1,5 +1,6 @@
 #include "CallsData.h"
 
 namespace pkb {
-pkb::CallsData::CallsData(std::string caller) : Data<std::string>(caller) {}
+pkb::CallsData::CallsData(Proc caller)
+    : Data<Proc, Proc>(caller) {}
 }  // namespace pkb

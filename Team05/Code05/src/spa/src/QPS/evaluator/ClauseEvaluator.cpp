@@ -79,6 +79,14 @@ void ClauseEvaluator::AssertSynonymClauseArgs(
   assert(arg1->IsSynonym() || arg2->IsSynonym());
 }
 
+void PopulateResults(Table::TwoSynonymRows &rows, EntitySet &LHS,
+                     EntitySet &RHS) {
+  for (auto &[l, r] : rows) {
+    LHS.insert(l);
+    RHS.insert(r);
+  }
+}
+
 void ClauseEvaluator::QueryPKBForSynonymClause(
     ClauseWrapper &state,
     Table::TwoSynonymRows &rows) {
@@ -91,6 +99,12 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   bool is_symmetric = *arg1 == *arg2;
+  bool double_syn = arg1->IsSynonym() && arg1->IsSynonym();
+  if (!arg2->IsWildcard() && !is_symmetric) {
+    clause->Filter(LHS, RHS, rows, pkb_);
+    PopulateResults(rows, LHS_results, RHS_results);
+    return;
+  }
 
   for (auto &index : LHS) {
     EntitySet results;
@@ -98,14 +112,11 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
       // Just index and return all
       clause->Index(index, pkb_, results);
     } else {
-      // Is synonym or exact (int or ident), use filter
-      is_symmetric
-      ? clause->SymmetricFilter(index, pkb_, results)
-      : clause->Filter(index, RHS, pkb_, results);
+      // Is symmetric
+      is_symmetric ? clause->SymmetricFilter(index, pkb_, results)
+                   : clause->Filter(index, RHS, pkb_, results);
     }
-
     if (results.empty()) continue;
-
     LHS_results.insert(index);
     for (auto &entity : results) {
       RHS_results.insert(entity);

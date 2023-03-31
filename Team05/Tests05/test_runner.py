@@ -4,6 +4,7 @@ import subprocess
 import glob
 import xml.etree.ElementTree as ET
 import sys
+import argparse
 from pathlib import Path
 from typing import Literal
 
@@ -44,10 +45,17 @@ def run_testcase(testname):
         else:
             return f"Failed: {testname} Error: {e.stderr.decode().strip()}"
 
-def find_all_testcases():
+def find_all_testcases(test_names):
+    if test_names:
+        txt_files = []
+        for test_name in test_names:
+            pattern = os.path.join(os.getcwd(),"Team05", "Tests05", "**/*", f"{test_name}{source_file_suffix}")
+            txt_files += glob.glob(pattern, recursive=True)
+    else:
+        # all *_source.txt files in current directory and its subdirectories
+        txt_files = glob.glob(os.path.join(os.getcwd(), "Team05", "Tests05", "**/*" + source_file_suffix), recursive=True)
+
     testcases = []
-    # all *_source.txt files in current directory and its subdirectories
-    txt_files = glob.glob(os.path.join(os.getcwd(), "**/*" + source_file_suffix), recursive=True)
     for f in txt_files:
         testname = f[:-len(source_file_suffix)]
         query_file = testname + queries_file_suffix
@@ -77,10 +85,15 @@ def print_colour(str, colour: Literal["red", "green", "yellow", "blue"]):
     print(f"\033[{colour_code}m {str} \033[0m")
 
 if __name__ == "__main__":
-    if (len(sys.argv) > 1):
-        autotester_path = sys.argv[1] # passed in from github actions
+    arg_parser = argparse.ArgumentParser(description='Script to run all system tests')
+    arg_parser.add_argument('-p', dest='autotester_path', help='The path to autotester binary')
+    arg_parser.add_argument('-t', dest='tests', nargs="*", help='The system tests to run')
+    args = arg_parser.parse_args()
     
-    testcases = find_all_testcases()
+    if (args.autotester_path):
+        autotester_path = autotester_path # passed in from github actions
+
+    testcases = find_all_testcases(args.tests)
     errors = []
     for tc in testcases:
         error = run_testcase(tc)

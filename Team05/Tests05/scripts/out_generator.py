@@ -13,19 +13,20 @@ def process_out_xml(out_xml):
         if query[5].tag == "passed":
             continue
         # Only include failed queries (i.e queries that do have answers)
+        comment = query[0].attrib["comment"]
         query_str = query.find("querystr").text
         decl_end = query_str.find("Select")
         formatted_query_str = query_str[:decl_end] + "\n" + query_str[decl_end:]
         correct_ans = query[5].find("additional").text
-        corrected_queries.append((formatted_query_str, correct_ans))
+        corrected_queries.append((comment, formatted_query_str, correct_ans))
     return corrected_queries
        
 
 def write_correct_queries_file(corrected_queries, query_file_path):
     ctr = 1
     with open(query_file_path, "w") as f:
-        for query, answer in corrected_queries:
-            f.write(f"{ctr} - comment\n")
+        for comment, query, answer in corrected_queries:
+            f.write(f"{ctr} - {comment}\n")
             ctr += 1
             f.write(f"{query}\n")
             f.write(f"{answer}\n")

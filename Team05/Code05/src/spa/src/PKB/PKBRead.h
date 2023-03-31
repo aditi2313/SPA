@@ -57,7 +57,9 @@ class PKBRead {
   /// Returns if the pkb read has ended.
   /// </summary>
   /// <returns></returns>
-  inline bool HasEnded() { return read_end_; }
+  inline bool HasEnded() {
+      return read_end_;
+  }
 
   /// <summary>
   /// Returns an indexable table for the modifies which satisfies the filter
@@ -71,7 +73,7 @@ class PKBRead {
 
   UsesDataReader& Uses(filter::UsesTableFilter&);
 
-  LineSet NextT(int);
+  LineSet NextT(Line);
 
   ConditionDataReader& Condition(filter::ConditionTableFilter&);
 
@@ -115,17 +117,17 @@ class PKBRead {
     return relation_table_->procedures_;
   }
 
-  const std::string get_var_name_from_line(int line) {
+  const Var get_var_name_from_line(Line line) {
     return relation_table_->line_to_var_name_[line];
   }
 
-  const std::string get_proc_name_from_line(int line) {
+  const Var get_proc_name_from_line(Line line) {
     return relation_table_->line_to_proc_name_[line];
   }
 
-  LineSet Affects(int);
+  LineSet Affects(Line);
 
-  LineSet AffectsT(int);
+  LineSet AffectsT(Line);
 
   CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
     return ftr.FilterTable(relation_table_->calls_d_table_);
@@ -144,7 +146,7 @@ class PKBRead {
   }
 
  private:
-  inline bool IsContainerStmt(int v) {
+  inline bool IsContainerStmt(Line v) {
     return relation_table_->if_.count(v) || relation_table_->whiles_.count(v);
   }
 

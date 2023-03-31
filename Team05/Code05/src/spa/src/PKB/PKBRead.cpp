@@ -26,7 +26,7 @@ ConditionDataReader& PKBRead::Condition(filter::ConditionTableFilter& filter) {
   return filter.FilterTable(relation_table_->condition_table_);
 }
 
-LineSet PKBRead::Affects(int s) {
+LineSet PKBRead::Affects(Line s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffects(s)) {
@@ -77,7 +77,7 @@ LineSet PKBRead::Affects(int s) {
   return result;
 }
 
-LineSet PKBRead::AffectsT(int s) {
+LineSet PKBRead::AffectsT(Line s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffectsT(s)) {
@@ -116,7 +116,7 @@ LineSet PKBRead::AffectsT(int s) {
   return affectedT_lines;
 }
 
-LineSet PKBRead::NextT(int v) {
+LineSet PKBRead::NextT(Line v) {
   LineSet visited;
   std::queue<int> frontier;
   LineSet result;

@@ -1,0 +1,15 @@
+procedure parent {
+    read x;
+    read y;
+    if (x < 5) then {
+        while (y != x) {
+            print y;
+        }
+    } else {
+        if ((x > 3) && (x < 5)) then {
+            print z;
+        } else {
+            read z;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+1 - next statement s1 -> s2 and s2 -> s1
+stmt s1, s2;
+Select s1 such that Next(s1, s2) and Next(s2, s1)
+5, 6
+5000
+2 - s1 -> s2 -> c , a procedure that calls n3
+stmt s1, s2; call c; procedure p;
+Select <s1, p> such that Next(s1, s2) and Next(s2, c) such that Calls(p, "n3")
+4 n2, 6 n2
+5000
+3 - s1 -> s2 -> s3 -> s4
+stmt s1, s2, s3, s4;
+Select s1 such that Next(s1, s2) and Next(s2, s3) such that Next(s3, s4)
+3, 4, 5, 6
+5000
+4 - s1 -> s2 -> s3 -> s4
+stmt s1, s2, s3, s4;
+Select s4 such that Next(s1, s2) and Next(s2, s3) such that Next(s3, s4)
+5, 6
+5000
+5 - s1 -> s2 -> s3 -> s4 select s1, s4
+stmt s1, s2, s3, s4;
+Select <s1, s4> such that Next(s1, s2) and Next(s2, s3) such that Next(s3, s4)
+4 5, 3 6, 5 6, 6 5
+5000
+6 - s1 ->* s2 ->* s3 --> equivalent to s1 -> s2 -> s3
+stmt s1, s2, s3;
+Select s1 such that Next* (s1, s2) and Next*(s2, s3)
+3, 4, 5, 6
+5000
+

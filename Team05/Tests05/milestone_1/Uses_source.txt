@@ -1,0 +1,36 @@
+procedure uses {
+  read Desert;
+  print you;  
+  if (x > y) then {
+    we = are + no * strangers - love;    
+    read love;
+    print love;
+  } else {
+    you = know + (rules * so - do + i);
+    read i;
+    print i;
+  }
+  while (k < 10) {
+    a = full + commitment - (what * i + thinking - of);
+    you = wouldnt + (get - (this * from)) + any - (other + guy);
+    read a;
+    print a;
+  }
+  while ((m < 100) || (n > 1000)) {
+    i = just + wanna;
+    tell = you - how;
+    i = feeling;
+    read i;
+    print i;
+  }
+  if ((m < 100) || (n > 1000)) then {
+    never = gonna;
+  } else {
+    give = you - up;
+  }
+  if ((other >= 1000) && (test <= 200)) then {
+    never = gonna;
+  } else {
+    let = you * down;
+  }
+}

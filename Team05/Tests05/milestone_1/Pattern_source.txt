@@ -1,0 +1,23 @@
+procedure pattern {
+  x = 100;
+  d = a + d * a + d - a * d / d * c;
+  d = (x + y) * z;
+  d = x + y * z;
+
+  puss = in + boots * (the + last - wish);
+  lobo = in + boots * (the + last - wish);
+  puss = (in + boots) * the + last - wish;
+  lobo = in + (boots * the + last - wish);
+  x = y;
+  if (z > y) then {
+    puss = (in + boots) * the;  
+  } else {
+    puss = wish * (in + boots);  
+  }
+
+  puss = 100;
+
+}
+
+
+

@@ -52,6 +52,10 @@ class PKBRead {
     return std::move(cache_);
   }
 
+  inline void ClearCache() {
+    cache_->clear();
+  }
+
   /// <summary>
   /// Returns if the pkb read has ended.
   /// </summary>

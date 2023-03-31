@@ -693,3 +693,7 @@ FodyWeavers.xsd
 
 # Autotester output
 Team05/Tests05/**/*out.xml
+
+# Out analysis files for local running
+Team05/Tests05/out_analysis_raw_local.txt
+Team05/Tests05/out_analysis_local.md

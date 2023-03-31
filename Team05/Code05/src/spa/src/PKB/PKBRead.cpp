@@ -45,15 +45,15 @@ LineSet PKBRead::Affects(Line s) {
   auto& modified_var = modified.get_variable();
   auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
-  util::GraphSearch<int, LineSet>::BFS(
-      [&](int& v) {
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
         if (!table.exists(v))
           return LineSet{};
         auto& next = table.get_row(v);
         return next.get_next_im_list();
       },
       n_im_l,
-      [&](const int& curr) {
+      [&](const Line& curr) {
         if (relation_table_->uses_table_.exists(curr)) {
           auto& data = relation_table_->uses_table_.get_row(curr);
           // check that this assign stmt uses the variable
@@ -87,7 +87,7 @@ LineSet PKBRead::AffectsT(Line s) {
   LineSet affected_lines = Affects(s);
   LineSet affectedT_lines(affected_lines);
 
-  std::queue<int> q;
+  std::queue<Line> q;
   LineSet visited;
 
   // Initialize BFS queue
@@ -97,7 +97,7 @@ LineSet PKBRead::AffectsT(Line s) {
   }
 
   while (!q.empty()) {
-    int curr = q.front();
+    Line curr = q.front();
     q.pop();
     affectedT_lines.insert(curr);  // Update result
     auto neighbors = Affects(curr);
@@ -118,7 +118,7 @@ LineSet PKBRead::AffectsT(Line s) {
 
 LineSet PKBRead::NextT(Line v) {
   LineSet visited;
-  std::queue<int> frontier;
+  std::queue<Line> frontier;
   LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;
@@ -127,15 +127,15 @@ LineSet PKBRead::NextT(Line v) {
   }
   auto& data = next_table.get_row(v);
 
-  util::GraphSearch<int, LineSet>::BFS(
-      [&](int& curr) {
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& curr) {
         if (!next_table.exists(curr))
           return LineSet{};
         auto& child_data = next_table.get_row(curr);
         return child_data.get_next_im_list();
       },
       data.get_next_im_list(),
-      [&](const int& curr) {
+      [&](const Line& curr) {
         result.insert(curr);
         return true;
       });

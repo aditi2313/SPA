@@ -23,16 +23,15 @@ std::unordered_map<int, std::unordered_set<int>> InitializeFollows(
 
   while (!results_table.reached_end()) {
     auto data = results_table.read_data();
-    
+
     results[data.get_index()].insert(data.get_follows());
-    
+
     results_table.increment();
   }
 
   return results;
 }
 
-  
 std::unordered_map<int, std::unordered_set<int>> InitializeFollowsT(
     std::string program) {
   std::unique_ptr<pkb::PKBRelationTable> table =

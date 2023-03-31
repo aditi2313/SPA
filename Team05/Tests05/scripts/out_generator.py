@@ -10,6 +10,8 @@ def process_out_xml(out_xml):
     corrected_queries = []
 
     for query in queries:
+        if query.find("timeout") is not None:
+            continue
         if query[5].tag == "passed":
             continue
         # Only include failed queries (i.e queries that do have answers)

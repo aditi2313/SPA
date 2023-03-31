@@ -1,5 +1,0 @@
-1 - variables
-variable v;
-Select v such that Uses(1, v)
-someString, v2, a, ils, variables, d, c, rapid, varx, v3, b, constants, if, procedure, someVariable, v1
-5000

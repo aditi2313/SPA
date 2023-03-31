@@ -60,7 +60,7 @@ class Query {
   // If elem is a Synonym, just add elem
   // Else elem is an attrRef, and we split attrRef to
   // add the synonym portion
-  inline std::vector<std::string> get_selected_synonyms() {
+  inline std::vector<std::string> &get_selected_synonyms() {
     std::vector<std::string> synonyms;
     for (auto &elem : selected_elems_) {
       if (AttrRef::is_attr_ref(elem)) {

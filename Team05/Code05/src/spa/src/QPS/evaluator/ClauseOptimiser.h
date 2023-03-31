@@ -12,7 +12,7 @@ class ClauseOptimiser {
   // A group is a list of indexes of clauses
   using Group = std::vector<int>;
 
-  static std::vector<Group> GroupClauses(std::vector<ClausePtr> &clauses);
+  static std::vector<Group> &GroupClauses(std::vector<ClausePtr> &clauses);
 
  private:
   static void PreprocessClauses(

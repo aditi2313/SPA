@@ -16,8 +16,8 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
 
   auto &clauses = query->get_clauses();
   // Order of evaluation
-  auto order = ClauseOptimiser::GroupClauses(clauses);
-  auto query_columns = query->get_selected_synonyms();
+  auto &order = ClauseOptimiser::GroupClauses(clauses);
+  auto &query_columns = query->get_selected_synonyms();
 
   for (auto &group : order) {
     Table group_table;  // Use own intermediate table for each group

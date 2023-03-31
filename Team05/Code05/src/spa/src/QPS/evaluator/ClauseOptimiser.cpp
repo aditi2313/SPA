@@ -8,7 +8,7 @@ namespace qps {
 // clauses that belong to that same group.
 // Clauses belong to the same group if they share at least
 // one common synonym with another clause in that group.
-std::vector<ClauseOptimiser::Group> ClauseOptimiser::GroupClauses(
+std::vector<ClauseOptimiser::Group> &ClauseOptimiser::GroupClauses(
     std::vector<ClausePtr> &clauses) {
   AdjList adj_list;
   // Draw bidirectional edges between clauses that

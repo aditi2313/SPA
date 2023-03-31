@@ -1,6 +1,5 @@
-#include <catch.hpp>
-
 #include <utility>
+#include <catch.hpp>
 
 #include "../../spa/src/SP/SourceProcessor.h"
 #include "PKB/PKBRead.h"

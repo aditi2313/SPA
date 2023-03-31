@@ -17,19 +17,19 @@ class PKBCache {
     return affectsT_table_.exists(stmt);
   }
 
-  inline void WriteAffects(int stmt, std::unordered_set<int> affected_lines) {
+  inline void WriteAffects(int stmt, LineSet affected_lines) {
     affects_table_.add_row(stmt, AffectsData(stmt, affected_lines));
   }
 
-  inline void WriteAffectsT(int stmt, std::unordered_set<int> affectedT_lines) {
+  inline void WriteAffectsT(int stmt, LineSet affectedT_lines) {
     affectsT_table_.add_row(stmt, AffectsTData(stmt, affectedT_lines));
   }
 
-  inline std::unordered_set<int> &GetAffects(int stmt) {
+  inline LineSet &GetAffects(int stmt) {
     return affects_table_.get_row(stmt).get_affected_lines();
   }
 
-  inline std::unordered_set<int> &GetAffectsT(int stmt) {
+  inline LineSet &GetAffectsT(int stmt) {
     return affectsT_table_.get_row(stmt).get_affected_lines();
   }
 

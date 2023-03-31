@@ -9,7 +9,7 @@
 #include <unordered_map>
 
 #include "PKB/PKBRead.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 #include "QPS/models/arguments/Export.h"
 #include "QPS/factories/MasterEntityFactory.h"
 #include "QPS/models/QueryResult.h"
@@ -52,23 +52,41 @@ class Clause {
   inline static void Index(
       const Entity &index,
       std::function
-          <std::unique_ptr<pkb::IndexableTable<Data>>(
+          <std::unique_ptr<pkb::TableReader<Data>>(
               Entity::Value)> pkb_read_function,
-      std::function<void(EntitySet &, Data)> add_function,
+      std::function<void(EntitySet &, const Data&)> add_function,
       EntitySet &results) {
     Entity::Value key = index.get_value();
-    auto pkb_res = pkb_read_function(key);
-    if (pkb_res->empty()) return;
-    Data data = pkb_res->get_row(key);
+    auto reader = pkb_read_function(key);
+    if (reader->reached_end()) return;
+    const Data& data = reader->read_data();
     add_function(results, data);
   }
 
   template<class Data>
   inline static void AddList(
-      Data &&data,
+      Data &data,
       EntitySet &results) {
     for (auto &value : data) {
       results.insert(Entity(value));
+    }
+  }
+
+  /// <summary>
+  /// Generates the two synonym rows
+  /// from the given lhs and rhs.
+  /// </summary>
+  inline virtual void Filter(
+    const EntitySet& lhs,
+    const EntitySet& rhs,
+    Table::TwoSynonymRows& results_r,
+    const pkb::PKBReadPtr& pkb) {
+    for (auto &index : lhs) {
+      EntitySet results;
+      Filter(index, rhs, pkb, results);
+      for (auto &result : results) {
+        results_r.emplace_back(index, result);
+      }
     }
   }
 
@@ -80,10 +98,8 @@ class Clause {
     EntitySet index_results;
     Index(index, pkb, index_results);
     for (auto &entity : index_results) {
-      for (auto &filter_entity : filter_values) {
-        if (entity.WeakEqual(filter_entity)) {
-          results.insert(entity);
-        }
+      if (filter_values.count(entity)) {
+        results.insert(entity);
       }
     }
   }

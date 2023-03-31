@@ -4,32 +4,33 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "ReversableClause.h"
+#include "common/filter/filters/Export.h"
 
 using filter::FollowsIndexFilter;
 
 namespace qps {
 // RS between statements
-class FollowsClause : public Clause {
+class FollowsClause : public ReversableClause {
  public:
   FollowsClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(
-      ClauseType::kFollows, std::move(arg1), std::move(arg2)) {}
+      : ReversableClause(ClauseType::kFollows, std::move(arg1),
+                         std::move(arg2)) {}
 
-  inline void Index(
-      const Entity &index,
-      const pkb::PKBReadPtr &pkb,
-      EntitySet &results) override {
-    Clause::Index<pkb::FollowsData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<FollowsIndexFilter>(key);
-          return std::move(pkb->Follows(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::FollowsData data) {
-          result.insert(Entity(data.get_follows()));
-        },
-        results);
+  inline void Index(const Entity& index, const pkb::PKBReadPtr& pkb,
+                    EntitySet& results) override {
+    filter::FollowsIndexFilter filter(index.get_int());
+    auto& follows_reader = pkb->Follows(filter);
+    if (follows_reader.reached_end()) return;
+    auto& data = follows_reader.read_data();
+    results.insert(Entity(data.get_follows()));
+  }
+
+  inline void ReverseIndex(const Entity& index, const pkb::PKBReadPtr& pkb,
+                           EntitySet& results) override {
+    filter::ReverseFollowFilter filter(index.get_int());
+    auto& reader = pkb->Follows(filter);
+    WriteSecondIndexesFromReader(reader, results);
   }
 };
 }  // namespace qps

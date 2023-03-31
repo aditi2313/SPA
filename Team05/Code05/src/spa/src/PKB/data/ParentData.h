@@ -3,6 +3,7 @@
 #include <unordered_set>
 
 #include "Data.h"
+#include "Types.h"
 
 namespace pkb {
 class ParentData : public Data<int, int> {
@@ -14,12 +15,17 @@ class ParentData : public Data<int, int> {
            LHS.total_children_ == RHS.total_children_;
   }
 
-  inline std::unordered_set<int> get_direct_children() {
+  inline const LineSet& get_direct_children() const {
     return second_indexes_;
   }
 
   // all the children
-  inline std::unordered_set<int>& get_all_children() {
+  inline LineSet& get_all_children() {
+      return total_children_;
+  }
+
+  // all the children
+  inline const LineSet& get_all_children() const {
       return total_children_;
   }
 
@@ -35,6 +41,6 @@ class ParentData : public Data<int, int> {
 
  private:
   // the set of all children
-  std::unordered_set<int> total_children_;
+  LineSet total_children_;
 };
 }  // namespace pkb

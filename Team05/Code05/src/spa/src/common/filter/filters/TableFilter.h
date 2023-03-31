@@ -8,93 +8,31 @@
 #include <vector>
 
 #include "PKB/tables/DoubleIndexTable.h"
+#include "PKB/tables/reader/DoubleIndexReader.h"
+#include "PKB/tables/reader/TableReader.h"
 
 namespace filter {
 
-template <class Table>
+template <class Table, class Data>
 class TableFilter {
  public:
   /// <summary>
   /// Filters the given table and returns a vector of the results.
   /// </summary>
   /// <returns>The table with the filtered results</returns>
-  virtual Table& FilterTable(const Table&) = 0;
+  virtual pkb::TableReader<Data>& FilterTable(const Table&) = 0;
 
   virtual ~TableFilter() = default;
 };
-typedef TableFilter<pkb::CallsDTable> CallsTableFilter;
-typedef TableFilter<pkb::ParentDTable> ParentTableFilter;
-typedef TableFilter<pkb::FollowsDTable> FollowsTableFilter;
-typedef TableFilter<pkb::NextDTable> NextTableFilter;
-
-template <class Table, class Index>
-class ReverseIndexFilter : public TableFilter<Table> {
- public:
-  Table& FilterTable(const Table& table) override {
-    result_ = Table();
-    auto datas = table.get_row_index2(index_);
-    for (auto& data : datas) {
-      result_.add_row(data.get_index(), index_, data);
-    }
-    return result_;
-  }
-
-  // needed to store the result table.
-  inline static ReverseIndexFilter<Table, Index>& of(Index index) {
-    if (!filters_.count(index)) {
-      ReverseIndexFilter filter(index);
-      filters_.insert(
-          {index, std::make_unique<ReverseIndexFilter<Table, Index>>(filter)});
-    }
-    return *filters_.at(index);
-  }
-
- private:
-  explicit ReverseIndexFilter(Index index) : index_(index) {}
-
-  inline static std::unordered_map<
-      Index, std::unique_ptr<ReverseIndexFilter<Table, Index>>>
-      filters_;
-  Table result_;
-  Index index_;
-};
-
-template <class Table, class Index>
-class IndexDoubleFilter : public TableFilter<Table> {
- public:
-  Table& FilterTable(const Table& table) override {
-    result_ = Table();
-    if (!table.exists(index_)) {
-      return result_;
-    }
-    auto& data = table.get_row(index_);
-    // todo(gab): this might actually perform worse than current though,
-    // we are adding for all the second indexes
-    result_.add_row(index_, data.get_second_indexes(), data);
-    return result_;
-  }
-
-  inline static IndexDoubleFilter<Table, Index>& of(Index index) {
-    if (!filters_.count(index)) {
-      IndexDoubleFilter filter(index);
-      filters_.insert(
-          {index, std::make_unique<IndexDoubleFilter<Table, Index>>(filter)});
-    }
-    return *filters_.at(index);
-  }
-
- private:
-  explicit IndexDoubleFilter(Index index) : index_(index) {}
-  inline static std::unordered_map<
-      Index, std::unique_ptr<IndexDoubleFilter<Table, Index>>>
-      filters_;
-  Table result_;
-  Index index_;
-};
-
-typedef IndexDoubleFilter<pkb::CallsDTable, std::string> CallsDIndexFilter;
-typedef IndexDoubleFilter<pkb::ParentDTable, int> ParentDIndexFilter;
-typedef IndexDoubleFilter<pkb::FollowsDTable, int> FollowsDIndexFilter;
-typedef IndexDoubleFilter<pkb::NextDTable, int> NextDIndexFilter;
+typedef TableFilter<pkb::CallsDTable, pkb::CallsData> CallsTableFilter;
+typedef TableFilter<pkb::ParentDTable, pkb::ParentData> ParentTableFilter;
+typedef TableFilter<pkb::FollowsDTable, pkb::FollowsData> FollowsTableFilter;
+typedef TableFilter<pkb::NextDTable, pkb::NextData> NextTableFilter;
+typedef TableFilter<pkb::ModifiesTable, pkb::ModifiesData> ModifiesTableFilter;
+typedef TableFilter<pkb::AffectsTable, pkb::AffectsData> AffectsTableFilter;
+typedef TableFilter<pkb::ConditionTable, pkb::ConditionData>
+    ConditionTableFilter;
+typedef TableFilter<pkb::UsesTable, pkb::UsesData> UsesTableFilter;
+typedef TableFilter<pkb::AssignTable, pkb::AssignData> AssignTableFilter;
 
 }  // namespace filter

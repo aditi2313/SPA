@@ -5,15 +5,16 @@
 #include <variant>
 #include <string>
 
+#include "Types.h"
+
 namespace pkb {
 // todo: set this definition elsewhere
-using Key = std::variant<int, std::string>;
 template <class T, class SecondIndexes = Key>
 class Data {
  public:
   explicit Data(T line) : line_(line) {}
 
-  inline T get_index() { return line_; }
+  inline T get_index() const { return line_; }
 
   inline const std::unordered_set<SecondIndexes>& get_second_indexes() const {
     return second_indexes_;

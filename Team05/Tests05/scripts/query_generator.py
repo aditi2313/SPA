@@ -191,7 +191,7 @@ def CreateMultiClauseQuery(num_clauses, num_queries):
             if len(used_synonyms) == 0 \
             else random.choice(used_synonyms)
     # Print query
-    print(ctr, "-", "comment")
+    print(ctr, "-", f"{num_clauses}-clause query")
     print(declarations)
     print("Select", selected_elem, end=" ")
     for clause in clauses:

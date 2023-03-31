@@ -31,23 +31,19 @@ var_syn = "v"
 proc_syn = "p"
 
 # INTEGER | synonym | wildcard
-stmt_ref = [
-   get_rand_stmt, 
-   get_rand_symt_syn,
-   get_wildcard]
-var_ent_ref = [
-   get_rand_var, 
-   lambda : var_syn,
-   get_wildcard]
-proc_ent_ref = [
-   get_rand_proc, 
-   lambda : proc_syn,
-   get_wildcard]
-modifies_uses_lhs = [
-   get_rand_symt_syn, 
-   lambda : proc_syn,
-   get_rand_stmt,
-   get_rand_proc]
+stmt_ref = [get_rand_stmt, 
+            get_rand_symt_syn,
+            get_wildcard]
+var_ent_ref = [get_rand_var, 
+              lambda : var_syn,
+              get_wildcard]
+proc_ent_ref = [get_rand_proc, 
+                lambda : proc_syn,
+                get_wildcard]
+modifies_uses_lhs = [get_rand_symt_syn, 
+                      lambda : proc_syn,
+                      get_rand_stmt,
+                      get_rand_proc]
 int_attr_ref = [lambda str=str: str for str in int_attrname]
 ident_attr_ref = [lambda str=str: str for str in ident_attrname]
 # exact expr, wildcard expr, wildcard

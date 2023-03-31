@@ -33,7 +33,6 @@ def write_correct_queries_file(corrected_queries, query_file_path):
             f.write(f"{query}\n")
             f.write(f"{answer}\n")
             f.write(f"5000\n")
-        
     f.close()
 
 if __name__ == "__main__":

@@ -35,18 +35,18 @@ class PKBRelationTable {
   IndexableTable<NextData> next_table_;
   IndexableTable<ConditionData> condition_table_;
 
-  std::unordered_set<int> constants_;
-  std::unordered_set<int> whiles_;
-  std::unordered_set<int> stmts_;
-  std::unordered_set<int> calls_;
-  std::unordered_set<int> assign_;
-  std::unordered_set<int> read_;
-  std::unordered_set<int> print_;
-  std::unordered_set<int> if_;
-  std::unordered_set<std::string> variables_;
-  std::unordered_set<std::string> procedures_;
-  std::unordered_map<int, std::string> line_to_var_name_;
-  std::unordered_map<int, std::string> line_to_proc_name_;
+  LineSet constants_;
+  LineSet whiles_;
+  LineSet stmts_;
+  LineSet calls_;
+  LineSet assign_;
+  LineSet read_;
+  LineSet print_;
+  LineSet if_;
+  VarSet variables_;
+  ProcSet procedures_;
+  LineToVarSet line_to_var_name_;
+  LineToProcSet line_to_proc_name_;
 
   friend bool operator==(const PKBRelationTable& LHS,
                          const PKBRelationTable& RHS) {
@@ -75,7 +75,7 @@ class PKBRelationTable {
     modifies_table_.add_row(line, ModifiesData(line, variables));
   }
 
-  void add_assign_data(const std::string variable, const int line,
+  void add_assign_data(const Var variable, const Line line,
                        std::unique_ptr<ast::ExprNode> expression) {
     variables_.insert(variable);
     assign_table_.add_row(line,
@@ -92,26 +92,26 @@ class PKBRelationTable {
     uses_table_.add_row(line, UsesData(line, variable_names));
   }
 
-  void add_follows_data(const int line, const int follows) {
+  void add_follows_data(const Line line, const Line follows) {
     FollowsData f(line, follows);
     follows_d_table_.add_row(line, follows, f);
   }
 
-  void add_parent_data(const int line, const int child_line) {
+  void add_parent_data(const Line line, const Line child_line) {
     ParentData p(line);
     parent_d_table_.add_row(line, child_line, p);
     auto& data = parent_d_table_.get_row(line);
     data.add_direct_child(child_line);
   }
 
-  void add_calls_data(const std::string& caller, const std::string& callee) {
+  void add_calls_data(const Proc& caller, const Proc& callee) {
     CallsData c(caller);
     calls_d_table_.add_row(caller, callee, c);
     auto& data = calls_d_table_.get_row(caller);
     data.add_to_direct_calls(callee);
   }
 
-  void add_next_data(const int line, const int next) {
+  void add_next_data(const Line line, const Line next) {
     NextData n(line);
     next_d_table_.add_row(line, next, n);
     auto& data = next_d_table_.get_row(line);

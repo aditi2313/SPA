@@ -63,7 +63,7 @@ void PKBWrite::AddModifiesData(
   pkb_relation_table_->add_modifies_data(line, variables);
 }
 
-void PKBWrite::AddAssignData(std::string variable, int line,
+void PKBWrite::AddAssignData(Var variable, Line line,
                              std::unique_ptr<ast::ExprNode> expression) {
   pkb_relation_table_->add_assign_data(variable, line, std::move(expression));
 }
@@ -74,19 +74,19 @@ void PKBWrite::AddUsesData(
   pkb_relation_table_->add_uses_data(line, variable_names);
 }
 
-void PKBWrite::AddFollowsData(const int line, const int follows) {
+void PKBWrite::AddFollowsData(const Line line, const Line follows) {
   pkb_relation_table_->add_follows_data(line, follows);
 }
 
-void PKBWrite::AddParentData(const int parent, const int child_line) {
+void PKBWrite::AddParentData(const Line parent, const Line child_line) {
   pkb_relation_table_->add_parent_data(parent, child_line);
 }
 
-void PKBWrite::AddCallsData(std::string caller, std::string callee) {
+void PKBWrite::AddCallsData(Proc caller, Proc callee) {
   pkb_relation_table_->add_calls_data(caller, callee);
 }
 
-void PKBWrite::AddNextData(int line, int next) {
+void PKBWrite::AddNextData(Line line, Line next) {
   pkb_relation_table_->add_next_data(line, next);
 }
 

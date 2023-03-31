@@ -7,9 +7,9 @@
 #include "Types.h"
 
 namespace pkb {
-class NextData : public Data<int, int> {
+class NextData : public Data<Line, Line> {
  public:
-    explicit NextData(int line);
+    explicit NextData(Line line);
 
     friend bool operator==(const NextData& LHS, const NextData& RHS) {
         return LHS.line_ == RHS.line_ &&
@@ -20,7 +20,7 @@ class NextData : public Data<int, int> {
         return second_indexes_;
     }
 
-    inline void add_to_next_im_list(int v) {
+    inline void add_to_next_im_list(Line v) {
         assert(second_indexes_.size() < 2);
         second_indexes_.insert(v);
     }

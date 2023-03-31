@@ -39,7 +39,7 @@ std::unordered_map<int, std::unordered_set<int>> InitializeParentT(
   sp::SourceProcessor::ExtractRelationships(root, table);
   pkb::PKBRead reader(std::move(table));
   filter::ParentPredicateFilter ftr([](pkb::ParentData data) { return true; });
-  auto& results_table = reader.Parent(std::move(ftr));
+  auto& results_table = reader.Parent(ftr);
 
   std::unordered_map<int, std::unordered_set<int>> results;
 

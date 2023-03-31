@@ -6,9 +6,9 @@
 #include "Types.h"
 
 namespace pkb {
-class ParentData : public Data<int, int> {
+class ParentData : public Data<Line, Line> {
  public:
-  explicit ParentData(int parent);
+  explicit ParentData(Line parent);
   friend bool operator==(const ParentData& LHS, const ParentData& RHS) {
     return LHS.line_ == RHS.line_ &&
            LHS.second_indexes_ == RHS.second_indexes_ &&
@@ -29,7 +29,7 @@ class ParentData : public Data<int, int> {
       return total_children_;
   }
 
-  inline void add_direct_child(int child) {
+  inline void add_direct_child(Line child) {
     second_indexes_.insert(child);
     total_children_.insert(child);
   }

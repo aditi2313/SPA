@@ -7,10 +7,10 @@
 #include "Types.h"
 
 namespace pkb {
-class AffectsData : public Data<int> {
+class AffectsData : public Data<Line> {
  public:
   explicit AffectsData(
-      int line, LineSet affected_lines);
+          Line line, LineSet affected_lines);
 
   friend bool operator==(const AffectsData &LHS, const AffectsData &RHS) {
     return LHS.line_ == RHS.line_ &&

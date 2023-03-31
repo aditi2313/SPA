@@ -6,9 +6,9 @@
 #include "Types.h"
 
 namespace pkb {
-class FollowsData : public Data<int, int> {
+class FollowsData : public Data<Line, Line> {
  public:
-  FollowsData(int line, int follows);
+  FollowsData(Line line, Line follows);
 
   friend bool operator==(const FollowsData& LHS, const FollowsData& RHS) {
     return LHS.line_ == RHS.line_ &&
@@ -23,12 +23,12 @@ class FollowsData : public Data<int, int> {
   }
 
   inline void AddData(FollowsData& data) {
-    for (int v : data.second_indexes_) {
+    for (Line v : data.second_indexes_) {
       second_indexes_.insert(v);
     }
   }
 
  private:
-  int follows_;
+    Line follows_;
 };
 }  // namespace pkb

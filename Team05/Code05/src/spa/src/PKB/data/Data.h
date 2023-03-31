@@ -21,7 +21,7 @@ class Data : public DataWrapper {
     return second_indexes_;
   }
 
-    inline std::variant<int, std::string> get_key() override {
+    inline Key get_key() override {
         return line_;
     }
 

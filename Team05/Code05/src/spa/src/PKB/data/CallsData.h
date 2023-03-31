@@ -7,9 +7,9 @@
 #include "Types.h"
 
 namespace pkb {
-class CallsData : public Data<std::string, std::string> {
+class CallsData : public Data<Proc, Proc> {
  public:
-  explicit CallsData(std::string caller);
+  explicit CallsData(Proc caller);
 
   friend bool operator==(const CallsData& LHS, const CallsData& RHS) {
     return LHS.line_ == RHS.line_ &&
@@ -25,11 +25,11 @@ class CallsData : public Data<std::string, std::string> {
     return total_calls_;
   }
 
-  inline void add_to_direct_calls(std::string c) {
+  inline void add_to_direct_calls(Proc c) {
       second_indexes_.insert(c);
   }
 
-  inline void add_to_total_calls(std::string c) {
+  inline void add_to_total_calls(Proc c) {
       total_calls_.insert(c);
   }
 

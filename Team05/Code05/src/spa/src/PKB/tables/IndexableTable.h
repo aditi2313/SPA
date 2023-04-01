@@ -25,21 +25,29 @@ class IndexableTable {
     table_.insert(std::make_pair(v, row));
   }
 
-  inline T &get_row(Key v) { return table_.at(v); }
+  inline T &get_row(Key v) {
+      return table_.at(v);
+  }
 
-  inline const T &get_row(Key v) const { return table_.at(v); }
+  inline const T &get_row(Key v) const {
+      return table_.at(v);
+  }
 
   inline const std::vector<Key> &get_indexes() const {
     return indexes_;
   }
 
-  inline std::vector<Key> &get_indexes() { return indexes_; }
+  inline std::vector<Key> &get_indexes() {
+      return indexes_;
+  }
 
   inline bool exists(Key v) const {
     return table_.find(v) != table_.end();
   }
 
-  inline bool empty() { return table_.empty(); }
+  inline bool empty() {
+      return table_.empty();
+  }
 
   friend bool operator==(const IndexableTable &LHS, const IndexableTable &RHS) {
     if (LHS.get_indexes() != RHS.get_indexes()) return false;
@@ -71,11 +79,8 @@ typedef IndexableTable<AffectsData> AffectsTable;
 typedef IndexableTable<AffectsTData> AffectsTTable;
 typedef IndexableTable<ModifiesData> ModifiesTable;
 typedef IndexableTable<UsesData> UsesTable;
-typedef IndexableTable<FollowsData> FollowsTable;
-typedef IndexableTable<ParentData> ParentTable;
 typedef IndexableTable<AssignData> AssignTable;
 typedef IndexableTable<CallsData> CallsTable;
-typedef IndexableTable<NextData> NextTable;
 typedef IndexableTable<ConditionData> ConditionTable;
 
 template <typename T>

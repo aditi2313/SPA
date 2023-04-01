@@ -9,27 +9,27 @@ namespace pkb {
 // Currently only stores Affects and AffectsT data
 class PKBCache {
  public:
-  inline bool ExistsAffects(int stmt) {
+  inline bool ExistsAffects(Line stmt) {
     return affects_table_.exists(stmt);
   }
 
-  inline bool ExistsAffectsT(int stmt) {
+  inline bool ExistsAffectsT(Line stmt) {
     return affectsT_table_.exists(stmt);
   }
 
-  inline void WriteAffects(int stmt, std::unordered_set<int> affected_lines) {
+  inline void WriteAffects(Line stmt, LineSet affected_lines) {
     affects_table_.add_row(stmt, AffectsData(stmt, affected_lines));
   }
 
-  inline void WriteAffectsT(int stmt, std::unordered_set<int> affectedT_lines) {
+  inline void WriteAffectsT(Line stmt, LineSet affectedT_lines) {
     affectsT_table_.add_row(stmt, AffectsTData(stmt, affectedT_lines));
   }
 
-  inline std::unordered_set<int> &GetAffects(int stmt) {
+  inline LineSet &GetAffects(Line stmt) {
     return affects_table_.get_row(stmt).get_affected_lines();
   }
 
-  inline std::unordered_set<int> &GetAffectsT(int stmt) {
+  inline LineSet &GetAffectsT(Line stmt) {
     return affectsT_table_.get_row(stmt).get_affected_lines();
   }
 

@@ -5,15 +5,10 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/SourceProcessor.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 using namespace pkb;  // NOLINT
 using namespace sp;   // NOLINT
-
-template <typename T>
-std::unique_ptr<filter::PredicateFilter<T>> generate_true() {
-  return std::make_unique<filter::PredicateFilter<T>>([&](T) { return true; });
-}
 
 void TestNext(std::unordered_map<int, std::unordered_set<int>> next,
               std::string program) {
@@ -22,13 +17,16 @@ void TestNext(std::unordered_map<int, std::unordered_set<int>> next,
       std::make_unique<PKBRelationTable>();
   SourceProcessor::ExtractRelationships(ast, table);
   PKBRead reader(std::move(table));
-  auto results_table = reader.Next(generate_true<NextData>());
+  filter::NextPredicateFilter filter([&](NextData) { return true; });
+
+  auto& results_table = reader.Next(filter);
   std::unordered_map<int, std::unordered_set<int>> vals;
-  for (std::variant<int, std::string> val : results_table->get_indexes()) {
-    auto data = results_table->get_row(val);
+  while (!results_table.reached_end()) {
+    auto data = results_table.read_data();
     for (auto v : data.get_next_im_list()) {
       vals[data.get_index()].insert(v);
     }
+    results_table.increment();
   }
   REQUIRE(next == vals);
 }

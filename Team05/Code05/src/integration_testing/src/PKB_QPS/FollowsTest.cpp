@@ -1,12 +1,12 @@
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
-#include <list>
 #include <catch.hpp>
 
+#include "PKB/PKBRead.h"
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
-#include "PKB/PKBRead.h"
 #include "QPS/QPS.h"
 
 using namespace pkb;  // NOLINT
@@ -16,8 +16,7 @@ using follows_data = std::pair<int, int>;
 
 // Helper method for testing
 std::unique_ptr<PKBRead> InitializePKBForFollows(
-    std::vector<follows_data> data
-) {
+    std::vector<follows_data> data) {
   std::unique_ptr<PKBRelationTable> table =
       std::make_unique<PKBRelationTable>();
   PKBWrite pkb_write(std::move(table));
@@ -29,18 +28,16 @@ std::unique_ptr<PKBRead> InitializePKBForFollows(
     pkb_write.add_stmt(line2);
   }
 
-  return std::make_unique<PKBRead>(
-      pkb_write.ProcessTableAndEndWrite());
+  return std::make_unique<PKBRead>(pkb_write.ProcessTableAndEndWrite());
 }
 
 TEST_CASE("Test PKB and QPS integration for Follows clause") {
   QPS qps;
-  std::unique_ptr<PKBRead> pkb = InitializePKBForFollows(
-      {
-          {10, 11},
-          {11, 12},
-          {12, 13},
-      });
+  std::unique_ptr<PKBRead> pkb = InitializePKBForFollows({
+      {10, 11},
+      {11, 12},
+      {12, 13},
+  });
 
   SECTION("Follows(IntArg, IntArg) should return correct results") {
     std::string query_string = "stmt s; Select s such that Follows(10, 11)";
@@ -103,8 +100,9 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
   }
 
   SECTION("Follows(synonym, synonym) should return correct results") {
-    std::string query_string = "stmt s1, s2; "
-                               "Select s1 such that Follows(s1, s2)";
+    std::string query_string =
+        "stmt s1, s2; "
+        "Select s1 such that Follows(s1, s2)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -113,10 +111,12 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 
-  SECTION("Follows(synonym, synonym) with multiple select"
-          "should return correct results") {
-    std::string query_string = "stmt s1, s2; "
-                               "Select <s1, s2> such that Follows(s1, s2)";
+  SECTION(
+      "Follows(synonym, synonym) with multiple select"
+      "should return correct results") {
+    std::string query_string =
+        "stmt s1, s2; "
+        "Select <s1, s2> such that Follows(s1, s2)";
     std::list<std::string> actual_results;
 
     qps.evaluate(query_string, actual_results, pkb);
@@ -155,4 +155,3 @@ TEST_CASE("Test PKB and QPS integration for Follows clause") {
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }
 }
-

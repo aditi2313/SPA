@@ -11,20 +11,21 @@
 namespace ast {
 class CallNode : public StmtNode {
  public:
-  explicit CallNode(std::string parent_proc_name, std::unique_ptr<VarNode> var,
-                    int line)
+  explicit CallNode(std::string parent_proc_name,
+                    std::string called_proc_name, int line)
       : StmtNode(line) {
     parent_proc_name_ = parent_proc_name;
-    var_ = std::move(var);
+    called_proc_name_ = called_proc_name;
   }
 
+  inline std::string& get_called_proc() { return called_proc_name_; }
+
   inline std::string& get_parent_proc() { return parent_proc_name_; }
-  inline std::unique_ptr<VarNode>& get_var() { return var_; }
 
   void AcceptVisitor(sp::TNodeVisitor* visitor) override;
 
  private:
   std::string parent_proc_name_;
-  std::unique_ptr<VarNode> var_;
+  std::string called_proc_name_;
 };
 }  // namespace ast

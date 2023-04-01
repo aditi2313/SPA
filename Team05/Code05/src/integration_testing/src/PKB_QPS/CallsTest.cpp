@@ -58,9 +58,7 @@ TEST_CASE("Test PKB and QPS integration for Calls clause") {
   SECTION("Calls(SynArg, SynArg) should return correct results") {
     std::string query_string = "procedure p; Select p such that Calls(p, p)";
     std::list<std::string> actual_results;
-
     qps.evaluate(query_string, actual_results, pkb);
-
     std::list<std::string> expected_results{};
     REQUIRE(util::CompareResults(actual_results, expected_results));
   }

@@ -1,6 +1,6 @@
 #include "NextData.h"
 
 namespace pkb {
-pkb::NextData::NextData(int line)
-    : Data<int>(line) {}
+pkb::NextData::NextData(Line line)
+    : Data<Line, Line>(line) {}
 }  // namespace pkb

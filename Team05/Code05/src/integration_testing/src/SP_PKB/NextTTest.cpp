@@ -5,7 +5,7 @@
 #include "PKB/PKBRelationTable.h"
 #include "PKB/PKBWrite.h"
 #include "SP/visitors/Export.h"
-#include "common/filter/filters/PredicateFilter.h"
+#include "common/filter/filters/Export.h"
 
 void TestPKBNextT(
     std::unordered_map<int, std::unordered_set<int>> expected_table,

@@ -4,10 +4,11 @@
 #include <variant>
 #include <string>
 #include "DataWrapper.h"
+#include "Types.h"
 
 namespace pkb {
 class DataWrapper {
  public:
-    virtual std::variant<int, std::string> get_key() = 0;
+    virtual Key get_key() = 0;
 };
 }  // namespace pkb

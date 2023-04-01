@@ -9,9 +9,9 @@
 
 namespace pkb {
 
-class AssignData : public Data<int> {
+class AssignData : public Data<Line> {
  public:
-  AssignData(std::string variable, int line,
+  AssignData(Var variable, Line line,
              std::unique_ptr<ast::ExprNode> expression);
 
   AssignData(const AssignData& other);
@@ -37,7 +37,7 @@ class AssignData : public Data<int> {
   }
 
  private:
-  std::string variable_;
+    Var variable_;
   std::unique_ptr<ast::ExprNode> expression_;
 };
 }  // namespace pkb

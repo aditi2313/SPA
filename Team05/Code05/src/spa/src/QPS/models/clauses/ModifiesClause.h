@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "Clause.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
 
 using filter::ModifiesIndexFilter;
 
@@ -20,16 +20,10 @@ class ModifiesClause : public Clause {
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
       EntitySet &results) override {
-    Clause::Index<pkb::ModifiesData>(
-        index,
-        [&](Entity::Value key) {
-          auto filter = std::make_unique<ModifiesIndexFilter>(key);
-          return std::move(pkb->Modifies(std::move(filter)));
-        },
-        [&](EntitySet &result, pkb::ModifiesData data) {
-          AddList(data.get_variables(), result);
-        },
-        results);
+    ModifiesIndexFilter filter(index.get_value());
+    auto& reader = pkb->Modifies(filter);
+    if (reader.reached_end()) return;
+    AddList(reader.read_data().get_variables(), results);
   }
 };
 

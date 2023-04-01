@@ -6,85 +6,54 @@
 #include <unordered_set>
 
 #include "common/exceptions/QPSExceptions.h"
-#include "common/filter/filters/IndexFilter.h"
+#include "common/filter/filters/Export.h"
+#include "tables/reader/DoubleIndexReader.h"
 
 namespace pkb {
-std::unique_ptr<ModifiesTable> PKBRead::Modifies(
-    IndexableFilterPtr<ModifiesData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->modifies_table_);
-  return std::move(result_table);
+ModifiesDataReader& PKBRead::Modifies(filter::ModifiesTableFilter& filter) {
+  return filter.FilterTable(relation_table_->modifies_table_);
 }
 
-std::unique_ptr<AssignTable> PKBRead::Assigns(
-    IndexableFilterPtr<AssignData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->assign_table_);
-  return std::move(result_table);
+AssignDataReader& PKBRead::Assigns(filter::AssignTableFilter& filter) {
+  return filter.FilterTable(relation_table_->assign_table_);
 }
 
-std::unique_ptr<UsesTable> PKBRead::Uses(
-    IndexableFilterPtr<UsesData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->uses_table_);
-  return std::move(result_table);
+UsesDataReader& PKBRead::Uses(filter::UsesTableFilter& filter) {
+  return filter.FilterTable(relation_table_->uses_table_);
 }
 
-std::unique_ptr<FollowsTable> PKBRead::Follows(
-    IndexableFilterPtr<FollowsData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->follows_table_);
-  return std::move(result_table);
+ConditionDataReader& PKBRead::Condition(filter::ConditionTableFilter& filter) {
+  return filter.FilterTable(relation_table_->condition_table_);
 }
 
-std::unique_ptr<ParentTable> PKBRead::Parent(
-    IndexableFilterPtr<ParentData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->parent_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<CallsTable> PKBRead::Calls(
-    IndexableFilterPtr<CallsData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->calls_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<NextTable> PKBRead::Next(
-    IndexableFilterPtr<NextData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->next_table_);
-  return std::move(result_table);
-}
-
-std::unique_ptr<ConditionTable> PKBRead::Condition(
-    IndexableFilterPtr<ConditionData> filter) {
-  auto result_table = filter->FilterTable(relation_table_->condition_table_);
-  return std::move(result_table);
-}
-
-std::unordered_set<int> PKBRead::Affects(int s) {
+LineSet PKBRead::Affects(Line s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffects(s)) {
     return cache_->GetAffects(s);
   }
 
-  std::unordered_set<int> result;
+  LineSet result;
 
   if (!relation_table_->assign_.count(s)) {
     cache_->WriteAffects(s, {});
     return {};
   }
-  std::unordered_set<int> empt{};
-  auto& table = relation_table_->next_table_;
+  LineSet empt{};
+  auto& table = relation_table_->next_d_table_;
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
   auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
-  util::GraphSearch<int, std::unordered_set<int>>::BFS(
-      [&](int& v) {
-        if (!relation_table_->next_table_.exists(v))
-          return std::unordered_set<int>{};
-        auto& next = relation_table_->next_table_.get_row(v);
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
+        if (!table.exists(v))
+          return LineSet{};
+        auto& next = table.get_row(v);
         return next.get_next_im_list();
       },
       n_im_l,
-      [&](const int& curr) {
+      [&](const Line& curr) {
         if (relation_table_->uses_table_.exists(curr)) {
           auto& data = relation_table_->uses_table_.get_row(curr);
           // check that this assign stmt uses the variable
@@ -93,7 +62,7 @@ std::unordered_set<int> PKBRead::Affects(int s) {
             result.insert(curr);
           }
         }
-        // if this stmt modifies the variable then dont do anything
+        // if this stmt modifies the variable then don't do anything
         if (relation_table_->modifies_table_.exists(curr) &&
             !IsContainerStmt(curr)) {
           auto& data = relation_table_->modifies_table_.get_row(curr);
@@ -108,18 +77,18 @@ std::unordered_set<int> PKBRead::Affects(int s) {
   return result;
 }
 
-std::unordered_set<int> PKBRead::AffectsT(int s) {
+LineSet PKBRead::AffectsT(Line s) {
   // Return cached result immediately if it has been
   // calculated before
   if (cache_->ExistsAffectsT(s)) {
     return cache_->GetAffectsT(s);
   }
 
-  std::unordered_set<int> affected_lines = Affects(s);
-  std::unordered_set<int> affectedT_lines(affected_lines);
+  LineSet affected_lines = Affects(s);
+  LineSet affectedT_lines(affected_lines);
 
-  std::queue<int> q;
-  std::unordered_set<int> visited;
+  std::queue<Line> q;
+  LineSet visited;
 
   // Initialize BFS queue
   for (auto& line : affected_lines) {
@@ -128,7 +97,7 @@ std::unordered_set<int> PKBRead::AffectsT(int s) {
   }
 
   while (!q.empty()) {
-    int curr = q.front();
+    Line curr = q.front();
     q.pop();
     affectedT_lines.insert(curr);  // Update result
     auto neighbors = Affects(curr);
@@ -147,26 +116,26 @@ std::unordered_set<int> PKBRead::AffectsT(int s) {
   return affectedT_lines;
 }
 
-std::unordered_set<int> PKBRead::NextT(int v) {
-  std::unordered_set<int> visited;
-  std::queue<int> frontier;
-  std::unordered_set<int> result;
+LineSet PKBRead::NextT(Line v) {
+  LineSet visited;
+  std::queue<Line> frontier;
+  LineSet result;
 
-  auto& next_table = relation_table_->next_table_;
-  if (!relation_table_->next_table_.exists(v)) {
+  auto& next_table = relation_table_->next_d_table_;
+  if (!next_table.exists(v)) {
     return {};
   }
-  auto& data = relation_table_->next_table_.get_row(v);
+  auto& data = next_table.get_row(v);
 
-  util::GraphSearch<int, std::unordered_set<int>>::BFS(
-      [&](int& curr) {
-        if (!relation_table_->next_table_.exists(curr))
-          return std::unordered_set<int>{};
-        auto& child_data = relation_table_->next_table_.get_row(curr);
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& curr) {
+        if (!next_table.exists(curr))
+          return LineSet{};
+        auto& child_data = next_table.get_row(curr);
         return child_data.get_next_im_list();
       },
       data.get_next_im_list(),
-      [&](const int& curr) {
+      [&](const Line& curr) {
         result.insert(curr);
         return true;
       });

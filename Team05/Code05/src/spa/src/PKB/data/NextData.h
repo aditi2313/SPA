@@ -4,25 +4,25 @@
 #include <cassert>
 
 #include "Data.h"
+#include "Types.h"
 
 namespace pkb {
-class NextData : public Data<int> {
+class NextData : public Data<Line, Line> {
  public:
-    explicit NextData(int line);
+    explicit NextData(Line line);
 
     friend bool operator==(const NextData& LHS, const NextData& RHS) {
         return LHS.line_ == RHS.line_ &&
-        LHS.next_im_list_ == RHS.next_im_list_;
+        LHS.second_indexes_ == RHS.second_indexes_;
     }
 
-    inline std::unordered_set<int>& get_next_im_list() { return next_im_list_; }
-
-    inline void add_to_next_im_list(int v) {
-        assert(next_im_list_.size() < 2);
-        next_im_list_.insert(v);
+    inline const LineSet& get_next_im_list() const {
+        return second_indexes_;
     }
 
- private:
-    std::unordered_set<int> next_im_list_;
+    inline void add_to_next_im_list(Line v) {
+        assert(second_indexes_.size() < 2);
+        second_indexes_.insert(v);
+    }
 };
 }  // namespace pkb

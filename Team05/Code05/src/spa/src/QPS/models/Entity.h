@@ -53,7 +53,7 @@ class Entity {
     return std::get<int>(value_);
   }
 
-  inline std::string get_str() const {
+  inline const std::string& get_str() const {
     return std::get<std::string>(value_);
   }
 

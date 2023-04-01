@@ -13,9 +13,8 @@ import sys
 
 # VARIABLE - SET ACCORDING TO YOUR PROGRAM #
 num_stmts = 24
-variables = ["x", "y", "v", "a", "b", "c", "d", "myname", "ganesh", "NUS", "chair", "switch", "monitorarm", "aircon", "kmn", "a", "b", "c", "d", "varx", "v1", "v2", "v3",
-  "someString", "someVariable", "constants", "variables", "procedure", "if", "ils", "rapid"]
-procedures = ["rock", "pain"]
+variables = ["x", "y", "v", "a", "b", "c", "d", "myname", "ganesh", "NUS", "chair", "switch", "monitorarm", "aircon", "kmn", "g"]
+procedures = ["second", "first", "name", "third"]
 
 # CONSTANTS - DO NOT CHANGE #
 declarations = "stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;"

@@ -2,11 +2,9 @@
 
 #include <iostream>
 #include <sstream>
-#include <filesystem>
 
 #include "QPS/QPS.h"
 #include "SP/SourceProcessor.h"
-#include "common/logging/OutputRedirector.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;
@@ -40,19 +38,6 @@ void TestWrapper::parse(std::string filename) {
   buffer << file.rdbuf();
   std::string program = buffer.str();
   file.close();
-
-  // Redirect cout logs
-  // autotester_path_mac = ../Code05/cmake-build-debug/src/autotester
-  // autotester_path_windows = ../Code05/out/build/x64-Debug/src/autotester
-  std::string logger_path;
-  #ifdef _WIN32
-    logger_path = "..\\..\\..\\..\\..\\..\\Tests05\\logging_output.txt";
-  #else
-    logger_path = "../../../../Tests05/logging_output.txt";
-  #endif
-  std::filesystem::path cwd = std::filesystem::current_path();
-  std::filesystem::path output_path = cwd / logger_path;
-  logging::OutputRedirector redirector(std::cout, output_path.c_str());
 
   auto root = sp::SourceProcessor::ParseProgram(program);
   sp::SourceProcessor::ExtractRelationships(root, pkb_relation_);

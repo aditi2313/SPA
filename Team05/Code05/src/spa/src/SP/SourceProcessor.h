@@ -27,6 +27,7 @@ class SourceProcessor {
   }
 
   static std::unique_ptr<ast::ProgramNode> ParseProgram(std::string program) {
+    logging::Logger::PrintDivider();
     logging::Logger::EnterSection("Parse program");
 
     sp::Lexer lxr(std::move(program));
@@ -97,7 +98,6 @@ class SourceProcessor {
     pkb_relation = writer->ProcessTableAndEndWrite();
     logging::Logger::ExitSection("Pkb Processing");
     logging::Logger::ExitSection("Extract Relationships");
-    logging::Logger::PrintDivider();
   }
 };
 

@@ -695,8 +695,8 @@ FodyWeavers.xsd
 Team05/Tests05/**/*out.xml
 
 # Out analysis files for local running
-Team05/Tests05/out_analysis_raw_local.txt
-Team05/Tests05/out_analysis_local.md
+docs/out_analysis_raw_local.txt
+docs/out_analysis_local.md
 
 # Logging output file
 Team05/Tests05/logging_output.txt

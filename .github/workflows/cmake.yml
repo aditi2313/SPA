@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+      - pkb/optimisations
   workflow_dispatch: {}
   
 
@@ -88,7 +89,6 @@ jobs:
       shell: bash
 
     - name: Set up Python
-      if: env.skip-build == 'false'
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
@@ -96,7 +96,7 @@ jobs:
     - name: Run system tests on macOS
       if: ${{ runner.os == 'macOS' && env.skip-build == 'false'}}
       run: |
-        python ${{github.workspace}}/Team05/Tests05/test_runner.py ${{github.workspace}}/build/src/autotester/autotester
+        python ${{github.workspace}}/Team05/Tests05/test_runner.py -p ${{github.workspace}}/build/src/autotester/autotester
         if [ "$?" -ne "0" ]; then
           echo "Program failed with exit code $?"
           exit 1
@@ -105,7 +105,7 @@ jobs:
     - name: Run system tests on Windows
       if: ${{ runner.os == 'Windows' && env.skip-build == 'false'}}
       run: |
-        python ${{github.workspace}}\Team05\Tests05\test_runner.py ${{github.workspace}}/build/src/autotester/Release/autotester.exe
+        python ${{github.workspace}}\Team05\Tests05\test_runner.py -p ${{github.workspace}}/build/src/autotester/Release/autotester.exe
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Program failed with exit code $LASTEXITCODE"
             exit 1
@@ -133,7 +133,7 @@ jobs:
     - name: Run query statistics analysis
       if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}
       run: |
-        python ${{github.workspace}}/Team05/Tests05/out_analysis.py 
+        python ${{github.workspace}}/Team05/Tests05/out_analysis.py -b ${{github.base_ref}}
   
     - name: Commit query statistics files
       if: ${{ runner.os == 'macOS' && env.skip-query-stats == 'false'}}

@@ -2,7 +2,7 @@
 #include <catch.hpp>
 
 #include "PKB/data/FollowsData.h"
-#include "PKB/tables/IndexableTable.h"
+#include "PKB/tables/DoubleIndexTable.h"
 
 using namespace pkb;  // NOLINT
 
@@ -12,9 +12,11 @@ TEST_CASE("Test FollowsTable") {
     FollowsData follows_data3(10, 9);
     follows_data1.AddData(follows_data3);
 
-    FollowsTable follows_table1, follows_table2;
-    follows_table1.add_row(5, follows_data1);
-    follows_table2.add_row(5, follows_data2);
+    FollowsDTable follows_table1, follows_table2;
+    follows_table1.add_row(5, 11, follows_data1);
+    follows_table1.add_row(5, 10, follows_data1);
+    follows_table2.add_row(5, 2, follows_data2);
+    follows_table2.add_row(5, 3, follows_data2);
 
     SECTION("Checking if FollowsTable rows exists") {
         REQUIRE((follows_table1.exists(5) && follows_table2.exists(5)));

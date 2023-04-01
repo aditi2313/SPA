@@ -31,35 +31,28 @@ class Logger {
   /// <param name="desc"></param>
   static void LogAndStop(std::string desc) {
     if (disabled_) return;
-    open();
     Clock::time_point curr = Clock::now();
     Duration interval = curr - times_.top();
     times_.pop();
     times_.push(curr);
-    out << desc << " time: " << interval.count() << " s" << std::endl;
-    close();
+    std::cout << desc << " time: " << interval.count() << " s" << std::endl;
   }
 
   static void EnterSection(std::string desc) {
     if (disabled_) return;
-    open();
     times_.push(Clock::now());
     times_.push(Clock::now());
-    out << kSection << "Enter Section: " << desc << kSection << std::endl;
-    close();
+    std::cout << kSection << "Enter Section: " << desc << kSection << std::endl;
   }
 
   static void ExitSection(std::string desc) {
     if (disabled_) return;
-    open();
     times_.pop();
     auto curr = Clock::now();
     Duration interval = curr - times_.top();
     times_.pop();
-    out << kSection << "Exit Section: " << desc
+    std::cout << kSection << "Exit Section: " << desc
         << " With interval: " << interval.count() << kSection << std::endl;
-
-    close();
   }
 
   // Used to separate runs to easily see in the log output

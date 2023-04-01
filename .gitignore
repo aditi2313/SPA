@@ -702,5 +702,5 @@ Team05/Tests05/out_analysis_local.md
 
 # Temporary files for combination generation
 Team05/Tests05/scripts/combination_generator/tempfiles
-
-/Team05/Tests05/scripts/query_append.py
+/Team05/Tests05/scripts/queries.txt
+/Team05/Tests05/scripts/output.txt

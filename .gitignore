@@ -697,6 +697,3 @@ Team05/Tests05/**/*out.xml
 # Out analysis files for local running
 docs/out_analysis_raw_local.txt
 docs/out_analysis_local.md
-
-# Logging output file
-Team05/Tests05/logging_output.txt

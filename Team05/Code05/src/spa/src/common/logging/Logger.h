@@ -3,10 +3,8 @@
 #include <chrono>  // NOLINT [build/c++ 11]
 #include <fstream>
 #include <iostream>
-#include <algorithm>
 #include <stack>
 #include <string>
-#include <filesystem>
 
 using Clock = std::chrono::system_clock;
 using Duration = std::chrono::duration<double>;
@@ -80,21 +78,8 @@ class Logger {
 
   // Writes to stdout and a log file
   static void dual_write(const std::string& str) {
-    std::filesystem::path cwd = std::filesystem::current_path();
-    #ifdef _WIN32
-      // windows autotester path: ../Code05/out/build/x64-Debug/src/autotester
-      auto output_path = cwd
-                       / "..\\..\\..\\..\\..\\..\\Tests05\\logging_output.txt";
-      std::wofstream out_file(output_path.c_str(), std::ios_base::app);
-      std::wstring wstr(str.length(), L' ');
-      std::copy(str.begin(), str.end(), str.begin());
-      out_file << wstr;
-    #else
-      // mac autotester path: ../Code05/cmake-build-debug/src/autotester
-      auto output_path = cwd / "../../../../Tests05/logging_output.txt";
-      std::ofstream out_file(output_path.c_str(), std::ios_base::app);
-      out_file << str;
-    #endif
+    std::ofstream out_file("logging_output.txt", std::ios_base::app);
+    out_file << str;
     std::cout << str;
   }
 };

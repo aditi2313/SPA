@@ -156,11 +156,11 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     
     if args.local:
-        out_path = os.path.join(test_dir, "out_analysis_local.md")
-        raw_out_path = os.path.join(test_dir, "out_analysis_raw_local.txt")
+        out_path = "docs/out_analysis_local.md"
+        raw_out_path = "docs/out_analysis_raw_local.txt"
     else:
-        out_path = os.path.join(test_dir, out_analysis_filename)
-        raw_out_path = os.path.join(test_dir, raw_out_analysis_filename)
+        out_path = os.path.join("docs", out_analysis_filename)
+        raw_out_path = os.path.join("docs", raw_out_analysis_filename)
     
     if args.tests:
         cwd = os.getcwd()

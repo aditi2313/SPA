@@ -1,14 +1,1014 @@
-1 - multiclause for 7 distinct clauses
+1 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(23, _) pattern a(v, _) with r.varName = pn.varName pattern ifs("a", _, _) such that Next*(15, 17) such that Affects(_, 22) such that Uses(p, _)
+none
+5000
+2 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w with v.varName = call.procName such that Follows*(_, 29) such that Parent*(1, _) such that Calls*(_, p) such that Next(_, w) such that Follows(s, 14) such that Modifies(p, _)
+none
+5000
+3 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(_, 29) such that Next(_, 27) such that Follows*(_, _) pattern w(_, _) such that Modifies("third", _) such that Parent*(6, 26) such that Next*(16, s)
+none
+5000
+4 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(_, _) such that Uses("third", _) such that Affects*(r, 23) such that Calls*(_, "third") such that Calls(p, "third") such that Next(_, w) such that Next*(10, w)
+none
+5000
+5 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(pn, w) such that Affects*(_, ifs) such that Parent*(call, 15) pattern ifs(_, _, _) pattern a("aircon", "x") such that Modifies(14, "x") such that Calls*(p, _)
+none
+5000
+6 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Affects(ifs, r) such that Uses("third", "x") such that Follows*(10, _) such that Next*(_, w) with p.procName = pn.varName such that Parent(a, call) such that Calls(p, _)
+none
+5000
+7 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with s.stmt# = ifs.stmt# pattern w("y", _) such that Parent*(_, s) such that Modifies(p, _) such that Follows(s, _) such that Follows*(_, 4) such that Calls*("name", "first")
+none
+5000
+8 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Parent*(pn, _) such that Affects(_, 7) such that Next*(14, r) such that Calls*("third", "third") such that Follows*(26, 5) such that Follows(4, _) such that Parent(w, _)
+none
+5000
+9 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs with call.stmt# = r.stmt# such that Follows*(call, _) with pn.varName = p.procName such that Parent*(ifs, ifs) such that Calls*(_, _) such that Next*(_, _) such that Affects(29, _)
+none
+5000
+10 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with pn.varName = pn.varName such that Affects*(s, _) such that Follows*(21, 24) with call.stmt# = s.stmt# such that Follows(_, _) pattern ifs("a", _, _) such that Calls*(_, "second")
+none
+5000
+11 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Next*(10, call) such that Calls("name", _) pattern w(_, _) pattern a(_, _"a"_) such that Affects*(a, call) such that Calls*(_, "third") such that Next(_, ifs)
+none
+5000
+12 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(28, _) such that Next*(4, 18) such that Modifies(call, "monitorarm") such that Uses(call, _) pattern a("switch", "a") such that Calls*(p, _) such that Parent(_, call)
+none
+5000
+13 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Calls(_, p) with pn.varName = r.varName pattern w("NUS", _) such that Follows(a, pn) such that Calls*(p, "name") such that Next(27, call) such that Next*(r, _)
+none
+5000
+14 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Calls("name", "name") pattern w(v, _) such that Calls*(p, "second") with s.stmt# = c.value such that Parent*(15, 27) such that Follows*(12, 13) such that Next(_, w)
+none
+5000
+15 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Uses("first", v) such that Modifies(9, "x") such that Next*(r, r) pattern a(v, "myname") such that Affects*(24, 14) with call.procName = pn.varName such that Parent(_, _)
+none
+5000
+16 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(w, v) such that Affects*(11, _) with r.varName = call.procName such that Calls*(p, _) such that Next(s, 10) pattern a(v, "d") such that Parent(22, 17)
+none
+5000
+17 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs pattern a(_, _) such that Parent*(a, ifs) such that Calls(_, _) such that Uses("name", v) pattern w("y", _) such that Affects(s, s) pattern ifs("NUS", _, _)
+none
+5000
+18 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs with call.procName = v.varName such that Modifies(s, v) such that Follows(27, a) such that Calls*(_, "name") pattern w(_, _) such that Parent(s, 24) such that Affects*(ifs, 28)
+none
+5000
+19 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Calls("third", "third") such that Parent*(21, _) such that Follows*(_, w) such that Affects(pn, _) pattern w(_, _) pattern a(v, _) such that Next(_, 7)
+none
+5000
+20 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*(p, "second") such that Next*(_, 22) such that Affects*(_, _) with r.varName = pn.varName pattern a("b", _) such that Follows*(ifs, 23) such that Affects(call, _)
+none
+5000
+21 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r pattern a("aircon", _"chair"_) pattern w(v, _) such that Affects*(call, ifs) such that Uses(pn, _) such that Next(r, 26) such that Follows(_, 22) with r.varName = v.varName
+none
+5000
+22 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent*(ifs, _) pattern w("c", _) such that Calls(_, "first") such that Next(pn, 25) such that Affects*(_, 16) pattern ifs(v, _, _) such that Follows*(_, 17)
+none
+5000
+23 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern ifs(_, _, _) pattern a(_, "v") pattern w(v, _) such that Uses(p, "x") such that Affects*(17, 15) such that Next*(_, s) with call.procName = call.procName
+none
+5000
+24 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Parent(r, s) such that Affects(18, 19) such that Parent*(s, 16) such that Affects*(a, 12) such that Follows*(23, _) with v.varName = v.varName pattern a(_, _)
+none
+5000
+25 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Calls("name", "name") such that Calls*("first", _) with p.procName = v.varName such that Parent(16, ifs) such that Follows(6, _) pattern ifs(v, _, _) such that Follows*(pn, _)
+none
+5000
+26 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with call.stmt# = c.value such that Uses(p, "aircon") such that Affects(_, call) with v.varName = v.varName such that Follows(30, r) such that Parent*(ifs, 30) such that Parent(_, ifs)
+none
+5000
+27 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Parent(23, 16) such that Follows(_, w) pattern ifs(_, _, _) such that Affects(6, ifs) such that Next(_, _) such that Calls(_, _) such that Parent*(r, _)
+none
+5000
+28 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with r.varName = r.varName with ifs.stmt# = a.stmt# such that Parent*(10, a) such that Calls(_, "first") such that Parent(r, _) such that Modifies(p, _) such that Calls*(p, _)
+none
+5000
+29 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a(v, _"kmn"_) such that Affects(15, 23) such that Modifies("third", v) pattern w(v, _) such that Follows*(w, 18) such that Affects*(_, 4) such that Uses(p, _)
+none
+5000
+30 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Uses(call, _) such that Next(a, ifs) such that Follows*(pn, r) with call.procName = v.varName such that Affects*(_, _) pattern w("y", _) such that Affects(ifs, _)
+none
+5000
+31 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn pattern w("ganesh", _) such that Follows*(r, 17) such that Next*(a, pn) such that Modifies(p, _) such that Affects*(_, _) pattern ifs("x", _, _) such that Calls(_, "second")
+none
+5000
+32 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Parent(_, 18) pattern a(v, _) such that Next(w, _) pattern ifs(_, _, _) with r.varName = v.varName such that Uses(20, v) such that Modifies(p, "ganesh")
+none
+5000
+33 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Calls*(_, "first") such that Uses(13, "b") with ifs.stmt# = call.stmt# pattern w(_, _) with p.procName = pn.varName such that Parent(11, r) such that Next(_, 1)
+none
+5000
+34 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(14, 7) pattern a(v, _) such that Calls*(p, _) such that Uses("name", _) with ifs.stmt# = w.stmt# pattern w("switch", _) such that Parent(9, 26)
+none
+5000
+35 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a("chair", _) such that Parent(ifs, pn) such that Parent*(_, _) such that Uses(p, _) with a.stmt# = ifs.stmt# with r.varName = r.varName pattern ifs(_, _, _)
+none
+5000
+36 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Next(26, call) such that Calls(_, p) such that Affects(_, s) such that Follows(_, ifs) such that Parent*(18, 26) such that Modifies("name", v) such that Parent(_, 7)
+none
+5000
+37 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(_, _) with pn.varName = v.varName such that Uses(2, v) pattern ifs(_, _, _) such that Follows*(a, 22) such that Calls("second", p) such that Affects(ifs, _)
+none
+5000
+38 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Affects(pn, 30) such that Follows*(_, _) such that Parent(_, s) such that Uses(9, _) such that Affects*(12, 22) such that Calls("name", "name") pattern a(_, _"kmn"_)
+none
+5000
+39 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Next(_, _) such that Affects(_, _) pattern a(v, _) such that Modifies("second", v) such that Parent*(a, pn) such that Uses(ifs, _) such that Next*(20, 25)
+none
+5000
+40 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Affects*(27, _) such that Uses(6, v) such that Modifies(p, _) pattern w(v, _) with ifs.stmt# = ifs.stmt# pattern ifs("kmn", _, _) such that Parent(_, a)
+none
+5000
+41 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Follows*(8, ifs) pattern ifs("v", _, _) such that Modifies(11, "myname") such that Calls*("name", _) such that Parent(pn, pn) such that Affects*(_, 26) such that Parent*(_, a)
+none
+5000
+42 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Follows*(24, _) pattern w(_, _) such that Affects*(_, 10) such that Affects(4, r) such that Next*(30, s) such that Uses(s, _) such that Modifies("name", _)
+none
+5000
+43 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn pattern ifs(v, _, _) such that Next*(28, pn) such that Uses(p, _) such that Follows(21, 22) such that Calls*(_, p) such that Next(w, 1) such that Calls("first", p)
+none
+5000
+44 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a(v, _"myname"_) such that Follows(11, _) such that Next*(_, 18) such that Calls("third", p) pattern ifs(v, _, _) with r.varName = pn.varName such that Affects(17, 27)
+none
+5000
+45 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Modifies(16, v) such that Calls(_, _) such that Affects*(19, pn) such that Calls*(p, p) such that Affects(_, _) pattern ifs("b", _, _) pattern a("myname", _)
+none
+5000
+46 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Modifies(p, v) such that Follows(pn, 6) such that Calls*(_, p) pattern w(v, _) such that Follows*(a, _) such that Affects(_, 13) such that Next(16, _)
+none
+5000
+47 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Uses(p, "g") such that Calls("second", "second") such that Calls*("third", "name") with w.stmt# = a.stmt# with v.varName = v.varName pattern ifs(v, _, _) pattern a("g", _"b"_)
+none
+5000
+48 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs with pn.stmt# = a.stmt# such that Next(_, pn) such that Parent(_, 1) with r.varName = p.procName such that Affects(ifs, _) pattern ifs(v, _, _) such that Calls*("first", "third")
+none
+5000
+49 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Follows*(_, w) such that Uses(pn, "ganesh") such that Next*(pn, 12) with v.varName = call.procName pattern ifs(_, _, _) such that Calls*("second", p) such that Affects(20, 9)
+none
+5000
+50 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Calls("second", _) such that Next*(ifs, 27) such that Next(pn, ifs) such that Calls*(_, _) such that Parent(6, ifs) such that Affects*(r, _) such that Follows*(pn, 27)
+none
+5000
+51 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Next(_, w) pattern w("chair", _) with r.stmt# = s.stmt# such that Modifies("name", "a") pattern a(v, _) pattern ifs(_, _, _) with p.procName = pn.varName
+none
+5000
+52 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(14, _) such that Next*(_, 26) pattern ifs(_, _, _) such that Affects*(s, 25) such that Calls*(p, _) such that Follows(ifs, ifs) such that Follows*(call, w)
+none
+5000
+53 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Affects(_, pn) such that Affects*(_, call) pattern ifs("d", _, _) such that Follows*(_, 30) such that Calls("second", _) such that Parent*(s, 25) with r.varName = pn.varName
+none
+5000
+54 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call with c.value = a.stmt# pattern w("y", _) pattern a("c", "c") such that Uses("second", _) with r.varName = v.varName such that Affects(w, call) such that Next*(call, _)
+none
+5000
+55 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn pattern a("ganesh", _"kmn"_) such that Affects*(_, pn) such that Modifies("second", _) pattern ifs(_, _, _) such that Uses(call, _) with call.stmt# = call.stmt# such that Next*(9, 11)
+none
+5000
+56 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(ifs, _) such that Follows*(5, 3) such that Calls(p, _) such that Affects*(w, s) such that Follows(24, pn) such that Parent(ifs, pn) pattern w(v, _)
+none
+5000
+57 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Next(15, w) such that Affects(11, _) such that Modifies("second", _) with a.stmt# = s.stmt# with call.procName = v.varName such that Uses(r, "myname") such that Calls("third", _)
+none
+5000
+58 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with c.value = r.stmt# such that Follows(_, 25) such that Affects*(_, 19) such that Modifies("third", v) such that Next*(_, a) such that Next(s, r) pattern w(_, _)
+none
+5000
+59 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(5, s) such that Uses(a, "c") such that Calls(_, "second") such that Next*(a, r) such that Calls*(p, p) such that Follows*(_, _) pattern ifs(_, _, _)
+none
+5000
+60 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Affects*(24, _) such that Parent(_, _) such that Parent*(22, _) such that Next(_, 24) such that Affects(r, call) such that Follows*(2, 4) such that Modifies(a, v)
+none
+5000
+61 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Next*(_, a) such that Follows*(2, a) pattern ifs(_, _, _) such that Modifies(p, v) such that Parent*(26, 15) such that Affects(_, _) such that Parent(r, _)
+none
+5000
+62 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Parent*(_, 7) pattern a(_, "ganesh") pattern ifs("x", _, _) such that Calls*("name", p) such that Next(_, s) such that Parent(pn, w) such that Follows*(_, 28)
+none
+5000
+63 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Follows*(_, 10) such that Next*(4, 27) with pn.varName = p.procName pattern ifs(_, _, _) such that Affects*(r, 4) such that Uses(12, v) such that Affects(_, _)
+none
+5000
+64 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a with r.stmt# = ifs.stmt# such that Modifies(27, "y") such that Uses(25, "myname") pattern ifs("kmn", _, _) such that Affects*(18, a) such that Parent(ifs, w) with pn.varName = r.varName
+none
+5000
+65 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Next*(_, 9) such that Parent(30, 20) such that Parent*(8, pn) such that Calls(p, p) such that Calls*("name", _) such that Affects(10, 12) such that Affects*(s, 2)
+none
+5000
+66 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(14, 3) such that Calls(_, p) such that Modifies(p, _) pattern w("myname", _) such that Follows(_, 22) such that Affects(w, pn) pattern a("aircon", _)
+none
+5000
+67 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Calls*("third", _) with r.stmt# = call.stmt# such that Follows*(1, _) such that Parent*(pn, _) such that Uses(p, "aircon") such that Affects*(4, 20) such that Follows(call, call)
+none
+5000
+68 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(_, _) pattern ifs(_, _, _) such that Modifies(pn, _) with v.varName = call.procName such that Calls(p, "third") such that Next(22, _) such that Affects*(s, s)
+none
+5000
+69 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent*(11, ifs) such that Affects*(15, 28) such that Calls("second", p) such that Affects(pn, _) pattern a(_, "y") such that Calls*("name", p) such that Modifies(26, "aircon")
+none
+5000
+70 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Calls*(_, _) with a.stmt# = call.stmt# such that Next(8, s) such that Parent*(17, w) such that Follows*(_, call) such that Affects*(call, _) such that Next*(w, _)
+none
+5000
+71 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects*(18, _) with r.stmt# = call.stmt# such that Affects(13, 10) such that Uses(r, v) such that Calls("first", _) pattern a("d", _) such that Follows*(s, 5)
+none
+5000
+72 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(18, 14) with r.stmt# = c.value pattern ifs(v, _, _) such that Next(r, 28) such that Calls(p, "first") with r.varName = call.procName such that Modifies("name", v)
+none
+5000
+73 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Next*(_, 15) such that Parent(_, _) such that Calls(p, p) such that Affects(16, _) with r.varName = pn.varName with ifs.stmt# = ifs.stmt# such that Follows(w, r)
+none
+5000
+74 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Uses(22, "aircon") with call.procName = call.procName such that Next*(19, a) pattern w(v, _) such that Calls(p, "third") such that Affects*(pn, a) such that Parent*(1, r)
+none
+5000
+75 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects*(pn, _) such that Affects(_, s) such that Next(9, s) with w.stmt# = ifs.stmt# such that Parent*(_, 30) such that Uses(22, v) with r.varName = call.procName
+none
+5000
+76 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent(_, _) such that Follows(29, _) such that Parent*(_, ifs) such that Modifies(p, _) with r.stmt# = w.stmt# pattern w(v, _) such that Next*(2, w)
+none
+5000
+77 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(p, p) such that Follows(15, _) such that Follows*(_, _) such that Parent(r, 24) such that Next(1, 4) with v.varName = p.procName with r.stmt# = a.stmt#
+none
+5000
+78 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Follows*(4, 20) such that Next*(ifs, _) such that Next(s, ifs) such that Calls*(_, p) such that Affects(pn, 16) pattern a("v", _) such that Affects*(5, 26)
+none
+5000
+79 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("aircon", _, _) such that Affects*(a, 29) such that Uses(a, v) such that Next(w, _) pattern w(_, _) such that Next*(2, 19) such that Follows(_, pn)
+none
+5000
+80 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Next*(7, call) such that Affects*(2, 25) such that Affects(_, _) with pn.stmt# = ifs.stmt# with p.procName = call.procName such that Parent*(15, _) such that Next(_, _)
+none
+5000
+81 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies(16, _) such that Parent*(_, 3) with pn.varName = pn.varName such that Next(15, 16) such that Uses("third", v) such that Follows*(s, _) pattern w(v, _)
+none
+5000
+82 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Uses("first", "g") with p.procName = pn.varName such that Follows(r, w) pattern a(_, _) such that Affects*(call, s) with pn.stmt# = c.value such that Modifies(1, v)
+none
+5000
+83 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a("myname", _"y"_) such that Parent(13, _) such that Uses(p, _) such that Affects(_, 28) such that Affects*(8, 12) such that Calls(_, "third") such that Follows(_, _)
+none
+5000
+84 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(p, _) such that Parent*(10, _) such that Uses(12, "b") such that Calls*("name", "name") such that Follows*(20, 12) such that Next*(17, 9) such that Affects(6, _)
+none
+5000
+85 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Next*(30, _) pattern ifs("NUS", _, _) such that Modifies(8, v) such that Affects*(19, 4) such that Affects(_, w) such that Follows(_, pn) such that Uses("first", "aircon")
+none
+5000
+86 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn pattern a(_, _) such that Parent(27, pn) such that Affects(ifs, _) with r.stmt# = pn.stmt# such that Affects*(_, pn) such that Follows(pn, 18) such that Next(14, 1)
+none
+5000
+87 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows*(s, _) such that Parent*(14, _) such that Next*(_, _) pattern a("monitorarm", "d") such that Follows(_, w) such that Calls*(_, _) such that Calls("first", p)
+none
+5000
+88 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(22, 14) such that Calls*(_, _) such that Follows*(s, s) with pn.stmt# = call.stmt# such that Next(5, ifs) pattern a(_, _) pattern ifs(_, _, _)
+none
+5000
+89 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with a.stmt# = r.stmt# such that Follows(26, 14) such that Parent(r, 25) pattern ifs(_, _, _) such that Calls(_, _) with v.varName = pn.varName such that Uses(30, v)
+none
+5000
+90 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent(13, ifs) such that Modifies(p, v) such that Next*(11, _) such that Parent*(_, 7) such that Uses(5, "aircon") with s.stmt# = call.stmt# such that Next(s, call)
+none
+5000
+91 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls("name", p) such that Follows*(_, 4) with pn.stmt# = w.stmt# such that Modifies(a, "chair") pattern a(v, _) such that Follows(5, w) such that Next*(1, _)
+none
+5000
+92 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a pattern w(_, _) pattern ifs("c", _, _) such that Parent(a, 10) such that Calls(p, _) such that Follows*(2, a) with w.stmt# = call.stmt# such that Modifies("second", v)
+none
+5000
+93 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern a(_, "v") such that Calls*("name", p) pattern w(_, _) such that Next*(_, 6) such that Calls(_, p) such that Next(_, 26) with p.procName = pn.varName
+none
+5000
+94 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn with pn.varName = r.varName pattern w(_, _) such that Calls(p, "third") such that Next(25, pn) such that Modifies(p, "chair") such that Affects(_, _) such that Follows*(26, 29)
+none
+5000
+95 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with call.procName = r.varName pattern a("switch", "ganesh") such that Uses("third", "NUS") such that Next*(25, _) such that Follows*(r, 21) such that Next(19, _) pattern ifs("ganesh", _, _)
+none
+5000
+96 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Calls*(p, _) such that Modifies(12, v) with call.stmt# = pn.stmt# such that Next*(_, _) such that Parent*(s, _) such that Affects(17, a) pattern w(v, _)
+none
+5000
+97 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(1, 30) such that Calls(p, "third") such that Parent(_, _) such that Affects*(18, 9) such that Calls*(p, p) such that Uses(15, "ganesh") pattern ifs(_, _, _)
+none
+5000
+98 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Follows*(_, w) such that Calls(_, "second") such that Parent*(_, 3) such that Follows(2, _) pattern a("aircon", "x") such that Calls*(p, _) such that Parent(a, _)
+none
+5000
+99 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Affects(_, 10) with call.procName = r.varName such that Calls(_, "first") pattern w("g", _) such that Affects*(_, 8) pattern a("g", "aircon") such that Follows*(ifs, _)
+none
+5000
+100 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(s, v) such that Next(_, _) such that Next*(call, 6) such that Modifies(10, v) with ifs.stmt# = r.stmt# such that Parent(r, a) such that Affects*(13, _)
+none
+5000
+101 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p with a.stmt# = w.stmt# such that Affects(_, 6) with p.procName = v.varName such that Parent(call, 21) such that Next(_, call) such that Calls(p, p) such that Parent*(_, _)
+none
+5000
+102 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Follows(s, a) pattern ifs(_, _, _) such that Affects*(_, 12) such that Affects(_, 2) such that Next*(a, r) pattern a(_, _"switch"_) such that Next(ifs, 23)
+none
+5000
+103 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with v.varName = p.procName such that Uses(pn, _) such that Modifies(p, _) pattern a("b", "switch") pattern w(v, _) such that Parent(24, r) such that Calls*(p, "third")
+none
+5000
+104 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call pattern ifs(_, _, _) such that Calls*(p, p) such that Follows(_, call) pattern a("d", _"switch"_) such that Follows*(22, _) such that Parent*(_, _) with pn.varName = call.procName
+none
+5000
+105 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(2, _) with call.stmt# = call.stmt# such that Modifies("name", "NUS") pattern w(v, _) such that Next(11, _) such that Parent(_, _) pattern ifs("switch", _, _)
+none
+5000
+106 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(_, pn) such that Affects(_, w) such that Parent*(w, _) such that Next*(16, ifs) such that Uses(p, "d") such that Affects*(_, w) such that Parent(w, r)
+none
+5000
+107 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(s, _) such that Next*(_, 24) such that Parent*(a, _) pattern ifs("y", _, _) such that Calls(p, "third") such that Calls*("second", _) such that Affects(7, call)
+none
+5000
+108 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Affects(7, call) such that Calls(_, _) such that Parent*(11, r) such that Affects*(17, 17) pattern ifs(_, _, _) with r.stmt# = ifs.stmt# such that Calls*("second", "first")
+none
+5000
+109 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent(_, _) with c.value = s.stmt# such that Affects*(_, 4) with pn.varName = r.varName pattern ifs(v, _, _) such that Follows*(ifs, _) such that Follows(_, 23)
+none
+5000
+110 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Calls*(p, "name") such that Follows(s, pn) pattern a(_, _"NUS"_) such that Uses(1, "switch") such that Parent(pn, 22) with r.varName = call.procName such that Affects*(_, a)
+none
+5000
+111 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(15, s) pattern w(v, _) with p.procName = p.procName such that Modifies(s, "a") such that Affects*(_, _) such that Next(_, 15) such that Calls("first", p)
+none
+5000
+112 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s with v.varName = call.procName such that Parent(_, 9) such that Affects*(s, _) such that Parent*(12, _) such that Modifies(4, _) pattern a(_, _"myname"_) such that Next(_, _)
+none
+5000
+113 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Modifies("name", _) such that Affects*(11, w) such that Follows*(30, 27) with call.procName = r.varName such that Calls*(p, p) such that Next(r, call) such that Follows(20, ifs)
+none
+5000
+114 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w with s.stmt# = pn.stmt# such that Follows*(ifs, ifs) such that Next*(w, w) such that Follows(16, ifs) pattern w("kmn", _) such that Parent(pn, a) such that Uses("second", _)
+none
+5000
+115 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows*(r, _) with pn.varName = pn.varName such that Parent(ifs, _) pattern a("c", _"g"_) pattern ifs(_, _, _) such that Affects*(a, call) such that Calls*("third", p)
+none
+5000
+116 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Affects(w, 28) such that Uses("second", "aircon") such that Next*(pn, _) pattern a(v, _) with ifs.stmt# = pn.stmt# such that Modifies("first", _) such that Parent(18, pn)
+none
+5000
+117 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Follows(4, s) such that Affects*(10, 18) with s.stmt# = ifs.stmt# such that Calls("second", "second") such that Modifies("first", "c") pattern a(v, "aircon") such that Next(5, pn)
+none
+5000
+118 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Next(9, _) with w.stmt# = c.value such that Modifies(13, _) with r.varName = p.procName pattern a(v, _"b"_) such that Next*(r, _) such that Follows*(18, _)
+none
+5000
+119 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses("first", v) such that Follows(_, _) such that Next*(_, _) such that Parent*(15, r) with r.stmt# = r.stmt# with call.procName = call.procName such that Modifies(p, "kmn")
+none
+5000
+120 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Next(2, 24) such that Parent*(11, _) such that Calls*(p, "second") such that Follows*(a, _) pattern ifs(v, _, _) with call.procName = r.varName pattern w("x", _)
+none
+5000
+121 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Next(_, _) pattern w("g", _) such that Affects*(15, w) such that Next*(ifs, w) such that Follows(21, 29) such that Parent(w, r) such that Parent*(_, r)
+none
+5000
+122 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows*(_, 17) with pn.varName = p.procName such that Uses(9, _) such that Calls("first", "first") such that Next(3, w) such that Modifies(25, v) pattern w(v, _)
+none
+5000
+123 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Parent(_, _) such that Modifies(s, v) such that Parent*(8, a) pattern w("aircon", _) such that Affects(_, ifs) with p.procName = r.varName such that Calls*(p, "second")
+none
+5000
+124 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Affects(11, 13) such that Calls(_, _) such that Next*(w, a) pattern a(v, _"y"_) with w.stmt# = a.stmt# such that Follows*(_, _) such that Calls*(_, _)
+none
+5000
+125 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Parent(26, _) such that Affects*(w, ifs) such that Modifies(6, _) such that Parent*(15, r) such that Affects(17, 25) such that Next*(w, ifs) such that Calls(p, "second")
+none
+5000
+126 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls*(_, "first") such that Calls(_, _) pattern ifs(v, _, _) such that Affects(12, 12) such that Next(12, _) such that Follows(s, _) such that Parent(call, _)
+none
+5000
+127 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Calls(p, _) such that Next*(call, s) such that Affects*(24, pn) such that Follows(_, s) such that Calls*(_, "third") pattern ifs(v, _, _) pattern a(_, _"aircon"_)
+none
+5000
+128 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Follows*(21, pn) such that Parent*(a, 2) pattern w("b", _) such that Calls*(p, p) pattern ifs(v, _, _) such that Uses(p, v) such that Parent(18, w)
+none
+5000
+129 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Affects*(23, call) such that Uses("first", v) such that Modifies(p, _) such that Affects(call, 23) such that Next*(2, 18) such that Calls(p, _) pattern a(v, "ganesh")
+none
+5000
+130 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Affects(26, w) such that Affects*(s, _) such that Follows(_, r) such that Uses(5, _) such that Next(23, call) pattern a("a", _) such that Follows*(ifs, 26)
+none
+5000
+131 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Affects(_, 22) pattern ifs(_, _, _) such that Affects*(ifs, ifs) such that Calls(p, "third") such that Follows*(20, w) with p.procName = pn.varName such that Calls*(p, p)
+none
+5000
+132 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs with s.stmt# = a.stmt# such that Affects*(ifs, call) with v.varName = p.procName such that Calls(_, "third") such that Modifies(30, _) such that Parent*(15, _) pattern a(_, _"v"_)
+none
+5000
+133 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies("name", _) with r.stmt# = s.stmt# pattern ifs(v, _, _) such that Uses("first", v) such that Parent*(_, _) pattern w(_, _) such that Parent(ifs, pn)
+none
+5000
+134 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs pattern w("monitorarm", _) such that Parent*(14, _) pattern a(v, _) such that Affects*(30, 17) such that Affects(20, ifs) such that Calls("third", "second") such that Follows*(_, pn)
+none
+5000
+135 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Follows(pn, 2) such that Affects*(s, r) with call.procName = call.procName pattern a("kmn", _"monitorarm"_) such that Affects(18, 8) such that Uses(call, _) such that Parent*(ifs, _)
+none
+5000
+136 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Follows*(_, a) such that Parent*(_, 1) such that Follows(_, r) such that Uses(24, "ganesh") pattern a(v, "kmn") with a.stmt# = call.stmt# such that Next*(_, pn)
+none
+5000
+137 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Affects(29, 23) such that Next(9, 26) such that Parent(15, ifs) pattern w(_, _) pattern a(_, "NUS") pattern ifs(_, _, _) such that Calls*("name", _)
+none
+5000
+138 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls*("name", p) such that Affects*(6, r) such that Follows*(_, a) such that Calls(p, "first") pattern ifs("NUS", _, _) such that Modifies(p, _) pattern w(_, _)
+none
+5000
+139 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern w(_, _) such that Affects(_, _) with call.stmt# = call.stmt# such that Calls*("second", p) such that Affects*(call, ifs) such that Follows*(a, a) such that Modifies(7, "aircon")
+none
+5000
+140 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with pn.varName = r.varName pattern a(v, _) such that Follows(r, _) such that Uses(11, _) such that Next(r, _) such that Affects*(14, pn) such that Calls*("name", "name")
+none
+5000
+141 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Next(_, 1) such that Calls*("first", _) such that Modifies(p, _) pattern a(v, _"x"_) pattern ifs(v, _, _) such that Calls(_, p) such that Parent*(w, _)
+none
+5000
+142 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern w(_, _) such that Parent*(_, 15) with r.varName = r.varName such that Modifies("first", v) such that Affects*(19, _) such that Follows(2, s) pattern ifs("monitorarm", _, _)
+none
+5000
+143 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r pattern w(_, _) with r.varName = call.procName pattern ifs(v, _, _) such that Affects(_, _) such that Follows(r, call) such that Uses(6, _) with s.stmt# = w.stmt#
+none
+5000
+144 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Follows(w, s) such that Affects(a, 29) such that Parent(_, 17) with a.stmt# = a.stmt# such that Next*(s, _) such that Parent*(2, _) such that Follows*(a, 6)
+none
+5000
+145 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call pattern ifs(_, _, _) with call.procName = call.procName pattern w(_, _) such that Parent*(17, 3) such that Modifies(p, _) such that Follows*(_, call) such that Parent(6, 1)
+none
+5000
+146 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next(15, 29) such that Calls*(p, "first") such that Calls(_, "first") with pn.varName = r.varName such that Modifies(a, _) with pn.stmt# = a.stmt# such that Parent*(22, 7)
+none
+5000
+147 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with pn.varName = r.varName such that Next(_, 23) pattern w("g", _) such that Uses(a, v) pattern ifs(_, _, _) such that Next*(13, _) such that Follows*(14, _)
+none
+5000
+148 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("switch", _, _) such that Calls(_, _) pattern a(_, _"a"_) such that Next(_, 13) pattern w(v, _) such that Affects*(4, _) such that Next*(call, 17)
+none
+5000
+149 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects*(_, _) pattern a("myname", "y") such that Follows*(28, call) such that Follows(_, 27) pattern w(v, _) such that Calls*(p, p) such that Next*(ifs, a)
+none
+5000
+150 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(6, 25) such that Calls*(_, _) such that Next*(7, 9) such that Affects*(_, _) such that Uses(pn, "aircon") such that Modifies(p, "ganesh") pattern w(_, _)
+none
+5000
+151 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Modifies(23, _) with p.procName = p.procName pattern w(_, _) such that Affects*(_, 8) such that Calls*(p, _) pattern ifs("monitorarm", _, _) such that Follows(ifs, s)
+none
+5000
+152 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Parent*(27, 10) pattern a(_, _) such that Next(call, _) such that Follows*(_, _) such that Calls*("first", "first") such that Follows(r, _) with v.varName = p.procName
+none
+5000
+153 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Affects*(_, _) with call.stmt# = w.stmt# such that Next(3, _) such that Calls("second", _) pattern w(v, _) pattern ifs(v, _, _) such that Parent(_, a)
+none
+5000
+154 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent(r, _) pattern ifs(v, _, _) such that Calls(_, p) such that Uses(3, "monitorarm") with c.value = call.stmt# pattern a("d", _) pattern w("v", _)
+none
+5000
+155 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Uses(18, v) such that Calls(_, _) such that Calls*(p, _) such that Affects(ifs, 4) such that Modifies(p, _) pattern w(v, _) such that Follows*(r, _)
+none
+5000
+156 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Uses(p, _) pattern w(v, _) such that Follows(_, ifs) with call.stmt# = c.value such that Follows*(_, _) such that Parent*(12, s) pattern ifs(v, _, _)
+none
+5000
+157 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Modifies("second", _) with pn.stmt# = c.value such that Affects(r, 6) such that Uses(19, v) such that Affects*(26, ifs) with r.varName = r.varName such that Parent*(_, r)
+none
+5000
+158 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call with c.value = r.stmt# such that Parent(call, _) such that Follows(_, call) such that Calls("second", _) such that Modifies(ifs, v) such that Next*(21, ifs) pattern w(_, _)
+none
+5000
+159 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Calls(_, "name") such that Parent*(_, _) with v.varName = pn.varName such that Parent(s, r) such that Next(2, 30) such that Next*(w, _) such that Follows*(11, a)
+none
+5000
+160 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Parent(_, _) such that Uses("second", "v") such that Affects(a, _) pattern w(_, _) such that Next*(_, _) with r.stmt# = c.value with v.varName = r.varName
+none
+5000
+161 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Next*(8, ifs) pattern w(_, _) such that Next(s, _) such that Affects(_, _) such that Calls*("second", _) with p.procName = r.varName such that Calls(p, p)
+none
+5000
+162 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Affects(a, 18) such that Modifies(r, v) such that Parent(call, 17) with a.stmt# = pn.stmt# such that Affects*(r, call) pattern ifs(_, _, _) such that Follows*(_, _)
+none
+5000
+163 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Parent*(22, 8) such that Follows(5, 5) such that Follows*(ifs, 30) pattern w(v, _) such that Uses(s, _) such that Next(_, 1) such that Parent(7, _)
+none
+5000
+164 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Modifies(s, v) with pn.varName = r.varName with w.stmt# = ifs.stmt# pattern a(_, "NUS") such that Follows(a, _) such that Calls*(_, _) such that Parent*(w, 24)
+none
+5000
+165 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Next*(25, pn) such that Parent*(4, s) pattern ifs("monitorarm", _, _) pattern a(_, "c") such that Follows(_, 15) such that Affects*(a, _) pattern w(_, _)
+none
+5000
+166 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p pattern ifs("b", _, _) such that Next(27, _) such that Calls*(p, "second") pattern w(_, _) with w.stmt# = c.value such that Parent*(_, _) such that Calls(_, _)
+none
+5000
+167 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select s such that Affects(_, a) pattern w(v, _) such that Next*(3, 17) such that Follows*(ifs, s) such that Uses("first", _) with a.stmt# = r.stmt# such that Parent*(18, 14)
+none
+5000
+168 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(_, r) such that Next(17, 22) such that Calls*(p, "second") with r.varName = pn.varName such that Affects(26, pn) such that Parent(_, 19) such that Follows*(_, _)
+none
+5000
+169 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select BOOLEAN pattern ifs(_, _, _) with v.varName = p.procName with a.stmt# = r.stmt# such that Follows*(18, 6) pattern w("g", _) such that Parent(_, _) such that Calls("name", "second")
+none
+5000
+170 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Parent*(_, w) such that Calls("second", p) such that Affects*(27, _) such that Affects(28, _) such that Calls*(_, p) pattern ifs("ganesh", _, _) pattern a("d", _"g"_)
+none
+5000
+171 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a with r.varName = call.procName such that Uses("first", v) pattern w(v, _) such that Next(_, _) pattern ifs(_, _, _) such that Affects*(a, 2) such that Parent(_, w)
+none
+5000
+172 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r pattern a(_, _"aircon"_) such that Parent(_, _) such that Next(r, _) such that Calls*("second", p) pattern w("c", _) such that Follows(r, 20) such that Calls(_, "name")
+none
+5000
+173 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Follows*(w, _) such that Parent(8, _) with c.value = c.value pattern w(v, _) such that Follows(w, w) such that Affects(_, r) such that Next*(_, ifs)
+none
+5000
+174 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Follows*(_, _) such that Next(_, 8) such that Next*(call, _) pattern ifs(v, _, _) pattern w("aircon", _) such that Parent(s, _) such that Follows(_, 6)
+none
+5000
+175 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Modifies(p, _) with c.value = c.value such that Parent*(ifs, ifs) such that Follows*(_, r) with r.varName = pn.varName such that Uses("name", "b") such that Follows(_, s)
+none
+5000
+176 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern a("c", "d") with pn.varName = v.varName such that Follows(_, w) such that Uses(p, v) such that Follows*(1, 5) such that Calls*("name", "third") with call.stmt# = call.stmt#
+none
+5000
+177 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w with v.varName = r.varName such that Affects*(w, _) such that Follows*(w, _) such that Modifies(ifs, _) such that Follows(23, _) pattern w("monitorarm", _) such that Affects(s, a)
+none
+5000
+178 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with call.stmt# = call.stmt# such that Calls(_, "name") such that Follows*(14, _) such that Follows(24, _) such that Next*(_, r) such that Affects*(_, 30) pattern a("v", _"g"_)
+none
+5000
+179 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r such that Follows(6, r) such that Modifies("first", "myname") such that Parent(4, 12) such that Uses(p, v) pattern ifs(v, _, _) such that Parent*(28, _) such that Next*(ifs, _)
+none
+5000
+180 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Parent*(a, 24) such that Affects(11, 17) such that Calls("second", p) with call.procName = pn.varName pattern a(_, _) such that Follows*(15, _) such that Calls*(p, _)
+none
+5000
+181 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Follows(3, _) such that Modifies(p, "myname") such that Follows*(_, 10) pattern ifs(_, _, _) pattern w(_, _) such that Affects*(pn, call) such that Calls("first", _)
+none
+5000
+182 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Parent*(_, _) pattern a(v, "ganesh") such that Uses("name", _) pattern w("c", _) with ifs.stmt# = pn.stmt# such that Affects(_, a) such that Follows(w, 1)
+none
+5000
+183 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Affects(call, _) with r.stmt# = r.stmt# such that Calls*(p, p) such that Next(_, _) such that Modifies("first", _) such that Next*(call, _) such that Calls("name", _)
+none
+5000
+184 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Parent*(call, 11) such that Follows*(_, call) with pn.varName = call.procName pattern a(v, _"b"_) such that Modifies("name", "v") with call.stmt# = r.stmt# such that Calls(_, p)
+none
+5000
+185 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v with c.value = w.stmt# such that Uses(22, v) such that Affects*(ifs, 22) such that Follows(_, 1) pattern ifs(v, _, _) with call.procName = pn.varName such that Modifies("third", v)
+none
+5000
+186 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v pattern ifs("x", _, _) such that Uses("second", "switch") such that Next*(call, 30) such that Parent*(_, 11) such that Modifies(7, v) such that Affects(_, _) with a.stmt# = r.stmt#
+none
+5000
+187 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r with w.stmt# = ifs.stmt# such that Calls*("first", p) such that Parent*(r, call) such that Affects(9, pn) such that Modifies(p, _) pattern w("ganesh", _) such that Affects*(s, ifs)
+none
+5000
+188 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Follows*(_, 29) such that Next(_, _) with pn.stmt# = pn.stmt# pattern ifs("ganesh", _, _) such that Calls(p, _) pattern a("d", "g") such that Affects*(w, w)
+none
+5000
+189 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r pattern w(_, _) pattern ifs("x", _, _) such that Calls*(p, p) such that Uses("name", _) such that Calls(p, _) such that Affects*(call, s) such that Next*(r, 24)
+none
+5000
+190 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select ifs such that Uses(2, _) such that Follows*(s, a) such that Affects*(ifs, _) such that Next(w, s) such that Parent*(15, _) with ifs.stmt# = call.stmt# such that Follows(19, 11)
+none
+5000
+191 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Calls(_, p) such that Modifies("name", _) such that Affects*(_, w) with r.varName = pn.varName such that Affects(5, _) pattern ifs(_, _, _) such that Follows*(5, ifs)
+none
+5000
+192 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Parent(pn, w) such that Next*(_, 17) such that Parent*(pn, _) such that Follows(ifs, a) such that Uses("third", _) such that Affects*(_, 13) pattern w(v, _)
+none
+5000
+193 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select w such that Next(_, 9) pattern a("g", _) such that Affects*(w, _) such that Follows*(w, 2) pattern ifs(_, _, _) such that Follows(1, _) such that Affects(w, _)
+none
+5000
+194 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select call such that Follows*(call, _) with p.procName = pn.varName such that Affects(20, ifs) such that Follows(_, _) pattern ifs("g", _, _) pattern a(v, "myname") such that Uses(pn, v)
+none
+5000
+195 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select pn such that Next(_, 2) such that Follows(_, _) with p.procName = pn.varName such that Parent(30, _) such that Modifies(30, _) pattern ifs(v, _, _) such that Affects*(s, pn)
+none
+5000
+196 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Affects*(21, 5) such that Next(call, _) such that Next*(28, _) with call.procName = v.varName such that Follows*(_, call) such that Uses("second", "g") pattern w(v, _)
+none
+5000
+197 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select v such that Follows(_, a) such that Follows*(_, 17) pattern w(_, _) such that Next(_, _) such that Modifies("second", "x") pattern a(v, _"myname"_) such that Next*(r, r)
+none
+5000
+198 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select a such that Follows(call, 23) such that Calls(_, _) such that Calls*(_, "second") such that Modifies("second", _) such that Parent(17, a) such that Affects(w, _) pattern w(_, _)
+none
+5000
+199 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select r pattern a("g", "x") such that Calls(p, "third") such that Affects(12, r) with call.stmt# = s.stmt# such that Next*(call, ifs) such that Parent*(16, 6) such that Uses(p, _)
+none
+5000
+200 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;
+Select p such that Parent*(_, _) pattern a("b", _) such that Calls(p, "first") with r.varName = r.varName such that Modifies(3, "kmn") such that Follows(ifs, s) such that Calls*(p, _)
+none
+5000
+201 - multiclause for 7 distinct clauses
 stmt s1, s2; variable v, v2; procedure p; read r; print pr; while w; if ifs; assign a; constant c;
 Select <s1,s2,v> such that Follows(s1, 5) and Modifies("name", _) and Calls(p, _) and Next*(s1, 5) and Parent(s2, 3) pattern ifs(v,_,_) pattern w(v,_) 
 4 1 NUS,4 1 chair,4 1 ganesh,4 1 switch, 4 1 x
 5000
-2 - multiclause for another 7 distinct clauses
+202 - multiclause for another 7 distinct clauses
 stmt s1, s2; variable v, v2; procedure p; read r; print pr; while w; if ifs; assign a; constant c;
 Select <v, p> such that Modifies(s2, _) pattern w(v, _) such that Calls(p, "second") and Parent*(s1, _) and Modifies("name", _) and Follows*(s2, _) and Uses(26, v)
 NUS first
 5000
-3 - multiclause for another 7 distinct clauses
+203 - multiclause for another 7 distinct clauses
 stmt s1, s2; variable v, v2; procedure p; read r; print pr; while w; if ifs; assign a; constant c;
 Select <r,v, p> such that Modifies(r, v) and Modifies(p, _) and Calls(p,_) and Next(s1, r) and Affects*(s2, _) and Parent(s2,_) and pattern ifs(v2,_,_)
 a 2

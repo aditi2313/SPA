@@ -35,7 +35,7 @@ class AssignmentGenerator:
   def __init__(self):
     pass
   def generate(self, depth):
-    s = random.randint(0, 1000)
+    s = random.randint(0, 10)
     result = ""
     result += grab_rand(variables)
     result += "="
@@ -124,7 +124,7 @@ class WhileBlockGenerator:
 
 
 class StatementGenerator:
-  max_stmt = 500
+  max_stmt = 10
   curr_stmt = 0
   def __init__(self):
     pass
@@ -162,14 +162,14 @@ def procedure_gen(name):
   result += r
   return result
 
-def deep_while_generator(depth = 500):  
+def deep_while_generator(depth = 2):  
   if depth == 0:
     return "read x;"
   next = deep_while_generator(depth-1)
   return "while (x  < 0) {" + next + "}"
     
 
-def deep_if_generator(depth = 500):
+def deep_if_generator(depth = 2):
   if depth <= 2:
     result = ""
     for _ in range(depth):
@@ -193,7 +193,7 @@ def generate_rand_proc():
   name = "p"
   ctr = 1
   while curr < 500:    
-    StatementGenerator.max_stmt = 100
+    StatementGenerator.max_stmt = 20
     print(procedure_gen(name + str(ctr)))
     ctr += 1
     curr += StatementGenerator.curr_stmt
@@ -201,7 +201,7 @@ def generate_rand_proc():
 
 
 ## used to generate a linear call structure
-def nested_calls(depth = 500):
+def nested_calls(depth = 5):
   if depth == 1:
     print("procedure p1 { x = 1; }", end="")
     return

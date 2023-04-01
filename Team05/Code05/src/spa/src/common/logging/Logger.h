@@ -16,7 +16,9 @@ namespace logging {
 class Logger {
  public:
   static void ResetClock() {
-    if (disabled_) return;
+    #ifdef NDEBUG
+      return;
+    #endif
     if (!times_.empty()) times_.pop();
     times_.push(Clock::now());
   }
@@ -30,7 +32,9 @@ class Logger {
   /// </summary>
   /// <param name="desc"></param>
   static void LogAndStop(std::string desc) {
-    if (disabled_) return;
+    #ifdef NDEBUG
+      return;
+    #endif
     Clock::time_point curr = Clock::now();
     Duration interval = curr - times_.top();
     times_.pop();
@@ -39,14 +43,18 @@ class Logger {
   }
 
   static void EnterSection(std::string desc) {
-    if (disabled_) return;
+    #ifdef NDEBUG
+      return;
+    #endif
     times_.push(Clock::now());
     times_.push(Clock::now());
     dual_write(kSection + "Enter Section: " + desc + kSection + "\n");
   }
 
   static void ExitSection(std::string desc) {
-    if (disabled_) return;
+    #ifdef NDEBUG
+      return;
+    #endif
     times_.pop();
     auto curr = Clock::now();
     Duration interval = curr - times_.top();
@@ -57,11 +65,13 @@ class Logger {
 
   // Used to separate runs to easily see in the log output
   static void PrintDivider() {
+    #ifdef NDEBUG
+      return;
+    #endif
     dual_write(kDivider);
   }
 
  private:
-  inline static bool disabled_ = false;
   inline static std::stack<Clock::time_point> times_;
   inline static std::string kSection = " <===========================> ";
   inline static std::string kDivider = "\n----\n\n";

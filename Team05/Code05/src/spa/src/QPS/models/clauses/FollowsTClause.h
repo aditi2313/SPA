@@ -35,6 +35,5 @@ class FollowsTClause : public TClause {
     auto& data = reader.read_data();
     return data.get_follows_list().count(reference.get_int());
   }
-
 };
 }  // namespace qps

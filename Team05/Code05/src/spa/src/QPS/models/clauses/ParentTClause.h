@@ -25,7 +25,6 @@ class ParentTClause : public TClause {
     auto& data = result.read_data();
     AddList(data.get_all_children(), results);
   }
-
   bool TIndex(const Entity &index, const pkb::PKBReadPtr &pkb,
                       const Entity &reference) override {
     auto filter = filter::ParentIndexFilter(index.get_int());
@@ -35,7 +34,5 @@ class ParentTClause : public TClause {
     auto &calls = data.get_all_children();
     return calls.count(reference.get_int());
   }
-
 };
-
 }  // namespace qps

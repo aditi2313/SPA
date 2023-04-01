@@ -137,7 +137,7 @@ def format_statistic(test_name, result, previous_result):
            f"- Previous query: {prev_max_query}\n\n" + \
            f"#### Average\n" + \
            f"- Current run: {new_avg} {avg_diff_str}\n" + \
-           f"- Previous run: {prev_avg}\n" + \
+           f"- Previous run: {prev_avg}\n\n" + \
            f"{divider}"
 
 def highlight_str(str, diff, threshold):

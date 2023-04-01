@@ -121,22 +121,32 @@ def format_statistic(test_name, result, previous_result):
     prev_max, previous_total_time, prev_max_query, prev_total_queries = previous_result
     prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 
-    max_diff = f"({'↑' if round(new_max - prev_max, 3) > 0 else '↓'} {round(new_max - prev_max, 3)})"
-    avg_diff = f"({'↑' if round(new_avg - prev_avg, 3) > 0 else '↓'} {round(new_avg - prev_avg, 3)})"
+    max_diff = round(new_max - prev_max, 3)
+    max_diff_str = highlight_str(f"({'↑' if max_diff > 0 else '↓'} {max_diff})", max_diff, 1)
+    avg_diff = round(new_avg - prev_avg, 3)
+    avg_diff_str = highlight_str(f"({'↑' if avg_diff > 0 else '↓'} {avg_diff})", avg_diff, 0.5)
 
     return f"### {test_name}\n" + \
            f"#### Overall statistics\n" + \
            f"- Total time {round(total_time, 3)} (previously {round(previous_total_time, 3)})\n" + \
            f"- {total_queries} queries, (previously {prev_total_queries})\n\n" + \
            f"#### Maximum\n" + \
-           f"- Current run: {new_max} {max_diff}\n" + \
+           f"- Current run: {new_max} {max_diff_str}\n" + \
            f"- Current query: {new_max_query}\n" + \
            f"- Previous run: {prev_max}\n" + \
            f"- Previous query: {prev_max_query}\n\n" + \
            f"#### Average\n" + \
-           f"- Current run: {new_avg} {avg_diff}\n" + \
+           f"- Current run: {new_avg} {avg_diff_str}\n" + \
            f"- Previous run: {prev_avg}\n" + \
            f"{divider}"
+
+def highlight_str(str, diff, threshold):
+    if diff > threshold:
+        return f"<mark style='background-color: lightpink'>{str}</mark>"
+    elif diff < -threshold:
+        return f"<mark style='background-color: lightgreen'>{str}</mark>"
+    else:
+        return str
 
 if __name__ == "__main__":
     arg_parser = argparse.ArgumentParser(description='Script to extract query evaluation statistics')

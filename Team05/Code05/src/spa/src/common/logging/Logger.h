@@ -3,8 +3,10 @@
 #include <chrono>  // NOLINT [build/c++ 11]
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <stack>
 #include <string>
+#include <filesystem>
 
 using Clock = std::chrono::system_clock;
 using Duration = std::chrono::duration<double>;
@@ -78,19 +80,21 @@ class Logger {
 
   // Writes to stdout and a log file
   static void dual_write(const std::string& str) {
-    // autotester_path_mac = ../Code05/cmake-build-debug/src/autotester
-    // autotester_path_windows = ../Code05/out/build/x64-Debug/src/autotester
-    std::string logger_path;
+    std::filesystem::path cwd = std::filesystem::current_path();
     #ifdef _WIN32
-        logger_path = "..\\..\\..\\..\\..\\..\\Tests05\\logging_output.txt";
+      // windows autotester path: ../Code05/out/build/x64-Debug/src/autotester
+      auto output_path = cwd
+                       / "..\\..\\..\\..\\..\\..\\Tests05\\logging_output.txt";
+      std::wofstream out_file(output_path.c_str(), std::ios_base::app);
+      std::wstring wstr(str.length(), L' ');
+      std::copy(str.begin(), str.end(), str.begin());
+      out_file << wstr;
     #else
-        logger_path = "../../../../Tests05/logging_output.txt";
+      // mac autotester path: ../Code05/cmake-build-debug/src/autotester
+      auto output_path = cwd / "../../../../Tests05/logging_output.txt";
+      std::ofstream out_file(output_path.c_str(), std::ios_base::app);
+      out_file << str;
     #endif
-        std::filesystem::path cwd = std::filesystem::current_path();
-        std::filesystem::path output_path = cwd / logger_path;
-
-    std::ofstream out_file(output_path.c_str(), std::ios_base::app);
-    out_file << str;
     std::cout << str;
   }
 };

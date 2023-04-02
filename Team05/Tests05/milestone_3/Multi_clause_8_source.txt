@@ -34,3 +34,6 @@ procedure third{
 		y = y + 1;
 	}
 }
+procedure pain {
+	x = x + 1;
+}

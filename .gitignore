@@ -702,3 +702,6 @@ docs/out_analysis_local.md
 Team05/Tests05/scripts/combination_generator/tempfiles
 /Team05/Tests05/scripts/queries.txt
 /Team05/Tests05/scripts/output.txt
+
+# Logging output
+docs/logging_output.txt

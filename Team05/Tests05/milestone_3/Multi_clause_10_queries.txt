@@ -1,0 +1,5 @@
+1 - 10-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Affects*(_, _) pattern a(_, "y") such that Calls*(_, "pain") with ifs.stmt# = call.stmt# with r.varName = pn.varName such that Modifies("pain", "b") pattern ifs("c", _, _) such that Uses("third", _) such that Next(_, 4) such that Next*(_, _)
+FALSE
+5000

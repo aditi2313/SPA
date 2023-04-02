@@ -82,6 +82,7 @@ class DoubleIndexTable {
   inline const Data& get_row(Index id) const {
     return data_.at(first_index_map_.at(id));
   }
+  // TODO: delete duplicate method
   inline Data& get_row(Index id) {
       return data_.at(first_index_map_.at(id));
   }
@@ -94,6 +95,11 @@ class DoubleIndexTable {
       result.push_back(data_.at(index).get_index());
     }
     return result;
+  }
+
+  inline const std::unordered_set<int> &get_reverse_values(
+      SecondIndex reverse_id) const {
+    return second_index_map_.at(reverse_id);
   }
 
   inline bool empty() const { return data_.empty(); }

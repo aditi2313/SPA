@@ -1,11 +1,10 @@
 #include "TestWrapper.h"
 
-#include <fstream>
 #include <iostream>
 #include <sstream>
 
-#include "../../spa/src/QPS/QPS.h"
-#include "../../spa/src/SP/SourceProcessor.h"
+#include "QPS/QPS.h"
+#include "SP/SourceProcessor.h"
 
 // implementation code of WrapperFactory - do NOT modify the next 5 lines
 AbstractWrapper *WrapperFactory::wrapper = 0;

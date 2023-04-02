@@ -137,7 +137,7 @@ def format_statistic(test_name, result, previous_result):
            f"- Previous query: {prev_max_query}\n\n" + \
            f"#### Average\n" + \
            f"- Current run: {new_avg} {avg_diff_str}\n" + \
-           f"- Previous run: {prev_avg}\n" + \
+           f"- Previous run: {prev_avg}\n\n" + \
            f"{divider}"
 
 def highlight_str(str, diff, threshold):
@@ -156,11 +156,11 @@ if __name__ == "__main__":
     args = arg_parser.parse_args()
     
     if args.local:
-        out_path = os.path.join(test_dir, "out_analysis_local.md")
-        raw_out_path = os.path.join(test_dir, "out_analysis_raw_local.txt")
+        out_path = "docs/out_analysis_local.md"
+        raw_out_path = "docs/out_analysis_raw_local.txt"
     else:
-        out_path = os.path.join(test_dir, out_analysis_filename)
-        raw_out_path = os.path.join(test_dir, raw_out_analysis_filename)
+        out_path = os.path.join("docs", out_analysis_filename)
+        raw_out_path = os.path.join("docs", raw_out_analysis_filename)
     
     if args.tests:
         cwd = os.getcwd()

@@ -13,6 +13,7 @@ class ReversibleClause : public Clause {
   inline virtual void ReverseIndex(const Entity& index,
                                    const pkb::PKBReadPtr& pkb,
                                    EntitySet& results) = 0;
+
   inline void Filter(const EntitySet& lhs, const EntitySet& rhs,
                      Table::TwoSynonymRows& results_r,
                      const pkb::PKBReadPtr& pkb) override {
@@ -30,13 +31,14 @@ class ReversibleClause : public Clause {
     }
   }
 
+  // (_, syn)
   inline void WildcardFilterForRHS(
       const EntitySet &LHS,
-      const EntitySet& RHS,
+      const EntitySet &RHS,
       const pkb::PKBReadPtr &pkb,
       EntitySet& RHS_results) override {
-    EntitySet results;
     for(auto &index : RHS) {
+      EntitySet results;
       ReverseIndex(index, pkb, results);
       if (!results.empty()) {
         RHS_results.insert(index);

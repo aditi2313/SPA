@@ -43,6 +43,14 @@ class Clause {
     return;
   }
 
+  virtual bool WildcardIndex(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb) {
+    EntitySet results;
+    Index(index, pkb, results);
+    return !results.empty();
+  }
+
   virtual void Index(
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
@@ -122,10 +130,8 @@ class Clause {
       const EntitySet& LHS,
       const pkb::PKBReadPtr &pkb,
       EntitySet& LHS_results) {
-    EntitySet results;
     for(auto &index : LHS) {
-      Index(index, pkb, results);
-      if (!results.empty()) {
+      if (WildcardIndex(index, pkb)) {
         LHS_results.insert(index);
       }
     }
@@ -143,7 +149,7 @@ class Clause {
       EntitySet results;
       Index(index, pkb, results);
       for (auto &result : results) {
-        if(RHS.count(result)) {
+        if (RHS.count(result)) {
           RHS_results.insert(result);
         }
       }

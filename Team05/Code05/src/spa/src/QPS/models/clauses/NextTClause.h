@@ -21,6 +21,16 @@ class NextTClause : public Clause {
     auto res = pkb->NextT(index.get_int());
     AddList(res, results);
   }
+
+  inline bool WildcardIndex(const Entity &index,
+                            const pkb::PKBReadPtr &pkb) override {
+    // Optimisation: instead of performing BFS to get all the line numbers,
+    // if we only want to know whether there are results just check NextData
+    // since NextData has children <=> NextT results exist
+    filter::NextIndexFilter filter(index.get_int());
+    auto &reader = pkb->Next(filter);
+    return !reader.reached_end();
+  }
 };
 
 }  // namespace qps

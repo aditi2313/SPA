@@ -4,17 +4,17 @@
 #include <utility>
 
 #include "Clause.h"
-#include "ReversableClause.h"
+#include "ReversibleClause.h"
 #include "common/filter/filters/Export.h"
 
 using filter::FollowsIndexFilter;
 
 namespace qps {
 // RS between statements
-class FollowsClause : public ReversableClause {
+class FollowsClause : public ReversibleClause {
  public:
   FollowsClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : ReversableClause(ClauseType::kFollows, std::move(arg1),
+      : ReversibleClause(ClauseType::kFollows, std::move(arg1),
                          std::move(arg2)) {}
 
   inline void Index(const Entity& index, const pkb::PKBReadPtr& pkb,
@@ -26,8 +26,10 @@ class FollowsClause : public ReversableClause {
     results.insert(Entity(data.get_follows()));
   }
 
-  inline void ReverseIndex(const Entity& index, const pkb::PKBReadPtr& pkb,
-                           EntitySet& results) override {
+  inline void ReverseIndex(
+      const Entity& index,
+      const pkb::PKBReadPtr& pkb,
+      EntitySet& results) override {
     filter::ReverseFollowFilter filter(index.get_int());
     auto& reader = pkb->Follows(filter);
     WriteSecondIndexesFromReader(reader, results);

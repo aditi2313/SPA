@@ -117,6 +117,39 @@ class Clause {
     }
   }
 
+  // Handles (syn , _)
+  inline void WildcardFilterForLHS(
+      const EntitySet& LHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& LHS_results) {
+    EntitySet results;
+    for(auto &index : LHS) {
+      Index(index, pkb, results);
+      if (!results.empty()) {
+        LHS_results.insert(index);
+      }
+    }
+  }
+
+  // Handles (_, syn)
+  // ReversibleClause overrides this as
+  // for a faster implementation it has reverseIndex
+  inline virtual void WildcardFilterForRHS(
+      const EntitySet &LHS,
+      const EntitySet& RHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& RHS_results) {
+    for (auto &index : LHS) {
+      EntitySet results;
+      Index(index, pkb, results);
+      for (auto &result : results) {
+        if(RHS.count(result)) {
+          RHS_results.insert(result);
+        }
+      }
+    }
+  }
+
   inline ArgumentPtr &get_arg1() { return arg1_; }
   inline ArgumentPtr &get_arg2() { return arg2_; }
   inline ClauseType get_clause_type() { return clause_type_; }

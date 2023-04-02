@@ -5,9 +5,9 @@
 #include "Clause.h"
 
 namespace qps {
-class ReversableClause : public Clause {
+class ReversibleClause : public Clause {
  public:
-  ReversableClause(ClauseType clause_type, ArgumentPtr arg1, ArgumentPtr arg2)
+  ReversibleClause(ClauseType clause_type, ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(clause_type, std::move(arg1), std::move(arg2)) {}
 
   inline virtual void ReverseIndex(const Entity& index,
@@ -26,6 +26,20 @@ class ReversableClause : public Clause {
         if (!filter_indexes.count(entity)) continue;
         reverse ? results_r.emplace_back(entity, index)
                 : results_r.emplace_back(index, entity);
+      }
+    }
+  }
+
+  inline void WildcardFilterForRHS(
+      const EntitySet &LHS,
+      const EntitySet& RHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& RHS_results) override {
+    EntitySet results;
+    for(auto &index : RHS) {
+      ReverseIndex(index, pkb, results);
+      if (!results.empty()) {
+        RHS_results.insert(index);
       }
     }
   }

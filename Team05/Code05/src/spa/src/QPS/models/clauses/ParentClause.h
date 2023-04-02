@@ -3,17 +3,17 @@
 #include <memory>
 #include <utility>
 
-#include "ReversableClause.h"
+#include "ReversibleClause.h"
 #include "common/filter/filters/Export.h"
 
 using filter::ParentIndexFilter;
 
 namespace qps {
 // RS between statements
-class ParentClause : public ReversableClause {
+class ParentClause : public ReversibleClause {
  public:
   ParentClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : ReversableClause(
+      : ReversibleClause(
       ClauseType::kParent, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(const Entity &index,

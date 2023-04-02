@@ -78,7 +78,8 @@ class Logger {
 
   // Writes to stdout and a log file
   static void dual_write(const std::string& str) {
-    std::ofstream out_file("logging_output.txt", std::ios_base::app);
+    auto out_path = std::filesystem::current_path() / "logging_output.txt";
+    std::ofstream out_file(out_path, std::ios_base::app);
     out_file << str;
     std::cout << str;
   }

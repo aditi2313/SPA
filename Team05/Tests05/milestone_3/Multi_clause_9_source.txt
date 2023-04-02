@@ -39,5 +39,7 @@ procedure pain {
 	if (x+1 == 3) then {
 		print y;
 		read a;
+	} else {
+		print x;
 	}
 }

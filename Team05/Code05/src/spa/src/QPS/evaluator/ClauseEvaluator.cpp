@@ -105,7 +105,8 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   ArgumentPtr &arg2 = clause->get_arg2();
   if (arg1->IsWildcard() || arg2->IsWildcard()) {
     arg2->IsWildcard() ? clause->WildcardFilterForLHS(LHS, pkb_, LHS_results)
-                       : clause->WildcardFilterForRHS(LHS, RHS, pkb_, RHS_results);
+                       : clause->WildcardFilterForRHS(LHS, RHS, pkb_,
+                                                      RHS_results);
     return;
   }
 

@@ -130,7 +130,7 @@ class Clause {
       const EntitySet& LHS,
       const pkb::PKBReadPtr &pkb,
       EntitySet& LHS_results) {
-    for(auto &index : LHS) {
+    for (auto &index : LHS) {
       if (WildcardIndex(index, pkb)) {
         LHS_results.insert(index);
       }

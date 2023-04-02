@@ -82,7 +82,7 @@ class DoubleIndexTable {
   inline const Data& get_row(Index id) const {
     return data_.at(first_index_map_.at(id));
   }
-  // TODO: delete duplicate method
+  // TODO(JL): delete duplicate method
   inline Data& get_row(Index id) {
       return data_.at(first_index_map_.at(id));
   }

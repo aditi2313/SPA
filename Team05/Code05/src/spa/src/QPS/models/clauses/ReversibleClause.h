@@ -31,16 +31,23 @@ class ReversibleClause : public Clause {
     }
   }
 
+  // Returns true if ReverseIndex returns results
+  inline virtual bool ReverseWildcardIndex(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb) {
+    EntitySet results;
+    ReverseIndex(index, pkb, results);
+    return !results.empty();
+  }
+
   // (_, syn)
   inline void WildcardFilterForRHS(
       const EntitySet &LHS,
       const EntitySet &RHS,
       const pkb::PKBReadPtr &pkb,
       EntitySet& RHS_results) override {
-    for(auto &index : RHS) {
-      EntitySet results;
-      ReverseIndex(index, pkb, results);
-      if (!results.empty()) {
+    for (auto &index : RHS) {
+      if (ReverseWildcardIndex(index, pkb)) {
         RHS_results.insert(index);
       }
     }

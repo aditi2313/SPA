@@ -87,19 +87,12 @@ class DoubleIndexTable {
       return data_.at(first_index_map_.at(id));
   }
 
-  inline std::vector<Index> get_row_index2(SecondIndex id) const {
-    std::vector<Index> result;
-    int size = second_index_map_.at(id).size();
-    result.reserve(size);
+  inline std::unordered_set<Index> get_row_index2(SecondIndex id) const {
+    std::unordered_set<Index> result;
     for (int index : second_index_map_.at(id)) {
-      result.push_back(data_.at(index).get_index());
+      result.insert(data_.at(index).get_index());
     }
     return result;
-  }
-
-  inline const std::unordered_set<int> &get_reverse_values(
-      SecondIndex reverse_id) const {
-    return second_index_map_.at(reverse_id);
   }
 
   inline bool empty() const { return data_.empty(); }

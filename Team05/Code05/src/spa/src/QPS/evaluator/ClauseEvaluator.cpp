@@ -111,21 +111,17 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
   }
 
   bool is_symmetric = *arg1 == *arg2;
-  bool double_syn = arg1->IsSynonym() && arg1->IsSynonym();
 
   if (!is_symmetric) {
-    clause->Filter(
-        LHS, RHS, rows, pkb_);
+    clause->Filter(LHS, RHS, rows, pkb_);
     PopulateResults(rows, LHS_results, RHS_results);
     return;
   }
 
-  // Evaluate double synonym case
+  // Evaluate double synonym symmetric case
   for (auto &index : LHS) {
     EntitySet results;
-    // Is symmetric
-    is_symmetric ? clause->SymmetricFilter(index, pkb_, results)
-                 : clause->Filter(index, RHS, pkb_, results);
+    clause->SymmetricFilter(index, pkb_, results);
     if (results.empty()) continue;
     for (auto &entity : results) {
       rows.emplace_back(index, entity);

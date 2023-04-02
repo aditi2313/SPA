@@ -72,6 +72,7 @@ LineSet PKBRead::Affects(Line s) {
         }
         return true;
       });
+
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;
@@ -156,9 +157,9 @@ LineSet PKBRead::ReverseNextT(Line stmt) {
       [&](Line& curr) {
         if (!next_table.exists2(curr))
           return LineSet{};
-        return next_table.get_reverse_values(curr);
+        return next_table.get_row_index2(curr);
       },
-      next_table.get_reverse_values(stmt),
+      next_table.get_row_index2(stmt),
       [&](const Line& curr) {
         result.insert(curr);
         return true;

@@ -36,4 +36,8 @@ procedure third{
 }
 procedure pain {
 	x = x + 1;
+	if (x+1 == 3) then {
+		print y;
+		read a;
+	}
 }

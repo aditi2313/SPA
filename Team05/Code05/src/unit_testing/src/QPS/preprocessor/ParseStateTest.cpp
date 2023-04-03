@@ -97,8 +97,9 @@ TEST_CASE("Test SelectParseState") {
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
+    auto &selected_synonyms = query->get_selected_synonyms();
 
-    REQUIRE(query->get_selected_synonyms().at(0) == "v");
+    REQUIRE(selected_synonyms.at(0) == "v");
     REQUIRE(itr == tokens.end());
   }
 
@@ -121,8 +122,9 @@ TEST_CASE("Test SelectParseState") {
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
+    auto &selected_synonyms = query->get_selected_synonyms();
 
-    REQUIRE(query->get_selected_synonyms().at(0) == "BOOLEAN");
+    REQUIRE(selected_synonyms.at(0) == "BOOLEAN");
     REQUIRE(itr == tokens.end());
   }
 
@@ -132,8 +134,9 @@ TEST_CASE("Test SelectParseState") {
 
     auto itr = tokens.begin();
     state.Parse(tokens, itr, query);
+    auto &selected_synonyms = query->get_selected_synonyms();
 
-    REQUIRE(query->get_selected_synonyms().at(0) == "v");
+    REQUIRE(selected_synonyms.at(0) == "v");
     REQUIRE(itr == tokens.end());
   }
 
@@ -146,7 +149,9 @@ TEST_CASE("Test SelectParseState") {
     state.Parse(tokens, itr, query);
 
     std::vector<SynonymName> expected_selected_synonyms{"v1", "v2", "v3"};
-    REQUIRE(query->get_selected_synonyms() == expected_selected_synonyms);
+    auto &selected_synonyms = query->get_selected_synonyms();
+
+    REQUIRE(selected_synonyms == expected_selected_synonyms);
     REQUIRE(itr == tokens.end());
   }
 

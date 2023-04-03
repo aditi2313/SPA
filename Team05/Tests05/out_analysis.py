@@ -33,6 +33,7 @@ def process_out_xmls(out_xmls):
     global_maximum_query = ""
     global_total_time = 0
     global_query_count = 0
+    global_num_timeout = 0
 
     for out_xml in out_xmls:
         print(f"Processing {out_xml}")
@@ -43,10 +44,12 @@ def process_out_xmls(out_xmls):
         local_maximum = 0
         local_maximum_query = ""
         local_total_time = 0
+        local_num_timeout = 0
 
         for query in queries:
             if query.find("timeout") is not None:
                 time = 5000
+                local_num_timeout += 1
             else:
                 time = float(query[4].text)
             if time > local_maximum:
@@ -64,11 +67,14 @@ def process_out_xmls(out_xmls):
         result_dict[test_name] = [local_maximum, 
                                   local_total_time,
                                   local_maximum_query.replace("\n", ""),
+                                  local_num_timeout,
                                   len(queries)]
+        global_num_timeout += local_num_timeout
     
     result_dict["Global"] = [global_maximum, 
                              global_total_time, 
                              global_maximum_query.replace("\n", ""),
+                             global_num_timeout,
                              global_query_count]
     return result_dict
 
@@ -113,18 +119,20 @@ def format_statistic(test_name, result, previous_result):
     :param previous_result: the previous result of the test
     """
 
-    new_max, total_time, new_max_query, total_queries = result
+    new_max, total_time, new_max_query, new_num_timeout, total_queries = result
     new_avg = round(total_time / total_queries, 3) if total_queries else 0
     
     if not previous_result:
         previous_result = [0, 0, "", 0]
-    prev_max, previous_total_time, prev_max_query, prev_total_queries = previous_result
+    prev_max, previous_total_time, prev_max_query, prev_num_timeout, prev_total_queries = previous_result
     prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 
     max_diff = round(new_max - prev_max, 3)
-    max_diff_str = highlight_str(f"({'↑' if max_diff > 0 else '↓'} {max_diff})", max_diff, 1)
+    max_diff_str = get_diff_str(max_diff, 1)
     avg_diff = round(new_avg - prev_avg, 3)
-    avg_diff_str = highlight_str(f"({'↑' if avg_diff > 0 else '↓'} {avg_diff})", avg_diff, 0.5)
+    avg_diff_str = get_diff_str(avg_diff, 0.5)
+    num_timeout_diff = new_num_timeout - prev_num_timeout;
+    num_timeout_diff_str = get_diff_str(num_timeout_diff, 0)
 
     return f"### {test_name}\n" + \
            f"#### Overall statistics\n" + \
@@ -137,8 +145,13 @@ def format_statistic(test_name, result, previous_result):
            f"- Previous query: {prev_max_query}\n\n" + \
            f"#### Average\n" + \
            f"- Current run: {new_avg} {avg_diff_str}\n" + \
-           f"- Previous run: {prev_avg}\n\n" + \
+           f"- Previous run: {prev_avg}\n" + \
+           f"#### Timeout\n" + \
+           f"- Number of queries that timed out: {new_num_timeout} {num_timeout_diff_str}\n\n" + \
            f"{divider}"
+
+def get_diff_str(diff, threshold):
+    return highlight_str(f"({'↑' if diff > 0 else '↓'} {diff})", diff, threshold)
 
 def highlight_str(str, diff, threshold):
     if diff > threshold:

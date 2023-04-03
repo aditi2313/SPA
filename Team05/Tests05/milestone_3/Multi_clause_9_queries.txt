@@ -1,0 +1,25 @@
+1 - 9-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with p.procName = v.varName such that Next*(23, _) such that Calls*("third", _) such that Parent(_, _) such that Next(4, 21) such that Parent*(10, _) pattern w("procedure", _) such that Calls("rock", _) such that Follows(_, 9)
+FALSE
+5000
+2 - 9-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Next(_, _) pattern a(_, _"y"_) such that Calls(_, "third") such that Follows(17, 6) such that Next*(12, _) such that Parent*(1, 8) with r.varName = r.varName pattern ifs("d", _, _) such that Follows*(_, _)
+FALSE
+5000
+3 - 9-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Calls*(_, _) pattern ifs(_, _, _) with v.varName = r.varName such that Next*(20, _) pattern w(_, _) such that Uses(1, _) such that Affects*(21, _) such that Calls(_, _) such that Follows(17, 17)
+FALSE
+5000
+4 - 9-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w(_, _) such that Parent*(_, _) such that Parent(6, _) such that Follows(21, _) such that Follows*(20, 6) with call.stmt# = s.stmt# such that Uses("third", "kmn") with p.procName = call.procName pattern ifs(_, _, _)
+FALSE
+5000
+5 - 9-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Modifies("pain", _) such that Uses("pain", "x") with ifs.stmt# = a.stmt# such that Follows*(18, 2) with r.varName = pn.varName pattern w("chair", _) such that Follows(8, 16) such that Parent*(22, 23) such that Parent(_, _)
+FALSE
+5000

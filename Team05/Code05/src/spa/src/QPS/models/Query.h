@@ -48,6 +48,11 @@ class Query {
   // Elem: Synonym | AttrRef
   inline void add_selected_elem(Elem elem) {
     selected_elems_.push_back(elem);
+    SynonymName syn_name = elem;
+    if (AttrRef::is_attr_ref(elem)) {
+      syn_name = AttrRef::split_attr_ref(elem).first;
+    }
+    selected_synonyms_.push_back(syn_name);
   }
 
   // A selected elem is an elem that comes after `Select`
@@ -60,16 +65,8 @@ class Query {
   // If elem is a Synonym, just add elem
   // Else elem is an attrRef, and we split attrRef to
   // add the synonym portion
-  inline std::vector<std::string> get_selected_synonyms() {
-    std::vector<std::string> synonyms;
-    for (auto &elem : selected_elems_) {
-      if (AttrRef::is_attr_ref(elem)) {
-        synonyms.push_back(AttrRef::split_attr_ref(elem).first);
-      } else {
-        synonyms.push_back(elem);
-      }
-    }
-    return synonyms;
+  inline std::vector<std::string> &get_selected_synonyms() {
+    return selected_synonyms_;
   }
 
   inline void set_boolean_query_to_true() {
@@ -106,6 +103,7 @@ class Query {
   std::vector<SynonymPtr> synonym_declarations_;
   // Elem = Synonym | AttrRef
   std::vector<Elem> selected_elems_;
+  std::vector<SynonymName> selected_synonyms_;
   std::vector<ClausePtr> clauses_;
 };
 

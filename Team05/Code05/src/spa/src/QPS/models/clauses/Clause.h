@@ -38,8 +38,7 @@ class Clause {
 
   virtual void Preprocess(
       pkb::PKBReadPtr &pkb,
-      Table &query_table,
-      bool &is_table_initialized) {
+      Table &query_table) {
     return;
   }
 

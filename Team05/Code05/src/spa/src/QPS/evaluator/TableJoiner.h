@@ -10,7 +10,7 @@ class TableJoiner {
  public:
   static Table Join(Table &LHS, Table &RHS);
 
-  static std::unordered_set<SynonymName> IntersectColumns(
+  static std::vector<SynonymName> IntersectColumns(
       std::vector<SynonymName> &LHS,
       std::vector<SynonymName> &RHS);
 

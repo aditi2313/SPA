@@ -5,6 +5,9 @@
 #include <vector>
 
 namespace qps {
+
+std::unordered_set<SynonymName> IntersectCols(std::vector<SynonymName> &LHS,
+                                              std::vector<SynonymName> &RHS);
 // Join two tables on common columns
 // For example, if LHS and RHS share the two columns
 // Synonym "a" and Synonym "v",
@@ -16,7 +19,7 @@ Table TableJoiner::Join(Table &LHS, Table &RHS) {
   if (!LHS.is_initialized_) return RHS;
   if (!RHS.is_initialized_) return LHS;
 
-  auto join_columns = IntersectColumns(
+  auto join_columns = IntersectCols(
       LHS.get_columns(), RHS.get_columns());
   if (join_columns.empty()) {
     return CrossProduct(LHS, RHS);
@@ -66,7 +69,9 @@ Table TableJoiner::Intersect(
     row_map[row].push_back(i);
   }
 
-  for (int i = 0, N2 = larger_table.Size(); i < N2; ++i) {
+  // TODO(Gab) POD lel
+  for (int i = 0, N2 = larger_table.Size(); i < 
+N2; ++i) {
     Table::RowEntity row;
     for (auto &syn : join_columns) {
       row.push_back(larger_table.Index(i, syn));
@@ -116,8 +121,24 @@ std::vector<SynonymName> TableJoiner::UnionColumns(
 // Given two list of columns, return a list of columns
 // that is the intersection of all the column names that
 // must appear in both lists
-std::unordered_set<SynonymName> TableJoiner::IntersectColumns(
+std::vector<SynonymName> TableJoiner::IntersectColumns(
     std::vector<SynonymName> &LHS,
+    std::vector<SynonymName> &RHS) {
+  std::unordered_set<SynonymName> cols_set;
+  std::vector<SynonymName> results;
+  for (auto &col : LHS) {
+    cols_set.insert(col);
+  }
+  for (auto &col : RHS) {
+    if (cols_set.count(col)) {
+      results.push_back(col);
+    }
+  }
+  return results;
+}
+
+// TODO(Gab) DRY
+std::unordered_set<SynonymName> IntersectCols(std::vector<SynonymName> &LHS,
     std::vector<SynonymName> &RHS) {
   std::unordered_set<SynonymName> cols_set;
   std::unordered_set<SynonymName> results;
@@ -130,5 +151,8 @@ std::unordered_set<SynonymName> TableJoiner::IntersectColumns(
     }
   }
   return results;
+
+
 }
+
 }  // namespace qps

@@ -25,8 +25,8 @@ class AffectsClause : public ReversibleClause {
   inline void ReverseIndex(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
-    auto affecting_line = pkb->ReverseAffects(index.get_int());
-    results.insert(Entity(affecting_line));
+    auto affecting_lines = pkb->ReverseAffects(index.get_int());
+    AddList(affecting_lines, results);
   }
 };
 

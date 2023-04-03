@@ -127,7 +127,7 @@ class PKBRead {
   }
 
   LineSet Affects(Line);
-  Line ReverseAffects(Line);
+  LineSet ReverseAffects(Line);
 
   LineSet AffectsT(Line);
 

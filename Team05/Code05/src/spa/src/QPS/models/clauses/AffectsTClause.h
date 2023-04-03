@@ -21,6 +21,14 @@ class AffectsTClause : public Clause {
     auto affectsT_lines = pkb->AffectsT(index.get_int());
     AddList(affectsT_lines, results);
   }
+
+  inline bool WildcardIndex(const Entity &index,
+                            const pkb::PKBReadPtr &pkb) override {
+    // Optimisation: check if Affects return anything
+    EntitySet results;
+    Index(index, pkb, results);
+    return results.empty();
+  }
 };
 
 }  // namespace qps

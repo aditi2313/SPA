@@ -31,13 +31,11 @@ struct GraphSearch {
     std::unordered_set<Node> visited;
     for (auto &node : intial_children) {
       frontier.push(node);
+      visited.insert(node);
     }
     while (!frontier.empty()) {
       auto &c = frontier.front();
       frontier.pop();
-      if (visited.count(c)) {
-        continue;
-      }
       visited.insert(c);
       if (!add_result(c)) {
         continue;
@@ -46,6 +44,7 @@ struct GraphSearch {
       for (auto &v : get_children(c)) {
         if (visited.count(v)) continue;
         frontier.push(v);
+        visited.insert(v);
       }
     }
   }

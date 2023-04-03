@@ -40,41 +40,44 @@ LineSet PKBRead::Affects(Line s) {
     return {};
   }
   LineSet empt{};
-  auto& table = relation_table_->next_d_table_;
-  // TODO(LOD)
-  auto& modified = relation_table_->assign_table_.get_row(s);
-  auto& modified_var = modified.get_variable();
-  auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
+  auto &table = relation_table_->next_d_table_;
+  auto &modified = relation_table_->assign_table_.get_row(s);
+  auto &modified_var = modified.get_variable();
+  auto &n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
   util::GraphSearch<Line, LineSet>::BFS(
-      [&](Line& v) {
+      [&](Line &v) {
         if (!table.exists(v))
           return LineSet{};
-        auto& next = table.get_row(v);
+        auto &next = table.get_row(v);
         return next.get_next_im_list();
       },
       n_im_l,
-      [&](const Line& curr) {
-        // Not an assign statement, skip
-        if (!relation_table_->assign_.count(curr)) return true;
+      [&](const Line &curr) {
         if (relation_table_->uses_table_.exists(curr)) {
-          auto& data = relation_table_->uses_table_.get_row(curr);
+          auto &data = relation_table_->uses_table_.get_row(curr);
           // check that this assign stmt uses the variable
-          if (data.get_variables().count(modified_var)) {
+          if (data.get_variables().count(modified_var) &&
+              relation_table_->assign_.count(curr)) {
             result.insert(curr);
           }
         }
         // if this stmt modifies the variable then don't do anything
-        auto curr_modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
-        return curr_modified_var != modified_var;
+        if (relation_table_->modifies_table_.exists(curr) &&
+            !IsContainerStmt(curr)) {
+          auto &data = relation_table_->modifies_table_.get_row(curr);
+          if (data.get_variables().count(modified_var)) {
+            return false;
+          }
+        }
+        return true;
       });
-
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;
 }
 
-Line PKBRead::ReverseAffects(Line stmt) {
+LineSet PKBRead::ReverseAffects(Line stmt) {
   Line answer;
   auto& next_table = relation_table_->next_d_table_;
 
@@ -84,9 +87,10 @@ Line PKBRead::ReverseAffects(Line stmt) {
     // Next*(_, s) is false
     return {};
   }
+  LineSet results;
   // TODO(LOD)
   // Used variables
-  auto& used_vars = relation_table_->uses_table_.get_row(stmt).get_variables();
+  auto used_vars = relation_table_->uses_table_.get_row(stmt).get_variables();
 
   util::GraphSearch<Line, LineSet>::BFS(
       [&](Line& v) {
@@ -96,18 +100,26 @@ Line PKBRead::ReverseAffects(Line stmt) {
       },
       next_table.get_row_index2(stmt),
       [&](const Line& curr) {
-        // TODO(LOD)
-        // Not an assign statement, skip
-        if(!relation_table_->assign_.count(curr)) return true;
-        auto modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
-        if (used_vars.count(modified_var)) {
-          answer = curr;  // Found reverse Affects
-          return false;  // No need to continue, there can only be one answer
+        if (relation_table_->assign_.count(curr)) {
+          auto modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
+          // check that this assign stmt uses the variable
+          if (used_vars.count(modified_var)) {
+            results.insert(curr);
+          }
         }
-        return true;
+
+        if (relation_table_->modifies_table_.exists(curr) &&
+            !IsContainerStmt(curr)) {
+          // TODO(LOD)
+          auto modified_vars = relation_table_->modifies_table_.get_row(curr).get_variables();
+          for(auto &modified_var : modified_vars) {
+            used_vars.erase(used_vars.find(modified_var));
+          }
+        }
+        return !used_vars.empty();
       });
 
-  return answer;
+  return results;
 }
 
 LineSet PKBRead::AffectsT(Line s) {

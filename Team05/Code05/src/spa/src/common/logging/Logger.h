@@ -16,7 +16,9 @@ namespace logging {
 class Logger {
  public:
   static void ResetClock() {
-    if (disabled_) return;
+    #ifdef NDEBUG
+      return;
+    #endif
     if (!times_.empty()) times_.pop();
     times_.push(Clock::now());
   }
@@ -30,46 +32,57 @@ class Logger {
   /// </summary>
   /// <param name="desc"></param>
   static void LogAndStop(std::string desc) {
-    if (disabled_) return;
-    open();
+    #ifdef NDEBUG
+      return;
+    #endif
     Clock::time_point curr = Clock::now();
     Duration interval = curr - times_.top();
     times_.pop();
     times_.push(curr);
-    out << desc << " time: " << interval.count() << " s" << std::endl;
-    close();
+    dual_write(desc + " time: " + std::to_string(interval.count()) + " s\n");
   }
 
   static void EnterSection(std::string desc) {
-    if (disabled_) return;
-    open();
+    #ifdef NDEBUG
+      return;
+    #endif
     times_.push(Clock::now());
     times_.push(Clock::now());
-    out << kSection << "Enter Section: " << desc << kSection << std::endl;
-    close();
+    dual_write(kSection + "Enter Section: " + desc + kSection + "\n");
   }
 
   static void ExitSection(std::string desc) {
-    if (disabled_) return;
-    open();
+    #ifdef NDEBUG
+      return;
+    #endif
     times_.pop();
     auto curr = Clock::now();
     Duration interval = curr - times_.top();
     times_.pop();
-    out << kSection << "Exit Section: " << desc
-        << " With interval: " << interval.count() << kSection << std::endl;
+    dual_write(kSection + "Exit Section: " + desc + " With interval: "
+               + std::to_string(interval.count()) + kSection + "\n");
+  }
 
-    close();
+  // Used to separate runs to easily see in the log output
+  static void PrintDivider() {
+    #ifdef NDEBUG
+      return;
+    #endif
+    dual_write(kDivider);
   }
 
  private:
-  static void open() { out.open("Logger_out.txt", std::ios::app); }
-
-  static void close() { out.close(); }
-  inline static bool disabled_ = false;
   inline static std::stack<Clock::time_point> times_;
-  inline static const char kSection[] = " <===========================> ";
-  inline static std::ofstream out;
+  inline static std::string kSection = " <===========================> ";
+  inline static std::string kDivider = "\n----\n\n";
+
+  // Writes to stdout and a log file
+  static void dual_write(const std::string& str) {
+    auto out_path = "docs/logging_output.txt";
+    std::ofstream out_file(out_path, std::ios_base::app);
+    out_file << str;
+    std::cout << str;
+  }
 };
 
 }  // namespace logging

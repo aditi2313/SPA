@@ -1,0 +1,39 @@
+procedure rock{
+	while ((v1*rapid+someVariable/v3/if<b/ils*varx-if+if/someVariable)&&(procedure>=b/constants*someVariable/c+someString)){
+		v1=v1/d-v2/procedure*ils-b-someString*ils-d+rapid;
+		constants=varx+ils+varx*variables-varx-if/d+v3;
+		v3=someString-procedure*constants*b*if+ils-v2-someString;
+		someVariable=if-someString/rapid-varx+d*v3;
+		read rapid;
+		constants=someVariable-if/procedure*procedure*if;
+		b=variables+someString-procedure+b+ils+c/v2*rapid*c;
+		variables=rapid/procedure-if+b+b/c-procedure/someString/constants*constants-procedure;
+		someString=v3+procedure+a-v3/someString+b*someVariable;
+		print rapid;
+	}
+	call pain;
+}
+
+procedure third{
+	if ((ganesh<NUS/ganesh)||(chair+NUS>=switch)) then {
+		monitorarm=monitorarm/ganesh+chair-aircon;
+		while ((chair<aircon*NUS)&&(NUS/switch>=ganesh+aircon)) {
+			if ((monitorarm-ganesh<monitorarm-switch)||(switch>=switch)) then {
+				if ((switch*chair<monitorarm)||(NUS>=monitorarm)) then {
+					NUS=NUS/aircon*switch-chair+monitorarm-monitorarm;
+					print NUS;
+				} else {
+					print kmn;				
+				}
+			} else {
+				x = x + 1;
+			}
+			read aircon;
+		}
+	} else {
+		y = y + 1;
+	}
+}
+procedure pain {
+	x = x + 1;
+}

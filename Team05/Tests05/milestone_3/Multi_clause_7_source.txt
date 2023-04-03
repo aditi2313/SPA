@@ -1,0 +1,51 @@
+procedure name {
+	if ((d-d-d*d+c/a*d-c<c*a+c/d+b*d/c+d-a/c*c) && (d+b/c*c*c-d*a+a/c-c+a>=d/a-c+a/c+c*c-d)) then {
+		read a;
+	} else {
+		c=d*c/d+a/d+c-b/b;
+		b=b*c+d/a-c*b+b*a;
+		b = b+1;
+		print a;
+		x = x+1;
+		x = x+2;
+		x = x+3;
+		x = x+4;
+	}
+}
+procedure first {
+	if (x == 2) then {
+		while(x == 4) {
+			x = x + 1;
+		}
+		v = 1 + s + s + d;
+		g = 2 * x;
+	} else {
+		print myname;
+		print myname;
+	}
+	call second;
+}
+
+procedure second {
+	print x;
+}
+procedure third{
+	if ((ganesh<NUS/ganesh)||(chair+NUS>=switch)) then {
+		monitorarm=monitorarm/ganesh+chair-aircon;
+		while ((chair<aircon*NUS)&&(NUS/switch>=ganesh+aircon)) {
+			if ((monitorarm-ganesh<monitorarm-switch)||(switch>=switch)) then {
+				if ((switch*chair<monitorarm)||(NUS>=monitorarm)) then {
+					NUS=NUS/aircon*switch-chair+monitorarm-monitorarm;
+					print NUS;
+				} else {
+					print kmn;				
+				}
+			} else {
+				x = x + 1;
+			}
+			read aircon;
+		}
+	} else {
+		y = y + 1;
+	}
+}

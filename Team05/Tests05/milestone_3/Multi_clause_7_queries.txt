@@ -1,0 +1,285 @@
+1 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Follows*(2, 22) such that Affects(_, _) with w.stmt# = ifs.stmt# pattern w("ganesh", _) pattern ifs(_, _, _) such that Follows(18, _) such that Calls(_, _)
+FALSE
+5000
+2 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v such that Affects*(_, _) such that Modifies(21, v) such that Next*(_, 2) such that Calls*(_, _) such that Follows*(w, _) pattern ifs("switch", _, _) such that Calls(p, _)
+monitorarm
+5000
+3 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Next(_, _) such that Calls*(_, _) such that Parent(15, 22) such that Calls(_, _) such that Affects*(_, 15) such that Modifies("third", _) such that Affects(5, 19)
+FALSE
+5000
+4 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select pn pattern a(v, _) such that Parent*(_, _) such that Follows*(_, 18) pattern w(_, _) such that Parent(_, pn) with r.varName = r.varName with s.stmt# = a.stmt#
+16,17,26,27,6
+5000
+5 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w("b", _) such that Parent*(14, 19) such that Parent(_, _) pattern a(_, "v") pattern ifs(_, _, _) such that Follows*(23, _) such that Affects*(6, 10)
+FALSE
+5000
+6 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w(_, _) with pn.varName = p.procName with pn.stmt# = pn.stmt# such that Calls("second", _) such that Affects(3, _) such that Next(_, _) such that Calls*(_, "first")
+FALSE
+5000
+7 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select s pattern ifs("d", _, _) pattern w(_, _) such that Affects(8, a) such that Affects*(s, _) such that Parent*(_, r) such that Next(_, w) with pn.varName = v.varName
+13,21,25,28,3,4,7,8,9
+5000
+8 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Parent(_, 1) such that Affects*(3, _) such that Calls(_, "first") such that Calls*("first", _) such that Uses(6, "y") such that Follows(19, 10) with s.stmt# = s.stmt#
+FALSE
+5000
+9 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Modifies("name", "y") such that Affects(19, 23) such that Affects*(12, 8) with p.procName = p.procName pattern a("d", _"chair"_) with s.stmt# = a.stmt# such that Parent*(_, 14)
+FALSE
+5000
+10 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select s pattern w(v, _) such that Parent(s, _) such that Uses(20, v) such that Follows*(_, 17) such that Next*(21, a) such that Affects(_, _) such that Next(_, 12)
+1,11,12,20,22,23,24
+5000
+11 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern a("d", _"aircon"_) such that Follows*(_, _) such that Affects(7, 1) pattern ifs(_, _, _) pattern w(_, _) such that Next(_, 22) such that Parent*(16, _)
+FALSE
+5000
+12 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with call.stmt# = w.stmt# such that Follows(13, _) such that Next*(_, 4) such that Next(24, 13) such that Uses(14, "d") such that Follows*(18, _) such that Parent(_, _)
+FALSE
+5000
+13 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Follows*(_, 21) such that Affects(21, _) pattern ifs(_, _, _) such that Next(_, 23) with call.procName = p.procName such that Calls("third", "third") such that Calls*("name", "name")
+FALSE
+5000
+14 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern a(_, _) such that Follows*(_, _) with r.varName = pn.varName such that Calls(_, "third") pattern ifs("v", _, _) pattern w(_, _) such that Next*(1, _)
+FALSE
+5000
+15 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select p pattern ifs(v, _, _) such that Calls(_, p) such that Modifies(11, _) such that Follows(_, _) such that Parent*(_, _) such that Calls*(_, _) pattern w("ganesh", _)
+second
+5000
+16 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern ifs("d", _, _) with p.procName = call.procName such that Parent(_, _) with a.stmt# = r.stmt# such that Parent*(_, 7) pattern w(_, _) such that Next(2, _)
+FALSE
+5000
+17 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with v.varName = r.varName such that Follows*(_, 16) pattern a("monitorarm", "v") such that Modifies("first", _) pattern w("x", _) such that Parent(16, _) such that Next(_, 8)
+FALSE
+5000
+18 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with c.value = r.stmt# such that Affects*(_, 14) such that Next(_, _) such that Calls(_, "third") pattern a("a", _) such that Affects(_, _) such that Parent(_, _)
+FALSE
+5000
+19 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern ifs("d", _, _) such that Affects(_, _) pattern w(_, _) such that Affects*(_, 12) such that Modifies(5, _) such that Parent(_, _) such that Parent*(4, _)
+FALSE
+5000
+20 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select ifs such that Follows(_, 14) such that Calls(_, p) such that Parent(ifs, _) such that Next(_, pn) such that Modifies(15, v) such that Next*(s, 17) pattern w("ganesh", _)
+1,11,20,23,24
+5000
+21 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern ifs("aircon", _, _) such that Parent*(_, _) such that Affects(_, 12) such that Calls(_, "third") with r.stmt# = call.stmt# such that Calls*(_, "name") pattern a("ganesh", "a")
+FALSE
+5000
+22 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select r pattern a(_, _) such that Follows(_, _) such that Next*(pn, r) with s.stmt# = w.stmt# pattern w(_, _) such that Modifies(p, _) such that Calls(p, _)
+29
+5000
+23 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select a such that Next*(_, a) with p.procName = call.procName with s.stmt# = a.stmt# such that Affects(_, _) such that Follows*(_, _) such that Affects*(_, _) pattern w("chair", _)
+10,13,14,15,21,25,28,3,30,4,5,7,8,9
+5000
+24 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select p such that Parent*(_, 12) such that Uses(p, "kmn") such that Follows*(w, _) pattern w(_, _) such that Next(_, 9) with w.stmt# = s.stmt# with r.varName = v.varName
+third
+5000
+25 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Follows(4, _) with r.varName = p.procName such that Affects(3, 12) pattern w("c", _) such that Modifies("third", _) pattern ifs(_, _, _) such that Calls*(_, _)
+FALSE
+5000
+26 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Next(4, _) such that Calls(_, _) pattern w("monitorarm", _) such that Follows(_, _) pattern a(_, "NUS") with pn.varName = p.procName such that Uses(15, _)
+FALSE
+5000
+27 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select a pattern ifs(_, _, _) such that Next(ifs, _) such that Follows(pn, _) such that Calls(p, _) such that Parent*(12, _) such that Uses(10, _) such that Affects(a, 8)
+7
+5000
+28 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern ifs("d", _, _) such that Uses("second", _) pattern a(_, _) such that Calls(_, "name") with a.stmt# = pn.stmt# such that Affects*(_, 6) with v.varName = p.procName
+FALSE
+5000
+29 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with w.stmt# = s.stmt# such that Modifies("third", _) such that Affects(_, 2) pattern ifs("y", _, _) with r.varName = pn.varName pattern a("x", _) such that Parent(19, _)
+FALSE
+5000
+30 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v such that Calls*(_, _) such that Modifies(7, v) such that Uses(ifs, "x") such that Parent*(23, pn) such that Parent(_, 22) with s.stmt# = w.stmt# pattern ifs(v, _, _)
+x
+5000
+31 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select pn such that Calls(_, _) such that Calls*(_, p) pattern a(_, _) such that Parent*(_, s) with v.varName = pn.varName such that Follows(_, pn) pattern w(v, _)
+26
+5000
+32 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with r.varName = call.procName such that Affects(_, 17) pattern w("switch", _) such that Calls*(_, _) such that Calls("third", _) such that Follows*(13, _) such that Next(20, 1)
+FALSE
+5000
+33 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with r.varName = p.procName pattern a(_, "aircon") such that Affects(16, _) such that Uses(3, _) such that Follows(_, _) such that Modifies("second", "g") such that Follows*(_, 14)
+FALSE
+5000
+34 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select p with a.stmt# = a.stmt# such that Next*(1, 4) pattern ifs(_, _, _) such that Uses(p, "myname") such that Affects(_, _) such that Next(s, _) such that Follows(_, 18)
+first
+5000
+35 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w(_, _) such that Affects*(_, _) such that Follows*(12, _) with r.varName = v.varName such that Parent*(_, _) pattern a("y", "y") such that Affects(20, _)
+FALSE
+5000
+36 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Uses("second", "myname") such that Follows*(17, 2) such that Affects*(20, _) pattern a("monitorarm", _) such that Next*(4, _) with pn.stmt# = a.stmt# pattern w(_, _)
+FALSE
+5000
+37 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w(_, _) such that Affects*(9, _) with v.varName = v.varName pattern ifs("a", _, _) such that Modifies("second", _) pattern a(_, _"a"_) with ifs.stmt# = a.stmt#
+FALSE
+5000
+38 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with pn.stmt# = pn.stmt# such that Affects*(2, _) such that Calls("third", _) such that Next*(_, 5) such that Follows(22, 24) such that Next(6, _) pattern a(_, _)
+FALSE
+5000
+39 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select ifs such that Modifies(ifs, _) such that Parent(_, 7) with s.stmt# = r.stmt# with p.procName = call.procName such that Parent*(24, _) pattern a(_, _"b"_) such that Calls*(_, "second")
+1,11,20,23,24
+5000
+40 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v pattern w(v, _) such that Next(w, _) such that Follows*(_, 14) such that Next*(1, _) with s.stmt# = call.stmt# such that Uses(3, "b") such that Parent*(_, _)
+NUS,aircon,chair,ganesh,switch,x
+5000
+41 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Affects*(_, 19) pattern ifs(_, _, _) such that Follows*(19, 4) such that Follows(16, _) pattern w("monitorarm", _) with c.value = pn.stmt# such that Uses(23, "myname")
+FALSE
+5000
+42 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Next(1, 18) pattern a(_, _"y"_) such that Modifies(19, "monitorarm") such that Affects(5, 20) such that Follows*(19, _) pattern ifs(_, _, _) such that Uses(21, _)
+FALSE
+5000
+43 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v such that Modifies(p, v) pattern w("ganesh", _) pattern a("monitorarm", _"chair"_) such that Calls*(_, "second") such that Parent*(_, 23) such that Affects(_, _) such that Next(_, 14)
+NUS,a,aircon,b,c,g,monitorarm,v,x,y
+5000
+44 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with r.varName = v.varName with call.stmt# = s.stmt# such that Next*(4, 13) such that Follows*(_, 9) such that Uses(17, "switch") pattern ifs("monitorarm", _, _) such that Affects(24, 7)
+FALSE
+5000
+45 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Follows(_, _) with p.procName = v.varName such that Next*(4, _) with ifs.stmt# = call.stmt# such that Next(7, _) such that Affects(6, 1) such that Parent*(_, _)
+FALSE
+5000
+46 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern w("x", _) such that Modifies(10, "switch") such that Uses(4, _) pattern a(_, _"b"_) such that Calls*("first", "name") such that Next(_, 21) with p.procName = r.varName
+FALSE
+5000
+47 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN pattern a("myname", "myname") with v.varName = v.varName pattern w(_, _) such that Follows*(_, 1) such that Next(_, 10) such that Affects(3, 8) such that Affects*(5, 1)
+FALSE
+5000
+48 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN with r.varName = r.varName such that Affects*(_, 18) such that Modifies(15, _) pattern ifs("kmn", _, _) pattern w(_, _) pattern a(_, _"a"_) such that Calls*("first", _)
+FALSE
+5000
+49 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select p with call.stmt# = call.stmt# with call.procName = call.procName such that Uses(call, _) such that Calls(_, p) such that Affects(_, _) pattern a(v, _"a"_) such that Next*(ifs, _)
+second
+5000
+50 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Parent*(20, 3) pattern a(_, _) pattern ifs(_, _, _) such that Affects*(_, 3) such that Affects(_, 1) with v.varName = v.varName such that Follows*(23, 18)
+FALSE
+5000
+51 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v such that Follows(8, _) such that Uses(w, _) such that Modifies(p, "v") such that Next(4, _) such that Parent*(_, a) pattern w(v, _) pattern ifs(v, _, _)
+NUS,chair,ganesh,switch,x
+5000
+52 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Next*(_, _) such that Follows(_, 22) with pn.stmt# = w.stmt# pattern ifs("aircon", _, _) such that Calls*("third", _) pattern w("g", _) such that Next(_, _)
+FALSE
+5000
+53 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Uses(1, "monitorarm") pattern a(_, "g") such that Parent(4, 9) such that Next*(_, 14) pattern ifs("g", _, _) such that Follows(3, 24) such that Affects*(21, _)
+FALSE
+5000
+54 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select pn such that Parent*(22, s) with r.varName = r.varName pattern a(_, _) such that Calls*(_, "second") such that Uses(pn, _) pattern ifs(_, _, _) such that Parent(22, _)
+16,17,19,26,27,6
+5000
+55 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v with pn.varName = v.varName pattern w(_, _) such that Affects(_, 10) such that Modifies(p, _) with r.stmt# = c.value pattern ifs(v, _, _) such that Uses("first", v)
+x
+5000
+56 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select BOOLEAN such that Follows(15, _) such that Affects*(_, 16) such that Next*(_, _) with c.value = w.stmt# pattern a("kmn", _"a"_) such that Parent(4, 4) such that Affects(_, _)
+FALSE
+5000
+57 - 7-clause query
+stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
+Select v such that Next(_, _) such that Uses("second", _) such that Parent*(_, _) such that Calls(_, _) pattern ifs(v, _, _) pattern w(_, _) such that Follows(a, _)
+NUS,a,b,c,chair,d,ganesh,monitorarm,switch,x
+5000

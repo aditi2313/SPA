@@ -12,6 +12,9 @@ namespace qps {
 // If there are no common columns, the result is
 // essentially the cross product of the two tables.
 Table TableJoiner::Join(Table &LHS, Table &RHS) {
+  if (!LHS.is_initialized_) return RHS;
+  if (!RHS.is_initialized_) return LHS;
+
   auto join_columns = IntersectColumns(
       LHS.get_columns(), RHS.get_columns());
   if (join_columns.empty()) {

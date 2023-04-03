@@ -66,7 +66,8 @@ void Validator::ValidateSynonymsDeclaredExactlyOnce(QueryPtr &query) {
 
 // Checks if all synonym names used are declared.
 void Validator::ValidateSynonymsUsedAreDeclared(QueryPtr &query) {
-  for (auto syn_name : query->get_selected_synonyms()) {
+  auto &selected_synonyms = query->get_selected_synonyms();
+  for (auto syn_name : selected_synonyms) {
     if (!query->is_synonym_name_declared(syn_name)) {
       throw PqlSemanticErrorException("Tried to Select an undeclared synonym");
     }

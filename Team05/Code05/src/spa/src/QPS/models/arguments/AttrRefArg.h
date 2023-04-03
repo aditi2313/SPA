@@ -56,8 +56,7 @@ class AttrRefArg : public SynonymArg {
 
   void UpdateTableWithAttrValue(
       pkb::PKBReadPtr &pkb,
-      Table &query_table,
-      bool &is_table_initialized);
+      Table &query_table);
 
   inline std::ostream &dump(std::ostream &str) const override {
     str << "AttrRef: " << syn_name_;

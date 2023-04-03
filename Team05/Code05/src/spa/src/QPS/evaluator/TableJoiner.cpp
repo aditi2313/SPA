@@ -75,27 +75,26 @@ Table TableJoiner::Intersect(
     for (auto &syn : join_columns) {
       row.push_back(larger_table.Index(i, syn));
     }
-    if (row_map.count(row)) {
-      Table::Row new_row;
-      auto &rows = row_map.at(row);
-      for (auto &j : join_columns) {
-        new_row.emplace_back(j, larger_table.Index(i, j));
+    if (!row_map.count(row)) continue;
+    Table::Row new_row;
+    auto &rows = row_map.at(row);
+    for (auto &j : join_columns) {
+      new_row.emplace_back(j, larger_table.Index(i, j));
+    }
+    for (auto &r : rows) {
+      Table::Row new_row_inner = new_row;
+      int ctr = -1;
+      for (auto &inner_col : smaller_table.get_columns()) {
+        ctr++;
+        if (join_columns.count(inner_col)) continue;
+        new_row_inner.emplace_back(inner_col,
+          smaller_table.Index(r, inner_col));
       }
-      for (auto &r : rows) {
-        Table::Row new_row_inner = new_row;
-        int ctr = -1;
-        for (auto &inner_col : smaller_table.get_columns()) {
-          ctr++;
-          if (join_columns.count(inner_col)) continue;
-          new_row_inner.emplace_back(inner_col,
-            smaller_table.Index(r, inner_col));
-        }
-        for (auto &col : larger_table.get_columns()) {
-          if (join_columns.count(col)) continue;
-          new_row_inner.emplace_back(col, larger_table.Index(i, col));
-        }
-        new_table.add_row(new_row_inner);
+      for (auto &col : larger_table.get_columns()) {
+        if (join_columns.count(col)) continue;
+        new_row_inner.emplace_back(col, larger_table.Index(i, col));
       }
+      new_table.add_row(new_row_inner);
     }
   }
   return new_table;

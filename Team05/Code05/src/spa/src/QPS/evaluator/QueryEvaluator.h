@@ -20,13 +20,11 @@ class QueryEvaluator {
 
  private:
   void UpdateTableWithElem(QueryPtr &query, Elem elem);
-  bool EvaluateClause(ClausePtr &clause);
+  bool EvaluateClause(ClausePtr &clause, Table &group_table);
   QueryResultPtr BuildResult(QueryPtr &query);
 
   pkb::PKBReadPtr &pkb_;
-  Table table_;
+  Table query_table_;
   ClauseEvaluator clause_evaluator_;
-
-  bool has_table_been_intialized_ = false;
 };
 }  // namespace qps

@@ -15,14 +15,15 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
   pkb_->ClearCache();
 
   auto &clauses = query->get_clauses();
-  has_table_been_intialized_ = false;
-
   // Order of evaluation
   auto order = ClauseOptimiser::GroupClauses(clauses);
+  auto &query_columns = query->get_selected_synonyms();
 
   for (auto &group : order) {
+    Table group_table;  // Use own intermediate table for each group
     for (auto &clause_index : group) {
-      bool res = EvaluateClause(clauses.at(clause_index));
+      bool res = EvaluateClause(
+          clauses.at(clause_index), group_table);
 
       if (!res) {
         // Clause is false, can immediately return empty result.
@@ -31,37 +32,42 @@ QueryResultPtr QueryEvaluator::EvaluateQuery(QueryPtr &query) {
                : ListQueryResult::BuildEmpty();
       }
     }
+
+    auto selected_columns = TableJoiner::IntersectColumns(
+        group_table.get_columns(), query_columns);
+    Table selected_table;
+    group_table.Select(selected_columns, selected_table);
+
+    if (!selected_table.Empty()) {
+      query_table_ = TableJoiner::Join(query_table_, selected_table);
+    }
   }
 
   return BuildResult(query);
 }
 
-bool QueryEvaluator::EvaluateClause(ClausePtr &clause) {
-  clause->Preprocess(
-      pkb_, table_, has_table_been_intialized_);
+bool QueryEvaluator::EvaluateClause(
+    ClausePtr &clause, Table &group_table) {
+  clause->Preprocess(pkb_, group_table);
 
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
   EntitySet LHS, RHS;
   Table clause_table;
 
-  arg1->InitializeEntities(table_, pkb_, LHS);
-  arg2->InitializeEntities(table_, pkb_, RHS);
+  arg1->InitializeEntities(group_table, pkb_, LHS);
+  arg2->InitializeEntities(group_table, pkb_, RHS);
 
-  ClauseWrapper clause_evaluator_state(
+  ClauseWrapper clause_wrapper(
       clause, clause_table, LHS, RHS);
 
   bool res = clause_evaluator_.EvaluateClause(
-      clause_evaluator_state);
+      clause_wrapper);
 
   if (!clause_table.Empty()) {
-    if (!has_table_been_intialized_) {
-      table_ = clause_table;
-      has_table_been_intialized_ = true;
-    } else {
-      table_ = TableJoiner::Join(table_, clause_table);
-    }
-    if (table_.Empty()) return false;
+    group_table = TableJoiner::Join(group_table, clause_table);
+
+    if (group_table.Empty()) return false;
   }
 
   return res;
@@ -75,12 +81,12 @@ QueryResultPtr QueryEvaluator::BuildResult(QueryPtr &query) {
   // Join with selected synonyms at the end
   // instead of the beginning as a slight optimisation
   for (Elem elem : query->get_selected_elems()) {
-    if (table_.HasColumn(elem)) continue;
+    if (query_table_.HasColumn(elem)) continue;
     UpdateTableWithElem(query, elem);
   }
 
   std::vector<std::vector<Entity>> results;
-  table_.Select(query->get_selected_elems(), results);
+  query_table_.Select(query->get_selected_elems(), results);
 
   return std::make_unique<ListQueryResult>(
       results);
@@ -95,7 +101,7 @@ void QueryEvaluator::UpdateTableWithElem(
     AttrRefArg attr_ref_arg(syn_name, AttrRef::get_attr_type(attr_name));
     attr_ref_arg.set_entity_type(entity_type);
     attr_ref_arg.UpdateTableWithAttrValue(
-        pkb_, table_, has_table_been_intialized_);
+        pkb_, query_table_);
   } else {
     SynonymName syn_name = elem;
     EntityType entity_type = query->get_declared_synonym_entity_type(
@@ -104,12 +110,7 @@ void QueryEvaluator::UpdateTableWithElem(
         entity_type, pkb_);
 
     auto synonym_table = Table(syn_name, initial_entities);
-    if (!has_table_been_intialized_) {
-      table_ = synonym_table;
-      has_table_been_intialized_ = true;
-    } else {
-      table_ = TableJoiner::Join(table_, synonym_table);
-    }
+    query_table_ = TableJoiner::Join(query_table_, synonym_table);
   }
 }
 }  // namespace qps

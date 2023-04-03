@@ -14,6 +14,7 @@ class Table {
  public:
   using Row = std::vector<std::pair<SynonymName, Entity>>;
   using TwoSynonymRows = std::vector<std::pair<Entity, Entity>>;
+  using RowEntity = std::vector<Entity>;
   friend class TableJoiner;
 
   // Empty constructor.
@@ -54,9 +55,13 @@ class Table {
     return rows_.at(row).at(id_map_.at(col));
   }
 
+  inline const RowEntity& Index(int row) { return rows_.at(row); }
+
   inline std::vector<SynonymName> &get_columns() {
     return columns_;
   }
+
+  inline void add_row(const RowEntity &row) { rows_.push_back(row); }
 
   inline void add_values(SynonymName column, EntitySet &values) {
     for (auto &value : values) {
@@ -109,11 +114,24 @@ class Table {
       new_row.at(id_map_.at(syn)) = entity;
     }
     rows_.emplace_back(new_row);
-  }
-
+  }  
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
   std::unordered_map<SynonymName, int> id_map_;
   std::vector<std::vector<Entity>> rows_;
 };
 }  // namespace qps
+
+template <>
+class std::hash<qps::Table::RowEntity> {
+ public:
+  std::size_t operator()(const qps::Table::RowEntity row) const {
+    std::size_t result = 0;
+    for (auto &val : row) {
+      result ^= std::hash<qps::Entity>{}(val) + 0x9e3779b9 + (result << 6) +
+                (result >> 2);
+    }
+    return result;
+  }
+};
+

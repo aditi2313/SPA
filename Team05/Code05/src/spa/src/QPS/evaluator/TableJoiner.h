@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <unordered_set>
 
 #include "QPS/models/Table.h"
 
@@ -12,7 +13,7 @@ class TableJoiner {
   static Table Intersect(
       Table &LHS,
       Table &RHS,
-      std::vector<SynonymName> &join_cols);
+      std::unordered_set<SynonymName> &join_cols);
 
   static Table CrossProduct(Table &LHS, Table &RHS);
 
@@ -20,7 +21,7 @@ class TableJoiner {
       std::vector<SynonymName> &LHS,
       std::vector<SynonymName> &RHS);
 
-  static std::vector<SynonymName> IntersectColumns(
+  static std::unordered_set<SynonymName> IntersectColumns(
       std::vector<SynonymName> &LHS,
       std::vector<SynonymName> &RHS);
 };

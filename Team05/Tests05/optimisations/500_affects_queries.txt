@@ -11,7 +11,7 @@ TRUE
 3 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(459, _)
-FALSE
+TRUE
 5000
 4 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -21,7 +21,7 @@ TRUE
 5 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 6 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -51,12 +51,12 @@ FALSE
 11 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(257, a)
-FALSE
+TRUE
 5000
 12 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(415, _)
-FALSE
+TRUE
 5000
 13 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -66,7 +66,7 @@ TRUE
 14 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 15 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -76,7 +76,7 @@ TRUE
 16 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 132)
-FALSE
+TRUE
 5000
 17 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -111,7 +111,7 @@ TRUE
 23 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 24 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -136,17 +136,17 @@ TRUE
 28 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(429, 438)
-FALSE
+TRUE
 5000
 29 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(183, a)
-FALSE
+TRUE
 5000
 30 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(159, _)
-FALSE
+TRUE
 5000
 31 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -156,7 +156,7 @@ TRUE
 32 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 33 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -166,7 +166,7 @@ TRUE
 34 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 57)
-FALSE
+TRUE
 5000
 35 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -186,7 +186,7 @@ FALSE
 38 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(469, a)
-FALSE
+TRUE
 5000
 39 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -196,12 +196,12 @@ TRUE
 40 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 338)
-FALSE
+TRUE
 5000
 41 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 42 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -226,7 +226,7 @@ TRUE
 46 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(14, 487)
-FALSE
+TRUE
 5000
 47 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -236,7 +236,7 @@ TRUE
 48 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(203, _)
-FALSE
+TRUE
 5000
 49 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -246,7 +246,7 @@ TRUE
 50 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 51 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -256,7 +256,7 @@ TRUE
 52 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 420)
-FALSE
+TRUE
 5000
 53 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -281,17 +281,17 @@ TRUE
 57 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(367, _)
-FALSE
+TRUE
 5000
 58 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 221)
-FALSE
+TRUE
 5000
 59 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 60 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -301,7 +301,7 @@ TRUE
 61 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 493)
-FALSE
+TRUE
 5000
 62 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -321,22 +321,22 @@ FALSE
 65 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(38, a)
-FALSE
+TRUE
 5000
 66 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(465, _)
-FALSE
+TRUE
 5000
 67 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 482)
-FALSE
+TRUE
 5000
 68 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 69 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -346,7 +346,7 @@ TRUE
 70 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 4)
-FALSE
+TRUE
 5000
 71 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -361,7 +361,7 @@ TRUE
 73 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(59, 388)
-FALSE
+TRUE
 5000
 74 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -371,17 +371,17 @@ TRUE
 75 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(66, _)
-FALSE
+TRUE
 5000
 76 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 267)
-FALSE
+TRUE
 5000
 77 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 78 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -391,7 +391,7 @@ TRUE
 79 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 497)
-FALSE
+TRUE
 5000
 80 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -406,17 +406,17 @@ TRUE
 82 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(210, 358)
-FALSE
+TRUE
 5000
 83 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(242, a)
-FALSE
+TRUE
 5000
 84 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(423, _)
-FALSE
+TRUE
 5000
 85 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -426,7 +426,7 @@ TRUE
 86 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 87 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -436,7 +436,7 @@ TRUE
 88 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 272)
-FALSE
+TRUE
 5000
 89 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -456,7 +456,7 @@ FALSE
 92 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(102, a)
-FALSE
+TRUE
 5000
 93 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -466,12 +466,12 @@ TRUE
 94 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 38)
-FALSE
+TRUE
 5000
 95 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 96 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -481,7 +481,7 @@ TRUE
 97 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 38)
-FALSE
+TRUE
 5000
 98 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -496,7 +496,7 @@ TRUE
 100 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(62, 224)
-FALSE
+TRUE
 5000
 101 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -506,7 +506,7 @@ TRUE
 102 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(2, _)
-FALSE
+TRUE
 5000
 103 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -516,7 +516,7 @@ TRUE
 104 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 105 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -541,17 +541,17 @@ TRUE
 109 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(33, 266)
-FALSE
+TRUE
 5000
 110 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(45, a)
-FALSE
+TRUE
 5000
 111 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(461, _)
-FALSE
+TRUE
 5000
 112 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -561,7 +561,7 @@ TRUE
 113 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 114 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -591,7 +591,7 @@ FALSE
 119 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(331, a)
-FALSE
+TRUE
 5000
 120 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -601,12 +601,12 @@ TRUE
 121 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, 17)
-FALSE
+TRUE
 5000
 122 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 123 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -616,7 +616,7 @@ TRUE
 124 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(_, 257)
-FALSE
+TRUE
 5000
 125 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -636,12 +636,12 @@ FALSE
 128 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(220, a)
-FALSE
+TRUE
 5000
 129 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(45, _)
-FALSE
+TRUE
 5000
 130 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
@@ -651,7 +651,7 @@ TRUE
 131 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 
 Select BOOLEAN such that Affects(a, a)
-TRUE
+FALSE
 5000
 132 - comment
 stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p; 

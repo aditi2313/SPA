@@ -123,7 +123,7 @@ def format_statistic(test_name, result, previous_result):
     new_avg = round(total_time / total_queries, 3) if total_queries else 0
     
     if not previous_result:
-        previous_result = [0, 0, "", 0]
+        previous_result = [0, 0, "", 0, 0]
     prev_max, previous_total_time, prev_max_query, prev_num_timeout, prev_total_queries = previous_result
     prev_avg = round(previous_total_time / prev_total_queries, 3) if prev_total_queries else 0
 

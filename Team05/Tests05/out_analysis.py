@@ -87,13 +87,13 @@ def write_results(result_dict, out_path, raw_out_path, branch):
     """
 
     previous_run = {}
-    # if branch: # compare output from master branch
-        # subprocess.run(['git', 'checkout', branch])
+    if branch: # compare output from master branch
+        subprocess.run(['git', 'checkout', branch])
     if os.path.exists(raw_out_path):
         with open(raw_out_path, "r") as raw_out:
             previous_run = eval(raw_out.read())
-    # if branch:
-    #     subprocess.run(['git', 'checkout', '-'])
+    if branch:
+        subprocess.run(['git', 'checkout', '-'])
 
     # Overwrite the raw file
     with open(raw_out_path, "w") as raw_out:

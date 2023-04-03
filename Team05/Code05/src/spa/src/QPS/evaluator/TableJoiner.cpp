@@ -70,8 +70,7 @@ Table TableJoiner::Intersect(
   }
 
   // TODO(Gab) POD lel
-  for (int i = 0, N2 = larger_table.Size(); i < 
-N2; ++i) {
+  for (int i = 0, N2 = larger_table.Size(); i < N2; ++i) {
     Table::RowEntity row;
     for (auto &syn : join_columns) {
       row.push_back(larger_table.Index(i, syn));

@@ -87,15 +87,16 @@ Table TableJoiner::Intersect(
         for (auto &inner_col : smaller_table.get_columns()) {
           ctr++;
           if (join_columns.count(inner_col)) continue;
-          new_row_inner.emplace_back(inner_col, smaller_table.Index(r, inner_col));
+          new_row_inner.emplace_back(inner_col,
+            smaller_table.Index(r, inner_col));
         }
         for (auto &col : larger_table.get_columns()) {
           if (join_columns.count(col)) continue;
           new_row_inner.emplace_back(col, larger_table.Index(i, col));
         }
         new_table.add_row(new_row_inner);
-      }      
-    }  
+      }
+    }
   }
   return new_table;
 }
@@ -150,8 +151,6 @@ std::unordered_set<SynonymName> IntersectCols(std::vector<SynonymName> &LHS,
     }
   }
   return results;
-
-
 }
 
 }  // namespace qps

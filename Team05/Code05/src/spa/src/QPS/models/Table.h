@@ -137,7 +137,7 @@ class Table {
       new_row.at(id_map_.at(syn)) = entity;
     }
     rows_.emplace_back(new_row);
-  }  
+  }
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
   std::unordered_map<SynonymName, int> id_map_;

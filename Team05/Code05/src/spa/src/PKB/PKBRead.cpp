@@ -41,6 +41,7 @@ LineSet PKBRead::Affects(Line s) {
   }
   LineSet empt{};
   auto& table = relation_table_->next_d_table_;
+  // TODO(LOD)
   auto& modified = relation_table_->assign_table_.get_row(s);
   auto& modified_var = modified.get_variable();
   auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
@@ -54,28 +55,59 @@ LineSet PKBRead::Affects(Line s) {
       },
       n_im_l,
       [&](const Line& curr) {
+        // Not an assign statement, skip
+        if (!relation_table_->assign_.count(curr)) return true;
         if (relation_table_->uses_table_.exists(curr)) {
           auto& data = relation_table_->uses_table_.get_row(curr);
           // check that this assign stmt uses the variable
-          if (data.get_variables().count(modified_var) &&
-              relation_table_->assign_.count(curr)) {
+          if (data.get_variables().count(modified_var)) {
             result.insert(curr);
           }
         }
         // if this stmt modifies the variable then don't do anything
-        if (relation_table_->modifies_table_.exists(curr) &&
-            !IsContainerStmt(curr)) {
-          auto& data = relation_table_->modifies_table_.get_row(curr);
-          if (data.get_variables().count(modified_var)) {
-            return false;
-          }
-        }
-        return true;
+        auto curr_modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
+        return curr_modified_var != modified_var;
       });
 
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;
+}
+
+Line PKBRead::ReverseAffects(Line stmt) {
+  Line answer;
+  auto& next_table = relation_table_->next_d_table_;
+
+  if (!relation_table_->assign_.count(stmt)
+      || !next_table.exists2(stmt)) {
+    // Not an assign statement or
+    // Next*(_, s) is false
+    return {};
+  }
+  // TODO(LOD)
+  // Used variables
+  auto& used_vars = relation_table_->uses_table_.get_row(stmt).get_variables();
+
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
+        if (!next_table.exists2(v))
+          return LineSet{};
+        return next_table.get_row_index2(v);
+      },
+      next_table.get_row_index2(stmt),
+      [&](const Line& curr) {
+        // TODO(LOD)
+        // Not an assign statement, skip
+        if(!relation_table_->assign_.count(curr)) return true;
+        auto modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
+        if (used_vars.count(modified_var)) {
+          answer = curr;  // Found reverse Affects
+          return false;  // No need to continue, there can only be one answer
+        }
+        return true;
+      });
+
+  return answer;
 }
 
 LineSet PKBRead::AffectsT(Line s) {
@@ -118,8 +150,6 @@ LineSet PKBRead::AffectsT(Line s) {
 }
 
 LineSet PKBRead::NextT(Line v) {
-  LineSet visited;
-  std::queue<Line> frontier;
   LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;
@@ -145,7 +175,6 @@ LineSet PKBRead::NextT(Line v) {
 }
 
 LineSet PKBRead::ReverseNextT(Line stmt) {
-  LineSet visited;
   LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;

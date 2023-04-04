@@ -40,22 +40,22 @@ LineSet PKBRead::Affects(Line s) {
     return {};
   }
   LineSet empt{};
-  auto &table = relation_table_->next_d_table_;
-  auto &modified = relation_table_->assign_table_.get_row(s);
-  auto &modified_var = modified.get_variable();
-  auto &n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
+  auto& table = relation_table_->next_d_table_;
+  auto& modified = relation_table_->assign_table_.get_row(s);
+  auto& modified_var = modified.get_variable();
+  auto& n_im_l = table.exists(s) ? table.get_row(s).get_next_im_list() : empt;
 
   util::GraphSearch<Line, LineSet>::BFS(
-      [&](Line &v) {
+      [&](Line& v) {
         if (!table.exists(v))
           return LineSet{};
-        auto &next = table.get_row(v);
+        auto& next = table.get_row(v);
         return next.get_next_im_list();
       },
       n_im_l,
-      [&](const Line &curr) {
+      [&](const Line& curr) {
         if (relation_table_->uses_table_.exists(curr)) {
-          auto &data = relation_table_->uses_table_.get_row(curr);
+          auto& data = relation_table_->uses_table_.get_row(curr);
           // check that this assign stmt uses the variable
           if (data.get_variables().count(modified_var) &&
               relation_table_->assign_.count(curr)) {
@@ -65,7 +65,7 @@ LineSet PKBRead::Affects(Line s) {
         // if this stmt modifies the variable then don't do anything
         if (relation_table_->modifies_table_.exists(curr) &&
             !IsContainerStmt(curr)) {
-          auto &data = relation_table_->modifies_table_.get_row(curr);
+          auto& data = relation_table_->modifies_table_.get_row(curr);
           if (data.get_variables().count(modified_var)) {
             return false;
           }
@@ -119,7 +119,8 @@ LineSet PKBRead::ReverseAffects(Line stmt) {
           // TODO(LOD)
           auto modified_vars = relation_table_->modifies_table_
                                         .get_row(curr).get_variables();
-          for (auto &modified_var : modified_vars) {
+          for (auto& modified_var : modified_vars) {
+            if (!used_vars.count(modified_var)) continue;
             used_vars.erase(used_vars.find(modified_var));
           }
         }
@@ -142,7 +143,7 @@ LineSet PKBRead::AffectsT(Line s) {
   LineSet visited;
 
   util::GraphSearch<Line, LineSet>::BFS(
-      [&](Line &v) {
+      [&](Line& v) {
         return Affects(v);
       },
       affected_lines,
@@ -164,7 +165,7 @@ LineSet PKBRead::ReverseAffectsT(Line s) {
   LineSet visited;
 
   util::GraphSearch<Line, LineSet>::BFS(
-      [&](Line &v) {
+      [&](Line& v) {
         return ReverseAffects(v);
       },
       affecting_lines,
@@ -181,7 +182,7 @@ void PKBRead::CacheAllAffects() {
   if (cache_->is_all_affects_cached()) return;
   cache_->set_all_affects_cached_to_true();
 
-  for (auto &assign : relation_table_->assign_) {
+  for (auto& assign : relation_table_->assign_) {
     Affects(assign);
   }
 }

@@ -36,7 +36,6 @@ struct GraphSearch {
     while (!frontier.empty()) {
       auto &c = frontier.front();
       frontier.pop();
-      visited.insert(c);
       if (!add_result(c)) {
         continue;
       }

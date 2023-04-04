@@ -36,15 +36,15 @@ class AffectsTClause : public ReversibleClause {
     // Optimisation: just check if Affects return anything
     EntitySet results;
     auto affected_lines = pkb->Affects(index.get_int());
-    return affected_lines.empty();
+    return !affected_lines.empty();
   }
 
   inline bool ReverseWildcardIndex(const Entity &index,
                                    const pkb::PKBReadPtr &pkb) override {
     // Optimisation: just check if ReverseAffects return anything
     EntitySet results;
-    auto affected_lines = pkb->ReverseAffects(index.get_int());
-    return affected_lines.empty();
+    auto affecting_lines = pkb->ReverseAffects(index.get_int());
+    return !affecting_lines.empty();
   }
 };
 

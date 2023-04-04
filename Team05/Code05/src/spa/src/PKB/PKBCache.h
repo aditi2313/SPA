@@ -15,7 +15,7 @@ class PKBCache {
   }
 
   inline bool ExistsReverseAffects(Line stmt) {
-    if(!is_all_affects_cached_) return false;
+    if (!is_all_affects_cached_) return false;
     return affects_d_table_.exists2(stmt);
   }
 

@@ -105,7 +105,9 @@ LineSet PKBRead::ReverseAffects(Line stmt) {
       next_table.get_row_index2(stmt),
       [&](const Line& curr) {
         if (relation_table_->assign_.count(curr)) {
-          auto modified_var = relation_table_->assign_table_.get_row(curr).get_variable();
+          // TODO(LOD)
+          auto modified_var = relation_table_->assign_table_
+                                      .get_row(curr).get_variable();
           // check that this assign stmt uses the variable
           if (used_vars.count(modified_var)) {
             results.insert(curr);
@@ -115,8 +117,9 @@ LineSet PKBRead::ReverseAffects(Line stmt) {
         if (relation_table_->modifies_table_.exists(curr) &&
             !IsContainerStmt(curr)) {
           // TODO(LOD)
-          auto modified_vars = relation_table_->modifies_table_.get_row(curr).get_variables();
-          for(auto &modified_var : modified_vars) {
+          auto modified_vars = relation_table_->modifies_table_
+                                        .get_row(curr).get_variables();
+          for (auto &modified_var : modified_vars) {
             used_vars.erase(used_vars.find(modified_var));
           }
         }
@@ -146,8 +149,7 @@ LineSet PKBRead::AffectsT(Line s) {
       [&](const Line& curr) {
         affectedT_lines.insert(curr);
         return true;
-      }
-      );
+      });
 
   // Write back to cache
   cache_->WriteAffectsT(s, affectedT_lines);
@@ -169,18 +171,17 @@ LineSet PKBRead::ReverseAffectsT(Line s) {
       [&](const Line& curr) {
         affectingT_lines.insert(curr);
         return true;
-      }
-  );
+      });
 
   return affectingT_lines;
 }
 
 // Called when evaluating AffectsT clause
 void PKBRead::CacheAllAffects() {
-  if(cache_->is_all_affects_cached()) return;
+  if (cache_->is_all_affects_cached()) return;
   cache_->set_all_affects_cached_to_true();
 
-  for(auto &assign : relation_table_->assign_) {
+  for (auto &assign : relation_table_->assign_) {
     Affects(assign);
   }
 }

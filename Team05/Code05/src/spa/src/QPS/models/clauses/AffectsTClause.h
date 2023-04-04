@@ -33,7 +33,7 @@ class AffectsTClause : public ReversibleClause {
 
   inline bool WildcardIndex(const Entity &index,
                             const pkb::PKBReadPtr &pkb) override {
-    // Optimisation: check if Affects return anything
+    // Optimisation: just check if Affects return anything
     EntitySet results;
     auto affected_lines = pkb->Affects(index.get_int());
     return affected_lines.empty();
@@ -41,12 +41,11 @@ class AffectsTClause : public ReversibleClause {
 
   inline bool ReverseWildcardIndex(const Entity &index,
                                    const pkb::PKBReadPtr &pkb) override {
-    // Optimisation: check if ReverseAffects return anything
+    // Optimisation: just check if ReverseAffects return anything
     EntitySet results;
     auto affected_lines = pkb->ReverseAffects(index.get_int());
     return affected_lines.empty();
   }
-
 };
 
 }  // namespace qps

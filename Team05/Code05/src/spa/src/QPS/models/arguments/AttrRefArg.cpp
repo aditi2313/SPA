@@ -5,12 +5,12 @@
 namespace qps {
 void AttrRefArg::UpdateTableWithAttrValue(
     pkb::PKBReadPtr &pkb,
-    Table &query_table) {
+    Table &group_table) {
   // Update query_table with rows mapping from
   // Index to AttrValue
   // e.g. calls (line) to calls (procName)
   EntitySet indexes;
-  SynonymArg::InitializeEntities(query_table, pkb, indexes);
+  SynonymArg::InitializeEntities(group_table, pkb, indexes);
   Table::TwoSynonymRows rows;
 
   for (auto &index : indexes) {
@@ -25,7 +25,7 @@ void AttrRefArg::UpdateTableWithAttrValue(
   Table new_table(columns);
 
   new_table.add_values(col1, col2, rows);
-  query_table = TableJoiner::Join(query_table, new_table);
+  group_table = TableJoiner::Join(group_table, new_table);
 }
 
 void AttrRefArg::InitializeEntities(

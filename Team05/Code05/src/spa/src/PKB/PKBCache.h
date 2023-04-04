@@ -34,13 +34,25 @@ class PKBCache {
   }
 
   inline void clear() {
+    is_all_affects_cached_ = true;
     affects_table_.clear();
     affectsT_table_.clear();
+  }
+
+  inline bool is_all_affects_cached() {
+    return is_all_affects_cached_;
+  }
+
+  inline void set_all_affects_cached_to_true() {
+    is_all_affects_cached_ = true;
   }
 
  private:
   AffectsTable affects_table_;
   AffectsTTable affectsT_table_;
+  // True iff affects for all assign statements have
+  // been calculated
+  bool is_all_affects_cached_ = false;
 };
 }  // namespace pkb
 

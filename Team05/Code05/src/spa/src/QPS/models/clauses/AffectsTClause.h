@@ -18,6 +18,7 @@ class AffectsTClause : public Clause {
   inline void Index(const Entity &index,
                     const pkb::PKBReadPtr &pkb,
                     EntitySet &results) override {
+    pkb->CacheAllAffects();
     auto affectsT_lines = pkb->AffectsT(index.get_int());
     AddList(affectsT_lines, results);
   }
@@ -26,8 +27,8 @@ class AffectsTClause : public Clause {
                             const pkb::PKBReadPtr &pkb) override {
     // Optimisation: check if Affects return anything
     EntitySet results;
-    Index(index, pkb, results);
-    return results.empty();
+    auto affected_lines = pkb->Affects(index.get_int());
+    return affected_lines.empty();
   }
 };
 

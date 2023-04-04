@@ -126,6 +126,8 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
+  void CacheAllAffects();
+
   LineSet Affects(Line);
   LineSet ReverseAffects(Line);
 

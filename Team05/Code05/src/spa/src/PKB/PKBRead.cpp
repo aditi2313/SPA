@@ -72,13 +72,13 @@ LineSet PKBRead::Affects(Line s) {
         }
         return true;
       });
+
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;
 }
 
 LineSet PKBRead::ReverseAffects(Line stmt) {
-  Line answer;
   auto& next_table = relation_table_->next_d_table_;
 
   if (!relation_table_->assign_.count(stmt)
@@ -135,30 +135,60 @@ LineSet PKBRead::AffectsT(Line s) {
   std::queue<Line> q;
   LineSet visited;
 
-  // Initialize BFS queue
-  for (auto& line : affected_lines) {
-    q.push(line);
-    visited.insert(line);
-  }
-
-  while (!q.empty()) {
-    Line curr = q.front();
-    q.pop();
-    affectedT_lines.insert(curr);  // Update result
-    auto neighbors = Affects(curr);
-
-    for (auto& neighbor : neighbors) {
-      // Note: moving the visited check here helps to prevent
-      // pushing many duplicate lines into the queue
-      if (visited.count(neighbor)) continue;
-      q.push(neighbor);
-      visited.insert(neighbor);
-    }
-  }
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line &v) {
+        return Affects(v);
+      },
+      affected_lines,
+      [&](const Line& curr) {
+        affectedT_lines.insert(curr);
+        return true;
+      }
+      );
 
   // Write back to cache
   cache_->WriteAffectsT(s, affectedT_lines);
   return affectedT_lines;
+}
+
+// Called when evaluating AffectsT clause
+void PKBRead::CacheAllAffects() {
+  if(cache_->is_all_affects_cached()) return;
+  cache_->set_all_affects_cached_to_true();
+
+  auto next_table = relation_table_->next_d_table_;
+  auto uses_table = relation_table_->uses_table_;
+  auto modifies_table = relation_table_->modifies_table_;
+
+  // Worklist algo
+  std::unordered_map<Line, VarSet> in, out;
+  std::queue<Line> q;
+  for(auto &stmt : relation_table_->stmts_) {
+    q.push(stmt);
+  }
+
+  while(!q.empty()) {
+    Line curr = q.front();
+    q.pop();
+    VarSet old_in = in[curr];
+    if(!next_table.exists(curr)) continue;
+    for(auto &next : next_table.get_row(curr).get_next_im_list()) {
+      out[curr].merge(out[next]);
+    }
+    VarSet used_vars = uses_table.exists(curr) ? uses_table.get_row(curr).get_variables() : VarSet();
+    VarSet modified_vars = modifies_table.exists(curr) ? modifies_table.get_row(curr).get_variables() : VarSet();
+
+    in[curr].merge(used_vars);
+    in[curr].merge(out[curr]);
+    for(auto &modified_var : modified_vars) {
+      in[curr].erase(in[curr].find(modified_var));
+    }
+    if(old_in != in[curr]) {
+      for(auto &prev : next_table.get_row_index2(curr)) {
+        q.push(prev);
+      }
+    }
+  }
 }
 
 LineSet PKBRead::NextT(Line v) {

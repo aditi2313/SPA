@@ -14,6 +14,7 @@ class Table {
  public:
   using Row = std::vector<std::pair<SynonymName, Entity>>;
   using TwoSynonymRows = std::vector<std::pair<Entity, Entity>>;
+  using RowEntity = std::vector<Entity>;
   friend class TableJoiner;
 
   // Empty constructor.
@@ -30,6 +31,7 @@ class Table {
       rows_.push_back(std::vector<Entity>());
       rows_.back().push_back(entity);
     }
+    is_initialized_ = true;
   }
 
   // Initialize table with columns but no entities
@@ -40,6 +42,7 @@ class Table {
       id_map_[col] = id++;
       columns_set_.insert(col);
     }
+    is_initialized_ = true;
   }
 
   inline bool Empty() {
@@ -54,9 +57,13 @@ class Table {
     return rows_.at(row).at(id_map_.at(col));
   }
 
+  inline const RowEntity& Index(int row) { return rows_.at(row); }
+
   inline std::vector<SynonymName> &get_columns() {
     return columns_;
   }
+
+  inline void add_row(const RowEntity &row) { rows_.push_back(row); }
 
   inline void add_values(SynonymName column, EntitySet &values) {
     for (auto &value : values) {
@@ -100,6 +107,27 @@ class Table {
     }
   }
 
+  inline void Select(
+      std::vector<SynonymName> columns,
+      Table &result_table) {
+    result_table = Table(columns);
+    std::set<Row> seen;
+
+    for (auto &arr : rows_) {
+      Row new_row;
+      for (auto col : columns) {
+        new_row.emplace_back(
+            col, arr[id_map_.at(col)]);
+      }
+      // Already added
+      if (seen.count(new_row)) { continue; }
+
+      // Add to results
+      result_table.add_row(new_row);
+      seen.insert(new_row);
+    }
+  }
+
   void PrintDebug();
 
  private:
@@ -110,10 +138,25 @@ class Table {
     }
     rows_.emplace_back(new_row);
   }
-
   std::vector<SynonymName> columns_;
   std::unordered_set<SynonymName> columns_set_;  // for O(1) HasColumn
   std::unordered_map<SynonymName, int> id_map_;
   std::vector<std::vector<Entity>> rows_;
+
+  bool is_initialized_ = false;
 };
 }  // namespace qps
+
+template <>
+class std::hash<qps::Table::RowEntity> {
+ public:
+  std::size_t operator()(const qps::Table::RowEntity row) const {
+    std::size_t result = 0;
+    for (auto &val : row) {
+      result ^= std::hash<qps::Entity>{}(val) + 0x9e3779b9 + (result << 6) +
+                (result >> 2);
+    }
+    return result;
+  }
+};
+

@@ -698,5 +698,10 @@ Team05/Tests05/**/*out.xml
 docs/out_analysis_raw_local.txt
 docs/out_analysis_local.md
 
+# Temporary files for combination generation
+Team05/Tests05/scripts/combination_generator/tempfiles
+/Team05/Tests05/scripts/queries.txt
+/Team05/Tests05/scripts/output.txt
+
 # Logging output
 docs/logging_output.txt

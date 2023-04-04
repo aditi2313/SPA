@@ -12,9 +12,11 @@ import sys
 # will generate 100 random queries with 7 clauses each
 
 # VARIABLE - SET ACCORDING TO YOUR PROGRAM #
-num_stmts = 18
-variables = ["x", "y", "z", "i", "v",]
-procedures = ["First", "Second", "Third"]
+num_stmts = 24
+variables = ["x", "y", "a", "b", "c", "d", "ganesh", "NUS", "chair", "switch", "monitorarm", "aircon", "kmn", "varx", "v1", "v2", "v3",
+  "someString", "someVariable", "constants",
+  "variables", "procedure", "if", "ils", "rapid"]
+procedures = ["rock", "third", "pain"]
 
 # CONSTANTS - DO NOT CHANGE #
 declarations = "stmt s; read r; print pn; call call; while w; if ifs; assign a; variable v; constant c; procedure p;"

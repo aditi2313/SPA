@@ -79,6 +79,10 @@ LineSet PKBRead::Affects(Line s) {
 }
 
 LineSet PKBRead::ReverseAffects(Line stmt) {
+  if (cache_->ExistsReverseAffects(stmt)) {
+    return cache_->GetReverseAffects(stmt);
+  }
+
   auto& next_table = relation_table_->next_d_table_;
 
   if (!relation_table_->assign_.count(stmt)
@@ -132,7 +136,6 @@ LineSet PKBRead::AffectsT(Line s) {
   LineSet affected_lines = Affects(s);
   LineSet affectedT_lines(affected_lines);
 
-  std::queue<Line> q;
   LineSet visited;
 
   util::GraphSearch<Line, LineSet>::BFS(
@@ -151,43 +154,34 @@ LineSet PKBRead::AffectsT(Line s) {
   return affectedT_lines;
 }
 
+
+LineSet PKBRead::ReverseAffectsT(Line s) {
+  LineSet affecting_lines = ReverseAffects(s);
+  LineSet affectingT_lines(affecting_lines);
+
+  LineSet visited;
+
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line &v) {
+        return ReverseAffects(v);
+      },
+      affecting_lines,
+      [&](const Line& curr) {
+        affectingT_lines.insert(curr);
+        return true;
+      }
+  );
+
+  return affectingT_lines;
+}
+
 // Called when evaluating AffectsT clause
 void PKBRead::CacheAllAffects() {
   if(cache_->is_all_affects_cached()) return;
   cache_->set_all_affects_cached_to_true();
 
-  auto next_table = relation_table_->next_d_table_;
-  auto uses_table = relation_table_->uses_table_;
-  auto modifies_table = relation_table_->modifies_table_;
-
-  // Worklist algo
-  std::unordered_map<Line, VarSet> in, out;
-  std::queue<Line> q;
-  for(auto &stmt : relation_table_->stmts_) {
-    q.push(stmt);
-  }
-
-  while(!q.empty()) {
-    Line curr = q.front();
-    q.pop();
-    VarSet old_in = in[curr];
-    if(!next_table.exists(curr)) continue;
-    for(auto &next : next_table.get_row(curr).get_next_im_list()) {
-      out[curr].merge(out[next]);
-    }
-    VarSet used_vars = uses_table.exists(curr) ? uses_table.get_row(curr).get_variables() : VarSet();
-    VarSet modified_vars = modifies_table.exists(curr) ? modifies_table.get_row(curr).get_variables() : VarSet();
-
-    in[curr].merge(used_vars);
-    in[curr].merge(out[curr]);
-    for(auto &modified_var : modified_vars) {
-      in[curr].erase(in[curr].find(modified_var));
-    }
-    if(old_in != in[curr]) {
-      for(auto &prev : next_table.get_row_index2(curr)) {
-        q.push(prev);
-      }
-    }
+  for(auto &assign : relation_table_->assign_) {
+    Affects(assign);
   }
 }
 

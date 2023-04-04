@@ -8,10 +8,10 @@ using filter::CallsIndexFilter;
 
 namespace qps {
 // RS between lines
-class AffectsTClause : public Clause {
+class AffectsTClause : public ReversibleClause {
  public:
   AffectsTClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : Clause(ClauseType::kAffectsT,
+      : ReversibleClause(ClauseType::kAffectsT,
                std::move(arg1),
                std::move(arg2)) {}
 
@@ -23,6 +23,14 @@ class AffectsTClause : public Clause {
     AddList(affectsT_lines, results);
   }
 
+  inline void ReverseIndex(const Entity &index,
+                    const pkb::PKBReadPtr &pkb,
+                    EntitySet &results) override {
+    pkb->CacheAllAffects();
+    auto affectingT_lines = pkb->ReverseAffectsT(index.get_int());
+    AddList(affectingT_lines, results);
+  }
+
   inline bool WildcardIndex(const Entity &index,
                             const pkb::PKBReadPtr &pkb) override {
     // Optimisation: check if Affects return anything
@@ -30,6 +38,15 @@ class AffectsTClause : public Clause {
     auto affected_lines = pkb->Affects(index.get_int());
     return affected_lines.empty();
   }
+
+  inline bool ReverseWildcardIndex(const Entity &index,
+                                   const pkb::PKBReadPtr &pkb) override {
+    // Optimisation: check if ReverseAffects return anything
+    EntitySet results;
+    auto affected_lines = pkb->ReverseAffects(index.get_int());
+    return affected_lines.empty();
+  }
+
 };
 
 }  // namespace qps

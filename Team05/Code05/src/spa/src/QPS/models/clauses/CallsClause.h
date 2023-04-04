@@ -4,17 +4,17 @@
 #include <string>
 #include <utility>
 
-#include "ReversableClause.h"
+#include "ReversibleClause.h"
 #include "common/filter/filters/Export.h"
 
 using filter::CallsIndexFilter;
 
 namespace qps {
 // RS between procedures
-class CallsClause : public ReversableClause {
+class CallsClause : public ReversibleClause {
  public:
   CallsClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : ReversableClause(ClauseType::kCalls, std::move(arg1), std::move(arg2)) {
+      : ReversibleClause(ClauseType::kCalls, std::move(arg1), std::move(arg2)) {
   }
 
   inline void Index(const Entity &index, const pkb::PKBReadPtr &pkb,

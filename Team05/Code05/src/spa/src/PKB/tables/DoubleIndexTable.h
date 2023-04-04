@@ -82,16 +82,15 @@ class DoubleIndexTable {
   inline const Data& get_row(Index id) const {
     return data_.at(first_index_map_.at(id));
   }
+  // TODO(JL): delete duplicate method
   inline Data& get_row(Index id) {
       return data_.at(first_index_map_.at(id));
   }
 
-  inline std::vector<Index> get_row_index2(SecondIndex id) const {
-    std::vector<Index> result;
-    int size = second_index_map_.at(id).size();
-    result.reserve(size);
+  inline std::unordered_set<Index> get_row_index2(SecondIndex id) const {
+    std::unordered_set<Index> result;
     for (int index : second_index_map_.at(id)) {
-      result.push_back(data_.at(index).get_index());
+      result.insert(data_.at(index).get_index());
     }
     return result;
   }

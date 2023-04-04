@@ -5,14 +5,15 @@
 #include "Clause.h"
 
 namespace qps {
-class ReversableClause : public Clause {
+class ReversibleClause : public Clause {
  public:
-  ReversableClause(ClauseType clause_type, ArgumentPtr arg1, ArgumentPtr arg2)
+  ReversibleClause(ClauseType clause_type, ArgumentPtr arg1, ArgumentPtr arg2)
       : Clause(clause_type, std::move(arg1), std::move(arg2)) {}
 
   inline virtual void ReverseIndex(const Entity& index,
                                    const pkb::PKBReadPtr& pkb,
                                    EntitySet& results) = 0;
+
   inline void Filter(const EntitySet& lhs, const EntitySet& rhs,
                      Table::TwoSynonymRows& results_r,
                      const pkb::PKBReadPtr& pkb) override {
@@ -26,6 +27,28 @@ class ReversableClause : public Clause {
         if (!filter_indexes.count(entity)) continue;
         reverse ? results_r.emplace_back(entity, index)
                 : results_r.emplace_back(index, entity);
+      }
+    }
+  }
+
+  // Returns true if ReverseIndex returns results
+  inline virtual bool ReverseWildcardIndex(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb) {
+    EntitySet results;
+    ReverseIndex(index, pkb, results);
+    return !results.empty();
+  }
+
+  // (_, syn)
+  inline void WildcardFilterForRHS(
+      const EntitySet &LHS,
+      const EntitySet &RHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& RHS_results) override {
+    for (auto &index : RHS) {
+      if (ReverseWildcardIndex(index, pkb)) {
+        RHS_results.insert(index);
       }
     }
   }

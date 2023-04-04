@@ -74,6 +74,7 @@ class PKBRead {
   UsesDataReader& Uses(filter::UsesTableFilter&);
 
   LineSet NextT(Line);
+  LineSet ReverseNextT(Line);
 
   ConditionDataReader& Condition(filter::ConditionTableFilter&);
 

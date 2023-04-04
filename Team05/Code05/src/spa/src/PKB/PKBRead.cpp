@@ -72,6 +72,7 @@ LineSet PKBRead::Affects(Line s) {
         }
         return true;
       });
+
   // Write to cache
   cache_->WriteAffects(s, result);
   return result;
@@ -135,6 +136,30 @@ LineSet PKBRead::NextT(Line v) {
         return child_data.get_next_im_list();
       },
       data.get_next_im_list(),
+      [&](const Line& curr) {
+        result.insert(curr);
+        return true;
+      });
+
+  return result;
+}
+
+LineSet PKBRead::ReverseNextT(Line stmt) {
+  LineSet visited;
+  LineSet result;
+
+  auto& next_table = relation_table_->next_d_table_;
+  if (!next_table.exists2(stmt)) {
+    return {};
+  }
+
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& curr) {
+        if (!next_table.exists2(curr))
+          return LineSet{};
+        return next_table.get_row_index2(curr);
+      },
+      next_table.get_row_index2(stmt),
       [&](const Line& curr) {
         result.insert(curr);
         return true;

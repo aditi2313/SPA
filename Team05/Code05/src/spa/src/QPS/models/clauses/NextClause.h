@@ -4,16 +4,16 @@
 #include <utility>
 
 #include "common/filter/filters/Export.h"
-#include "ReversableClause.h"
+#include "ReversibleClause.h"
 
 using filter::NextIndexFilter;
 
 namespace qps {
 // RS between statements
-class NextClause : public ReversableClause {
+class NextClause : public ReversibleClause {
  public:
   NextClause(ArgumentPtr arg1, ArgumentPtr arg2)
-      : ReversableClause
+      : ReversibleClause
             (ClauseType::kNext, std::move(arg1), std::move(arg2)) {}
 
   inline void Index(const Entity &index,
@@ -25,9 +25,10 @@ class NextClause : public ReversableClause {
     auto &data = reader.read_data();
     AddList(data.get_next_im_list(), results);
   }
-  inline virtual void ReverseIndex(const Entity& index,
+  inline void ReverseIndex(
+    const Entity& index,
     const pkb::PKBReadPtr& pkb,
-    EntitySet& results) {
+    EntitySet& results) override {
     filter::ReverseNextFilter filter(index.get_int());
     auto &reader = pkb->Next(filter);
     WriteSecondIndexesFromReader(reader, results);

@@ -42,6 +42,14 @@ class Clause {
     return;
   }
 
+  virtual bool WildcardIndex(
+      const Entity &index,
+      const pkb::PKBReadPtr &pkb) {
+    EntitySet results;
+    Index(index, pkb, results);
+    return !results.empty();
+  }
+
   virtual void Index(
       const Entity &index,
       const pkb::PKBReadPtr &pkb,
@@ -112,6 +120,37 @@ class Clause {
     for (auto &entity : index_results) {
       if (entity.WeakEqual(index)) {
         results.insert(entity);
+      }
+    }
+  }
+
+  // Handles (syn , _)
+  inline void WildcardFilterForLHS(
+      const EntitySet& LHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& LHS_results) {
+    for (auto &index : LHS) {
+      if (WildcardIndex(index, pkb)) {
+        LHS_results.insert(index);
+      }
+    }
+  }
+
+  // Handles (_, syn)
+  // ReversibleClause overrides this as
+  // for a faster implementation it has reverseIndex
+  inline virtual void WildcardFilterForRHS(
+      const EntitySet &LHS,
+      const EntitySet& RHS,
+      const pkb::PKBReadPtr &pkb,
+      EntitySet& RHS_results) {
+    for (auto &index : LHS) {
+      EntitySet results;
+      Index(index, pkb, results);
+      for (auto &result : results) {
+        if (RHS.count(result)) {
+          RHS_results.insert(result);
+        }
       }
     }
   }

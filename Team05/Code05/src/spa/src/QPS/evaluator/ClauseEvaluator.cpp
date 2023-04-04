@@ -87,6 +87,11 @@ void PopulateResults(Table::TwoSynonymRows &rows, EntitySet &LHS,
   }
 }
 
+// Handles these cases:
+// (syn, exact | _)
+// (exact | _, syn)
+// (syn1, syn2) where syn1 != syn2
+// (syn, syn) where syn == syn
 void ClauseEvaluator::QueryPKBForSynonymClause(
     ClauseWrapper &state,
     Table::TwoSynonymRows &rows) {
@@ -98,32 +103,32 @@ void ClauseEvaluator::QueryPKBForSynonymClause(
 
   ArgumentPtr &arg1 = clause->get_arg1();
   ArgumentPtr &arg2 = clause->get_arg2();
+  if (arg1->IsWildcard() || arg2->IsWildcard()) {
+    arg2->IsWildcard() ? clause->WildcardFilterForLHS(LHS, pkb_, LHS_results)
+                       : clause->WildcardFilterForRHS(LHS, RHS,
+                                                      pkb_, RHS_results);
+    return;
+  }
+
   bool is_symmetric = *arg1 == *arg2;
-  bool double_syn = arg1->IsSynonym() && arg1->IsSynonym();
-  if (!arg2->IsWildcard() && !is_symmetric) {
+
+  if (!is_symmetric) {
     clause->Filter(LHS, RHS, rows, pkb_);
     PopulateResults(rows, LHS_results, RHS_results);
     return;
   }
 
+  // Evaluate double synonym symmetric case
   for (auto &index : LHS) {
     EntitySet results;
-    if (arg2->IsWildcard()) {
-      // Just index and return all
-      clause->Index(index, pkb_, results);
-    } else {
-      // Is symmetric
-      is_symmetric ? clause->SymmetricFilter(index, pkb_, results)
-                   : clause->Filter(index, RHS, pkb_, results);
-    }
+    clause->SymmetricFilter(index, pkb_, results);
     if (results.empty()) continue;
-    LHS_results.insert(index);
     for (auto &entity : results) {
-      RHS_results.insert(entity);
-      rows.emplace_back(index, entity);
+      LHS_results.insert(entity);
     }
   }
 }
+
 
 void ClauseEvaluator::CreateClauseTable(
     ClauseWrapper &state,

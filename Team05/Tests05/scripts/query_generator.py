@@ -36,6 +36,9 @@ proc_syn = "p"
 stmt_ref = [get_rand_stmt, 
             get_rand_symt_syn,
             get_wildcard]
+assign_stmt_ref = [get_rand_stmt, 
+                  lambda : "a",
+                  get_wildcard]
 var_ent_ref = [get_rand_var, 
               lambda : var_syn,
               get_wildcard]
@@ -143,8 +146,8 @@ def create_generators():
     TwoArgGenerator("Follows*", stmt_ref, stmt_ref),
     TwoArgGenerator("Next", stmt_ref, stmt_ref),
     TwoArgGenerator("Next*", stmt_ref, stmt_ref),
-    TwoArgGenerator("Affects", stmt_ref, stmt_ref),
-    TwoArgGenerator("Affects*", stmt_ref, stmt_ref),
+    TwoArgGenerator("Affects", assign_stmt_ref, assign_stmt_ref),
+    TwoArgGenerator("Affects*", assign_stmt_ref, assign_stmt_ref),
     TwoArgGenerator("Calls", proc_ent_ref, proc_ent_ref),
     TwoArgGenerator("Calls*", proc_ent_ref, proc_ent_ref),
     TwoArgGenerator("with", int_attr_ref, int_attr_ref, GeneratorType.WITH),

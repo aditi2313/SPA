@@ -7,7 +7,7 @@
 #include "Types.h"
 
 namespace pkb {
-class AffectsData : public Data<Line> {
+class AffectsData : public Data<Line, Line> {
  public:
   explicit AffectsData(
           Line line, LineSet affected_lines);

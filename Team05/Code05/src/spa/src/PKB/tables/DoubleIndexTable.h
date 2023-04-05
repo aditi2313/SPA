@@ -124,6 +124,12 @@ class DoubleIndexTable {
     return true;
   }
 
+  inline void clear() {
+    first_index_map_.clear();
+    second_index_map_.clear();
+    data_.clear();
+  }
+
  protected:
   std::unordered_map<Index, int> first_index_map_;
   std::unordered_map<SecondIndex, std::unordered_set<int>> second_index_map_;
@@ -131,9 +137,10 @@ class DoubleIndexTable {
   friend class DoubleIndexReader<Data, Index, SecondIndex>;
 };
 
-typedef DoubleIndexTable<NextData, int, int> NextDTable;
-typedef DoubleIndexTable<FollowsData, int, int> FollowsDTable;
-typedef DoubleIndexTable<ParentData, int, int> ParentDTable;
+typedef DoubleIndexTable<AffectsData, Line, Line> AffectsDTable;
+typedef DoubleIndexTable<NextData, Line, Line> NextDTable;
+typedef DoubleIndexTable<FollowsData, Line, Line> FollowsDTable;
+typedef DoubleIndexTable<ParentData, Line, Line> ParentDTable;
 typedef DoubleIndexTable<CallsData, std::string, std::string> CallsDTable;
 
 }  // namespace pkb

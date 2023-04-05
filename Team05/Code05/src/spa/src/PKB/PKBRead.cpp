@@ -78,6 +78,59 @@ LineSet PKBRead::Affects(Line s) {
   return result;
 }
 
+// TODO(Long method)
+LineSet PKBRead::ReverseAffects(Line stmt) {
+  if (cache_->ExistsReverseAffects(stmt)) {
+    return cache_->GetReverseAffects(stmt);
+  }
+
+  auto& next_table = relation_table_->next_d_table_;
+
+  if (!relation_table_->assign_.count(stmt)
+      || !next_table.exists2(stmt)) {
+    // Not an assign statement or
+    // Next*(_, s) is false
+    return {};
+  }
+  LineSet results;
+  // TODO(LOD)
+  // Used variables
+  auto used_vars = relation_table_->uses_table_.get_row(stmt).get_variables();
+
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
+        if (!next_table.exists2(v))
+          return LineSet{};
+        return next_table.get_row_index2(v);
+      },
+      next_table.get_row_index2(stmt),
+      [&](const Line& curr) {
+        if (relation_table_->assign_.count(curr)) {
+          // TODO(LOD)
+          auto modified_var = relation_table_->assign_table_
+                                      .get_row(curr).get_variable();
+          // check that this assign stmt uses the variable
+          if (used_vars.count(modified_var)) {
+            results.insert(curr);
+          }
+        }
+
+        if (relation_table_->modifies_table_.exists(curr) &&
+            !IsContainerStmt(curr)) {
+          // TODO(LOD)
+          auto modified_vars = relation_table_->modifies_table_
+                                        .get_row(curr).get_variables();
+          for (auto& modified_var : modified_vars) {
+            if (!used_vars.count(modified_var)) continue;
+            used_vars.erase(used_vars.find(modified_var));
+          }
+        }
+        return !used_vars.empty();
+      });
+
+  return results;
+}
+
 LineSet PKBRead::AffectsT(Line s) {
   // Return cached result immediately if it has been
   // calculated before
@@ -88,38 +141,54 @@ LineSet PKBRead::AffectsT(Line s) {
   LineSet affected_lines = Affects(s);
   LineSet affectedT_lines(affected_lines);
 
-  std::queue<Line> q;
   LineSet visited;
 
-  // Initialize BFS queue
-  for (auto& line : affected_lines) {
-    q.push(line);
-    visited.insert(line);
-  }
-
-  while (!q.empty()) {
-    Line curr = q.front();
-    q.pop();
-    affectedT_lines.insert(curr);  // Update result
-    auto neighbors = Affects(curr);
-
-    for (auto& neighbor : neighbors) {
-      // Note: moving the visited check here helps to prevent
-      // pushing many duplicate lines into the queue
-      if (visited.count(neighbor)) continue;
-      q.push(neighbor);
-      visited.insert(neighbor);
-    }
-  }
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
+        return Affects(v);
+      },
+      affected_lines,
+      [&](const Line& curr) {
+        affectedT_lines.insert(curr);
+        return true;
+      });
 
   // Write back to cache
   cache_->WriteAffectsT(s, affectedT_lines);
   return affectedT_lines;
 }
 
-LineSet PKBRead::NextT(Line v) {
+
+LineSet PKBRead::ReverseAffectsT(Line s) {
+  LineSet affecting_lines = ReverseAffects(s);
+  LineSet affectingT_lines(affecting_lines);
+
   LineSet visited;
-  std::queue<Line> frontier;
+
+  util::GraphSearch<Line, LineSet>::BFS(
+      [&](Line& v) {
+        return ReverseAffects(v);
+      },
+      affecting_lines,
+      [&](const Line& curr) {
+        affectingT_lines.insert(curr);
+        return true;
+      });
+
+  return affectingT_lines;
+}
+
+// Called when evaluating AffectsT clause
+void PKBRead::CacheAllAffects() {
+  if (cache_->is_all_affects_cached()) return;
+  cache_->set_all_affects_cached_to_true();
+
+  for (auto& assign : relation_table_->assign_) {
+    Affects(assign);
+  }
+}
+
+LineSet PKBRead::NextT(Line v) {
   LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;
@@ -145,7 +214,6 @@ LineSet PKBRead::NextT(Line v) {
 }
 
 LineSet PKBRead::ReverseNextT(Line stmt) {
-  LineSet visited;
   LineSet result;
 
   auto& next_table = relation_table_->next_d_table_;

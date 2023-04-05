@@ -126,9 +126,13 @@ class PKBRead {
     return relation_table_->line_to_proc_name_[line];
   }
 
+  void CacheAllAffects();
+
   LineSet Affects(Line);
+  LineSet ReverseAffects(Line);
 
   LineSet AffectsT(Line);
+  LineSet ReverseAffectsT(Line);
 
   CallsDataReader& Calls(filter::CallsTableFilter& ftr) {
     return ftr.FilterTable(relation_table_->calls_d_table_);
